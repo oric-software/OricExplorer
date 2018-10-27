@@ -1,0 +1,29 @@
+# Ignore Windows and MacOS junk files
+[Tt]humbs.db
+*.DS_Store
+# Ignore Visual Studio work/generated files
+# (from https://stackoverflow.com/questions/8527597/how-do-i-ignore-files-in-a-directory-in-git)
+.vs/
+*.user
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.[Cc]ache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.sdf
+ipch/
+[Bb]in/
+[Dd]ebug*/
+[Rr]elease*/
+[Oo]bj/

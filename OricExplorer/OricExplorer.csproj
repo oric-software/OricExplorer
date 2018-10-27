@@ -1,0 +1,422 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{252A5A36-BFC7-4033-98BC-10B16BA7C246}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OricExplorer</RootNamespace>
+    <AssemblyName>OricExplorer</AssemblyName>
+    <ApplicationIcon>Resources\OricExplorer.ico</ApplicationIcon>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ManifestCertificateThumbprint>2B740B998DC48205AFDCA3508E1625D00C7CDD7C</ManifestCertificateThumbprint>
+    <ManifestKeyFile>OricExplorer_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <StartupObject>OricExplorer.OricExplorer</StartupObject>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>C:\Temp\OricExplorer\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.0</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>bin\Release\FastColoredTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="FormsControlLibrary">
+      <HintPath>..\..\FormsControlLibrary\FormsControlLibrary\FormsControlLibrary\bin\Debug\FormsControlLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="ScintillaNET">
+      <HintPath>..\..\OricDeveloper\OricDeveloper\OricDeveloper\ScintillaNET.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TabStrip">
+      <HintPath>bin\Release\TabStrip.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.16.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <HintPath>..\packages\DockPanelSuite.2.16.1\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2005Multithreading, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2005Multithreading.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2012Light, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2012Light.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\FTDos.cs" />
+    <Compile Include="Classes\OricFileInfo.cs" />
+    <Compile Include="Classes\Configuration.cs" />
+    <Compile Include="Classes\OricDisk.cs" />
+    <Compile Include="Classes\OricDiskInfo.cs" />
+    <Compile Include="Classes\OricDos.cs" />
+    <Compile Include="Classes\ScreenImage.cs" />
+    <Compile Include="Classes\StratSed.cs" />
+    <Compile Include="Classes\SedOric.cs" />
+    <Compile Include="Forms\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\BasicTokens.cs" />
+    <Compile Include="Forms\CheckForUpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CheckForUpdateForm.Designer.cs">
+      <DependentUpon>CheckForUpdateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CreateNewDiskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CreateNewDiskForm.Designer.cs">
+      <DependentUpon>CreateNewDiskForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DataViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DataViewerForm.Designer.cs">
+      <DependentUpon>DataViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DiskDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DiskDataForm.Designer.cs">
+      <DependentUpon>DiskDataForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FileManagerForm.Designer.cs">
+      <DependentUpon>FileManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ImportTextFileForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ImportTextFileForm.Designer.cs">
+      <DependentUpon>ImportTextFileForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditTapeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EditTapeForm.Designer.cs">
+      <DependentUpon>EditTapeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FileListForm.Designer.cs">
+      <DependentUpon>FileListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ScreenViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScreenViewerForm.Designer.cs">
+      <DependentUpon>ScreenViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProgramInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProgramInfoForm.Designer.cs">
+      <DependentUpon>ProgramInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SyntaxHighlightingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SyntaxHighlightingForm.Designer.cs">
+      <DependentUpon>SyntaxHighlightingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TextScreenEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TextScreenEditorForm.designer.cs">
+      <DependentUpon>TextScreenEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="User Controls\CharacterSetViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\CharacterSetViewer.Designer.cs">
+      <DependentUpon>CharacterSetViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User Controls\DataFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\DataFileViewer.Designer.cs">
+      <DependentUpon>DataFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User Controls\DataViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\DataViewer.Designer.cs">
+      <DependentUpon>DataViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileScanForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FileScanForm.Designer.cs">
+      <DependentUpon>FileScanForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainView.Designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\OpCodes.cs" />
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OricExplorer.cs" />
+    <Compile Include="Classes\OricProgram.cs" />
+    <Compile Include="Classes\OricTape.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\AboutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CheckForUpdateForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CheckForUpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CreateNewDiskForm.resx">
+      <DependentUpon>CreateNewDiskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DataViewerForm.resx">
+      <DependentUpon>DataViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DiskDataForm.resx">
+      <DependentUpon>DiskDataForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileManagerForm.resx">
+      <DependentUpon>FileManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ImportTextFileForm.resx">
+      <DependentUpon>ImportTextFileForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditTapeForm.resx">
+      <DependentUpon>EditTapeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileListForm.resx">
+      <DependentUpon>FileListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScreenViewerForm.resx">
+      <DependentUpon>ScreenViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProgramInfoForm.resx">
+      <DependentUpon>ProgramInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SyntaxHighlightingForm.resx">
+      <DependentUpon>SyntaxHighlightingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TextScreenEditorForm.resx">
+      <DependentUpon>TextScreenEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\CharacterSetViewer.resx">
+      <DependentUpon>CharacterSetViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\DataFileViewer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DataFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\DataViewer.resx">
+      <DependentUpon>DataViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileScanForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FileScanForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\ScreenViewer.resx">
+      <DependentUpon>ScreenViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DiskInfoViewer.resx">
+      <DependentUpon>DiskInfoViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Resources\OpCodes.dat" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\StdCharSet.dat" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Classes\Preview.cs" />
+    <Compile Include="Forms\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\TapeInfo.cs" />
+    <Compile Include="User Controls\ScreenViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\ScreenViewer.Designer.cs">
+      <DependentUpon>ScreenViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DiskInfoViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DiskInfoViewer.Designer.cs">
+      <DependentUpon>DiskInfoViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User Controls\SequentialFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\SequentialFileViewer.Designer.cs">
+      <DependentUpon>SequentialFileViewer.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UpdatedCharacterSetViewer.bmp" />
+    <None Include="Resources\picture_save.png" />
+    <None Include="Resources\text_align_justify.png" />
+    <None Include="Resources\PrintPreviewHS1.png" />
+    <None Include="Resources\CharacterSetViewer.bmp" />
+    <None Include="Resources\GoToNextHS.png" />
+    <None Include="Resources\GoToPrevious.png" />
+    <None Include="Resources\atmosset.gif" />
+    <None Include="Resources\Atmosset2.gif" />
+    <None Include="Resources\Oric-atmos-48k.jpg" />
+    <None Include="Resources\OricAtmos.png" />
+    <None Include="Resources\OricAtmos1.png" />
+    <None Include="Resources\image_tape.png" />
+    <None Include="Resources\Collapse_small1.bmp" />
+    <None Include="Resources\1uparrow.png" />
+    <None Include="Resources\1downarrow.png" />
+    <None Include="Resources\button_cancel.png" />
+    <None Include="Resources\1uparrow1.png" />
+    <None Include="Resources\1downarrow1.png" />
+    <None Include="Resources\button_cancel1.png" />
+    <None Include="Resources\apply.png" />
+    <None Include="Resources\control_start_blue.png" />
+    <None Include="Resources\control_rewind_blue.png" />
+    <None Include="Resources\control_fastforward_blue.png" />
+    <None Include="Resources\control_end_blue.png" />
+    <None Include="Resources\control_start_blue1.png" />
+    <None Include="Resources\control_play_blue.png" />
+    <None Include="Resources\control_pause_blue.png" />
+    <None Include="Resources\control_stop_blue.png" />
+    <None Include="Resources\control_repeat_blue.png" />
+    <None Include="Resources\images.png" />
+    <None Include="Resources\disk.png" />
+    <None Include="Resources\magnifier_zoom_in.png" />
+    <None Include="Resources\information.png" />
+    <Content Include="Resources\OricExplorer.ico" />
+    <None Include="Resources\PrintHS.png" />
+    <None Include="Resources\PrintPreviewHS.png" />
+    <None Include="Resources\PrintSetupHS.png" />
+    <None Include="Resources\Collapse_small.bmp" />
+    <None Include="Resources\Expand_small.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
