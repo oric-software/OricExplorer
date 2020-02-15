@@ -23,7 +23,7 @@ namespace OricExplorer
 {
     public partial class MainForm : Form
     {
-        public enum Machine {Oric_1, Oric_Atmos};
+        public enum Machine {Oric_1, Oric_Atmos, Telestrat};
         public enum UserControls { MainView, DataViewer, SectorViewer, ScreenViewer, CharacterSetViewer, DataFileViewer, SequentialFileViewer, None };
         public enum ExportTo { Tape, Text, Raw};
 
@@ -1746,7 +1746,17 @@ namespace OricExplorer
             startInfo.FileName = configuration.EmulatorExecutable;
             startInfo.WorkingDirectory = Path.GetDirectoryName(configuration.EmulatorExecutable);
 
-            String machineName = "atmos";
+            String machineName;
+            switch (diskInfo.DOSFormat.ToString().ToLower())
+            {
+                case "stratsed":
+                    machineName = "telestrat";
+                    break;
+
+                default:
+                    machineName = "atmos";
+                    break;
+            }
 
             startInfo.WindowStyle = ProcessWindowStyle.Normal;
             startInfo.Arguments = String.Format("--machine {0} --disk \"{1}\"", machineName, diskInfo.FullName);
@@ -1976,7 +1986,7 @@ namespace OricExplorer
                 String message = ex.Message;
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

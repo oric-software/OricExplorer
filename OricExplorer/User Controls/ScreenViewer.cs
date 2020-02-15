@@ -388,7 +388,7 @@ namespace OricExplorer
 
                 UpdateZoomedImage(newCusrPos.X, newCusrPos.Y);
             }
-            catch (ObjectDisposedException ex)
+            catch (ObjectDisposedException)
             {
                 FlashTimer.Stop();
                 FlashTimer = null;
