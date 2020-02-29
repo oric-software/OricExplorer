@@ -1,26 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Collections;
-using System.IO;
-using WeifenLuo.WinFormsUI.Docking;
-using Be.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
-
 namespace OricExplorer.User_Controls
 {
+    using Be.Windows.Forms;
+    using System;
+    using System.Collections;
+    using System.Drawing;
+    using System.Windows.Forms;
+    using WeifenLuo.WinFormsUI.Docking;
+
     public partial class DiskInfoViewerControl : DockContent
     {
         private DirectoryListColumnSorter lvwColumnSorter; 
         private OricFileInfo[] diskDirectory;
 
-        private String diskPathName = "";
+        private string diskPathName = "";
 
-        private Byte selectedIndex = 0;
+        private byte selectedIndex = 0;
 
         private Image imageSectorMap0;
         private Image imageSectorMap1;
@@ -34,12 +28,12 @@ namespace OricExplorer.User_Controls
         private int gridWidth = 0;
         private int gridHeight = 0;
 
-        private UInt16 gridTrack = 0;
-        private UInt16 gridSector = 1;
-        private UInt16 gridIndex = 0;
+        private ushort gridTrack = 0;
+        private ushort gridSector = 1;
+        private ushort gridIndex = 0;
 
-        private Byte currentTrack = 0;
-        private Byte currentSector = 1;
+        private byte currentTrack = 0;
+        private byte currentSector = 1;
 
         private OricDiskInfo diskInfo;
 
@@ -65,9 +59,18 @@ namespace OricExplorer.User_Controls
 
             buttonJumpToSector.Enabled = false;
 
+            hexBox1.BackColor = Configuration.Persistent.PageBackground;
+            hexBox1.InfoForeColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHeadersStyle].ForeBrush).Color;
+            hexBox1.ForeColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHexStyle].ForeBrush).Color;
+            hexBox1.StringViewColour = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpAsciiStyle].ForeBrush).Color;
+            hexBox1.SelectionBackColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionBackStyle].ForeBrush).Color;
+            hexBox1.SelectionForeColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionFrontStyle].ForeBrush).Color;
+            hexBox1.ShadowSelectionColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpSecondarySelectionBackStyle].ForeBrush).Color;
+            hexBox1.ShadowSelectionColor = Color.FromArgb(100, hexBox1.ShadowSelectionColor.R, hexBox1.ShadowSelectionColor.G, hexBox1.ShadowSelectionColor.B);
+
             InitialDisplay();
 
-            Text = String.Format("Disk Information - {0}", diskInfo.FullName);
+            Text = string.Format("Disk Information - {0}", diskInfo.FullName);
         }
 
         public void InitialDisplay()
@@ -95,9 +98,9 @@ namespace OricExplorer.User_Controls
         private void DisplayDiskInformation()
         {
             infoBoxDiskName.Text = diskInfo.DiskName.Trim();
-            infoBoxDiskType.Text = String.Format("{0} Disk", diskInfo.DiskType.ToString());
+            infoBoxDiskType.Text = string.Format("{0} Disk", diskInfo.DiskType.ToString());
 
-            infoBoxDOS.Text = String.Format("{0}\n{1}", diskInfo.DOSFormat.ToString(), diskInfo.DosVersion());
+            infoBoxDOS.Text = string.Format("{0}\n{1}", diskInfo.DOSFormat.ToString(), diskInfo.DosVersion());
 
             if (diskInfo.Sides == 1)
             {
@@ -112,20 +115,20 @@ namespace OricExplorer.User_Controls
                 infoBoxStructure.Text = "Unknown";
             }
 
-            infoBoxStructure.Text += String.Format("\n{0} Tracks per Side\n{1} Sectors per Track", diskInfo.TracksPerSide, diskInfo.SectorsPerTrack);
+            infoBoxStructure.Text += string.Format("\n{0} Tracks per Side\n{1} Sectors per Track", diskInfo.TracksPerSide, diskInfo.SectorsPerTrack);
 
-            infoBoxUsage.Text = String.Format("{0:N0} Sectors used\n{1:N0} Sectors free\nTotal of {2:N0} Sectors\n({3} Files on Disk)",
+            infoBoxUsage.Text = string.Format("{0:N0} Sectors used\n{1:N0} Sectors free\nTotal of {2:N0} Sectors\n({3} Files on Disk)",
                                               diskInfo.SectorsUsed, diskInfo.SectorsFree, diskInfo.Sectors, lvDirectory.Items.Count);
         }
 
-        private void GetSectorInfo(UInt16 index, ref String sectorFormat, ref String sectorDetails)
+        private void GetSectorInfo(ushort index, ref string sectorFormat, ref string sectorDetails)
         {
-            Byte bData = 0;
-            Boolean bDescriptor = false;
+            byte bData = 0;
+            bool bDescriptor = false;
 
             OricFileInfo programInfo;
 
-            UInt16 sectorInfo = diskInfo.GetSectorInfo(index);
+            ushort sectorInfo = diskInfo.GetSectorInfo(index);
 
             switch (sectorInfo >> 8)
             {
@@ -139,7 +142,7 @@ namespace OricExplorer.User_Controls
                 case 0x01:
                     sectorFormat = "System Sector";
 
-                    switch ((Byte)(sectorInfo - 0x0100))
+                    switch ((byte)(sectorInfo - 0x0100))
                     {
                         case 0x01: sectorDetails = "Version Information"; break;
                         case 0x02: sectorDetails = "Copyright Details"; break;
@@ -152,7 +155,7 @@ namespace OricExplorer.User_Controls
                 case 0x02:
                     sectorDetails = "";
 
-                    bData = (Byte)(sectorInfo - 0x0200);
+                    bData = (byte)(sectorInfo - 0x0200);
 
                     if (bData == 0x01)
                         sectorFormat = "1st Bitmap";
@@ -166,8 +169,8 @@ namespace OricExplorer.User_Controls
                 case 0x04:
                     sectorFormat = "Directory";
 
-                    bData = (Byte)(sectorInfo - 0x0400);
-                    sectorDetails = String.Format("{0} Entries", bData);
+                    bData = (byte)(sectorInfo - 0x0400);
+                    sectorDetails = string.Format("{0} Entries", bData);
 
                     if (bData == 0x00)
                     {
@@ -179,7 +182,7 @@ namespace OricExplorer.User_Controls
                     }
                     else
                     {
-                        sectorDetails += String.Format(" ({0} Free)", 15 - bData);
+                        sectorDetails += string.Format(" ({0} Free)", 15 - bData);
                     }
                     break;
 
@@ -187,12 +190,12 @@ namespace OricExplorer.User_Controls
                 case 0x08:
                     sectorFormat = "Disk Operating System";
 
-                    bData = (Byte)(sectorInfo - 0x0800);
+                    bData = (byte)(sectorInfo - 0x0800);
 
                     if ((bData & 0x80) == 0x80)
                     {
                         bDescriptor = true;
-                        bData = (Byte)(bData ^ 0x80);
+                        bData = (byte)(bData ^ 0x80);
                     }
                     else
                         bDescriptor = false;
@@ -209,7 +212,7 @@ namespace OricExplorer.User_Controls
                         if (bDescriptor)
                             sectorDetails = "Descriptor for ";
 
-                        sectorDetails += String.Format("Bank {0}", bData);
+                        sectorDetails += string.Format("Bank {0}", bData);
 
                         if (!bDescriptor)
                             sectorDetails += " Data";
@@ -220,7 +223,7 @@ namespace OricExplorer.User_Controls
                 case 0x11:
                     sectorFormat = "File Descriptor";
 
-                    bData = (Byte)(sectorInfo - 0x1100);
+                    bData = (byte)(sectorInfo - 0x1100);
                     programInfo = (OricFileInfo)diskDirectory[bData - 1];
                     sectorDetails = programInfo.ProgramName;
                     break;
@@ -229,14 +232,14 @@ namespace OricExplorer.User_Controls
                 default:
                     sectorFormat = "File/Program Data";
 
-                    bData = (Byte)(sectorInfo - 0x1000);
+                    bData = (byte)(sectorInfo - 0x1000);
                     programInfo = (OricFileInfo)diskDirectory[bData - 1];
                     sectorDetails = programInfo.ProgramName;
                     break;
             }
         }
 
-        public String DiskPath
+        public string DiskPath
         {
             set { diskPathName = value; }
         }
@@ -257,7 +260,7 @@ namespace OricExplorer.User_Controls
             }
 
             percentageBar1.PercentageValue = (int)usedSectorsPercent;
-            percentageBar1.Text = String.Format("Used {0:N0}%, Free {1:N0}%", usedSectorsPercent, freeSectorsPercent);
+            percentageBar1.Text = string.Format("Used {0:N0}%, Free {1:N0}%", usedSectorsPercent, freeSectorsPercent);
 
             if (usedSectorsPercent > 90)
             {
@@ -357,7 +360,7 @@ namespace OricExplorer.User_Controls
             {
                 for(int iSector = 0; iSector < diskInfo.SectorsPerTrack; iSector++)
                 {
-                    Boolean bBevelled;
+                    bool bBevelled;
 
                     int iXPos = ((iTrack * gridColWidth) + gridOffsetX) + 1;
                     int iYPos = ((iSector * gridRowHeight) + gridOffsetY) + 1;
@@ -365,7 +368,7 @@ namespace OricExplorer.User_Controls
                     int iWidth = gridColWidth - 1;
                     int iHeight = gridRowHeight - 1;
 
-                    Byte bByte = (Byte)(SectorMapGetMarker(iSide, iTrack, iSector) >> 8);
+                    byte bByte = (byte)(SectorMapGetMarker(iSide, iTrack, iSector) >> 8);
 
                     switch(bByte)
                     {
@@ -396,7 +399,7 @@ namespace OricExplorer.User_Controls
                         // DOS
                         case 0x08:
                             // Is it a descriptor or actual data
-                            Byte bData = (Byte)(SectorMapGetMarker(iSide, iTrack, iSector) - 0x0800);
+                            byte bData = (byte)(SectorMapGetMarker(iSide, iTrack, iSector) - 0x0800);
 
                             if ((bData & 0x80) == 0x80)
                                 cSectorColor = Color.FromArgb(0, 220, 220);
@@ -408,7 +411,7 @@ namespace OricExplorer.User_Controls
 
                         // File Descriptor
                         case 0x11:
-                            if ((Byte)(SectorMapGetMarker(iSide, iTrack, iSector) - 0x1000) == selectedIndex)
+                            if ((byte)(SectorMapGetMarker(iSide, iTrack, iSector) - 0x1000) == selectedIndex)
                             {
                                 cSectorColor = Color.FromArgb(180, 0, 0);
                                 bBevelled = false;
@@ -422,7 +425,7 @@ namespace OricExplorer.User_Controls
 
                         // File/Data Sector
                         default:
-                            if ((Byte)(SectorMapGetMarker(iSide, iTrack, iSector) - 0x1000) == selectedIndex)
+                            if ((byte)(SectorMapGetMarker(iSide, iTrack, iSector) - 0x1000) == selectedIndex)
                             {
                                 cSectorColor = Color.FromArgb(255, 0, 0);
                                 bBevelled = false;
@@ -443,7 +446,7 @@ namespace OricExplorer.User_Controls
             g.Dispose();
         }
 
-        private void DrawMarker(Graphics g, int x, int y, int w, int h, Color cr, Boolean bevelled)
+        private void DrawMarker(Graphics g, int x, int y, int w, int h, Color cr, bool bevelled)
         {
             Pen topleft;
             Pen bottomright;
@@ -501,7 +504,7 @@ namespace OricExplorer.User_Controls
             {
                 if ((column % 5) == 0)
                 {
-                    String number = String.Format("{0:X2}", column);
+                    string number = string.Format("{0:X2}", column);
                     g.DrawString(number, objFont, new SolidBrush(Color.Black), rulerX-2, rulerY + 4, drawFormat);
                     g.DrawLine(new Pen(Color.Black), rulerX-2, rulerY + 9, rulerX-2, rulerY + 14);
                 }
@@ -539,7 +542,7 @@ namespace OricExplorer.User_Controls
             {
                 if ((row % 2) == 0)
                 {
-                    String number = String.Format("{0:X2}", row + 1);
+                    string number = string.Format("{0:X2}", row + 1);
                     g.DrawString(number, objFont, new SolidBrush(Color.Black), rulerX + 1, rulerY - 2, drawFormat);
                     g.DrawLine(new Pen(Color.Black), rulerX + 8, rulerY-3, rulerX + 13, rulerY-3);
                 }
@@ -552,20 +555,20 @@ namespace OricExplorer.User_Controls
             }
         }
 
-        private UInt16 SectorMapGetMarker(int side, int track, int sector)
+        private ushort SectorMapGetMarker(int side, int track, int sector)
         {
             int offset = side * diskInfo.TracksPerSide;
 
-            UInt16 index = (UInt16)(((track + offset) * diskInfo.SectorsPerTrack) + sector);
-            UInt16 sectorInfo = diskInfo.GetSectorInfo(index);
+            ushort index = (ushort)(((track + offset) * diskInfo.SectorsPerTrack) + sector);
+            ushort sectorInfo = diskInfo.GetSectorInfo(index);
 
             return sectorInfo;
         }
 
-        private UInt16 SectorMapGetMarker(int track, int sector)
+        private ushort SectorMapGetMarker(int track, int sector)
         {
             int side = 0;
-            UInt16 index = 0;
+            ushort index = 0;
 
             if (tabSides.SelectedIndex == 0)
             {
@@ -578,14 +581,14 @@ namespace OricExplorer.User_Controls
 
             if(side == 0)
             {
-                index = (UInt16)((track * diskInfo.SectorsPerTrack) + sector);
+                index = (ushort)((track * diskInfo.SectorsPerTrack) + sector);
             }
             else
             {
-                index = (UInt16)(((track + diskInfo.TracksPerSide) * diskInfo.SectorsPerTrack) + sector);
+                index = (ushort)(((track + diskInfo.TracksPerSide) * diskInfo.SectorsPerTrack) + sector);
             }
 
-            UInt16 sectorInfo = diskInfo.GetSectorInfo(index);
+            ushort sectorInfo = diskInfo.GetSectorInfo(index);
 
             /*if (diskSectorMap == null || index > diskSectorMap.Length)
             {
@@ -598,15 +601,15 @@ namespace OricExplorer.User_Controls
         private void CalcGridValues(int iXPos, int iYPos)
         {
             // Calculate current Track
-            gridTrack = (UInt16)((iXPos - gridOffsetX) / gridColWidth);
+            gridTrack = (ushort)((iXPos - gridOffsetX) / gridColWidth);
 
             // Calculate current Sector
-            gridSector = (UInt16)(((iYPos - gridOffsetY) / gridRowHeight) + 1);
+            gridSector = (ushort)(((iYPos - gridOffsetY) / gridRowHeight) + 1);
 
             // Calculate index offset
             int iOffset = tabSides.SelectedIndex * diskInfo.TracksPerSide;
 
-            gridIndex = (UInt16)(((gridTrack + iOffset) * diskInfo.SectorsPerTrack) + (gridSector - 1));
+            gridIndex = (ushort)(((gridTrack + iOffset) * diskInfo.SectorsPerTrack) + (gridSector - 1));
         }
 
         private void pbSectorMap_MouseMove(object sender, MouseEventArgs e)
@@ -620,17 +623,17 @@ namespace OricExplorer.User_Controls
             {
                 CalcGridValues(iMouseXPos, iMouseYPos);
 
-                String sectorFormat = "";
-                String sectorDetails = "";
+                string sectorFormat = "";
+                string sectorDetails = "";
 
                 GetSectorInfo(gridIndex, ref sectorFormat, ref sectorDetails);
 
-                infoBoxSectorMapTrack.Text = String.Format("#{0:X2} ({1:D2})", gridTrack, gridTrack);
-                infoBoxSectorMapSector.Text = String.Format("#{0:X2} ({1:D2})", gridSector, gridSector);
+                infoBoxSectorMapTrack.Text = string.Format("#{0:X2} ({1:D2})", gridTrack, gridTrack);
+                infoBoxSectorMapSector.Text = string.Format("#{0:X2} ({1:D2})", gridSector, gridSector);
 
                 if (sectorDetails.Length > 0)
                 {
-                    infoBoxSectorMapInfo.Text = String.Format("{0} - {1}", sectorFormat, sectorDetails);
+                    infoBoxSectorMapInfo.Text = string.Format("{0} - {1}", sectorFormat, sectorDetails);
                 }
                 else
                 {
@@ -657,8 +660,8 @@ namespace OricExplorer.User_Controls
 
             if(rectGridLimits.Contains(iMouseXPos, iMouseYPos))
             {
-                Byte bCurrTrack = (Byte)((iMouseXPos - gridOffsetX) / gridColWidth);
-                Byte bCurrSector = (Byte)(((iMouseYPos - gridOffsetY) / gridRowHeight));
+                byte bCurrTrack = (byte)((iMouseXPos - gridOffsetX) / gridColWidth);
+                byte bCurrSector = (byte)(((iMouseYPos - gridOffsetY) / gridRowHeight));
 
                 int iIndex = 0;
 
@@ -673,10 +676,10 @@ namespace OricExplorer.User_Controls
                 
                 // Display sector data as a Hexdump
                 currentTrack = bCurrTrack;
-                currentSector = (Byte)(bCurrSector + 1);
+                currentSector = (byte)(bCurrSector + 1);
                 UpdateDisplay();
 
-                Byte bMarker = (Byte)(SectorMapGetMarker(bCurrTrack, bCurrSector) >> 8);
+                byte bMarker = (byte)(SectorMapGetMarker(bCurrTrack, bCurrSector) >> 8);
 
                 if (bMarker == 0x10 || bMarker == 0x11)
                 {
@@ -735,9 +738,9 @@ namespace OricExplorer.User_Controls
                 {
                     foreach (OricFileInfo programInfo in diskDirectory)
                     {
-                        UInt16 ui16GroupIndex;
+                        ushort ui16GroupIndex;
                         Color colItemColour;
-                        String strFormat;
+                        string strFormat;
 
                         switch (programInfo.Format)
                         {
@@ -826,14 +829,14 @@ namespace OricExplorer.User_Controls
 
                         lvItem.SubItems.Add(strFormat);
 
-                        lvItem.SubItems.Add(String.Format("{0}", programInfo.LengthSectors));
-                        lvItem.SubItems.Add(String.Format("{0:N0}", programInfo.LengthBytes));
-                        lvItem.SubItems.Add(String.Format("${0:X4}", programInfo.StartAddress));
-                        lvItem.SubItems.Add(String.Format("${0:X4}", programInfo.EndAddress));
+                        lvItem.SubItems.Add(string.Format("{0}", programInfo.LengthSectors));
+                        lvItem.SubItems.Add(string.Format("{0:N0}", programInfo.LengthBytes));
+                        lvItem.SubItems.Add(string.Format("${0:X4}", programInfo.StartAddress));
+                        lvItem.SubItems.Add(string.Format("${0:X4}", programInfo.EndAddress));
 
                         if (programInfo.StartAddress != programInfo.ExeAddress && programInfo.ExeAddress != 0x0000)
                         {
-                            lvItem.SubItems.Add(String.Format("${0:X4}", programInfo.ExeAddress));
+                            lvItem.SubItems.Add(string.Format("${0:X4}", programInfo.ExeAddress));
                         }
                         else
                         {
@@ -909,8 +912,8 @@ namespace OricExplorer.User_Controls
 
                 OricFileInfo programInfo = (OricFileInfo)diskDirectory[iIndex];
 
-                Byte bTrack = programInfo.FirstTrack;
-                Byte bSector = programInfo.FirstSector;
+                byte bTrack = programInfo.FirstTrack;
+                byte bSector = programInfo.FirstSector;
 
                 if((bTrack & 0x80) == 0x80)
                 {
@@ -940,7 +943,7 @@ namespace OricExplorer.User_Controls
 
                 if((bTrack & 0x80) == 0x80)
                 {
-                    bTrack = (Byte)(bTrack & 0x7F);
+                    bTrack = (byte)(bTrack & 0x7F);
                     iMapIndex = ((bTrack + diskInfo.TracksPerSide) * diskInfo.SectorsPerTrack) + bSector;
                 }
                 else
@@ -1006,44 +1009,44 @@ namespace OricExplorer.User_Controls
         #region Sector Hexdump Functions
         private void UpdateDisplay()
         {
-            UInt16 iMapIndex = 0;
+            ushort iMapIndex = 0;
 
             if (tabSides.SelectedIndex > 0)
             {
-                iMapIndex = (UInt16)(((currentTrack + diskInfo.TracksPerSide) * diskInfo.SectorsPerTrack) + (currentSector - 1));
+                iMapIndex = (ushort)(((currentTrack + diskInfo.TracksPerSide) * diskInfo.SectorsPerTrack) + (currentSector - 1));
                 //currentTrack += 0x80;
             }
             else
             {
-                iMapIndex = (UInt16)((currentTrack * diskInfo.SectorsPerTrack) + (currentSector - 1));
+                iMapIndex = (ushort)((currentTrack * diskInfo.SectorsPerTrack) + (currentSector - 1));
             }
 
             if (tabSides.SelectedIndex == 0)
             {
                 infoBoxSelectedSide.Text = "0";
-                infoBoxSelectedTrack.Text = String.Format("#{0:X2} ({1})", currentTrack, currentTrack);
+                infoBoxSelectedTrack.Text = string.Format("#{0:X2} ({1})", currentTrack, currentTrack);
             }
             else
             {
                 infoBoxSelectedSide.Text = "1";
-                infoBoxSelectedTrack.Text = String.Format("#{0:X2} ({1})", currentTrack & 0x7F, currentTrack & 0x7F);
+                infoBoxSelectedTrack.Text = string.Format("#{0:X2} ({1})", currentTrack & 0x7F, currentTrack & 0x7F);
             }
 
-            infoBoxSelectedSector.Text = String.Format("#{0:X2} ({1})", currentSector, currentSector);
+            infoBoxSelectedSector.Text = string.Format("#{0:X2} ({1})", currentSector, currentSector);
 
-            String sectorFormat = "";
-            String sectorDetails = "";
+            string sectorFormat = "";
+            string sectorDetails = "";
             GetSectorInfo(iMapIndex, ref sectorFormat, ref sectorDetails);
 
             infoBoxSectorDescription.Text = sectorFormat;
 
             if (sectorDetails.Length > 0)
             {
-                infoBoxSectorDescription.Text += String.Format("\n{0}", sectorDetails);
+                infoBoxSectorDescription.Text += string.Format("\n{0}", sectorDetails);
             }
 
             // Read current sector
-            Byte[] sectorData = diskInfo.ReadSector(currentTrack, currentSector);
+            byte[] sectorData = diskInfo.ReadSector(currentTrack, currentSector);
 
             // Display current sector
             DynamicByteProvider dynamicByteProvider;
@@ -1054,15 +1057,15 @@ namespace OricExplorer.User_Controls
             trackBarTracks.Value = currentTrack;
             trackBarSectors.Value = currentSector;
 
-            UInt16 sectorInfo = diskInfo.GetSectorInfo(iMapIndex);
+            ushort sectorInfo = diskInfo.GetSectorInfo(iMapIndex);
 
             switch (sectorInfo >> 8)
             {
                 case 0x04:
                     if (sectorData[0] != 0x00)
                     {
-                        infoBoxNextTrack.Text = String.Format("#{0:X2}", sectorData[0]);
-                        infoBoxNextSector.Text = String.Format("#{0:X2}", sectorData[1]);
+                        infoBoxNextTrack.Text = string.Format("#{0:X2}", sectorData[0]);
+                        infoBoxNextSector.Text = string.Format("#{0:X2}", sectorData[1]);
                         buttonJumpToSector.Enabled = true;
                     }
                     else

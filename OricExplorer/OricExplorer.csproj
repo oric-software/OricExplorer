@@ -16,7 +16,7 @@
     <ManifestKeyFile>OricExplorer_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
-    <StartupObject>OricExplorer.OricExplorer</StartupObject>
+    <StartupObject>OricExplorer.Program</StartupObject>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -63,41 +63,28 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="FastColoredTextBox">
-      <HintPath>bin\Release\FastColoredTextBox.dll</HintPath>
+    <Reference Include="FastColoredTextBox, Version=2.16.24.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
+      <HintPath>..\packages\FCTB.2.16.24\lib\FastColoredTextBox.dll</HintPath>
     </Reference>
-    <Reference Include="FormsControlLibrary">
-      <HintPath>..\..\FormsControlLibrary\FormsControlLibrary\FormsControlLibrary\bin\Debug\FormsControlLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="ScintillaNET">
-      <HintPath>..\..\OricDeveloper\OricDeveloper\OricDeveloper\ScintillaNET.dll</HintPath>
+    <Reference Include="FormsControlLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\FormsControlLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
     <Reference Include="TabStrip">
       <HintPath>bin\Release\TabStrip.dll</HintPath>
     </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.16.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>..\packages\DockPanelSuite.2.16.1\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2005Multithreading, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2005Multithreading.dll</HintPath>
-    </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2012Light, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2012Light.dll</HintPath>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <HintPath>..\packages\DockPanelSuite.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ConstantsAndEnums.cs" />
     <Compile Include="Classes\FTDos.cs" />
     <Compile Include="Classes\OricFileInfo.cs" />
     <Compile Include="Classes\Configuration.cs" />
@@ -107,6 +94,7 @@
     <Compile Include="Classes\ScreenImage.cs" />
     <Compile Include="Classes\StratSed.cs" />
     <Compile Include="Classes\SedOric.cs" />
+    <Compile Include="Classes\RomInfo.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -186,7 +174,11 @@
     <Compile Include="Forms\TextScreenEditorForm.designer.cs">
       <DependentUpon>TextScreenEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="User Controls\CharacterSetViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -224,7 +216,7 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OricExplorer.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Classes\OricProgram.cs" />
     <Compile Include="Classes\OricTape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -295,8 +287,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <SubType>Designer</SubType>
@@ -309,27 +301,9 @@
     <EmbeddedResource Include="Forms\DiskInfoViewer.resx">
       <DependentUpon>DiskInfoViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
-    <None Include="Properties\app.manifest" />
     <None Include="Resources\OpCodes.dat" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Resources\StdCharSet.dat" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Classes\Preview.cs" />
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>

@@ -1,56 +1,53 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OricExplorer
+﻿namespace OricExplorer
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Linq;
+
     class FTDos : OricDisk
     {
-        Byte directoryTrack = 0x00;
-        Byte directorySector = 0x00;
+        //byte directoryTrack = 0x00;
+        //byte directorySector = 0x00;
 
-        public UInt16 sectors = 0;
-        public UInt16 sectorsUsed = 0;
-        public UInt16 sectorsFree = 0;
+        public ushort sectors = 0;
+        public ushort sectorsUsed = 0;
+        public ushort sectorsFree = 0;
 
-        public UInt16 sides = 0;
-        public UInt16 tracksPerSide = 0;
-        public UInt16 sectorsPerTrack = 0;
+        public ushort sides = 0;
+        public ushort tracksPerSide = 0;
+        public ushort sectorsPerTrack = 0;
 
-        public UInt16 noOfFiles = 0;
-        public UInt16 noOfDirectories = 0;
+        public ushort noOfFiles = 0;
+        public ushort noOfDirectories = 0;
 
-        public String diskName = "";
+        public string diskName = "";
 
         public DiskTypes diskType = DiskTypes.Unknown;
 
-        public void GetDiskInfo(String diskPathname)
+        public void GetDiskInfo(string diskPathname)
         {
             base.LoadDisk(diskPathname);
 
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
 
             // Read the System Sector
-            Byte[] sectorData = base.ReadSector(20, 1);
+            byte[] sectorData = base.ReadSector(20, 1);
 
-            System.IO.MemoryStream stm = new System.IO.MemoryStream(sectorData, 0, sectorData.Length);
-            System.IO.BinaryReader rdr = new System.IO.BinaryReader(stm);
+            MemoryStream stm = new MemoryStream(sectorData, 0, sectorData.Length);
+            BinaryReader rdr = new BinaryReader(stm);
 
             stm.Seek(0xF8, SeekOrigin.Begin);
 
-            Byte[] bByteArray = rdr.ReadBytes(8);
+            byte[] bByteArray = rdr.ReadBytes(8);
 
             diskName = enc.GetString(bByteArray);
             diskName.Trim();
 
             sectorData = base.ReadSector(0, 1);
 
-            System.IO.MemoryStream stm2 = new System.IO.MemoryStream(sectorData, 0, sectorData.Length);
-            System.IO.BinaryReader rdr2 = new System.IO.BinaryReader(stm2);
+            MemoryStream stm2 = new MemoryStream(sectorData, 0, sectorData.Length);
+            BinaryReader rdr2 = new BinaryReader(stm2);
 
             bByteArray = rdr2.ReadBytes(4);
 
@@ -67,13 +64,13 @@ namespace OricExplorer
             tracksPerSide = 41;
             sectorsPerTrack = 17;
 
-            sectors = (UInt16)((tracksPerSide * sectorsPerTrack) * sides);
+            sectors = (ushort)((tracksPerSide * sectorsPerTrack) * sides);
 
             OricFileInfo[] programList = ReadDirectory(diskPathname);
 
             foreach (OricFileInfo programInfo in programList)
             {
-                UInt16 sectorsUsedByProgram = programInfo.LengthSectors;
+                ushort sectorsUsedByProgram = programInfo.LengthSectors;
                 sectorsUsed += sectorsUsedByProgram;
             }
 
@@ -82,12 +79,12 @@ namespace OricExplorer
                 sectorsUsed += 62;
             }
 
-            sectorsFree = (UInt16)(sectors - sectorsUsed);
+            sectorsFree = (ushort)(sectors - sectorsUsed);
 
-            noOfFiles = (UInt16)programList.Count();
+            noOfFiles = (ushort)programList.Count();
         }
 
-        public override OricFileInfo[] ReadDirectory(String diskPathname)
+        public override OricFileInfo[] ReadDirectory(string diskPathname)
         {
             base.LoadDisk(diskPathname);
             OricFileInfo[] files = ReadFTDosDirectory();
@@ -98,33 +95,33 @@ namespace OricExplorer
         {
             OricFileInfo[] diskDirectory = null;
 
-            int iDirFileCount = 0;
+            int iDirFileCount;
 
-            UInt16 i16DirectoryIndex = 1;
-            UInt16 i16EntryIndex = 1;
+            ushort i16DirectoryIndex = 1;
+            ushort i16EntryIndex = 1;
 
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
 
             ArrayList diskCatalog = new ArrayList();
 
-            Byte bNextTrack = 20;
-            Byte bNextSector = 2;
-
-            Byte bCurrTrack = bNextTrack;
-            Byte bCurrSector = bNextSector;
-
-            Boolean bMoreDirectories = true;
+            byte bNextTrack = 20;
+            byte bNextSector = 2;
+            
+            byte bCurrTrack = bNextTrack;
+            byte bCurrSector = bNextSector;
+            
+            bool bMoreDirectories = true;
 
             while (bMoreDirectories)
             {
                 iDirFileCount = 0;
 
-                Byte[] sectorData = base.ReadSector(bNextTrack, bNextSector);
+                byte[] sectorData = base.ReadSector(bNextTrack, bNextSector);
 
-                System.IO.MemoryStream stm = new System.IO.MemoryStream(sectorData, 0, sectorData.Length);
-                System.IO.BinaryReader rdr = new System.IO.BinaryReader(stm);
+                MemoryStream stm = new MemoryStream(sectorData, 0, sectorData.Length);
+                BinaryReader rdr = new BinaryReader(stm);
 
-                Byte[] bByteArray = new Byte[32];
+                byte[] bByteArray = new byte[32];
                 bByteArray = rdr.ReadBytes(2);
 
                 bNextTrack = rdr.ReadByte();
@@ -133,7 +130,7 @@ namespace OricExplorer
                 for (int iLoop = 0; iLoop < 14; iLoop++)
                 {
                     OricFileInfo diskFile = new OricFileInfo();
-                    diskFile.MediaType = OricExplorer.MediaType.DiskFile;
+                    diskFile.MediaType = ConstantsAndEnums.MediaType.DiskFile;
 
                     diskFile.FirstTrack = rdr.ReadByte();
                     diskFile.FirstSector = rdr.ReadByte();
@@ -141,7 +138,7 @@ namespace OricExplorer
                     diskFile.Folder = base.diskFolder;
                     diskFile.ParentName = base.diskPathname;
 
-                    Byte bProtection = rdr.ReadByte();
+                    byte bProtection = rdr.ReadByte();
 
                     if (bProtection == 'U')
                         diskFile.Protection = OricProgram.ProtectionStatus.Unlocked;
@@ -154,7 +151,7 @@ namespace OricExplorer
 
                     if ((bByteArray[0] != 0xFF && bByteArray[0] != 0x00 && bByteArray[0] != 0x6C) && diskFile.FirstTrack != 0xFF)
                     {
-                        String strFilename = enc.GetString(bByteArray).Trim();
+                        string strFilename = enc.GetString(bByteArray).Trim();
 
                         if (strFilename.Length > 0)
                         {
@@ -163,14 +160,14 @@ namespace OricExplorer
 
                             // Read the Extension
                             bByteArray = rdr.ReadBytes(3);
-                            String strExtension = enc.GetString(bByteArray).Trim();
+                            string strExtension = enc.GetString(bByteArray).Trim();
 
                             diskFile.Name = strFilename;
                             diskFile.Extension = strExtension;
 
                             if (strExtension.Length > 0)
                             {
-                                diskFile.ProgramName = String.Format("{0}.{1}", diskFile.Name, diskFile.Extension);
+                                diskFile.ProgramName = string.Format("{0}.{1}", diskFile.Name, diskFile.Extension);
                             }
                             else
                             {
@@ -200,10 +197,10 @@ namespace OricExplorer
 
                             bByteArray = rdr.ReadBytes(1);
 
-                            Byte[] fileDesc = base.ReadSector(diskFile.FirstTrack, diskFile.FirstSector);
+                            byte[] fileDesc = base.ReadSector(diskFile.FirstTrack, diskFile.FirstSector);
 
-                            System.IO.MemoryStream stm2 = new System.IO.MemoryStream(fileDesc, 0, sectorData.Length);
-                            System.IO.BinaryReader rdr2 = new System.IO.BinaryReader(stm2);
+                            MemoryStream stm2 = new MemoryStream(fileDesc, 0, sectorData.Length);
+                            BinaryReader rdr2 = new BinaryReader(stm2);
 
                             bByteArray = rdr2.ReadBytes(2);
 
@@ -261,19 +258,19 @@ namespace OricExplorer
             int index = 0;
             int totalDescriptors = 0;
 
-            Byte dataTrack = 0;
-            Byte dataSector = 0;
-            Byte nextDescTrack = 0;
-            Byte nextDescSector = 1;
+            byte dataTrack = 0;
+            byte dataSector = 0;
+            byte nextDescTrack = 0;
+            byte nextDescSector = 1;
 
             OricProgram loadedProgram = new OricProgram();
             loadedProgram.New();
 
-            String diskPathname = Path.Combine(oricFileInfo.Folder, oricFileInfo.ParentName);
+            string diskPathname = Path.Combine(oricFileInfo.Folder, oricFileInfo.ParentName);
 
             if (base.LoadDisk(diskPathname))
             {
-                Byte[] fileDescriptor = base.ReadSector(oricFileInfo.FirstTrack, oricFileInfo.FirstSector);
+                byte[] fileDescriptor = base.ReadSector(oricFileInfo.FirstTrack, oricFileInfo.FirstSector);
 
                 loadedProgram.Format = OricProgram.ProgramFormat.BasicProgram; // GetFileFormat(fileDescriptor);
                 loadedProgram.ProgramName = oricFileInfo.ProgramName;
@@ -291,7 +288,7 @@ namespace OricExplorer
                     loadedProgram.Format = OricProgram.ProgramFormat.TextScreen;
                 }
 
-                //Byte formatFlag = fileDescriptor[0x03];
+                //byte formatFlag = fileDescriptor[0x03];
 
                 /*if ((formatFlag & 0x01) == 0x01)
                 {
@@ -302,18 +299,18 @@ namespace OricExplorer
                     loadedProgram.AutoRun = OricProgram.AutoRunFlag.Disabled;
                 }*/
 
-                //UInt16 sectorsToLoad = (UInt16)(fileDescriptor[0x0A] + (fileDescriptor[0x0B] * 256));
-                UInt16 sectorsToLoad = oricFileInfo.LengthSectors;
+                //ushort sectorsToLoad = (ushort)(fileDescriptor[0x0A] + (fileDescriptor[0x0B] * 256));
+                ushort sectorsToLoad = oricFileInfo.LengthSectors;
 
                 // Get program header info
                 switch (loadedProgram.Format)
                 {
                     case OricProgram.ProgramFormat.DirectAccessFile:
-                        loadedProgram.RecordCount = (UInt16)(fileDescriptor[0x04] + (fileDescriptor[0x05] * 256));
-                        loadedProgram.RecordLength = (UInt16)(fileDescriptor[0x06] + (fileDescriptor[0x07] * 256));
+                        loadedProgram.RecordCount = (ushort)(fileDescriptor[0x04] + (fileDescriptor[0x05] * 256));
+                        loadedProgram.RecordLength = (ushort)(fileDescriptor[0x06] + (fileDescriptor[0x07] * 256));
 
                         loadedProgram.StartAddress = 0x0000;
-                        loadedProgram.EndAddress = (UInt16)(loadedProgram.RecordCount * loadedProgram.RecordLength);
+                        loadedProgram.EndAddress = (ushort)(loadedProgram.RecordCount * loadedProgram.RecordLength);
                         break;
 
                     case OricProgram.ProgramFormat.SequentialFile:
@@ -321,31 +318,31 @@ namespace OricExplorer
                         loadedProgram.RecordLength = 0;
 
                         loadedProgram.StartAddress = 0x0000;
-                        loadedProgram.EndAddress = (UInt16)(sectorsToLoad * fileDescriptor.Length);
+                        loadedProgram.EndAddress = (ushort)(sectorsToLoad * fileDescriptor.Length);
                         break;
 
                     default:
                         loadedProgram.RecordCount = 0;
                         loadedProgram.RecordLength = 0;
 
-                        loadedProgram.StartAddress = (UInt16)(fileDescriptor[0x02] + (fileDescriptor[0x03] * 256));
-                        loadedProgram.EndAddress = (UInt16)(loadedProgram.StartAddress + ((UInt16)(fileDescriptor[0x04] + (fileDescriptor[0x05] * 256))));
+                        loadedProgram.StartAddress = (ushort)(fileDescriptor[0x02] + (fileDescriptor[0x03] * 256));
+                        loadedProgram.EndAddress = (ushort)(loadedProgram.StartAddress + ((ushort)(fileDescriptor[0x04] + (fileDescriptor[0x05] * 256))));
                         break;
                 }
 
                 do
                 {
-                    System.IO.MemoryStream stm = new System.IO.MemoryStream(fileDescriptor, 0, fileDescriptor.Length);
-                    System.IO.BinaryReader rdr = new System.IO.BinaryReader(stm);
+                    MemoryStream stm = new MemoryStream(fileDescriptor, 0, fileDescriptor.Length);
+                    BinaryReader rdr = new BinaryReader(stm);
 
-                    Byte[] byteArray = new Byte[32];
+                    byte[] byteArray = new byte[32];
 
                     nextDescTrack = rdr.ReadByte();
                     nextDescSector = rdr.ReadByte();
 
                     byteArray = rdr.ReadBytes(4);
 
-                    // Byte firstDescriptorFlag = rdr.ReadByte();
+                    // byte firstDescriptorFlag = rdr.ReadByte();
 
                     int descriptorIndex = 0;
                     totalDescriptors = 125;
@@ -372,16 +369,16 @@ namespace OricExplorer
 
                     int programLength = (loadedProgram.EndAddress - loadedProgram.StartAddress) + 1;
 
-                    loadedProgram.m_programData = new Byte[programLength];
+                    loadedProgram.m_programData = new byte[programLength];
 
                     while (dataSector != 0xFF && descriptorIndex < totalDescriptors)
                     {
-                        Byte[] programData = base.ReadSector(dataTrack, dataSector);
+                        byte[] programData = base.ReadSector(dataTrack, dataSector);
 
-                        System.IO.MemoryStream stm2 = new System.IO.MemoryStream(programData, 0, programData.Length);
-                        System.IO.BinaryReader rdr2 = new System.IO.BinaryReader(stm2);
+                        MemoryStream stm2 = new MemoryStream(programData, 0, programData.Length);
+                        BinaryReader rdr2 = new BinaryReader(stm2);
 
-                        Byte tmpByte = 0;
+                        byte tmpByte = 0;
 
                         int loopStart = 0;
 
@@ -427,27 +424,27 @@ namespace OricExplorer
             return loadedProgram;
         }
 
-        private Byte[] GetFileDescriptor(String fileName)
+        private byte[] GetFileDescriptor(string fileName)
         {
-            Byte dirTrack = 0;
-            Byte dirSector = 0;
-            Byte dirIndex = 0;
+            byte dirTrack = 0;
+            byte dirSector = 0;
+            byte dirIndex = 0;
 
-            Byte[] fileDescriptor = new Byte[256];
+            byte[] fileDescriptor = new byte[256];
             fileDescriptor.Initialize();
 
             // Search directory for matching file
             if (FindFile(fileName, ref dirTrack, ref dirSector, ref dirIndex))
             {
                 // Get directory entry
-                Byte[] directory = base.ReadSector(dirTrack, dirSector);
+                byte[] directory = base.ReadSector(dirTrack, dirSector);
 
                 // Calculate start position of directory entry
                 int bufferIndex = 0x10 * dirIndex;
 
                 // Get Track & Sector of the File descriptor
-                Byte descTrack = directory[bufferIndex + 0x0C];
-                Byte descSector = directory[bufferIndex + 0x0D];
+                byte descTrack = directory[bufferIndex + 0x0C];
+                byte descSector = directory[bufferIndex + 0x0D];
 
                 // Get the file descriptor
                 fileDescriptor = base.ReadSector(descTrack, descSector);
@@ -456,13 +453,13 @@ namespace OricExplorer
             return fileDescriptor;
         }
 
-        private static OricProgram.ProgramFormat GetFileFormat(Byte[] FileDescriptor)
+        private static OricProgram.ProgramFormat GetFileFormat(byte[] FileDescriptor)
         {
             OricProgram.ProgramFormat programFormat = OricProgram.ProgramFormat.UnknownFile;
 
-            UInt16 tmpStartAddr = (UInt16)(FileDescriptor[0x04] + (FileDescriptor[0x05] * 256));
+            ushort tmpStartAddr = (ushort)(FileDescriptor[0x04] + (FileDescriptor[0x05] * 256));
 
-            Byte formatFlag = FileDescriptor[0x03];
+            byte formatFlag = FileDescriptor[0x03];
 
             if ((formatFlag & 0x08) == 0x08)
                 programFormat = OricProgram.ProgramFormat.DirectAccessFile;
@@ -493,28 +490,28 @@ namespace OricExplorer
             return programFormat;
         }
 
-        private Boolean FindFile(String filename, ref Byte track, ref Byte sector, ref Byte index)
+        private bool FindFile(string filename, ref byte track, ref byte sector, ref byte index)
         {
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
 
-            Boolean fileMatchFound = false;
+            bool fileMatchFound = false;
 
-            Byte dirTrack = 20;
-            Byte dirSector = 2;
+            byte dirTrack = 20;
+            byte dirSector = 2;
 
-            Byte nextDirTrack = dirTrack;
-            Byte nextDirSector = dirSector;
+            byte nextDirTrack = dirTrack;
+            byte nextDirSector = dirSector;
 
             /*while ((nextDirTrack != 0 && nextDirSector != 0) && fileMatchFound == false)
             {
                 // Read current Directory Sector
-                Byte[] directory = base.ReadSector(dirTrack, dirSector);
+                byte[] directory = base.ReadSector(dirTrack, dirSector);
 
                 // Scan thru each file in the current directory
-                System.IO.MemoryStream memStream = new System.IO.MemoryStream(directory, 0, directory.Length);
-                System.IO.BinaryReader binaryReader = new System.IO.BinaryReader(memStream);
+                MemoryStream memStream = new MemoryStream(directory, 0, directory.Length);
+                BinaryReader binaryReader = new BinaryReader(memStream);
 
-                Byte[] bByteArray = new Byte[32];
+                byte[] bByteArray = new byte[32];
                 bByteArray = binaryReader.ReadBytes(2);
 
                 nextDirTrack = directory[0x00];
@@ -527,24 +524,24 @@ namespace OricExplorer
 
                 while (!fileMatchFound && index < 15)
                 {
-                    Byte firstTrack = binaryReader.ReadByte();
-                    Byte firstSector = binaryReader.ReadByte();
+                    byte firstTrack = binaryReader.ReadByte();
+                    byte firstSector = binaryReader.ReadByte();
 
-                    Byte bProtection = binaryReader.ReadByte();
+                    byte bProtection = binaryReader.ReadByte();
 
                     if (binaryReader.PeekChar() != 0x00)
                     {
-                        Byte[] fileName = binaryReader.ReadBytes(8);
+                        byte[] fileName = binaryReader.ReadBytes(8);
 
                         // Read decimal point between filename and extension
                         bByteArray = binaryReader.ReadBytes(1);
 
-                        Byte[] extension = binaryReader.ReadBytes(3);
+                        byte[] extension = binaryReader.ReadBytes(3);
 
-                        String dirFilename = enc.GetString(fileName).Trim();
-                        String dirExtension = enc.GetString(extension).Trim();
+                        string dirFilename = enc.GetString(fileName).Trim();
+                        string dirExtension = enc.GetString(extension).Trim();
 
-                        String pathname = String.Format("{0}.{1}", dirFilename, dirExtension);
+                        string pathname = string.Format("{0}.{1}", dirFilename, dirExtension);
 
                         if (pathname == filename)
                         {
@@ -576,13 +573,13 @@ namespace OricExplorer
             return fileMatchFound;
         }
 
-        internal UInt16[] BuildSectorMap(String diskPathname)
+        internal ushort[] BuildSectorMap(string diskPathname)
         {
             base.LoadDisk(diskPathname);
 
-            UInt16 noOfSectors = (UInt16)((tracksPerSide * sectorsPerTrack) * sides);
+            ushort noOfSectors = (ushort)((tracksPerSide * sectorsPerTrack) * sides);
 
-            UInt16[] sectorMap = new UInt16[noOfSectors];
+            ushort[] sectorMap = new ushort[noOfSectors];
 
             for (int index = 0; index < noOfSectors; index++)
             {
@@ -597,30 +594,30 @@ namespace OricExplorer
                 SetDOSSectors(sectorMap, 0, 1, 62);
             }
 
-            Byte directoryTrack = 0x14;
-            Byte directorySector = 0x02;
+            byte directoryTrack = 0x14;
+            byte directorySector = 0x02;
 
             // Mark Directories
             UpdateSectorMap(sectorMap, directoryTrack, directorySector, 0x0400);
 
-            Byte nextDirectoryTrack = directoryTrack;
-            Byte nextDirectorySector = directorySector;
+            byte nextDirectoryTrack = directoryTrack;
+            byte nextDirectorySector = directorySector;
 
             while ((directoryTrack != 0xFF) && (directoryTrack != 0x6C && directorySector != 0x6C) && (directoryTrack != 0x00 && directorySector != 0x00))
             {
-                Byte[] directory = this.ReadSector(directoryTrack, directorySector);
+                byte[] directory = this.ReadSector(directoryTrack, directorySector);
 
-                System.IO.MemoryStream memoryStream = new System.IO.MemoryStream(directory, 0, directory.Length);
-                System.IO.BinaryReader binReader = new System.IO.BinaryReader(memoryStream);
+                MemoryStream memoryStream = new MemoryStream(directory, 0, directory.Length);
+                BinaryReader binReader = new BinaryReader(memoryStream);
 
                 binReader.ReadBytes(2);
 
                 nextDirectoryTrack = binReader.ReadByte();
                 nextDirectorySector = binReader.ReadByte();
 
-                //Byte nextFreeEntry = binReader.ReadByte();
+                //byte nextFreeEntry = binReader.ReadByte();
 
-                Byte noOfFiles = 0;
+                byte noOfFiles = 0;
 
                 /*if (nextFreeEntry == 0x00)
                 {
@@ -632,7 +629,7 @@ namespace OricExplorer
 
                 if (directoryTrack != 0x6C && directorySector != 0x6C)
                 {
-                    UpdateSectorMap(sectorMap, directoryTrack, directorySector, (UInt16)(0x0400 + noOfFiles));
+                    UpdateSectorMap(sectorMap, directoryTrack, directorySector, (ushort)(0x0400 + noOfFiles));
                 }
 
                 directoryTrack = nextDirectoryTrack;
@@ -644,18 +641,18 @@ namespace OricExplorer
             return sectorMap;
         }
 
-        private void BuildTDosSectorMap2(UInt16[] sectorMap, String diskPathname)
+        private void BuildTDosSectorMap2(ushort[] sectorMap, string diskPathname)
         {
             int iFileNum = 1;
 
-            UInt16 bNextTrack = 0;
-            UInt16 bNextSector = 0;
-            UInt16 bNextDescTrack;
-            UInt16 bNextDescSector;
+            ushort bNextTrack = 0;
+            ushort bNextSector = 0;
+            ushort bNextDescTrack;
+            ushort bNextDescSector;
 
-            Byte[] bByteArray = new Byte[10];
+            byte[] bByteArray = new byte[10];
 
-            String strSectorKey = "";
+            string strSectorKey = "";
 
             OricFileInfo[] programList = ReadDirectory(diskPathname);
 
@@ -663,8 +660,8 @@ namespace OricExplorer
             {
                 if (programInfo.Format != OricProgram.ProgramFormat.UnknownFile)
                 {
-                    UInt16 bTrack;
-                    UInt16 bSector;
+                    ushort bTrack;
+                    ushort bSector;
 
                     bTrack = programInfo.FirstTrack;
                     bSector = programInfo.FirstSector;
@@ -677,10 +674,10 @@ namespace OricExplorer
                     {
                         do
                         {
-                            Byte[] bitmapSector = base.ReadSector(bTrack, bSector, ref bNextTrack, ref bNextSector);
+                            byte[] bitmapSector = base.ReadSector(bTrack, bSector, ref bNextTrack, ref bNextSector);
 
                             // Add file descriptor to the sector map
-                            UpdateSectorMap(sectorMap, bTrack, bSector, (UInt16)(0x1100 + Convert.ToByte(iFileNum)));
+                            UpdateSectorMap(sectorMap, bTrack, bSector, (ushort)(0x1100 + Convert.ToByte(iFileNum)));
 
                             bTrack = bNextTrack;
                             bSector = bNextSector;
@@ -701,10 +698,10 @@ namespace OricExplorer
                         do
                         {
                             // Read the file descriptor
-                            Byte[] sectorData = base.ReadSector(bNextTrack, bNextSector);
+                            byte[] sectorData = base.ReadSector(bNextTrack, bNextSector);
 
-                            System.IO.MemoryStream stm = new System.IO.MemoryStream(sectorData, 0, sectorData.Length);
-                            System.IO.BinaryReader rdr = new System.IO.BinaryReader(stm);
+                            MemoryStream stm = new MemoryStream(sectorData, 0, sectorData.Length);
+                            BinaryReader rdr = new BinaryReader(stm);
 
                             bNextTrack = rdr.ReadByte();
                             bNextSector = rdr.ReadByte();
@@ -714,20 +711,20 @@ namespace OricExplorer
 
                             rdr.ReadBytes(4);
 
-                            //Byte bFirstDesc = rdr.ReadByte();
+                            //byte bFirstDesc = rdr.ReadByte();
 
                             int iDescIndex = 0;
                             int iTotalDescriptors = 125;
 
-                            Byte bDataTrack;
-                            Byte bDataSector;
+                            byte bDataTrack;
+                            byte bDataSector;
 
                             bDataTrack = rdr.ReadByte();
                             bDataSector = rdr.ReadByte();
 
                             if (bDataTrack != 0xFF && bDataSector != 0xFF)
                             {
-                                UpdateSectorMap(sectorMap, bDataTrack, bDataSector, (UInt16)(0x1000 + Convert.ToByte(iFileNum)));
+                                UpdateSectorMap(sectorMap, bDataTrack, bDataSector, (ushort)(0x1000 + Convert.ToByte(iFileNum)));
                             }
 
                             while (bDataSector != 0xFF && iDescIndex < iTotalDescriptors)
@@ -739,7 +736,7 @@ namespace OricExplorer
 
                                     if (bDataSector != 0xFF)
                                     {
-                                        UpdateSectorMap(sectorMap, bDataTrack, bDataSector, (UInt16)(0x1000 + Convert.ToByte(iFileNum)));
+                                        UpdateSectorMap(sectorMap, bDataTrack, bDataSector, (ushort)(0x1000 + Convert.ToByte(iFileNum)));
                                     }
 
                                     iDescIndex++;
@@ -756,11 +753,11 @@ namespace OricExplorer
             }
         }
 
-        private void UpdateSectorMap(UInt16[] sectorMap, int iTrack, int iSector, UInt16 ui16Marker)
+        private void UpdateSectorMap(ushort[] sectorMap, int iTrack, int iSector, ushort ui16Marker)
         {
             if ((iTrack & 0x80) == 0x80)
             {
-                iTrack = (short)(iTrack & 0x7F);
+                iTrack = (ushort)(iTrack & 0x7F);
                 iTrack += tracksPerSide;
             }
 
@@ -772,11 +769,11 @@ namespace OricExplorer
             }
             catch (Exception ex)
             {
-                String oMessage = ex.Message;
+                string oMessage = ex.Message;
             }
         }
 
-        private void SetDOSSectors(UInt16[] sectorMap, int iTrack, int iSector, int iNoOfSectors)
+        private void SetDOSSectors(ushort[] sectorMap, int iTrack, int iSector, int iNoOfSectors)
         {
             while (iNoOfSectors > 0)
             {

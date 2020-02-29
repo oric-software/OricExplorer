@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
-using System.IO;
-
 namespace OricExplorer.Forms
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Windows.Forms;
+    using System.Xml;
+
     public partial class CheckForUpdateForm : Form
     {
-        private String websiteURL = "";
-        private String updateDetails = "";
+        private string websiteURL = "";
+        //private string updateDetails = "";
         private Version newVersion = null;
 
         public CheckForUpdateForm()
@@ -23,6 +19,9 @@ namespace OricExplorer.Forms
 
         private void CheckForUpdateForm_Shown(object sender, EventArgs e)
         {
+            Version curVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            infoBoxCurrentVersion.Text = string.Format("{0}.{1}.{2}.{3}", curVersion.Major, curVersion.Minor, curVersion.Build, curVersion.Revision);
+
             buttonWebsite.Enabled = false;
             buttonWebsite.Hide();
 
@@ -30,7 +29,10 @@ namespace OricExplorer.Forms
 
             if (getVersionFromWebsite())
             {
-                compareVersions();
+                if (compareVersions())
+                {
+                    buttonClose.Text = "No";
+                }
             }
         }
 
@@ -47,14 +49,17 @@ namespace OricExplorer.Forms
             Close();
         }
 
-        private Boolean getVersionFromWebsite()
+        private bool getVersionFromWebsite()
         {
             try
             {
-                // Provide the XmlTextReader with the URL of our xml document
-                String xmlURL = "http://oric.mrandmrsdavies.com/app_version.xml";
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                                                     | SecurityProtocolType.Tls11
+                                                     | SecurityProtocolType.Tls12
+                                                     | SecurityProtocolType.Ssl3;
 
-                XmlTextReader reader = new XmlTextReader(xmlURL);
+                // Provide the XmlTextReader with the URL of our xml document
+                XmlTextReader reader = new XmlTextReader(ConstantsAndEnums.APP_VERSION_URL);
 
                 // Simply (and easily) skip the junk at the beginning
                 reader.MoveToContent();
@@ -91,7 +96,7 @@ namespace OricExplorer.Forms
                                         break;
 
                                     case "details":
-                                        updateDetails = reader.Value;
+                                        //updateDetails = reader.Value;
                                         break;
                                 }
                             }
@@ -103,31 +108,28 @@ namespace OricExplorer.Forms
             }
             catch (FileNotFoundException ex)
             {
-                String message = ex.Message;
+                string message = ex.Message;
 
                 infoBoxDetails.Text = "Version check has failed.\n\nUpdate file was not found on server.";
                 return false;
             }
             catch (Exception ex)
             {
-                infoBoxDetails.Text = String.Format("Version check has failed.\n\n{0}.", ex.Message);
+                infoBoxDetails.Text = string.Format("Version check has failed.\n\n{0}.", ex.Message);
                 return false;
             }
 
             return true;
         }
 
-        private void compareVersions()
+        private bool compareVersions()
         {
             // Example : 2.1.3.4567
             // Major.Minor.Build.Revision
 
             Version curVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
-            infoBoxCurrentVersion.Text = String.Format("{0}.{1}.{2}.{3}", curVersion.Major, curVersion.Minor, curVersion.Build, curVersion.Revision);
-            infoBoxAvailableVersion.Text = String.Format("{0}.{1}.{2}.{3}", newVersion.Major, newVersion.Minor, newVersion.Build, newVersion.Revision);
-
-            int result = curVersion.CompareTo(newVersion);
+            infoBoxAvailableVersion.Text = string.Format("{0}.{1}.{2}.{3}", newVersion.Major, newVersion.Minor, newVersion.Build, newVersion.Revision);
 
             if (curVersion.CompareTo(newVersion) < 0)
             {
@@ -135,11 +137,12 @@ namespace OricExplorer.Forms
                 buttonWebsite.Show();
 
                 infoBoxDetails.Text = "An update for Oric Explorer is available.\n\nCheck the update web page for more details and to download the update.\n\nWould you like to go to the update web page ? ";
+                return true;
             }
             else
             {
                 infoBoxDetails.Text = "No updates available.\n\nCurrent version is upto date.";
-                buttonClose.Text = "Close";
+                return false;
             }
         }
     }

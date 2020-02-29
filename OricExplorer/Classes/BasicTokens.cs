@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections;
-
 namespace OricExplorer
 {
+    using System.Collections;
+
     public class BasicTokens
     {
 		public enum ROMVersion { V1_0, V1_1, Unknown };
 
-        private ArrayList m_tokenList;
-		private ROMVersion m_romVers;
+        private readonly ArrayList m_tokenList;
+		private readonly ROMVersion m_romVers;
 
         public BasicTokens(ROMVersion RomVers)
         {
@@ -28,7 +25,7 @@ namespace OricExplorer
             get { return m_tokenList.Count; }
         }
 
-        public String GetBasicToken(Byte bToken)
+        public string GetBasicToken(byte bToken)
         {
             return m_tokenList[bToken].ToString();
         }

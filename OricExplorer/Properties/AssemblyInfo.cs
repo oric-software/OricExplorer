@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Resources;
 
@@ -11,7 +10,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Scott Davies")]
 [assembly: AssemblyProduct("Oric Explorer")]
-[assembly: AssemblyCopyright("Copyright © 2017 Scott Davies")]
+[assembly: AssemblyCopyright("Copyright © 2020 Scott Davies")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +30,4 @@ using System.Resources;
 //      Revision
 //
 [assembly: NeutralResourcesLanguageAttribute("en-GB")]
-[assembly: AssemblyVersionAttribute("2.0.*")]
-//[assembly: AssemblyFileVersionAttribute("2.0.0.0")]
+[assembly: AssemblyVersionAttribute("2.1.0.0")]

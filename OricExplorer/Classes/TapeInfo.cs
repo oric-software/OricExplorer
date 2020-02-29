@@ -1,61 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace OricExplorer
 {
+    using System;
+
     public class TapeInfo
     {
-        private DateTime dtCreationTime;
-        private DateTime dtAccessedTime;
-        private DateTime dtWrittenTime;
+        public DateTime CreationTime { get; set; }
 
-        private UInt16 m_ui16FileCount = 0;
-        private UInt16 m_ui16Length = 0;
+        public DateTime AccessedTime { get; set; }
 
-        private String m_strFolder = "";
-        private String m_strName = "";
+        public DateTime WrittenTime { get; set; }
 
-        public DateTime CreationTime
-        {
-            get { return dtCreationTime; }
-            set { dtCreationTime = value; }
-        }
+        public ushort FileCount { get; set; } = 0;
 
-        public DateTime AccessedTime
-        {
-            get { return dtAccessedTime; }
-            set { dtAccessedTime = value; }
-        }
+        public ushort Length { get; set; } = 0;
 
-        public DateTime WrittenTime
-        {
-            get { return dtWrittenTime; }
-            set { dtWrittenTime = value; }
-        }
+        public string Folder { get; set; } = "";
 
-        public UInt16 FileCount
-        {
-            get { return m_ui16FileCount; }
-            set { m_ui16FileCount = value; }
-        }
-
-        public UInt16 Length
-        {
-            get { return m_ui16Length; }
-            set { m_ui16Length = value; }
-        }
-
-        public String Folder
-        {
-            get { return m_strFolder; }
-            set { m_strFolder = value; }
-        }
-
-        public String Name
-        {
-            get { return m_strName; }
-            set { m_strName = value; }
-        }
+        public string Name { get; set; } = "";
     }
 }

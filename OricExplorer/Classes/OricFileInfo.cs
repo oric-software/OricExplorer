@@ -1,89 +1,53 @@
-using System;
-using System.Collections;
-using System.IO;
-using System.Windows.Forms;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+
     public class OricFileInfo
     {
-        OricExplorer.MediaType m_bMediaType;
-
-        OricProgram.ProtectionStatus m_bProtection;
-        OricProgram.ProgramFormat m_bProgramFormat;
-        OricProgram.AutoRunFlag m_bAutoRun;
-
-        private Byte m_bFirstTrack;
-        private Byte m_bFirstSector;
-        private Byte m_bLastTrack;
-        private Byte m_bLastSector;
-
-        public Byte m_bDirTrack;
-        public Byte m_bDirSector;
-        public Byte m_bDirIndex;
-
-        private String m_strFolder;
-        private String m_strParentName;
-        private String m_strProgramName;
-        private String m_strName;
-        private String m_strExtension;
-
-        private Int16 m_i16ProgramIndex;
-
-        private UInt16 m_ui16DirectoryIndex;
-        private UInt16 m_ui16EntryIndex;
-
-        private UInt16 m_ui16StartAddress;
-        private UInt16 m_ui16EndAddress;
-        private UInt16 m_ui16ExeAddress;
-        private UInt16 m_ui16LengthSectors;
-
-        // For SEDORIC Direct Access files (Filetype = 8)
-        public UInt16 m_ui16NoOfRecords;
-        public UInt16 m_ui16RecordLength;
-
         public OricProgram LoadFile()
         {
             OricProgram oricProgram = new OricProgram();
             oricProgram.New();
 
-            if (MediaType == OricExplorer.MediaType.TapeFile)
+            if (MediaType == ConstantsAndEnums.MediaType.TapeFile)
             {
                 OricTape oricTape = new OricTape();
-                oricProgram = oricTape.Load(Path.Combine(m_strFolder, m_strParentName), m_strProgramName, m_i16ProgramIndex);
+                oricProgram = oricTape.Load(Path.Combine(Folder, ParentName), ProgramName, ProgramIndex);
             }
             else
             {
                 OricDisk oricDisk = new OricDisk();
-                oricDisk.LoadDisk(m_strParentName);
+                oricDisk.LoadDisk(ParentName);
 
                 switch (oricDisk.DOSFormat())
                 {
                     case OricDisk.DOSFormats.OricDOS:
                         {
                             OricDos oricDisc = new OricDos();
-                            oricProgram = oricDisc.LoadFile(m_strParentName, this);
+                            oricProgram = oricDisc.LoadFile(ParentName, this);
                         }
                         break;
 
                     case OricDisk.DOSFormats.SedOric:
                         {
                             SedOric oricDisc = new SedOric();
-                            oricProgram = oricDisc.LoadFile(m_strParentName, this);
+                            oricProgram = oricDisc.LoadFile(ParentName, this);
                         }
                         break;
 
                     case OricDisk.DOSFormats.StratSed:
                         {
                             StratSed oricDisc = new StratSed();
-                            oricProgram = oricDisc.LoadFile(m_strParentName, this);
+                            oricProgram = oricDisc.LoadFile(ParentName, this);
                         }
                         break;
 
                     case OricDisk.DOSFormats.TDOS:
                         {
                             FTDos oricDisc = new FTDos();
-                            oricProgram = oricDisc.LoadFile(m_strParentName, this);
+                            oricProgram = oricDisc.LoadFile(ParentName, this);
                         }
                         break;
 
@@ -95,78 +59,50 @@ namespace OricExplorer
             return oricProgram;
         }
 
-        public ArrayList GetSectorList()
-        {
-            ArrayList sectorList = new ArrayList();
+        //public ArrayList GetSectorList()
+        //{
+        //    ArrayList sectorList = new ArrayList();
 
-            return sectorList;
-        }
+        //    return sectorList;
+        //}
 
         #region Getters and Setters 
-        public OricExplorer.MediaType MediaType
+        public ConstantsAndEnums.MediaType MediaType { get; set; }
+
+        public ushort DirectoryIndex { get; set; }
+
+        public ushort EntryIndex { get; set; }
+
+        public ushort StartAddress { get; set; }
+
+        public ushort EndAddress { get; set; }
+
+        public ushort ExeAddress { get; set; }
+
+        public ushort LengthBytes
         {
-            get { return m_bMediaType; }
-            set { m_bMediaType = value; }
+            get {return Convert.ToUInt16((EndAddress - StartAddress) + 1);}
         }
 
-        public UInt16 DirectoryIndex
-        {
-            get { return m_ui16DirectoryIndex; }
-            set { m_ui16DirectoryIndex = value; }
-        }
+        public ushort LengthSectors { get; set; }
 
-        public UInt16 EntryIndex
-        {
-            get { return m_ui16EntryIndex; }
-            set { m_ui16EntryIndex = value; }
-        }
+        public OricProgram.AutoRunFlag AutoRun { get; set; }
 
-        public UInt16 StartAddress
-        {
-            get {return m_ui16StartAddress;}
-            set {m_ui16StartAddress = value;}
-        }
+        public OricProgram.ProgramFormat Format { get; set; }
 
-        public UInt16 EndAddress
-        {
-            get {return m_ui16EndAddress;}
-            set {m_ui16EndAddress = value;}
-        }
+        public byte DirTrack { get; set; }
+        public byte DirSector { get; set; }
+        public byte DirIndex { get; set; }
 
-        public UInt16 ExeAddress
-        {
-            get {return m_ui16ExeAddress;}
-            set {m_ui16ExeAddress = value;}
-        }
+        // For SEDORIC Direct Access files (Filetype = 8)
+        public ushort NoOfRecords { get; set; }
+        public ushort RecordLength { get; set; }
 
-        public UInt16 LengthBytes
+        public string FormatToString()
         {
-            get {return Convert.ToUInt16((m_ui16EndAddress - m_ui16StartAddress) + 1);}
-        }
+            string strFormat;
 
-        public UInt16 LengthSectors
-        {
-            get { return m_ui16LengthSectors; }
-            set { m_ui16LengthSectors = value; }
-        }
-
-        public OricProgram.AutoRunFlag AutoRun
-        {
-            get { return m_bAutoRun; }
-            set { m_bAutoRun = value; }
-        }
-
-        public OricProgram.ProgramFormat Format
-        {
-            get { return m_bProgramFormat; }
-            set { m_bProgramFormat = value; }
-        }
-
-        public String FormatToString()
-        {
-            String strFormat;
-
-            switch(m_bProgramFormat)
+            switch(Format)
             {
                 case OricProgram.ProgramFormat.BasicProgram:
                     strFormat = "BASIC program";
@@ -212,71 +148,27 @@ namespace OricExplorer
             return strFormat;
         }
 
-        public String ProgramName
-        {
-            get { return m_strProgramName; }
-            set { m_strProgramName = value; }
-        }
+        public string ProgramName { get; set; }
 
-        public String Name
-        {
-            get { return m_strName; }
-            set { m_strName = value; }
-        }
+        public string Name { get; set; }
 
-        public String Extension
-        {
-            get { return m_strExtension; }
-            set { m_strExtension = value; }
-        }
+        public string Extension { get; set; }
 
-        public String Folder
-        {
-            get { return m_strFolder; }
-            set { m_strFolder = value; }
-        }
+        public string Folder { get; set; }
 
-        public String ParentName
-        {
-            get { return m_strParentName; }
-            set { m_strParentName = value; }
-        }
+        public string ParentName { get; set; }
 
-        public OricProgram.ProtectionStatus Protection
-        {
-            get { return m_bProtection; }
-            set { m_bProtection = value; }
-        }
+        public OricProgram.ProtectionStatus Protection { get; set; }
 
-        public Int16 ProgramIndex
-        {
-            get { return m_i16ProgramIndex; }
-            set { m_i16ProgramIndex = value; }
-        }
+        public ushort ProgramIndex { get; set; }
 
-        public Byte FirstSector
-        {
-            get { return m_bFirstSector; }
-            set { m_bFirstSector = value; }
-        }
+        public byte FirstSector { get; set; }
 
-        public Byte FirstTrack
-        {
-            get { return m_bFirstTrack; }
-            set { m_bFirstTrack = value; }
-        }
+        public byte FirstTrack { get; set; }
 
-        public Byte LastSector
-        {
-            get { return m_bLastSector; }
-            set { m_bLastSector = value; }
-        }
+        public byte LastSector { get; set; }
 
-        public Byte LastTrack
-        {
-            get { return m_bLastTrack; }
-            set { m_bLastTrack = value; }
-        }
+        public byte LastTrack { get; set; }
         #endregion
     }
 }

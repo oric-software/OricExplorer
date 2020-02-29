@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Collections;
-
-namespace OricExplorer.Forms
+﻿namespace OricExplorer.Forms
 {
+    using System;
+    using System.Windows.Forms;
+
     public partial class EditTapeForm : Form
     {
         // Tape settings
-        public String tapeName = "";
-        public String tapeFolder = "";
+        public string tapeName = "";
+        public string tapeFolder = "";
 
         // Program settings
-        UInt16 startAddress = 0x0000;
-        UInt16 endAddress = 0x0000;
-        Boolean autoRun = false;
-        OricProgram.ProgramFormat programFormat = OricProgram.ProgramFormat.BasicProgram;
+        //private ushort startAddress = 0x0000;
+        //private ushort endAddress = 0x0000;
+        //private bool autoRun = false;
+        //private OricProgram.ProgramFormat programFormat = OricProgram.ProgramFormat.BasicProgram;
 
         public OricFileInfo[] tapeCatalog;
 
@@ -54,9 +47,11 @@ namespace OricExplorer.Forms
             // Add each program to the list
             foreach (OricFileInfo programInfo in tapeCatalog)
             {
-                ListViewItem listItem = new ListViewItem();
-                listItem.Text = programInfo.ProgramName;
-                listItem.Tag = programInfo;
+                ListViewItem listItem = new ListViewItem
+                {
+                    Text = programInfo.ProgramName,
+                    Tag = programInfo
+                };
                 listViewPrograms.Items.Add(listItem);
             }
 
@@ -103,11 +98,9 @@ namespace OricExplorer.Forms
 
         private void buttonMoveUp_Click(object sender, EventArgs e)
         {
-            int selectedItemIndex = 0;
-
             if (listViewPrograms.SelectedItems.Count > 0)
             {
-                selectedItemIndex = listViewPrograms.SelectedIndices[0];
+                int selectedItemIndex = listViewPrograms.SelectedIndices[0];
 
                 ListViewItem listViewItem = listViewPrograms.Items[selectedItemIndex];
 
@@ -131,7 +124,7 @@ namespace OricExplorer.Forms
             ListViewItem listViewItem = listViewPrograms.SelectedItems[0];
             int selectedIndex = listViewPrograms.Items.IndexOf(listViewPrograms.SelectedItems[0]);
 
-            DialogResult result = MessageBox.Show(String.Format("Are you sure you want to delete '{0}' from the Tape?", listViewItem.Text), "Delete Program", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(string.Format("Are you sure you want to delete '{0}' from the Tape?", listViewItem.Text), "Delete Program", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
             if(result == DialogResult.Yes)
             {
@@ -146,8 +139,7 @@ namespace OricExplorer.Forms
 
         private void listViewPrograms_DoubleClick(object sender, EventArgs e)
         {
-            ListViewItem listViewItem = listViewPrograms.SelectedItems[0];
-
+            //ListViewItem listViewItem = listViewPrograms.SelectedItems[0];
         }
 
         private void listViewPrograms_SelectedIndexChanged(object sender, EventArgs e)

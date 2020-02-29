@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace OricExplorer.Forms
+﻿namespace OricExplorer.Forms
 {
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Windows.Forms;
+
     public partial class DataViewerForm : Form
     {
         DataViewerControl dataViewerControl;
@@ -27,7 +21,7 @@ namespace OricExplorer.Forms
             this.Controls.Add(dataViewerControl);
             this.Size = new Size(dataViewerControl.Width + 15, dataViewerControl.Height + 40);
 
-            this.Text = String.Format("Data Viewer - {0} ({1})", fileInfo.ProgramName, Path.GetFileName(fileInfo.ParentName));
+            this.Text = string.Format("Data Viewer - {0} ({1})", fileInfo.ProgramName, Path.GetFileName(fileInfo.ParentName));
         }
     }
 }

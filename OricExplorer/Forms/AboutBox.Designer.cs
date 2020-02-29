@@ -71,7 +71,7 @@ namespace OricExplorer
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(209, 34);
             this.label3.TabIndex = 31;
-            this.label3.Text = "Oric Disk and Tape Management\r\n© 2017 by Scott Davies";
+            this.label3.Text = "Oric Disk and Tape Management\r\n© 2020 by Scott Davies";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkLabel3

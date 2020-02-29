@@ -66,7 +66,7 @@
             this.label16.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label16.Location = new System.Drawing.Point(34, 65);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(66, 14);
+            this.label16.Size = new System.Drawing.Size(72, 14);
             this.label16.TabIndex = 53;
             this.label16.Text = "No. of Sides";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -79,7 +79,7 @@
             this.label6.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label6.Location = new System.Drawing.Point(40, 19);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(54, 14);
+            this.label6.Size = new System.Drawing.Size(59, 14);
             this.label6.TabIndex = 43;
             this.label6.Text = "Signature";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -92,7 +92,7 @@
             this.label14.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label14.Location = new System.Drawing.Point(27, 113);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(80, 14);
+            this.label14.Size = new System.Drawing.Size(88, 14);
             this.label14.TabIndex = 51;
             this.label14.Text = "Tracks per Side";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -170,7 +170,7 @@
             this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label2.Location = new System.Drawing.Point(22, 161);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 14);
+            this.label2.Size = new System.Drawing.Size(97, 14);
             this.label2.TabIndex = 55;
             this.label2.Text = "Sectors per Track";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -190,7 +190,6 @@
             this.hexBoxDiskData.ReadOnly = true;
             this.hexBoxDiskData.SelectionForeColor = System.Drawing.Color.Yellow;
             this.hexBoxDiskData.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.hexBoxDiskData.ShadowSelectionVisible = false;
             this.hexBoxDiskData.Size = new System.Drawing.Size(581, 260);
             this.hexBoxDiskData.StringViewColour = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
             this.hexBoxDiskData.StringViewVisible = true;
@@ -213,7 +212,6 @@
             this.hexBoxSectorView.ReadOnly = true;
             this.hexBoxSectorView.SelectionForeColor = System.Drawing.Color.Yellow;
             this.hexBoxSectorView.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.hexBoxSectorView.ShadowSelectionVisible = false;
             this.hexBoxSectorView.Size = new System.Drawing.Size(581, 260);
             this.hexBoxSectorView.StringViewColour = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
             this.hexBoxSectorView.StringViewVisible = true;

@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Collections;
-
-namespace OricExplorer.Forms
+﻿namespace OricExplorer.Forms
 {
+    using System;
+    using System.Collections;
+    using System.Drawing;
+    using System.Linq;
+    using System.Windows.Forms;
+
     public partial class ScreenViewerForm : Form
     {
         private enum ImageFormatsToDisplay { HIRES_ONLY, TEXT_ONLY, BOTH};
         private enum SlideshowStatus {RUNNING, PAUSED, STOPPED};
 
         public OricDiskInfo diskInfo;
-        public String diskPathname;
+        public string diskPathname;
 
         public OricProgram oricProgram;
         public OricFileInfo oricFileInfo;
@@ -27,9 +23,9 @@ namespace OricExplorer.Forms
 
         private System.Windows.Forms.Timer IntervalTimer;
 
-        Boolean slideshowPaused = false;
-        Boolean slideshowLoop = false;
-        Boolean slideshowRunning = false;
+        bool slideshowPaused = false;
+        bool slideshowLoop = false;
+        bool slideshowRunning = false;
 
         private System.Windows.Forms.Timer FlashTimer;
 
@@ -80,7 +76,7 @@ namespace OricExplorer.Forms
 
             displaySlideShowStatus(SlideshowStatus.STOPPED);
 
-            labelIntervalSecs.Text = String.Format("Interval\n{0:N1} seconds", (float)(imageInterval) / 1000);
+            labelIntervalSecs.Text = string.Format("Interval\n{0:N1} seconds", (float)(imageInterval) / 1000);
 
             if (hiresCount > 0 || textCount > 0)
             {
@@ -123,13 +119,13 @@ namespace OricExplorer.Forms
             for (int imageIndex = 0; imageIndex < imageList.Count(); imageIndex++)
             {
                 Panel imagePanel = new Panel();
-                imagePanel.Name = String.Format("panel_{0}", imageIndex);
+                imagePanel.Name = string.Format("panel_{0}", imageIndex);
                 imagePanel.Size = new Size(170, 175);
                 imagePanel.BorderStyle = BorderStyle.FixedSingle;
                 imagePanel.BackColor = Color.FromArgb(200, 200, 200);
 
                 Label imageLabel = new Label();
-                imageLabel.Name = String.Format("label_{0}", imageIndex);
+                imageLabel.Name = string.Format("label_{0}", imageIndex);
                 imageLabel.Size = new Size(160, 18);
                 imageLabel.Font = new Font("Segoe UI", 8);
                 imageLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -139,7 +135,7 @@ namespace OricExplorer.Forms
 
                 PictureBox screenImage = new PictureBox();
 
-                screenImage.Name = String.Format("{0}", imageIndex);
+                screenImage.Name = string.Format("{0}", imageIndex);
                 screenImage.Size = new Size(160, 150);
                 screenImage.BackColor = Color.White;
                 screenImage.BorderStyle = BorderStyle.None;
@@ -150,7 +146,7 @@ namespace OricExplorer.Forms
 
                 toolTip1 = new ToolTip();
                 toolTip1.ToolTipTitle = "Image Information";
-                toolTip1.SetToolTip(screenImage, String.Format("Name : {0}\nFormat : {1}", imageList[imageIndex].ProgramName, imageList[imageIndex].FormatToString()));
+                toolTip1.SetToolTip(screenImage, string.Format("Name : {0}\nFormat : {1}", imageList[imageIndex].ProgramName, imageList[imageIndex].FormatToString()));
                 toolTip1.Popup += toolTip1_Popup;
 
                 screenImage.Click += new System.EventHandler(screenImage_Click);
@@ -192,7 +188,7 @@ namespace OricExplorer.Forms
 
         private void SlideshowViewerForm_Load(object sender, EventArgs e)
         {
-            Text = String.Format("Screen Viewer - {0}", diskInfo.FullName);
+            Text = string.Format("Screen Viewer - {0}", diskInfo.FullName);
 
             // Set initial slideshow speed
             trackBarSpeed.Value = 1;
@@ -423,7 +419,7 @@ namespace OricExplorer.Forms
                 createTimer();
             }
 
-            labelIntervalSecs.Text = String.Format("Interval\n{0:N1} seconds", (float)(imageInterval) / 1000);
+            labelIntervalSecs.Text = string.Format("Interval\n{0:N1} seconds", (float)(imageInterval) / 1000);
         }
 
         private void displayImage(int imageIndex)
@@ -462,7 +458,7 @@ namespace OricExplorer.Forms
                     }
                 }
 
-                Control[] imagePanel = flowLayoutPanelThumbnails.Controls.Find(String.Format("panel_{0}", imageIndex), true);
+                Control[] imagePanel = flowLayoutPanelThumbnails.Controls.Find(string.Format("panel_{0}", imageIndex), true);
 
                 if(imagePanel.Count() == 1)
                 {
@@ -536,7 +532,7 @@ namespace OricExplorer.Forms
             // Fill entire image with black background.
             newGraphics.FillRectangle(new SolidBrush(Color.Black), 0, 0, 240, 224);
 
-            String strMessage = "No Screens on Disk";
+            string strMessage = "No Screens on Disk";
 
             // Create font and brush.
             Font drawFont = new Font("Segoe UI", 16);
@@ -561,8 +557,8 @@ namespace OricExplorer.Forms
         #region Info Display Functions
         private void displayImageCount()
         {
-            String hiresCountInfo = "";
-            String textCountInfo = "";
+            string hiresCountInfo = "";
+            string textCountInfo = "";
 
             if (hiresCount == 1)
             {
@@ -570,7 +566,7 @@ namespace OricExplorer.Forms
             }
             else
             {
-                hiresCountInfo = String.Format("{0} HIRES", hiresCount);
+                hiresCountInfo = string.Format("{0} HIRES", hiresCount);
             }
 
             if (textCount == 1)
@@ -579,7 +575,7 @@ namespace OricExplorer.Forms
             }
             else
             {
-                textCountInfo = String.Format("{0} TEXT", textCount);
+                textCountInfo = string.Format("{0} TEXT", textCount);
             }
 
             if (hiresCount == 0 && textCount == 0)
@@ -588,15 +584,15 @@ namespace OricExplorer.Forms
             }
             else if (hiresCount == 0)
             {
-                infoBoxImageCount.Text = String.Format("Found {0} Screens", textCountInfo);
+                infoBoxImageCount.Text = string.Format("Found {0} Screens", textCountInfo);
             }
             else if (textCount == 0)
             {
-                infoBoxImageCount.Text = String.Format("Found {0} Screens", hiresCountInfo);
+                infoBoxImageCount.Text = string.Format("Found {0} Screens", hiresCountInfo);
             }
             else
             {
-                infoBoxImageCount.Text = String.Format("Found {0} and {1} Screens", hiresCountInfo, textCountInfo);
+                infoBoxImageCount.Text = string.Format("Found {0} and {1} Screens", hiresCountInfo, textCountInfo);
             }
         }
 
@@ -617,7 +613,7 @@ namespace OricExplorer.Forms
                     break;
             }
 
-            infoBoxImageCounter.Text = String.Format("{0} of {1}", imageIndex+1, imageList.Count());
+            infoBoxImageCounter.Text = string.Format("{0} of {1}", imageIndex+1, imageList.Count());
 
             infoBoxFilename.Text = fileinfo.ProgramName;
 
@@ -642,18 +638,18 @@ namespace OricExplorer.Forms
                 infoBoxFormat.Text = "Unknown";
             }
 
-            infoBoxStartAddress.Text = String.Format("{0} (${0:X4})", fileinfo.StartAddress, fileinfo.StartAddress);
-            infoBoxEndAddress.Text = String.Format("{0} (${0:X4})", fileinfo.EndAddress, fileinfo.EndAddress);
+            infoBoxStartAddress.Text = string.Format("{0} (${0:X4})", fileinfo.StartAddress, fileinfo.StartAddress);
+            infoBoxEndAddress.Text = string.Format("{0} (${0:X4})", fileinfo.EndAddress, fileinfo.EndAddress);
 
-            infoBoxLength.Text = String.Format("{0:N0} bytes ({1:N1} KB)", fileinfo.LengthBytes, (float)fileinfo.LengthBytes / 1024);
+            infoBoxLength.Text = string.Format("{0:N0} bytes ({1:N1} KB)", fileinfo.LengthBytes, (float)fileinfo.LengthBytes / 1024);
 
             if (fileinfo.Format == OricProgram.ProgramFormat.HiresScreen)
             {
-               infoBoxDimensions.Text = String.Format("240 x {0:N0}", (float)(fileinfo.LengthBytes / 40));
+               infoBoxDimensions.Text = string.Format("240 x {0:N0}", (float)(fileinfo.LengthBytes / 40));
             }
             else
             {
-                infoBoxDimensions.Text = String.Format("40 x {0:N0}", (float)(fileinfo.LengthBytes / 40));
+                infoBoxDimensions.Text = string.Format("40 x {0:N0}", (float)(fileinfo.LengthBytes / 40));
             }
         }
 

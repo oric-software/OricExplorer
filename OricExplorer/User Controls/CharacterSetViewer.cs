@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     // TODO:
     // 1. Print options
     // 2. Create actual data statements (Single characters or entire set)
@@ -57,55 +53,55 @@ namespace OricExplorer
 
         private void DisplaySelectedCharacter(int iCharacter)
         {
-            UInt16 ui16BufferOffset = (UInt16)(iCharacter * 8);
+            ushort ui16BufferOffset = (ushort)(iCharacter * 8);
 
-            Byte[] charData = new Byte[8];
+            byte[] charData = new byte[8];
 
-            infoBoxCharIndex.Text = String.Format("{0} of {1}", iCharacter+1, ProgramInfo.LengthBytes / 8);
-            infoBoxCharAddress.Text = String.Format("${0:X4}", ProgramInfo.StartAddress + ui16BufferOffset);
+            infoBoxCharIndex.Text = string.Format("{0} of {1}", iCharacter+1, ProgramInfo.LengthBytes / 8);
+            infoBoxCharAddress.Text = string.Format("${0:X4}", ProgramInfo.StartAddress + ui16BufferOffset);
 
             for (int iIndex = 0; iIndex < 8; iIndex++)
             {
-                charData[iIndex] = (Byte)ProgramData.m_programData[ui16BufferOffset + iIndex];
+                charData[iIndex] = (byte)ProgramData.m_programData[ui16BufferOffset + iIndex];
 
-                String labelToFind = String.Format("labelAddr{0}", iIndex + 1);
+                string labelToFind = string.Format("labelAddr{0}", iIndex + 1);
                 Control[] labelControl = groupBox2.Controls.Find(labelToFind, true);
 
                 if (labelControl.Length > 0)
                 {
-                    labelControl[0].Text = String.Format("${0:X4}", (ProgramInfo.StartAddress + ui16BufferOffset) + iIndex);
+                    labelControl[0].Text = string.Format("${0:X4}", (ProgramInfo.StartAddress + ui16BufferOffset) + iIndex);
                 }
 
-                labelToFind = String.Format("labelHex{0}", iIndex+1);
+                labelToFind = string.Format("labelHex{0}", iIndex+1);
                 labelControl = groupBox2.Controls.Find(labelToFind, true);
 
                 if (labelControl.Length > 0)
                 {
-                    labelControl[0].Text = String.Format("{0:X2}", charData[iIndex]);
+                    labelControl[0].Text = string.Format("{0:X2}", charData[iIndex]);
                 }
 
-                labelToFind = String.Format("labelDec{0}", iIndex + 1);
+                labelToFind = string.Format("labelDec{0}", iIndex + 1);
                 labelControl = groupBox2.Controls.Find(labelToFind, true);
 
                 if (labelControl.Length > 0)
                 {
-                    labelControl[0].Text = String.Format("{0}", charData[iIndex]);
+                    labelControl[0].Text = string.Format("{0}", charData[iIndex]);
                 }
 
-                labelToFind = String.Format("labelBin{0}", iIndex + 1);
+                labelToFind = string.Format("labelBin{0}", iIndex + 1);
                 labelControl = groupBox2.Controls.Find(labelToFind, true);
 
                 if (labelControl.Length > 0)
                 {
-                    String BinaryString = Convert.ToString(charData[iIndex], 2);
-                    labelControl[0].Text = String.Format("{0,8}", BinaryString.PadLeft(8, '0'));
+                    string BinaryString = Convert.ToString(charData[iIndex], 2);
+                    labelControl[0].Text = string.Format("{0,8}", BinaryString.PadLeft(8, '0'));
                 }
             }
 
             DrawCharacterGrid(charData);
         }
 
-        private void DrawCharacterGrid(Byte[] characterData)
+        private void DrawCharacterGrid(byte[] characterData)
         {
             Image tempImage = Properties.Resources.CharacterSetViewer;
 
@@ -117,14 +113,14 @@ namespace OricExplorer
             Font textFont = new Font("Consolas", 9, FontStyle.Regular);
 
             // Fill each row with the character data
-            foreach (Byte characterByte in characterData)
+            foreach (byte characterByte in characterData)
             {
                 gridRow++;
 
                 for (int index = 2; index < 8; index++)
                 {
-                    Byte cBit = (Byte)(characterByte << (index));
-                    Byte cResult = Convert.ToByte(0x80 & cBit);
+                    byte cBit = (byte)(characterByte << (index));
+                    byte cResult = Convert.ToByte(0x80 & cBit);
 
                     if (cResult == 0x80)
                     {
@@ -140,8 +136,8 @@ namespace OricExplorer
                 //SolidBrush textBrush = new SolidBrush(Color.Blue);
                 //Font numericFont = new Font("Consolas", 11, FontStyle.Regular);
 
-                //String BinaryString = Convert.ToString(characterByte, 2);
-                //String numericValues = String.Format("#{0:X2}      {1:d2}    {2,6}",
+                //string BinaryString = Convert.ToString(characterByte, 2);
+                //string numericValues = string.Format("#{0:X2}      {1:d2}    {2,6}",
                 //                                     characterByte, characterByte, BinaryString.PadLeft(6, '0'));
 
                 //newGraphics.DrawString(numericValues, numericFont, textBrush, textXPos, textYPos);
@@ -198,7 +194,7 @@ namespace OricExplorer
             }
         }
 
-        private void DrawCharacterSet(Int16 currentCharacter)
+        private void DrawCharacterSet(short currentCharacter)
         {
             // Create graphics object for alteration.
             Graphics newGraphics = Graphics.FromImage(charSetImageData);
@@ -206,15 +202,15 @@ namespace OricExplorer
 
             DrawCharacterSetGrid(newGraphics);
 
-            Byte cByte;
-            Byte cResult;
+            byte cByte;
+            byte cResult;
 
             short siXPos = 2;
             short siYPos = 4;
 
-            UInt16 ui16ByteCount = 0;
-            UInt16 ui16Loop = 0;
-            UInt16 ui16CharacterCount = 0;
+            ushort ui16ByteCount = 0;
+            ushort ui16Loop = 0;
+            ushort ui16CharacterCount = 0;
 
             SolidBrush brush = new SolidBrush(Color.Black);
 
@@ -248,7 +244,7 @@ namespace OricExplorer
 
                     for (short siLoop3 = 2; siLoop3 < 8; siLoop3++)
                     {
-                        Byte cBit = (Byte)(siPattern << (siLoop3));
+                        byte cBit = (byte)(siPattern << (siLoop3));
                         cResult = Convert.ToByte(0x80 & cBit);
 
                         if (cResult == 0x80)
@@ -293,7 +289,7 @@ namespace OricExplorer
 
             if (e.X >= 3 && CellAcross < 18 && CharacterIndex < CharacterTotal)
             {
-                DrawCharacterSet((Int16)CharacterIndex);
+                DrawCharacterSet((short)CharacterIndex);
                 DisplaySelectedCharacter(CharacterIndex);
             }
             else
@@ -310,7 +306,7 @@ namespace OricExplorer
 
         private void ClearDetails()
         {
-            Byte[] charData = new Byte[8];
+            byte[] charData = new byte[8];
 
             for (int iIndex = 0; iIndex < 8; iIndex++)
             {

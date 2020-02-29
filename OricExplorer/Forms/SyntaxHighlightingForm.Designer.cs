@@ -43,19 +43,19 @@
             this.labelPageBackgroundColour = new System.Windows.Forms.Label();
             this.buttonDefault = new System.Windows.Forms.Button();
             this.groupFrame1 = new GroupFrame.GroupFrame();
-            this.radioButtonHexDump = new System.Windows.Forms.RadioButton();
+            this.radioButtonHexDumpListing = new System.Windows.Forms.RadioButton();
             this.groupFrame2 = new GroupFrame.GroupFrame();
+            this.groupFrame5 = new GroupFrame.GroupFrame();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupFrame3 = new GroupFrame.GroupFrame();
             this.label2 = new System.Windows.Forms.Label();
             this.groupFrame4 = new GroupFrame.GroupFrame();
-            this.groupFrame5 = new GroupFrame.GroupFrame();
+            this.groupFrame3 = new GroupFrame.GroupFrame();
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBoxSample)).BeginInit();
             this.groupFrame1.SuspendLayout();
             this.groupFrame2.SuspendLayout();
-            this.groupFrame3.SuspendLayout();
-            this.groupFrame4.SuspendLayout();
             this.groupFrame5.SuspendLayout();
+            this.groupFrame4.SuspendLayout();
+            this.groupFrame3.SuspendLayout();
             this.SuspendLayout();
             // 
             // radioButtonBasicListing
@@ -84,6 +84,8 @@
             // 
             // fastColoredTextBoxSample
             // 
+            this.fastColoredTextBoxSample.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fastColoredTextBoxSample.AutoCompleteBracketsList = new char[] {
         '(',
         ')',
@@ -112,7 +114,7 @@
             this.fastColoredTextBoxSample.ReadOnly = true;
             this.fastColoredTextBoxSample.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.fastColoredTextBoxSample.ShowLineNumbers = false;
-            this.fastColoredTextBoxSample.Size = new System.Drawing.Size(402, 239);
+            this.fastColoredTextBoxSample.Size = new System.Drawing.Size(506, 239);
             this.fastColoredTextBoxSample.TabIndex = 2;
             this.fastColoredTextBoxSample.Zoom = 100;
             this.fastColoredTextBoxSample.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fastColoredTextBoxSample_TextChanged);
@@ -130,38 +132,40 @@
             // checkBoxBold
             // 
             this.checkBoxBold.AutoSize = true;
-            this.checkBoxBold.Location = new System.Drawing.Point(9, 83);
+            this.checkBoxBold.Location = new System.Drawing.Point(9, 87);
             this.checkBoxBold.Name = "checkBoxBold";
             this.checkBoxBold.Size = new System.Drawing.Size(47, 17);
             this.checkBoxBold.TabIndex = 7;
             this.checkBoxBold.Text = "Bold";
             this.checkBoxBold.UseVisualStyleBackColor = true;
-            this.checkBoxBold.CheckedChanged += new System.EventHandler(this.checkBoxBold_CheckedChanged);
+            this.checkBoxBold.Click += new System.EventHandler(this.checkBoxBold_Click);
             // 
             // checkBoxItalic
             // 
             this.checkBoxItalic.AutoSize = true;
-            this.checkBoxItalic.Location = new System.Drawing.Point(64, 83);
+            this.checkBoxItalic.Location = new System.Drawing.Point(64, 87);
             this.checkBoxItalic.Name = "checkBoxItalic";
             this.checkBoxItalic.Size = new System.Drawing.Size(48, 17);
             this.checkBoxItalic.TabIndex = 8;
             this.checkBoxItalic.Text = "Italic";
             this.checkBoxItalic.UseVisualStyleBackColor = true;
-            this.checkBoxItalic.CheckedChanged += new System.EventHandler(this.checkBoxItalic_CheckedChanged);
+            this.checkBoxItalic.Click += new System.EventHandler(this.checkBoxItalic_Click);
             // 
             // checkBoxUnderline
             // 
             this.checkBoxUnderline.AutoSize = true;
-            this.checkBoxUnderline.Location = new System.Drawing.Point(120, 83);
+            this.checkBoxUnderline.Location = new System.Drawing.Point(120, 87);
             this.checkBoxUnderline.Name = "checkBoxUnderline";
             this.checkBoxUnderline.Size = new System.Drawing.Size(71, 17);
             this.checkBoxUnderline.TabIndex = 9;
             this.checkBoxUnderline.Text = "Underline";
             this.checkBoxUnderline.UseVisualStyleBackColor = true;
-            this.checkBoxUnderline.CheckedChanged += new System.EventHandler(this.checkBoxUnderline_CheckedChanged);
+            this.checkBoxUnderline.Click += new System.EventHandler(this.checkBoxUnderline_Click);
             // 
             // listViewItems
             // 
+            this.listViewItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.listViewItems.FullRowSelect = true;
@@ -170,7 +174,7 @@
             this.listViewItems.Location = new System.Drawing.Point(6, 21);
             this.listViewItems.MultiSelect = false;
             this.listViewItems.Name = "listViewItems";
-            this.listViewItems.Size = new System.Drawing.Size(194, 177);
+            this.listViewItems.Size = new System.Drawing.Size(298, 177);
             this.listViewItems.TabIndex = 15;
             this.listViewItems.UseCompatibleStateImageBehavior = false;
             this.listViewItems.View = System.Windows.Forms.View.Details;
@@ -179,11 +183,12 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Item";
-            this.columnHeader1.Width = 185;
+            this.columnHeader1.Width = 290;
             // 
             // buttonOkay
             // 
-            this.buttonOkay.Location = new System.Drawing.Point(175, 542);
+            this.buttonOkay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOkay.Location = new System.Drawing.Point(361, 542);
             this.buttonOkay.Name = "buttonOkay";
             this.buttonOkay.Size = new System.Drawing.Size(75, 23);
             this.buttonOkay.TabIndex = 13;
@@ -193,7 +198,8 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(338, 542);
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.Location = new System.Drawing.Point(442, 542);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 14;
@@ -223,66 +229,76 @@
             // 
             // groupFrame1
             // 
-            this.groupFrame1.Controls.Add(this.radioButtonHexDump);
+            this.groupFrame1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupFrame1.Controls.Add(this.radioButtonHexDumpListing);
             this.groupFrame1.Controls.Add(this.radioButtonAssemblerListing);
             this.groupFrame1.Controls.Add(this.radioButtonBasicListing);
             this.groupFrame1.ForeColor = System.Drawing.Color.Black;
             this.groupFrame1.Location = new System.Drawing.Point(6, 6);
             this.groupFrame1.Name = "groupFrame1";
-            this.groupFrame1.Size = new System.Drawing.Size(414, 52);
+            this.groupFrame1.Size = new System.Drawing.Size(518, 52);
             this.groupFrame1.TabIndex = 21;
             this.groupFrame1.TabStop = false;
             this.groupFrame1.Text = "Show Settings For";
             // 
-            // radioButtonHexDump
+            // radioButtonHexDumpListing
             // 
-            this.radioButtonHexDump.AutoSize = true;
-            this.radioButtonHexDump.Enabled = false;
-            this.radioButtonHexDump.Location = new System.Drawing.Point(24, 21);
-            this.radioButtonHexDump.Name = "radioButtonHexDump";
-            this.radioButtonHexDump.Size = new System.Drawing.Size(78, 17);
-            this.radioButtonHexDump.TabIndex = 2;
-            this.radioButtonHexDump.TabStop = true;
-            this.radioButtonHexDump.Text = "HEX Dump";
-            this.radioButtonHexDump.UseVisualStyleBackColor = true;
+            this.radioButtonHexDumpListing.AutoSize = true;
+            this.radioButtonHexDumpListing.Location = new System.Drawing.Point(24, 21);
+            this.radioButtonHexDumpListing.Name = "radioButtonHexDumpListing";
+            this.radioButtonHexDumpListing.Size = new System.Drawing.Size(78, 17);
+            this.radioButtonHexDumpListing.TabIndex = 2;
+            this.radioButtonHexDumpListing.TabStop = true;
+            this.radioButtonHexDumpListing.Text = "HEX Dump";
+            this.radioButtonHexDumpListing.UseVisualStyleBackColor = true;
+            this.radioButtonHexDumpListing.CheckedChanged += new System.EventHandler(this.radioButtonHexDump_CheckedChanged);
             // 
             // groupFrame2
             // 
+            this.groupFrame2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupFrame2.Controls.Add(this.groupFrame5);
             this.groupFrame2.Controls.Add(this.listViewItems);
             this.groupFrame2.Controls.Add(this.groupFrame4);
             this.groupFrame2.Location = new System.Drawing.Point(6, 64);
             this.groupFrame2.Name = "groupFrame2";
-            this.groupFrame2.Size = new System.Drawing.Size(414, 204);
+            this.groupFrame2.Size = new System.Drawing.Size(518, 204);
             this.groupFrame2.TabIndex = 22;
             this.groupFrame2.TabStop = false;
             this.groupFrame2.Text = "Display Items";
+            // 
+            // groupFrame5
+            // 
+            this.groupFrame5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupFrame5.Controls.Add(this.checkBoxUnderline);
+            this.groupFrame5.Controls.Add(this.label1);
+            this.groupFrame5.Controls.Add(this.checkBoxItalic);
+            this.groupFrame5.Controls.Add(this.label2);
+            this.groupFrame5.Controls.Add(this.checkBoxBold);
+            this.groupFrame5.Controls.Add(this.labelForegroundColour);
+            this.groupFrame5.Location = new System.Drawing.Point(312, 16);
+            this.groupFrame5.Name = "groupFrame5";
+            this.groupFrame5.Size = new System.Drawing.Size(200, 117);
+            this.groupFrame5.TabIndex = 25;
+            this.groupFrame5.TabStop = false;
+            this.groupFrame5.Text = "Item Colour/Style";
+            this.groupFrame5.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 13);
+            this.label1.Size = new System.Drawing.Size(40, 13);
             this.label1.TabIndex = 20;
-            this.label1.Text = "Foreground Colour:";
+            this.label1.Text = "Colour:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // groupFrame3
-            // 
-            this.groupFrame3.Controls.Add(this.fastColoredTextBoxSample);
-            this.groupFrame3.Location = new System.Drawing.Point(6, 274);
-            this.groupFrame3.Name = "groupFrame3";
-            this.groupFrame3.Size = new System.Drawing.Size(414, 262);
-            this.groupFrame3.TabIndex = 23;
-            this.groupFrame3.TabStop = false;
-            this.groupFrame3.Text = "Sample Output";
-            this.groupFrame3.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 67);
+            this.label2.Location = new System.Drawing.Point(6, 71);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 21;
@@ -291,8 +307,9 @@
             // 
             // groupFrame4
             // 
+            this.groupFrame4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupFrame4.Controls.Add(this.labelPageBackgroundColour);
-            this.groupFrame4.Location = new System.Drawing.Point(208, 139);
+            this.groupFrame4.Location = new System.Drawing.Point(312, 139);
             this.groupFrame4.Name = "groupFrame4";
             this.groupFrame4.Size = new System.Drawing.Size(200, 59);
             this.groupFrame4.TabIndex = 24;
@@ -300,27 +317,24 @@
             this.groupFrame4.Text = "Page Background Colour";
             this.groupFrame4.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
-            // groupFrame5
+            // groupFrame3
             // 
-            this.groupFrame5.Controls.Add(this.checkBoxUnderline);
-            this.groupFrame5.Controls.Add(this.label1);
-            this.groupFrame5.Controls.Add(this.checkBoxItalic);
-            this.groupFrame5.Controls.Add(this.label2);
-            this.groupFrame5.Controls.Add(this.checkBoxBold);
-            this.groupFrame5.Controls.Add(this.labelForegroundColour);
-            this.groupFrame5.Location = new System.Drawing.Point(208, 21);
-            this.groupFrame5.Name = "groupFrame5";
-            this.groupFrame5.Size = new System.Drawing.Size(200, 112);
-            this.groupFrame5.TabIndex = 25;
-            this.groupFrame5.TabStop = false;
-            this.groupFrame5.Text = "Item Colour/Style";
-            this.groupFrame5.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.groupFrame3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupFrame3.Controls.Add(this.fastColoredTextBoxSample);
+            this.groupFrame3.Location = new System.Drawing.Point(6, 274);
+            this.groupFrame3.Name = "groupFrame3";
+            this.groupFrame3.Size = new System.Drawing.Size(518, 262);
+            this.groupFrame3.TabIndex = 23;
+            this.groupFrame3.TabStop = false;
+            this.groupFrame3.Text = "Sample Output";
+            this.groupFrame3.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
             // SyntaxHighlightingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 572);
+            this.ClientSize = new System.Drawing.Size(529, 572);
             this.Controls.Add(this.groupFrame3);
             this.Controls.Add(this.groupFrame2);
             this.Controls.Add(this.groupFrame1);
@@ -339,10 +353,10 @@
             this.groupFrame1.ResumeLayout(false);
             this.groupFrame1.PerformLayout();
             this.groupFrame2.ResumeLayout(false);
-            this.groupFrame3.ResumeLayout(false);
-            this.groupFrame4.ResumeLayout(false);
             this.groupFrame5.ResumeLayout(false);
             this.groupFrame5.PerformLayout();
+            this.groupFrame4.ResumeLayout(false);
+            this.groupFrame3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -365,7 +379,7 @@
         private GroupFrame.GroupFrame groupFrame1;
         private GroupFrame.GroupFrame groupFrame2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RadioButton radioButtonHexDump;
+        private System.Windows.Forms.RadioButton radioButtonHexDumpListing;
         private System.Windows.Forms.Label label2;
         private GroupFrame.GroupFrame groupFrame3;
         private GroupFrame.GroupFrame groupFrame4;

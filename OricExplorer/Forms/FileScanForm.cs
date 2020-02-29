@@ -1,36 +1,32 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-
 namespace OricExplorer.Forms
 {
+    using System;
+    using System.IO;
+    using System.Windows.Forms;
+
     public partial class FileScanForm : Form
     {
         private MainForm parent;
 
-        private UInt16 filesScanned;
-        private UInt16 filesSkipped;
+        private ushort filesScanned;
+        private ushort filesSkipped;
 
-        private UInt16 tapesFound;
-        private UInt16 tapesSkipped;
+        private ushort tapesFound;
+        private ushort tapesSkipped;
 
-        private UInt16 disksFound;
-        private UInt16 disksSkipped;
+        private ushort disksFound;
+        private ushort disksSkipped;
 
-        private UInt16 romsFound;
-        private UInt16 romsSkipped;
+        private ushort romsFound;
+        private ushort romsSkipped;
 
-        private Configuration configuration;
+        //private Configuration configuration;
 
         public FileScanForm(MainForm mainForm)
         {
             InitializeComponent();
+
+            this.Text = mainForm.Text;
 
             // Link back to the parent form
             parent = mainForm;
@@ -40,9 +36,6 @@ namespace OricExplorer.Forms
         {
             // Display Wait cursor in case it takes a while
             Cursor.Current = Cursors.WaitCursor;
-
-            // Get folders from the configuration
-            configuration = new Configuration();
 
             // Initialise the counters
             filesScanned = 0;
@@ -80,7 +73,7 @@ namespace OricExplorer.Forms
         {
             filesScanned = 0;
 
-            foreach (String directory in configuration.TapeFolders)
+            foreach (string directory in Configuration.Persistent.TapeFolders)
             {
                 DirectoryInfo tapeDirectoryInfo = new DirectoryInfo(directory);
 
@@ -111,7 +104,7 @@ namespace OricExplorer.Forms
 
                             float percentage = (100 / (float)tapeFileInfo.Length) * filesScanned;
                             percentageBarProgress.PercentageValue = (int)percentage;
-                            percentageBarProgress.Text = String.Format("Processing {0:N0} of {1:N0}", filesScanned, tapeFileInfo.Length);
+                            percentageBarProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, tapeFileInfo.Length);
 
                             Application.DoEvents();
                         }
@@ -124,7 +117,7 @@ namespace OricExplorer.Forms
         {
             filesScanned = 0;
 
-            foreach (String directory in configuration.DiskFolders)
+            foreach (string directory in Configuration.Persistent.DiskFolders)
             {
                 DirectoryInfo diskDirectoryInfo = new DirectoryInfo(directory);
 
@@ -155,7 +148,7 @@ namespace OricExplorer.Forms
 
                             float percentage = (100 / (float)diskFileInfo.Length) * filesScanned;
                             percentageBarProgress.PercentageValue = (int)percentage;
-                            percentageBarProgress.Text = String.Format("Processing {0:N0} of {1:N0}", filesScanned, diskFileInfo.Length);
+                            percentageBarProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, diskFileInfo.Length);
 
                             Application.DoEvents();
                         }
@@ -168,7 +161,7 @@ namespace OricExplorer.Forms
         {
             filesScanned = 0;
 
-            foreach (String directory in configuration.ROMFolders)
+            foreach (string directory in Configuration.Persistent.RomFolders)
             {
                 DirectoryInfo romDirectoryInfo = new DirectoryInfo(directory);
 
@@ -199,7 +192,7 @@ namespace OricExplorer.Forms
 
                             float percentage = (100 / (float)romFileInfo.Length) * filesScanned;
                             percentageBarProgress.PercentageValue = (int)percentage;
-                            percentageBarProgress.Text = String.Format("Processing {0:N0} of {1:N0}", filesScanned, romFileInfo.Length);
+                            percentageBarProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, romFileInfo.Length);
 
                             Application.DoEvents();
                         }

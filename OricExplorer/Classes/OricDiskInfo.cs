@@ -1,139 +1,109 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-
-namespace OricExplorer
+﻿namespace OricExplorer
 {
+    using System;
+    using System.IO;
+
     public class OricDiskInfo
     {
-        /**
-         * A Class to return information about an Oric Disk (.dsk) such as disk name,
-         * DOS Format, No of Sides etc.
-         **/
+        readonly OricDisk oricDisk;
 
-        OricDisk.DOSFormats dosFormat = OricDisk.DOSFormats.Unknown;
-        OricDisk.DOSVersions dosVersion = OricDisk.DOSVersions.Unknown;
+        public ushort nextAvailableTrack = 0;
+        public ushort nextAvailableSector = 0;
 
-        OricDisk.DiskTypes diskType = OricDisk.DiskTypes.Unknown;
+        ushort[] diskSectorMap = null;
 
-        DateTime creationTime = DateTime.Now;
-        DateTime lastAccessTime = DateTime.Now;
-        DateTime lastWriteTime = DateTime.Now;
-
-        Boolean exists = false;
-
-        String fullName = "";
-        String diskName = "";
-
-        UInt16 noOfSides = 0;
-        UInt16 tracksPerSide = 0;
-        UInt16 sectorsPerTrack = 0;
-        UInt16 tracks = 0;
-        UInt16 sectors = 0;
-        UInt16 freeSectors = 0;
-        UInt16 usedSectors = 0;
-        UInt16 fileCount = 0;
-
-        public UInt16 nextAvailableTrack = 0;
-        public UInt16 nextAvailableSector = 0;
-
-        UInt16[] diskSectorMap = null;
-
-        OricDisk oricDisk;
-
-        public OricDiskInfo(String diskPathName)
+        public OricDiskInfo(string diskPathName)
         {
-            fullName = diskPathName;
+            FullName = diskPathName;
 
             oricDisk = new OricDisk();
-            oricDisk.LoadDisk(fullName);
+            oricDisk.LoadDisk(FullName);
 
-            dosFormat = oricDisk.DOSFormat();
-            dosVersion = oricDisk.DOSVersion();
+            DOSFormat = oricDisk.DOSFormat();
+            DOSVersion = oricDisk.DOSVersion();
 
-            switch (dosFormat)
+            switch (DOSFormat)
             {
                 case OricDisk.DOSFormats.OricDOS:
                     {
                         OricDos oricDisc = new OricDos();
-                        oricDisc.GetDiskInfo(fullName);
+                        oricDisc.GetDiskInfo(FullName);
 
                         nextAvailableSector = (ushort)oricDisc.nextAvailableSector;
                         nextAvailableTrack = (ushort)oricDisc.nextAvailableTrack;
 
-                        diskName = oricDisc.diskName;
-                        diskType = oricDisc.diskType;
+                        DiskName = oricDisc.diskName;
+                        DiskType = oricDisc.diskType;
 
-                        sectors = oricDisc.sectors;
-                        freeSectors = oricDisc.sectorsFree;
-                        usedSectors = oricDisc.sectorsUsed;
+                        Sectors = oricDisc.sectors;
+                        SectorsFree = oricDisc.sectorsFree;
+                        SectorsUsed = oricDisc.sectorsUsed;
 
-                        noOfSides = oricDisc.sides;
-                        tracksPerSide = oricDisc.tracksPerSide;
-                        sectorsPerTrack = oricDisc.sectorsPerTrack;
+                        Sides = oricDisc.sides;
+                        TracksPerSide = oricDisc.tracksPerSide;
+                        SectorsPerTrack = oricDisc.sectorsPerTrack;
 
-                        fileCount = oricDisc.fileCount;
+                        FileCount = oricDisc.fileCount;
                     }
                     break;
 
                 case OricDisk.DOSFormats.SedOric:
                     {
                         SedOric oricDisc = new SedOric();
-                        oricDisc.GetDiskInfo(fullName);
+                        oricDisc.GetDiskInfo(FullName);
 
-                        diskName = oricDisc.diskName;
-                        diskType = oricDisc.diskType;
+                        DiskName = oricDisc.diskName;
+                        DiskType = oricDisc.diskType;
 
-                        sectors = oricDisc.sectors;
-                        freeSectors = oricDisc.sectorsFree;
-                        usedSectors = oricDisc.sectorsUsed;
+                        Sectors = oricDisc.sectors;
+                        SectorsFree = oricDisc.sectorsFree;
+                        SectorsUsed = oricDisc.sectorsUsed;
 
-                        noOfSides = oricDisc.sides;
-                        tracksPerSide = oricDisc.tracksPerSide;
-                        sectorsPerTrack = oricDisc.sectorsPerTrack;
+                        Sides = oricDisc.sides;
+                        TracksPerSide = oricDisc.tracksPerSide;
+                        SectorsPerTrack = oricDisc.sectorsPerTrack;
 
-                        fileCount = oricDisc.noOfFiles;
+                        FileCount = oricDisc.noOfFiles;
                     }
                     break;
 
                 case OricDisk.DOSFormats.StratSed:
                     {
                         SedOric oricDisc = new SedOric();
-                        oricDisc.GetDiskInfo(fullName);
+                        oricDisc.GetDiskInfo(FullName);
 
-                        diskName = oricDisc.diskName;
-                        diskType = oricDisc.diskType;
+                        DiskName = oricDisc.diskName;
+                        DiskType = oricDisc.diskType;
 
-                        sectors = oricDisc.sectors;
-                        freeSectors = oricDisc.sectorsFree;
-                        usedSectors = oricDisc.sectorsUsed;
+                        Sectors = oricDisc.sectors;
+                        SectorsFree = oricDisc.sectorsFree;
+                        SectorsUsed = oricDisc.sectorsUsed;
 
-                        noOfSides = oricDisc.sides;
-                        tracksPerSide = oricDisc.tracksPerSide;
-                        sectorsPerTrack = oricDisc.sectorsPerTrack;
+                        Sides = oricDisc.sides;
+                        TracksPerSide = oricDisc.tracksPerSide;
+                        SectorsPerTrack = oricDisc.sectorsPerTrack;
 
-                        fileCount = oricDisc.noOfFiles;
+                        FileCount = oricDisc.noOfFiles;
                     }
                     break;
 
                 case OricDisk.DOSFormats.TDOS:
                     {
                         FTDos oricDisc = new FTDos();
-                        oricDisc.GetDiskInfo(fullName);
+                        oricDisc.GetDiskInfo(FullName);
 
-                        diskName = oricDisc.diskName;
-                        diskType = oricDisc.diskType;
+                        DiskName = oricDisc.diskName;
+                        DiskType = oricDisc.diskType;
 
-                        sectors = oricDisc.sectors;
-                        freeSectors = oricDisc.sectorsFree;
-                        usedSectors = oricDisc.sectorsUsed;
+                        Sectors = oricDisc.sectors;
+                        SectorsFree = oricDisc.sectorsFree;
+                        SectorsUsed = oricDisc.sectorsUsed;
 
-                        noOfSides = oricDisc.sides;
-                        tracksPerSide = oricDisc.tracksPerSide;
-                        sectorsPerTrack = oricDisc.sectorsPerTrack;
+                        Sides = oricDisc.sides;
+                        TracksPerSide = oricDisc.tracksPerSide;
+                        SectorsPerTrack = oricDisc.sectorsPerTrack;
 
-                        fileCount = oricDisc.noOfFiles;
+                        FileCount = oricDisc.noOfFiles;
                     }
                     break;
 
@@ -141,30 +111,30 @@ namespace OricExplorer
                     break;
             }
 
-            creationTime = File.GetCreationTime(diskPathName);
-            lastAccessTime = File.GetLastAccessTime(diskPathName);
-            lastWriteTime = File.GetLastWriteTime(diskPathName);
+            CreationTime = File.GetCreationTime(diskPathName);
+            LastAccessTime = File.GetLastAccessTime(diskPathName);
+            LastWriteTime = File.GetLastWriteTime(diskPathName);
         }
 
         #region Methods
-        public Byte[] ReadSector(Byte track, Byte sector)
+        public byte[] ReadSector(byte track, byte sector)
         {
             // Load the disk into memory
             OricDisk oricDisk = new OricDisk();
-            oricDisk.LoadDisk(fullName);
+            oricDisk.LoadDisk(FullName);
 
             // Read the requested sector
-            Byte[] sectorData = oricDisk.ReadSector(track, sector);
+            byte[] sectorData = oricDisk.ReadSector(track, sector);
 
             // Return the sector data
             return sectorData;
         }
 
-        public Boolean DeleteFile(String diskName, String filename)
+        public bool DeleteFile(string diskName, string filename)
         {
-            Boolean fileDeleted = false;
+            bool fileDeleted = false;
 
-            switch (dosFormat)
+            switch (DOSFormat)
             {
                 case OricDisk.DOSFormats.OricDOS:
                     {
@@ -185,40 +155,39 @@ namespace OricExplorer
             }
 
             return fileDeleted;
-
         }
 
         public OricFileInfo[] GetFiles()
         {
-            OricFileInfo[] files = null;
+            OricFileInfo[] files;
 
-            switch (dosFormat)
+            switch (DOSFormat)
             {
                 case OricDisk.DOSFormats.OricDOS:
                     {
                         OricDos oricDisc = new OricDos();
-                        files = oricDisc.ReadDirectory(fullName);
+                        files = oricDisc.ReadDirectory(FullName);
                     }
                     break;
 
                 case OricDisk.DOSFormats.SedOric:
                     {
                         SedOric oricDisc = new SedOric();
-                        files = oricDisc.ReadDirectory(fullName);
+                        files = oricDisc.ReadDirectory(FullName);
                     }
                     break;
 
                 case OricDisk.DOSFormats.StratSed:
                     {
                         StratSed oricDisc = new StratSed();
-                        files = oricDisc.ReadDirectory(fullName);
+                        files = oricDisc.ReadDirectory(FullName);
                     }
                     break;
 
                 case OricDisk.DOSFormats.TDOS:
                     {
                         FTDos oricDisc = new FTDos();
-                        files = oricDisc.ReadDirectory(fullName);
+                        files = oricDisc.ReadDirectory(FullName);
                     }
                     break;
 
@@ -231,22 +200,22 @@ namespace OricExplorer
         }
         #endregion
 
-        public UInt16 GetSectorInfo(Byte track, Byte sector)
+        public ushort GetSectorInfo(byte track, byte sector)
         {
-            UInt16 sectorInfo = 0xFFFF;
+            ushort sectorInfo = 0xFFFF;
 
             if (diskSectorMap != null)
             {
-                UInt16 index = getSectorIndex(track, sector);
+                ushort index = getSectorIndex(track, sector);
                 sectorInfo = diskSectorMap[index];
             }
 
             return sectorInfo;
         }
 
-        public UInt16 GetSectorInfo(UInt16 index)
+        public ushort GetSectorInfo(ushort index)
         {
-            UInt16 sectorInfo = 0xFFFF;
+            ushort sectorInfo = 0xFFFF;
 
             if (diskSectorMap != null)
             {
@@ -256,58 +225,58 @@ namespace OricExplorer
             return sectorInfo;
         }
 
-        private UInt16 getSectorIndex(Byte track, Byte sector)
+        private ushort getSectorIndex(byte track, byte sector)
         {
-            UInt16 index = 0;
+            ushort index;
 
             if ((track & 0x80) == 0x80)
             {
-                track = (Byte)(track & 0x7F);
-                track += (Byte)tracksPerSide;
+                track = (byte)(track & 0x7F);
+                track += (byte)TracksPerSide;
             }
 
-            index = (UInt16)((track * sectorsPerTrack) + (sector - 1));
+            index = (ushort)((track * SectorsPerTrack) + (sector - 1));
 
             return index;
         }
 
         public void BuildSectorMap()
         {
-            switch (dosFormat)
+            switch (DOSFormat)
             {
                 case OricDisk.DOSFormats.OricDOS:
                     {
                         OricDos oricDisc = new OricDos();
-                        oricDisc.GetDiskInfo(fullName);
+                        oricDisc.GetDiskInfo(FullName);
 
-                        diskSectorMap = oricDisc.BuildSectorMap(fullName);
+                        diskSectorMap = oricDisc.BuildSectorMap(FullName);
                     }
                     break;
 
                 case OricDisk.DOSFormats.SedOric:
                     {
                         SedOric oricDisc = new SedOric();
-                        oricDisc.GetDiskInfo(fullName);
+                        oricDisc.GetDiskInfo(FullName);
 
-                        diskSectorMap = oricDisc.BuildSectorMap(fullName);
+                        diskSectorMap = oricDisc.BuildSectorMap(FullName);
                     }
                     break;
 
                 case OricDisk.DOSFormats.StratSed:
                     {
                         StratSed oricDisc = new StratSed();
-                        oricDisc.GetDiskInfo(fullName);
+                        oricDisc.GetDiskInfo(FullName);
 
-                        diskSectorMap = oricDisc.BuildSectorMap(fullName);
+                        diskSectorMap = oricDisc.BuildSectorMap(FullName);
                     }
                     break;
 
                 case OricDisk.DOSFormats.TDOS:
                     {
                         FTDos oricDisc = new FTDos();
-                        oricDisc.GetDiskInfo(fullName);
+                        oricDisc.GetDiskInfo(FullName);
 
-                        diskSectorMap = oricDisc.BuildSectorMap(fullName);
+                        diskSectorMap = oricDisc.BuildSectorMap(FullName);
                     }
                     break;
 
@@ -317,14 +286,14 @@ namespace OricExplorer
         }
 
         #region Properties
-        public String DosVersion()
+        public string DosVersion()
         {
-            String versionString = "";
+            string versionString;
 
-            if (dosVersion != OricDisk.DOSVersions.Unknown)
+            if (DOSVersion != OricDisk.DOSVersions.Unknown)
             {
-                int versPosition = dosVersion.ToString().IndexOf('V');
-                versionString = dosVersion.ToString().Substring(versPosition).Replace('_', '.');
+                int versPosition = DOSVersion.ToString().IndexOf('V');
+                versionString = DOSVersion.ToString().Substring(versPosition).Replace('_', '.');
             }
             else
             {
@@ -334,90 +303,39 @@ namespace OricExplorer
             return versionString;
         }
 
-        public OricDisk.DOSFormats DOSFormat
-        {
-            get { return dosFormat; }
-        }
+        public OricDisk.DOSFormats DOSFormat { get; private set; } = OricDisk.DOSFormats.Unknown;
 
-        public OricDisk.DOSVersions DOSVersion
-        {
-            get { return dosVersion; }
-        }
+        public OricDisk.DOSVersions DOSVersion { get; private set; } = OricDisk.DOSVersions.Unknown;
 
-        public OricDisk.DiskTypes DiskType
-        {
-            get { return diskType; }
-        }
+        public OricDisk.DiskTypes DiskType { get; private set; } = OricDisk.DiskTypes.Unknown;
 
-        public DateTime CreationTime
-        {
-            get { return creationTime; }
-        }
+        public DateTime CreationTime { get; private set; } = DateTime.Now;
 
-        public DateTime LastAccessTime
-        {
-            get { return lastAccessTime; }
-        }
+        public DateTime LastAccessTime { get; private set; } = DateTime.Now;
 
-        public DateTime LastWriteTime
-        {
-            get { return lastWriteTime; }
-        }
+        public DateTime LastWriteTime { get; private set; } = DateTime.Now;
 
-        public String FullName
-        {
-            get { return fullName; }
-        }
+        public string FullName { get; private set; } = "";
 
-        public String DiskName
-        {
-            get { return diskName; }
-        }
+        public string DiskName { get; private set; } = "";
 
-        public Boolean Exists
-        {
-            get { return exists; }
-        }
+        public bool Exists { get; private set; } = false;
 
-        public UInt16 FileCount
-        {
-            get { return fileCount; }
-        }
+        public ushort FileCount { get; private set; } = 0;
 
-        public UInt16 Sides
-        {
-            get { return noOfSides; }
-        }
+        public ushort Sides { get; private set; } = 0;
 
-        public UInt16 Tracks
-        {
-            get { return tracks; }
-        }
+        public ushort Tracks { get; private set; } = 0;
 
-        public UInt16 Sectors
-        {
-            get { return sectors; }
-        }
+        public ushort Sectors { get; private set; } = 0;
 
-        public UInt16 TracksPerSide
-        {
-            get { return tracksPerSide; }
-        }
+        public ushort TracksPerSide { get; private set; } = 0;
 
-        public UInt16 SectorsPerTrack
-        {
-            get { return sectorsPerTrack; }
-        }
+        public ushort SectorsPerTrack { get; private set; } = 0;
 
-        public UInt16 SectorsFree
-        {
-            get { return freeSectors; }
-        }
+        public ushort SectorsFree { get; private set; } = 0;
 
-        public UInt16 SectorsUsed
-        {
-            get { return usedSectors; }
-        }
+        public ushort SectorsUsed { get; private set; } = 0;
 
         #endregion
     }

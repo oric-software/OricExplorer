@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
-using System.IO;
-using Be.Windows.Forms;
-
-namespace OricExplorer.Forms
+﻿namespace OricExplorer.Forms
 {
+    using Be.Windows.Forms;
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Text;
+    using WeifenLuo.WinFormsUI.Docking;
+
     public partial class DiskDataForm : DockContent
     {
-        private Byte currentSide = 0;
-        private Byte currentTrack = 0;
-        private Byte currentSector = 1;
+        private byte currentSide = 0;
+        private byte currentTrack = 0;
+        private byte currentSector = 1;
 
         private int noOfSectors = 0;
 
@@ -29,31 +24,40 @@ namespace OricExplorer.Forms
 
         public void InitialDisplay()
         {
+            hexBoxSectorView.BackColor = hexBoxDiskData.BackColor = Configuration.Persistent.PageBackground;
+            hexBoxSectorView.InfoForeColor = hexBoxDiskData.InfoForeColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHeadersStyle].ForeBrush).Color;
+            hexBoxSectorView.ForeColor = hexBoxDiskData.ForeColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHexStyle].ForeBrush).Color;
+            hexBoxSectorView.StringViewColour = hexBoxDiskData.StringViewColour = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpAsciiStyle].ForeBrush).Color;
+            hexBoxSectorView.SelectionBackColor = hexBoxDiskData.SelectionBackColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionBackStyle].ForeBrush).Color;
+            hexBoxSectorView.SelectionForeColor = hexBoxDiskData.SelectionForeColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionFrontStyle].ForeBrush).Color;
+            hexBoxDiskData.ShadowSelectionColor = ((SolidBrush)Configuration.Persistent.SyntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpSecondarySelectionBackStyle].ForeBrush).Color;
+            hexBoxSectorView.ShadowSelectionColor = hexBoxDiskData.ShadowSelectionColor = Color.FromArgb(100, hexBoxDiskData.ShadowSelectionColor.R, hexBoxDiskData.ShadowSelectionColor.G, hexBoxDiskData.ShadowSelectionColor.B);
+
             FileStream fs = new FileStream(diskInfo.FullName, FileMode.Open, FileAccess.Read);
 
             BinaryReader br = new BinaryReader(fs);
 
             long numBytes = new FileInfo(diskInfo.FullName).Length;
-            Byte[] diskData = br.ReadBytes((int)numBytes);
+            byte[] diskData = br.ReadBytes((int)numBytes);
 
-            Byte[] signature = new Byte[8];
+            byte[] signature = new byte[8];
             Array.Copy(diskData, 0, signature, 0, 8);
             infoBoxSignature.Text = Encoding.UTF8.GetString(signature);
 
-            Byte[] diskFormat = new Byte[4];
+            byte[] diskFormat = new byte[4];
             Array.Copy(diskData, 8, diskFormat, 0, 4);
-            UInt32 noOfSides = BitConverter.ToUInt32(diskFormat, 0);
+            uint noOfSides = BitConverter.ToUInt32(diskFormat, 0);
 
             Array.Copy(diskData, 12, diskFormat, 0, 4);
-            UInt32 noOfTracks = BitConverter.ToUInt32(diskFormat, 0);
+            uint noOfTracks = BitConverter.ToUInt32(diskFormat, 0);
 
             Array.Copy(diskData, 16, diskFormat, 0, 4);
-            UInt32 geometryType = BitConverter.ToUInt32(diskFormat, 0);
+            uint geometryType = BitConverter.ToUInt32(diskFormat, 0);
 
-            infoBoxNoOfSides.Text = String.Format("{0}", noOfSides);
-            infoBoxNoOfTracks.Text = String.Format("{0}", noOfTracks);
+            infoBoxNoOfSides.Text = string.Format("{0}", noOfSides);
+            infoBoxNoOfTracks.Text = string.Format("{0}", noOfTracks);
 
-            Byte[] binaryData = File.ReadAllBytes(diskInfo.FullName);
+            byte[] binaryData = File.ReadAllBytes(diskInfo.FullName);
             DynamicByteProvider dynamicByteProvider;
             dynamicByteProvider = new DynamicByteProvider(binaryData);
 
@@ -90,12 +94,12 @@ namespace OricExplorer.Forms
         {
             InitialDisplay();
 
-            Text = String.Format("Disk Data Viewer - {0}", Path.GetFileName(diskInfo.FullName));
+            Text = string.Format("Disk Data Viewer - {0}", Path.GetFileName(diskInfo.FullName));
         }
 
         private void UpdateDisplay()
         {
-            infoBoxInfo.Text = String.Format("Track - {1:X2}, Sector - {2:X2}", currentSide, currentTrack, currentSector);
+            infoBoxInfo.Text = string.Format("Track - {1:X2}, Sector - {2:X2}", currentSide, currentTrack, currentSector);
 
             // Read current sector
             if (currentSide == 1)
@@ -103,7 +107,7 @@ namespace OricExplorer.Forms
                 currentTrack += 0x80;
             }
 
-            Byte[] byteArray = diskInfo.ReadSector(currentTrack, currentSector);
+            byte[] byteArray = diskInfo.ReadSector(currentTrack, currentSector);
 
             // Display current sector
             DynamicByteProvider dynamicByteProvider;
@@ -114,7 +118,7 @@ namespace OricExplorer.Forms
             trackBarTracks.Value = currentTrack & 0x7F;
             trackBarSectors.Value = currentSector;
 
-            currentTrack = (Byte)trackBarTracks.Value;
+            currentTrack = (byte)trackBarTracks.Value;
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)

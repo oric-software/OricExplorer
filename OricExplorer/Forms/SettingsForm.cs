@@ -1,57 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Collections;
-using System.Xml;
-using System.Collections.Specialized;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Windows.Forms;
+
     public partial class SettingsForm : Form
     {
-        private Configuration configuration;
+        //private Configuration configuration;
 
-        private StringCollection tapeFolders;
-        private StringCollection diskFolders;
-        private StringCollection romFolders;
+        private List<string> tapeFolders;
+        private List<string> diskFolders;
+        private List<string> romFolders;
 
         public SettingsForm()
         {
             InitializeComponent();
-
-            tapeFolders = new StringCollection();
-            diskFolders = new StringCollection();
-            romFolders = new StringCollection();
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
-        {
-            // Load in current settings from configuration file
-            configuration = new Configuration();
-        }
-
-        private void SettingsForm_Shown(object sender, EventArgs e)
         {
             buttonAddFolder.Enabled = false;
             buttonUpdateFolder.Enabled = false;
             buttonRemoveFolder.Enabled = false;
 
-            tapeFolders = configuration.TapeFolders;
-            diskFolders = configuration.DiskFolders;
-            romFolders = configuration.ROMFolders;
+            tapeFolders = Configuration.Persistent.TapeFolders;
+            diskFolders = Configuration.Persistent.DiskFolders;
+            romFolders = Configuration.Persistent.RomFolders;
 
             BuildFoldersList();
 
             radioButtonTapes.Checked = true;
 
-            textBoxEmulatorExecutable.Text = configuration.EmulatorExecutable;
-            textBoxDirListingFolder.Text = configuration.DirListingsFolder;
+            textBoxEmulatorExecutable.Text = Configuration.Persistent.EmulatorExecutable;
+            textBoxDirListingFolder.Text = Configuration.Persistent.DirectoryListingsFolder;
 
-            checkBoxCheckForUpdatesOnStartup.Checked = configuration.CheckForUpdatesOnStartup;
+            checkBoxCheckForUpdatesOnStartup.Checked = Configuration.Persistent.CheckForUpdatesOnStartup;
         }
 
         private void buttonAddFolder_Click(object sender, EventArgs e)
@@ -85,7 +69,7 @@ namespace OricExplorer
                 ListView.SelectedListViewItemCollection lvItem = listViewFolderList.SelectedItems;
 
                 // Remove selected item for tape/disk list
-                String folder = lvItem[0].SubItems[1].Text;
+                string folder = lvItem[0].SubItems[1].Text;
 
                 if (lvItem[0].Text.Equals("Tape"))
                 {
@@ -100,7 +84,7 @@ namespace OricExplorer
                     romFolders.Remove(folder);
                 }
 
-                buttonAddFolder_Click(sender, e);
+                buttonAddFolder.PerformClick();
             }
         }
 
@@ -110,7 +94,7 @@ namespace OricExplorer
             {
                 foreach (ListViewItem selectedItem in listViewFolderList.SelectedItems)
                 {
-                    String folder = selectedItem.SubItems[1].Text;
+                    string folder = selectedItem.SubItems[1].Text;
 
                     if(selectedItem.Text.Equals("Tape"))
                     {
@@ -153,9 +137,12 @@ namespace OricExplorer
         {
             using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
             {
-                DialogResult dialogResult = folderDialog.ShowDialog();
+                if (textBoxDirListingFolder.TextLength > 0 && Directory.Exists(textBoxDirListingFolder.Text))
+                {
+                    folderDialog.SelectedPath = textBoxDirListingFolder.Text;
+                }
 
-                if (dialogResult == DialogResult.OK)
+                if (folderDialog.ShowDialog() == DialogResult.OK)
                 {
                     textBoxDirListingFolder.Text = folderDialog.SelectedPath;
                 }
@@ -166,16 +153,16 @@ namespace OricExplorer
         {
             Text = "Oric Explorer Settings - Saving settings...";
 
-            configuration.TapeFolders = tapeFolders;
-            configuration.DiskFolders = diskFolders;
-            configuration.ROMFolders = romFolders;
+            Configuration.Persistent.TapeFolders = tapeFolders;
+            Configuration.Persistent.DiskFolders = diskFolders;
+            Configuration.Persistent.RomFolders = romFolders;
 
-            configuration.EmulatorExecutable = textBoxEmulatorExecutable.Text;
-            configuration.DirListingsFolder = textBoxDirListingFolder.Text;
+            Configuration.Persistent.EmulatorExecutable = textBoxEmulatorExecutable.Text;
+            Configuration.Persistent.DirectoryListingsFolder = textBoxDirListingFolder.Text;
 
-            configuration.CheckForUpdatesOnStartup = checkBoxCheckForUpdatesOnStartup.Checked;
+            Configuration.Persistent.CheckForUpdatesOnStartup = checkBoxCheckForUpdatesOnStartup.Checked;
 
-            configuration.SaveSettings();
+            Configuration.Persistent.Save();
 
             this.DialogResult = DialogResult.OK;
 
@@ -186,16 +173,16 @@ namespace OricExplorer
         {
             Text = "Oric Explorer Settings - Applying settings...";
 
-            configuration.TapeFolders = tapeFolders;
-            configuration.DiskFolders = diskFolders;
-            configuration.ROMFolders = romFolders;
+            Configuration.Persistent.TapeFolders = tapeFolders;
+            Configuration.Persistent.DiskFolders = diskFolders;
+            Configuration.Persistent.RomFolders = romFolders;
 
-            configuration.EmulatorExecutable = textBoxEmulatorExecutable.Text;
-            configuration.DirListingsFolder = textBoxDirListingFolder.Text;
+            Configuration.Persistent.EmulatorExecutable = textBoxEmulatorExecutable.Text;
+            Configuration.Persistent.DirectoryListingsFolder = textBoxDirListingFolder.Text;
 
-            configuration.CheckForUpdatesOnStartup = checkBoxCheckForUpdatesOnStartup.Checked;
+            Configuration.Persistent.CheckForUpdatesOnStartup = checkBoxCheckForUpdatesOnStartup.Checked;
 
-            configuration.SaveSettings();
+            Configuration.Persistent.Save();
 
             Text = "Oric Explorer Settings - Settings applied";
         }
@@ -205,16 +192,31 @@ namespace OricExplorer
             this.DialogResult = DialogResult.Cancel;
         }
 
-        private void listViewFolderList_Click(object sender, EventArgs e)
+        private void listViewFolderList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listViewFolderList.SelectedItems.Count > 0)
+            UpdateButtonsStatus();
+        }
+
+        private void listViewFolderList_DoubleClick(object sender, EventArgs e)
+        {
+            ListView.SelectedListViewItemCollection selectedItem = listViewFolderList.SelectedItems;
+
+            string folder = selectedItem[0].SubItems[1].Text;
+
+            if (selectedItem[0].Text.Equals("Tape"))
             {
-                buttonRemoveFolder.Enabled = true;
+                radioButtonTapes.Checked = true;
+            }
+            else if(selectedItem[0].Text.Equals("Disk"))
+            {
+                radioButtonDisks.Checked = true;
             }
             else
             {
-                buttonRemoveFolder.Enabled = false;
+                radioButtonROMs.Checked = true;
             }
+
+            textBoxSelectedFolder.Text = folder;
         }
 
         private void BuildFoldersList()
@@ -236,11 +238,13 @@ namespace OricExplorer
 
             // Enable updates
             listViewFolderList.EndUpdate();
+
+            UpdateButtonsStatus();
         }
 
         private void AddTapeFoldersToList()
         {
-            foreach (String tapeFolder in tapeFolders)
+            foreach (string tapeFolder in tapeFolders)
             {
                 ListViewItem listViewItem = new ListViewItem();
                 listViewItem.Text = "Tape";
@@ -252,7 +256,7 @@ namespace OricExplorer
 
         private void AddDiskFoldersToList()
         {
-            foreach (String diskFolder in diskFolders)
+            foreach (string diskFolder in diskFolders)
             {
                 ListViewItem listViewItem = new ListViewItem();
                 listViewItem.Text = "Disk";
@@ -264,7 +268,7 @@ namespace OricExplorer
 
         private void AddROMFoldersToList()
         {
-            foreach (String romFolder in romFolders)
+            foreach (string romFolder in romFolders)
             {
                 ListViewItem listViewItem = new ListViewItem();
                 listViewItem.Text = "ROM";
@@ -272,28 +276,6 @@ namespace OricExplorer
 
                 listViewFolderList.Items.Add(listViewItem);
             }
-        }
-
-        private void listViewFolderList_DoubleClick(object sender, EventArgs e)
-        {
-            ListView.SelectedListViewItemCollection selectedItem = listViewFolderList.SelectedItems;
-
-            String folder = selectedItem[0].SubItems[1].Text;
-
-            if (selectedItem[0].Text.Equals("Tape"))
-            {
-                radioButtonTapes.Checked = true;
-            }
-            else if(selectedItem[0].Text.Equals("Disk"))
-            {
-                radioButtonDisks.Checked = true;
-            }
-            else
-            {
-                radioButtonROMs.Checked = true;
-            }
-
-            textBoxSelectedFolder.Text = folder;
         }
 
         private void buttonBrowseForFolder_Click(object sender, EventArgs e)
@@ -316,46 +298,39 @@ namespace OricExplorer
             folderBrowser.RootFolder = Environment.SpecialFolder.Desktop;
             folderBrowser.ShowNewFolderButton = false;
 
-            DialogResult drResult = folderBrowser.ShowDialog();
+            if (textBoxSelectedFolder.TextLength > 0 && Directory.Exists(textBoxSelectedFolder.Text))
+            {
+                folderBrowser.SelectedPath = textBoxSelectedFolder.Text;
+            }
 
-            if (drResult == DialogResult.OK)
+            if (folderBrowser.ShowDialog() == DialogResult.OK)
             {
                 // Add new folder to list
                 if (folderBrowser.SelectedPath.Length > 0)
                 {
-                    if (radioButtonTapes.Checked)
-                    {
-                        tapeFolders.Add(folderBrowser.SelectedPath);
-                    }
-                    else if(radioButtonDisks.Checked)
-                    {
-                        diskFolders.Add(folderBrowser.SelectedPath);
-                    }
-                    else
-                    {
-                        romFolders.Add(folderBrowser.SelectedPath);
-                    }
+                    textBoxSelectedFolder.Text = folderBrowser.SelectedPath;
                 }
-
-                // Rebuild folder list
-                BuildFoldersList();
             }
-
         }
 
         private void textBoxSelectedFolder_TextChanged(object sender, EventArgs e)
         {
-            if(textBoxSelectedFolder.Text.Length > 0)
+            UpdateButtonsStatus();
+        }
+
+        private void UpdateButtonsStatus()
+        {
+            buttonAddFolder.Enabled = (textBoxSelectedFolder.Text.Length > 0);
+            buttonUpdateFolder.Enabled = (textBoxSelectedFolder.Text.Length > 0 && listViewFolderList.SelectedItems.Count > 0);
+            buttonRemoveFolder.Enabled = (listViewFolderList.SelectedItems.Count > 0);
+        }
+
+        private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (e.Action == TabControlAction.Selecting && e.TabPage == tabPageDirListings)
             {
-                buttonAddFolder.Enabled = true;
-                buttonUpdateFolder.Enabled = true;
-                buttonRemoveFolder.Enabled = true;
-            }
-            else
-            {
-                buttonAddFolder.Enabled = true;
-                buttonUpdateFolder.Enabled = true;
-                buttonRemoveFolder.Enabled = true;
+                Console.Beep();
+                e.Cancel = true;
             }
         }
     }

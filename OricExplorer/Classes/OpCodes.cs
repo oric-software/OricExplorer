@@ -1,20 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Collections;
+
     public class OpCodes
     {
         public struct sOpCode
         {
-            public String strOpMne;
-            public Byte bOpMode;
-            public Byte bOpBytes;
+            public string strOpMne;
+            public byte bOpMode;
+            public byte bOpBytes;
         };
 
-        private Byte[] m_opCodesBuffer;
+        private byte[] m_opCodesBuffer;
         private SortedList opCodesList;
 
         public OpCodes()
@@ -28,17 +26,17 @@ namespace OricExplorer
             // Create an array to hold the list of Basic tokens
             opCodesList = new SortedList();
 
-            short siIndex = 0;
+            ushort siIndex = 0;
 
             while(siIndex < iBufferLen)
             {
-                Byte bKey = Convert.ToByte(m_opCodesBuffer[siIndex]);
+                byte bKey = Convert.ToByte(m_opCodesBuffer[siIndex]);
 
                 siIndex++;
 
                 sOpCode sTmpStruct = new sOpCode();
 
-                sTmpStruct.strOpMne = String.Format("{0}{1}{2}",
+                sTmpStruct.strOpMne = string.Format("{0}{1}{2}",
                                                     Convert.ToChar(m_opCodesBuffer[siIndex]),
                                                     Convert.ToChar(m_opCodesBuffer[siIndex+1]),
                                                     Convert.ToChar(m_opCodesBuffer[siIndex+2]));
@@ -55,7 +53,7 @@ namespace OricExplorer
             }
         }
 
-        public sOpCode FindOpInfo(Byte bOpCode)
+        public sOpCode FindOpInfo(byte bOpCode)
         {
             sOpCode sRtnStruct = new sOpCode();
 

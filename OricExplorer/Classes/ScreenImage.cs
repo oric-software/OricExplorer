@@ -1,54 +1,51 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Collections;
-using System.Drawing.Imaging;
-using System.Drawing.Printing;
-using System.IO;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.IO;
+    using System.Text;
+    using System.Windows.Forms;
+
     class ScreenImage
     {
         public enum ScreenImageSize { IMAGE_SIZE_NORMAL, IMAGE_SIZE_ENLARGED };
         public enum ScreenImageFormat { IMAGE_FORMAT_TEXT, IMAGE_FORMAT_HIRES, IMAGE_FORMAT_UNKNOWN };
 
-        public Byte[] bScrnData;
+        public byte[] bScrnData;
 
         public OricProgram.ProgramFormat m_scrnFormat;
 
         private ScreenImageSize screenImageSize = ScreenImageSize.IMAGE_SIZE_ENLARGED;
         private ScreenImageFormat screenImageFormat = ScreenImageFormat.IMAGE_FORMAT_TEXT;
 
-        public UInt16 m_ui16DataLength;
-        private UInt16 m_ui16DisplayBytes;
-        public UInt16 m_ui16StartAddress;
+        public ushort m_ui16DataLength;
+        private ushort m_ui16DisplayBytes;
+        public ushort m_ui16StartAddress;
 
-        public Byte cScrnPaper;
-        public Byte cScrnInk;
-        public Byte cResult;
+        public byte cScrnPaper;
+        public byte cScrnInk;
+        public byte cResult;
 
-        public Byte m_bWidthBytes;
+        public byte m_bWidthBytes;
 
-        public Boolean m_bDisablePaper;
-        public Boolean m_bDisableInk;
-        public Boolean m_bFlash;
-        public Boolean m_bDisableAttributes;
-        public Boolean bShowAttrIndicator;
-        public Boolean imageSizeNormal;
+        public bool m_bDisablePaper;
+        public bool m_bDisableInk;
+        public bool m_bFlash;
+        public bool m_bDisableAttributes;
+        public bool bShowAttrIndicator;
+        public bool imageSizeNormal;
 
-        public Byte[] standardCharacterSet;
+        public byte[] standardCharacterSet;
 
-        private Boolean showGrid = false;
+        private bool showGrid = false;
         
         // Contains the image data
         public Image screenImageData;
 
         // Image dimension defaults
-        UInt16 imageWidth = 240;
-        UInt16 imageHeight = 224;
+        ushort imageWidth = 240;
+        ushort imageHeight = 224;
 
         int pixelWidth = 1;
         int pixelHeight = 1;
@@ -66,7 +63,7 @@ namespace OricExplorer
             m_ui16StartAddress = 0;
 
             // Initialise the screen buffer
-            bScrnData = new Byte[8000];
+            bScrnData = new byte[8000];
 
             // Generate the Standard Character Set
             GenerateStandardCharacterSet();
@@ -168,14 +165,13 @@ namespace OricExplorer
             newGraphics.FillRectangle(new SolidBrush(Color.Black), 0, 0, 240, 224);
             newGraphics.DrawRectangle(new Pen(Color.Yellow), 0, 0, 239, 223);
 
-            String strMessage = "No Image Available";
+            string strMessage = "No Image Available";
 
             // Create font and brush.
             Font drawFont = new Font("Arial", 14);
             SolidBrush drawBrush = new SolidBrush(Color.FromArgb(255, 255, 255));
 
-            SizeF stringSize = new SizeF();
-            stringSize = newGraphics.MeasureString(strMessage, drawFont);
+            SizeF stringSize = newGraphics.MeasureString(strMessage, drawFont);
 
             // Calc position of text so that it is centred
             float x = (screenImageData.Width / 2) - (stringSize.Width / 2);
@@ -190,13 +186,13 @@ namespace OricExplorer
 
         private void DrawHiresScreen()
         {
-            Byte cByte = 0;
+            byte cByte;
 
             short siXPos = 0;
             short siYPos = 0;
 
-            UInt16 ui16Loop = 0;
-            UInt16 ui16ByteCount = 0;
+            ushort ui16Loop;
+            ushort ui16ByteCount = 0;
 
             // Create graphics object for alteration.
             Graphics newGraphics = Graphics.FromImage(screenImageData);
@@ -222,7 +218,7 @@ namespace OricExplorer
                     }
                     else if(cByte >= 16 && cByte <= 23)
                     {
-                        cScrnPaper = (Byte)(cByte - 16);
+                        cScrnPaper = (byte)(cByte - 16);
 
                         short siWidth = (short)(((imageWidth / 6) - ui16ByteCount) * (pixelWidth * 6));
 
@@ -232,8 +228,6 @@ namespace OricExplorer
                         }
                     }
 
-                    cByte = 0;
-
                     siXPos += (short)(pixelWidth * 6);
                 }
                 else
@@ -241,7 +235,7 @@ namespace OricExplorer
                     // Graphics
                     for(short siLoop2 = 2; siLoop2 < 8; siLoop2++)
                     {
-                        Byte cBit = (Byte)(cByte << (siLoop2));
+                        byte cBit = (byte)(cByte << (siLoop2));
 
                         cResult = Convert.ToByte(0x80 & cBit);
 
@@ -287,20 +281,20 @@ namespace OricExplorer
 
         private void DrawTextScreen()
         {
-            Byte cByte = 0;
+            byte cByte;
 
             short siXPos = 0;
-            short siYPos = 0;
+            short siYPos;
 
-            short siStart = 0;
-            short siLimit = 0;
-            short siLine = 0;
+            short siStart;
+            short siLimit;
+            short siLine;
 
-            UInt16 ui16Loop = 0;
-            UInt16 ui16ByteCount = 0;
+            ushort ui16Loop;
+            ushort ui16ByteCount = 0;
 
-            Boolean bDoubleHeight = false;
-            Boolean bBlink = false;
+            bool bDoubleHeight = false;
+            bool bBlink = false;
 
             int cursorAddress = -1;
 
@@ -358,7 +352,7 @@ namespace OricExplorer
                 {
                     if(cByte >= 16 && cByte <= 23)
                     {
-                        cScrnPaper = (Byte)(cByte - 16);
+                        cScrnPaper = (byte)(cByte - 16);
 
                         short siWidth = (short)(((imageWidth / 6) - ui16ByteCount) * (pixelWidth * 6));
 
@@ -416,7 +410,7 @@ namespace OricExplorer
                     siStart = 0;
                     siLimit = 8;
 
-                    short siRemainder = 0;
+                    short siRemainder;
 
                     if (bDoubleHeight)
                     {
@@ -447,7 +441,7 @@ namespace OricExplorer
 
                         for(short siLoop3 = 2; siLoop3 < 8; siLoop3++)
                         {
-                            Byte cBit = (Byte)(siPattern << (siLoop3));
+                            byte cBit = (byte)(siPattern << (siLoop3));
 
                             cResult = Convert.ToByte(0x80 & cBit);
 
@@ -574,7 +568,7 @@ namespace OricExplorer
 
         /*public void PrintTextScreen()
         {
-            Byte cByte = 0;
+            byte cByte = 0;
 
             short siXPos = 0;
             short siYPos = 0;
@@ -582,12 +576,12 @@ namespace OricExplorer
             short siStart = 0;
             short siLimit = 0;
 
-            UInt16 ui16Loop = 0;
-            UInt16 ui16ByteCount = 0;
-            UInt16 ui16DataLength = 0;
+            ushort ui16Loop = 0;
+            ushort ui16ByteCount = 0;
+            ushort ui16DataLength = 0;
 
-            //Boolean bDoubleHeight = false;
-            //Boolean bBlink = false;
+            //bool bDoubleHeight = false;
+            //bool bBlink = false;
 
             // Create image.
             imageFile = new Bitmap(240, 200);
@@ -626,9 +620,9 @@ namespace OricExplorer
                 {
                     if (cByte >= 16 && cByte <= 23)
                     {
-                        cScrnPaper = (Byte)(cByte - 16);
+                        cScrnPaper = (byte)(cByte - 16);
 
-                        short siWidth = (Byte)((40 - ui16ByteCount) * 6);
+                        short siWidth = (byte)((40 - ui16ByteCount) * 6);
 
                         newGraphics.FillRectangle(new SolidBrush(Colour(cScrnPaper)), siXPos, siYPos, siWidth, 8);
                     }
@@ -676,7 +670,7 @@ namespace OricExplorer
 
                         for (short siLoop3 = 2; siLoop3 < 8; siLoop3++)
                         {
-                            Byte cBit = (Byte)(siPattern << (siLoop3));
+                            byte cBit = (byte)(siPattern << (siLoop3));
 
                             cResult = Convert.ToByte(0x80 & cBit);
 
@@ -764,14 +758,14 @@ namespace OricExplorer
 
         /*public void PrintHiresScreen()
         {
-            Byte cByte = 0;
+            byte cByte = 0;
 
             short siXPos = 0;
             short siYPos = 0;
 
-            UInt16 ui16Loop = 0;
-            UInt16 ui16ByteCount = 0;
-            UInt16 ui16DataLength = 0;
+            ushort ui16Loop = 0;
+            ushort ui16ByteCount = 0;
+            ushort ui16DataLength = 0;
 
             // Create image.
             imageFile = new Bitmap(240, 200);
@@ -815,9 +809,9 @@ namespace OricExplorer
                     }
                     else if (cByte >= 16 && cByte <= 23)
                     {
-                        cScrnPaper = (Byte)(cByte - 16);
+                        cScrnPaper = (byte)(cByte - 16);
 
-                        short siWidth = (Byte)((40 - ui16ByteCount) * 6);
+                        short siWidth = (byte)((40 - ui16ByteCount) * 6);
 
                         newGraphics.FillRectangle(new SolidBrush(Colour(cScrnPaper)), siXPos, siYPos, siWidth, 1);
                     }
@@ -831,7 +825,7 @@ namespace OricExplorer
                     // Graphics
                     for (short siLoop2 = 2; siLoop2 < 8; siLoop2++)
                     {
-                        Byte cBit = (Byte)(cByte << (siLoop2));
+                        byte cBit = (byte)(cByte << (siLoop2));
 
                         cResult = Convert.ToByte(0x80 & cBit);
 
@@ -902,7 +896,7 @@ namespace OricExplorer
         }*/
         #endregion
 
-        private Color Colour(Byte cIndex)
+        private Color Colour(byte cIndex)
         {
             Color crColour;
 
@@ -924,7 +918,7 @@ namespace OricExplorer
 
         public void GenerateStandardCharacterSet()
         {
-            standardCharacterSet = new Byte[Properties.Resources.StdCharSet.Length];
+            standardCharacterSet = new byte[Properties.Resources.StdCharSet.Length];
             Properties.Resources.StdCharSet.CopyTo(standardCharacterSet, 0);
         }
 
@@ -945,8 +939,8 @@ namespace OricExplorer
 
                 if (dlgSave.ShowDialog() == DialogResult.OK)
                 {
-                    String imageFileName = dlgSave.FileName;
-                    String imageFileNameExtension = Path.GetExtension(imageFileName);
+                    string imageFileName = dlgSave.FileName;
+                    string imageFileNameExtension = Path.GetExtension(imageFileName);
                     ImageFormat imageFormat = ImageFormat.Png;
 
                     switch(imageFileNameExtension)
@@ -983,7 +977,7 @@ namespace OricExplorer
             }
         }
 
-        public Boolean ShowGrid
+        public bool ShowGrid
         {
             set { showGrid = value; }
             get { return showGrid; }

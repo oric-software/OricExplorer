@@ -30,16 +30,16 @@ namespace OricExplorer.User_Controls
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup11 = new System.Windows.Forms.ListViewGroup("BASIC Programs", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup12 = new System.Windows.Forms.ListViewGroup("Code/Data Files", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup13 = new System.Windows.Forms.ListViewGroup("TEXT Screens", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup14 = new System.Windows.Forms.ListViewGroup("HIRES Screens", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup15 = new System.Windows.Forms.ListViewGroup("Character Sets", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup16 = new System.Windows.Forms.ListViewGroup("Text Windows", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup17 = new System.Windows.Forms.ListViewGroup("Sequential Data Files", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup18 = new System.Windows.Forms.ListViewGroup("Direct Access Files", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup19 = new System.Windows.Forms.ListViewGroup("Other", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup20 = new System.Windows.Forms.ListViewGroup("HELP Screens", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup41 = new System.Windows.Forms.ListViewGroup("BASIC Programs", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup42 = new System.Windows.Forms.ListViewGroup("Code/Data Files", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup43 = new System.Windows.Forms.ListViewGroup("TEXT Screens", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup44 = new System.Windows.Forms.ListViewGroup("HIRES Screens", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup45 = new System.Windows.Forms.ListViewGroup("Character Sets", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup46 = new System.Windows.Forms.ListViewGroup("Text Windows", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup47 = new System.Windows.Forms.ListViewGroup("Sequential Data Files", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup48 = new System.Windows.Forms.ListViewGroup("Direct Access Files", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup49 = new System.Windows.Forms.ListViewGroup("Other", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup50 = new System.Windows.Forms.ListViewGroup("HELP Screens", System.Windows.Forms.HorizontalAlignment.Left);
             this.groupFrame5 = new GroupFrame.GroupFrame();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -395,9 +395,11 @@ namespace OricExplorer.User_Controls
             // 
             // hexBox1
             // 
+            this.hexBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.hexBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hexBox1.ColumnInfoVisible = true;
             this.hexBox1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hexBox1.ForeColor = System.Drawing.Color.White;
             this.hexBox1.InfoForeColor = System.Drawing.Color.Teal;
             this.hexBox1.LineInfoPrefix = "$";
             this.hexBox1.LineInfoVisible = true;
@@ -405,9 +407,11 @@ namespace OricExplorer.User_Controls
             this.hexBox1.Location = new System.Drawing.Point(6, 6);
             this.hexBox1.Name = "hexBox1";
             this.hexBox1.ReadOnly = true;
+            this.hexBox1.SelectionBackColor = System.Drawing.Color.Red;
+            this.hexBox1.SelectionForeColor = System.Drawing.Color.Yellow;
             this.hexBox1.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
             this.hexBox1.Size = new System.Drawing.Size(514, 227);
-            this.hexBox1.StringViewColour = System.Drawing.Color.Maroon;
+            this.hexBox1.StringViewColour = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
             this.hexBox1.StringViewVisible = true;
             this.hexBox1.TabIndex = 65;
             this.hexBox1.UseFixedBytesPerLine = true;
@@ -458,37 +462,37 @@ namespace OricExplorer.User_Controls
             this.lvDirectory.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lvDirectory.FullRowSelect = true;
             this.lvDirectory.GridLines = true;
-            listViewGroup11.Header = "BASIC Programs";
-            listViewGroup11.Name = "listViewGroupBasic";
-            listViewGroup12.Header = "Code/Data Files";
-            listViewGroup12.Name = "listViewGroupCode";
-            listViewGroup13.Header = "TEXT Screens";
-            listViewGroup13.Name = "listViewGroupText";
-            listViewGroup14.Header = "HIRES Screens";
-            listViewGroup14.Name = "listViewGroupHires";
-            listViewGroup15.Header = "Character Sets";
-            listViewGroup15.Name = "listViewGroupCharSets";
-            listViewGroup16.Header = "Text Windows";
-            listViewGroup16.Name = "listViewGroupWindows";
-            listViewGroup17.Header = "Sequential Data Files";
-            listViewGroup17.Name = "listViewGroupSequential";
-            listViewGroup18.Header = "Direct Access Files";
-            listViewGroup18.Name = "listViewGroupDirectAccess";
-            listViewGroup19.Header = "Other";
-            listViewGroup19.Name = "listViewGroupOther";
-            listViewGroup20.Header = "HELP Screens";
-            listViewGroup20.Name = "listViewGroupHelpScreens";
+            listViewGroup41.Header = "BASIC Programs";
+            listViewGroup41.Name = "listViewGroupBasic";
+            listViewGroup42.Header = "Code/Data Files";
+            listViewGroup42.Name = "listViewGroupCode";
+            listViewGroup43.Header = "TEXT Screens";
+            listViewGroup43.Name = "listViewGroupText";
+            listViewGroup44.Header = "HIRES Screens";
+            listViewGroup44.Name = "listViewGroupHires";
+            listViewGroup45.Header = "Character Sets";
+            listViewGroup45.Name = "listViewGroupCharSets";
+            listViewGroup46.Header = "Text Windows";
+            listViewGroup46.Name = "listViewGroupWindows";
+            listViewGroup47.Header = "Sequential Data Files";
+            listViewGroup47.Name = "listViewGroupSequential";
+            listViewGroup48.Header = "Direct Access Files";
+            listViewGroup48.Name = "listViewGroupDirectAccess";
+            listViewGroup49.Header = "Other";
+            listViewGroup49.Name = "listViewGroupOther";
+            listViewGroup50.Header = "HELP Screens";
+            listViewGroup50.Name = "listViewGroupHelpScreens";
             this.lvDirectory.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup11,
-            listViewGroup12,
-            listViewGroup13,
-            listViewGroup14,
-            listViewGroup15,
-            listViewGroup16,
-            listViewGroup17,
-            listViewGroup18,
-            listViewGroup19,
-            listViewGroup20});
+            listViewGroup41,
+            listViewGroup42,
+            listViewGroup43,
+            listViewGroup44,
+            listViewGroup45,
+            listViewGroup46,
+            listViewGroup47,
+            listViewGroup48,
+            listViewGroup49,
+            listViewGroup50});
             this.lvDirectory.HideSelection = false;
             this.lvDirectory.Location = new System.Drawing.Point(8, 36);
             this.lvDirectory.MultiSelect = false;

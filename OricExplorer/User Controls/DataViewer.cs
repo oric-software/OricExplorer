@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     public partial class DataViewerControl : UserControl
     {
         public Label FileInformation;
@@ -19,8 +14,8 @@ namespace OricExplorer
         private Point panStartingPoint;
         private double ZOOMFACTOR = 2;
 
-        private Byte AddressOffset = 0;
-        private Byte ScreenWidth = 40;
+        private byte AddressOffset = 0;
+        private byte ScreenWidth = 40;
 
         public DataViewerControl()
         {
@@ -31,7 +26,7 @@ namespace OricExplorer
             // Set some defaults for the dataviewer
             dataPreview = new Preview(false);
             dataPreview.m_scrnFormat = OricProgram.ProgramFormat.UnknownFile;
-            dataPreview.m_ui16DataLength = 0;
+            dataPreview.DataLength = 0;
 
             ProgramInfo = new OricFileInfo();
             ProgramData = new OricProgram();
@@ -44,12 +39,12 @@ namespace OricExplorer
 
             DisplayZoomLevel();
 
-            dataPreview.m_ui16StartAddress = ProgramData.StartAddress;
-            dataPreview.m_ui16DataLength = ProgramData.ProgramLength;
+            dataPreview.StartAddress = ProgramData.StartAddress;
+            dataPreview.DataLength = ProgramData.ProgramLength;
             dataPreview.bScrnData = ProgramData.m_programData;
 
-            dataPreview.m_bDisablePaper = false;
-            dataPreview.m_bDisableInk = false;
+            dataPreview.DisablePaper = false;
+            dataPreview.DisableInk = false;
 
             checkBoxBackground.Checked = true;
             checkBoxForeground.Checked = true;
@@ -109,7 +104,7 @@ namespace OricExplorer
                         buttonResetWidth.Enabled = true;
                     }
 
-                    infoBoxWidth.Text = String.Format("{0} Bytes", ScreenWidth);
+                    infoBoxWidth.Text = string.Format("{0} Bytes", ScreenWidth);
                     break;
             }
 
@@ -120,7 +115,7 @@ namespace OricExplorer
                     buttonIncOffset.Enabled = true;
                     buttonResetOffset.Enabled = false;
 
-                    infoBoxOffset.Text = String.Format("0 Bytes (${0:X4})", ProgramInfo.StartAddress);
+                    infoBoxOffset.Text = string.Format("0 Bytes (${0:X4})", ProgramInfo.StartAddress);
                     break;
 
                 case 1:
@@ -128,7 +123,7 @@ namespace OricExplorer
                     buttonIncOffset.Enabled = true;
                     buttonResetOffset.Enabled = true;
 
-                    infoBoxOffset.Text = String.Format("1 Byte (${0:X4})", ProgramInfo.StartAddress + 1);
+                    infoBoxOffset.Text = string.Format("1 byte (${0:X4})", ProgramInfo.StartAddress + 1);
                     break;
 
                 default:
@@ -145,7 +140,7 @@ namespace OricExplorer
                         buttonResetOffset.Enabled = true;
                     }
 
-                    infoBoxOffset.Text = String.Format("{0} Bytes (${1:X4})", AddressOffset, ProgramInfo.StartAddress + AddressOffset);
+                    infoBoxOffset.Text = string.Format("{0} Bytes (${1:X4})", AddressOffset, ProgramInfo.StartAddress + AddressOffset);
                     break;
             }
 
@@ -167,8 +162,8 @@ namespace OricExplorer
             // Set cursor to the wait cursor
             Cursor.Current = Cursors.WaitCursor;
 
-            dataPreview.m_ui16Offset = AddressOffset;
-            dataPreview.m_bWidthBytes = ScreenWidth;
+            dataPreview.Offset = AddressOffset;
+            dataPreview.WidthBytes = ScreenWidth;
 
             Application.DoEvents();
             dataPreview.DrawDataView();
@@ -210,8 +205,8 @@ namespace OricExplorer
 
             DisplayZoomLevel();
 
-            infoBoxWidth.Text = String.Format("{0} Bytes", ScreenWidth);
-            infoBoxOffset.Text = String.Format("0 Bytes (${0:X4})", ProgramInfo.StartAddress);
+            infoBoxWidth.Text = string.Format("{0} Bytes", ScreenWidth);
+            infoBoxOffset.Text = string.Format("0 Bytes (${0:X4})", ProgramInfo.StartAddress);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -282,7 +277,7 @@ namespace OricExplorer
         private void DisplayZoomLevel()
         {
             float zoomLevel = (float)pictureBoxImage.Width / 240;
-            infoBoxZoom.Text = String.Format("Zoom Level x{0:N0}", zoomLevel);
+            infoBoxZoom.Text = string.Format("Zoom Level x{0:N0}", zoomLevel);
         }
 
         private void buttonZoomIn_Click(object sender, EventArgs e)
@@ -302,7 +297,7 @@ namespace OricExplorer
                 AddressOffset--;
                 UpdateScreen();
 
-                dataPreview.m_ui16Offset = AddressOffset;
+                dataPreview.Offset = AddressOffset;
                 redrawPreview();
             }
         }
@@ -314,7 +309,7 @@ namespace OricExplorer
                 AddressOffset++;
                 UpdateScreen();
 
-                dataPreview.m_ui16Offset = AddressOffset;
+                dataPreview.Offset = AddressOffset;
                 redrawPreview();
             }
         }
@@ -326,7 +321,7 @@ namespace OricExplorer
                 ScreenWidth--;
                 UpdateScreen();
 
-                dataPreview.m_bWidthBytes = (Byte)ScreenWidth;
+                dataPreview.WidthBytes = (byte)ScreenWidth;
                 redrawPreview();
             }
         }
@@ -338,7 +333,7 @@ namespace OricExplorer
                 ScreenWidth++;
                 UpdateScreen();
 
-                dataPreview.m_bWidthBytes = (Byte)ScreenWidth;
+                dataPreview.WidthBytes = (byte)ScreenWidth;
                 redrawPreview();
             }
         }
@@ -367,11 +362,11 @@ namespace OricExplorer
         {
             if (checkBoxBackground.Checked)
             {
-                dataPreview.m_bDisablePaper = false;
+                dataPreview.DisablePaper = false;
             }
             else
             {
-                dataPreview.m_bDisablePaper = true;
+                dataPreview.DisablePaper = true;
             }
 
             UpdateScreen();
@@ -381,11 +376,11 @@ namespace OricExplorer
         {
             if (checkBoxForeground.Checked)
             {
-                dataPreview.m_bDisableInk = false;
+                dataPreview.DisableInk = false;
             }
             else
             {
-                dataPreview.m_bDisableInk = true;
+                dataPreview.DisableInk = true;
             }
 
             UpdateScreen();
@@ -395,11 +390,11 @@ namespace OricExplorer
         {
             if (checkBoxOthers.Checked)
             {
-                dataPreview.m_bDisableAttributes = false;
+                dataPreview.DisableAttributes = false;
             }
             else
             {
-                dataPreview.m_bDisableAttributes = true;
+                dataPreview.DisableAttributes = true;
             }
 
             UpdateScreen();

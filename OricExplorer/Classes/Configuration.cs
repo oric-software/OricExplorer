@@ -1,205 +1,144 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections;
-using System.Xml;
-using System.IO;
-using FastColoredTextBoxNS;
-using System.Drawing;
-using System.Collections.Specialized;
-
-namespace OricExplorer
+﻿namespace OricExplorer
 {
-    public class Configuration
+    using FastColoredTextBoxNS;
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
+    using System.Web.Script.Serialization;
+
+    public static class Configuration
     {
-        public enum SyntaxHighlightingItems { String, Comment, Keyword, Loops, Branches, DataKeyword, LineNumber, Number, HexNumber };
+        private const string DEFAULT_FILENAME = "OricExplorer.json";
 
-        Dictionary<SyntaxHighlightingItems, TextStyle> colours;
+        public static Settings Persistent = Settings.Load();
 
-        Color pageBackground;
-
-        StringCollection tapeFolders;
-        StringCollection diskFolders;
-        StringCollection romFolders;
-		
-        String emulatorExecutable;
-        String dirListingsFolder;
-
-        Boolean checkForUpdatesOnStartup;
-
-        public Configuration()
+        public class Settings : AppSettings<Settings>
         {
-            colours = new Dictionary<SyntaxHighlightingItems, TextStyle>();
+            public string DirectoryListingsFolder { get; set; }
+            public List<string> TapeFolders { get; set; } = new List<string>();
+            public List<string> DiskFolders { get; set; } = new List<string>();
+            public List<string> RomFolders { get; set; } = new List<string>();
+            public string EmulatorExecutable { get; set; }
+            public bool CheckForUpdatesOnStartup { get; set; } = false;
+            public Color PageBackground { get; set; } = ConstantsAndEnums.BACKGROUND;
+            public Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> SyntaxHighlightingStyles { get; set; }
 
-            pageBackground = Color.Black;
+            public Point MainWindowLocation { get; set; }
+            public Size MainWindowSize { get; set; }
+            public bool MainWindowMaximized { get; set; }
+            public string DockPanelLayout { get; set; }
 
-            tapeFolders = new StringCollection();
-            diskFolders = new StringCollection();
-            romFolders = new StringCollection();
-
-            emulatorExecutable = "";
-            dirListingsFolder = "";
-
-            checkForUpdatesOnStartup = false;
-
-            LoadUserSettings();
-            LoadSyntaxHighlightingSettings();
-        }
-
-        public void ReloadSettings()
-        {
-            LoadUserSettings();
-            LoadSyntaxHighlightingSettings();
-        }
-
-        public void SaveSettings()
-        {
-            Properties.Settings.Default.EmulatorExecutable = emulatorExecutable;
-            Properties.Settings.Default.DirectoryListingsFolder = dirListingsFolder;
-
-            Properties.Settings.Default.CheckForUpdatesOnStartup = checkForUpdatesOnStartup;
-
-            Properties.Settings.Default.TapeFolders = tapeFolders;
-            Properties.Settings.Default.DiskFolders = diskFolders;
-            Properties.Settings.Default.RomFolders = romFolders;
-
-            Properties.Settings.Default.PageBackground = pageBackground;
-
-            foreach (SyntaxHighlightingItems item in Enum.GetValues(typeof(SyntaxHighlightingItems)))
+            public Settings()
             {
-                TextStyle textStyle = colours[item];
-                SolidBrush tmp = (SolidBrush)textStyle.ForeBrush;
-                String fontStyle = textStyle.FontStyle.ToString();
+                SyntaxHighlightingStyles = new Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle>();
 
-                try
+                foreach (ConstantsAndEnums.SyntaxHighlightingItems item in Enum.GetValues(typeof(ConstantsAndEnums.SyntaxHighlightingItems)))
                 {
-                    Properties.Settings.Default["Basic" + item.ToString() + "Color"] = tmp.Color;
-                    Properties.Settings.Default["Basic" + item.ToString() + "Style"] = textStyle.FontStyle.ToString();
+                    SyntaxHighlightingStyles.Add(item, ConstantsAndEnums.SyntaxHighlightingDefaultValues[(int)item]);
                 }
-                catch(System.Configuration.SettingsPropertyNotFoundException)
-                {
-                    System.Configuration.SettingsProperty property = new System.Configuration.SettingsProperty("Basic" + item.ToString() + "Color");
-                    property.PropertyType = typeof(string);
-                    property.DefaultValue = "TEST";
 
-                    Properties.Settings.Default.Properties.Add(property);
+                //    tapeFolders = new StringCollection();
+                //    diskFolders = new StringCollection();
+                //    romFolders = new StringCollection();
+
+                //    emulatorExecutable = "";
+            }
+        }
+
+        public class AppSettings<T> where T : new()
+        {
+            public static T Load(string fileName = Configuration.DEFAULT_FILENAME)
+            {
+                T config = new T();
+
+                if (File.Exists(fileName))
+                {
+                    JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                    javaScriptSerializer.RegisterConverters(new JavaScriptConverter[] { new ColorConverter(), new SyntaxHighlightingConverter() });
+
+                    config = javaScriptSerializer.Deserialize<T>(File.ReadAllText(fileName));
                 }
+
+                return config;
             }
 
-            Properties.Settings.Default.Save();
-        }
-
-        private void LoadUserSettings()
-        {
-            emulatorExecutable = Properties.Settings.Default.EmulatorExecutable;
-            dirListingsFolder = Properties.Settings.Default.DirectoryListingsFolder;
-
-            checkForUpdatesOnStartup = Properties.Settings.Default.CheckForUpdatesOnStartup;
-
-            tapeFolders = Properties.Settings.Default.TapeFolders;
-            diskFolders = Properties.Settings.Default.DiskFolders;
-            romFolders = Properties.Settings.Default.RomFolders;
-        }
-
-        private void LoadSyntaxHighlightingSettings()
-        {
-            pageBackground = Properties.Settings.Default.PageBackground;
-
-            colours.Clear();
-
-            foreach (SyntaxHighlightingItems item in Enum.GetValues(typeof(SyntaxHighlightingItems)))
+            public void Save(string fileName = Configuration.DEFAULT_FILENAME)
             {
-                try
+                JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+                javaScriptSerializer.RegisterConverters(new JavaScriptConverter[] { new ColorConverter(), new SyntaxHighlightingConverter() });
+
+                File.WriteAllText(fileName, javaScriptSerializer.Serialize(this));
+            }
+
+            private class ColorConverter : JavaScriptConverter
+            {
+                public override IEnumerable<Type> SupportedTypes
                 {
-                    Color foreColor = (Color)Properties.Settings.Default["Basic" + item.ToString() + "Color"];
-                    String[] style = Properties.Settings.Default["Basic" + item.ToString() + "Style"].ToString().Split('|');
-
-                    FontStyle fontStyle = new FontStyle();
-
-                    foreach (String s in style)
+                    get
                     {
-                        switch (s)
+                        return new[] { typeof(Color) };
+                    }
+                }
+
+                public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
+                {
+                    foreach (string key in dictionary.Keys)
+                    {
+                        if (key.Equals("Color", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            case "Regular":
-                                fontStyle |= FontStyle.Regular;
-                                break;
-
-                            case "Bold":
-                                fontStyle |= FontStyle.Bold;
-                                break;
-
-                            case "Italic":
-                                fontStyle |= FontStyle.Italic;
-                                break;
-
-                            case "Underline":
-                                fontStyle |= FontStyle.Underline;
-                                break;
-
-                            default:
-                                break;
+                            return ColorTranslator.FromHtml(dictionary[key].ToString());
                         }
                     }
-
-                    TextStyle textStyle = new TextStyle(new SolidBrush(foreColor), null, fontStyle);
-
-                    colours.Add(item, textStyle);
+                    return null;
                 }
-                catch(Exception ex)
+
+                public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
                 {
-                    String message = ex.Message;
+                    Color c = (Color)obj;
+                    IDictionary<string, object> serialized = new Dictionary<string, object>
+                    {
+                        ["Color"] = ColorTranslator.ToHtml(c)
+                    };
+                    return serialized;
+                }
+            }
+
+            private class SyntaxHighlightingConverter : JavaScriptConverter
+            {
+                public override IEnumerable<Type> SupportedTypes
+                {
+                    get
+                    {
+                        return new[] { typeof(Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle>) };
+                    }
+                }
+
+                public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
+                {
+                    Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> dic = new Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle>();
+                    
+                    foreach (var tup in dictionary)
+                    {
+                        var value = tup.Value.ToString().Split('|');
+                        dic[(ConstantsAndEnums.SyntaxHighlightingItems)Enum.Parse(typeof(ConstantsAndEnums.SyntaxHighlightingItems), tup.Key.ToString())] = new TextStyle(new SolidBrush(ColorTranslator.FromHtml(value[0])), null, (FontStyle)int.Parse(value[1]));
+                    }
+
+                    return dic;
+                }
+
+                public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
+                {
+                    IDictionary<string, object> serialized = new Dictionary<string, object>();
+
+                    foreach (var tup in (Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle>)obj)
+                    {
+                        serialized[tup.Key.ToString()] = $"{ColorTranslator.ToHtml(((SolidBrush)tup.Value.ForeBrush).Color)}|{(int)tup.Value.FontStyle}";
+                    }
+
+                    return serialized;
                 }
             }
         }
-
-        #region Functions to return settings
-        public StringCollection TapeFolders
-        {
-            set { tapeFolders = value; }
-            get { return tapeFolders; }
-        }
-
-        public StringCollection DiskFolders
-        {
-            set { diskFolders = value; }
-            get { return diskFolders; }
-        }
-
-        public StringCollection ROMFolders
-        {
-            set { romFolders = value; }
-            get { return romFolders; }
-        }
-
-        public String EmulatorExecutable
-        {
-            set { emulatorExecutable = value; }
-            get { return emulatorExecutable; }
-        }
-
-        public String DirListingsFolder
-        {
-            set { dirListingsFolder = value; }
-            get { return dirListingsFolder; }
-        }
-
-        public Boolean CheckForUpdatesOnStartup
-        {
-            set { checkForUpdatesOnStartup = value; }
-            get { return checkForUpdatesOnStartup; }
-        }
-
-        public Color PageBackground
-        {
-            set { pageBackground = value; }
-            get { return pageBackground; }
-        }
-
-        public Dictionary<SyntaxHighlightingItems, TextStyle> SyntaxHighlightingSettings
-        {
-            set { colours = value; }
-            get { return colours; }
-        }
-        #endregion
     }
 }

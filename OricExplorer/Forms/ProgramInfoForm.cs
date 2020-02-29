@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
-
-namespace OricExplorer.Forms
+﻿namespace OricExplorer.Forms
 {
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Windows.Forms;
+    using WeifenLuo.WinFormsUI.Docking;
+
     public partial class ProgramInfoForm : DockContent
     {
         public ProgramInfoForm()
@@ -20,7 +15,7 @@ namespace OricExplorer.Forms
             this.DoubleBuffered = true;
         }
 
-        private void AddDetails(String header, String detail)
+        private void AddDetails(string header, string detail)
         {
             // Create a new Panel
             Panel infoPanel = new Panel();
@@ -62,21 +57,21 @@ namespace OricExplorer.Forms
         {
             flowLayoutPanelInfo.Controls.Clear();
 
-            if (fileInformation.MediaType == OricExplorer.MediaType.DiskFile || fileInformation.MediaType == OricExplorer.MediaType.TapeFile)
+            if (fileInformation.MediaType == ConstantsAndEnums.MediaType.DiskFile || fileInformation.MediaType == ConstantsAndEnums.MediaType.TapeFile)
             {
                 AddDetails("Program Name", fileInformation.ProgramName);
-                AddDetails("Program Format", String.Format("{0}", fileInformation.FormatToString()));
-                AddDetails("Memory Location", String.Format("${0:X4} to ${1:X4}\n({2} to {3})",
+                AddDetails("Program Format", string.Format("{0}", fileInformation.FormatToString()));
+                AddDetails("Memory Location", string.Format("${0:X4} to ${1:X4}\n({2} to {3})",
                            fileInformation.StartAddress, fileInformation.EndAddress, fileInformation.StartAddress, fileInformation.EndAddress));
 
                 if (fileInformation.LengthBytes >= 1024)
                 {
-                    AddDetails("Program Size", String.Format("{0:N0} bytes\n({1:N1} KB)",
+                    AddDetails("Program Size", string.Format("{0:N0} bytes\n({1:N1} KB)",
                                fileInformation.LengthBytes, (float)fileInformation.LengthBytes / 1024));
                 }
                 else
                 {
-                    AddDetails("Program Size", String.Format("{0:N0} bytes", fileInformation.LengthBytes));
+                    AddDetails("Program Size", string.Format("{0:N0} bytes", fileInformation.LengthBytes));
                 }
 
                 if (fileInformation.Format == OricProgram.ProgramFormat.BasicProgram || fileInformation.Format == OricProgram.ProgramFormat.CodeFile)
@@ -87,7 +82,7 @@ namespace OricExplorer.Forms
 
                 if (fileInformation.Format == OricProgram.ProgramFormat.CodeFile && fileInformation.ExeAddress != 0)
                 {
-                    AddDetails("Executable Address", String.Format("${0:X4}\n({1})", fileInformation.ExeAddress, fileInformation.ExeAddress));
+                    AddDetails("Executable Address", string.Format("${0:X4}\n({1})", fileInformation.ExeAddress, fileInformation.ExeAddress));
                 }
 
                 switch (fileInformation.Format)
@@ -97,20 +92,20 @@ namespace OricExplorer.Forms
                         break;
 
                     case OricProgram.ProgramFormat.DirectAccessFile:
-                        AddDetails("No. of Records", fileInformation.m_ui16NoOfRecords.ToString());
-                        AddDetails("Record Length", fileInformation.m_ui16RecordLength.ToString());
+                        AddDetails("No. of Records", fileInformation.NoOfRecords.ToString());
+                        AddDetails("Record Length", fileInformation.RecordLength.ToString());
                         break;
 
                     case OricProgram.ProgramFormat.HelpFile:
-                        AddDetails("Dimensions", String.Format("40 x {0}", fileInformation.LengthBytes / 40));
+                        AddDetails("Dimensions", string.Format("40 x {0}", fileInformation.LengthBytes / 40));
                         break;
 
                     case OricProgram.ProgramFormat.HiresScreen:
-                        AddDetails("Dimensions", String.Format("240 x {0}", fileInformation.LengthBytes / 40));
+                        AddDetails("Dimensions", string.Format("240 x {0}", fileInformation.LengthBytes / 40));
                         break;
 
                     case OricProgram.ProgramFormat.TextScreen:
-                        AddDetails("Dimensions", String.Format("40 x {0}", fileInformation.LengthBytes / 40));
+                        AddDetails("Dimensions", string.Format("40 x {0}", fileInformation.LengthBytes / 40));
                         break;
 
                     case OricProgram.ProgramFormat.CodeFile:
@@ -120,40 +115,40 @@ namespace OricExplorer.Forms
                         break;
 
                     case OricProgram.ProgramFormat.SequentialFile:
-                        // FileInformation.Text = String.Format("{0} Records", listViewRecords.Items.Count);
+                        // FileInformation.Text = string.Format("{0} Records", listViewRecords.Items.Count);
                         break;
 
                     case OricProgram.ProgramFormat.WindowFile:
-                        AddDetails("Dimensions", String.Format("40 x {0}", fileInformation.LengthBytes / 40));
+                        AddDetails("Dimensions", string.Format("40 x {0}", fileInformation.LengthBytes / 40));
                         break;
 
                     default:
                         break;
                 }
 
-                if (fileInformation.MediaType == OricExplorer.MediaType.DiskFile)
+                if (fileInformation.MediaType == ConstantsAndEnums.MediaType.DiskFile)
                 {
-                    AddDetails("Disk Usage", String.Format("{0:N0} sectors", fileInformation.LengthSectors));
+                    AddDetails("Disk Usage", string.Format("{0:N0} sectors", fileInformation.LengthSectors));
 
                     AddDetails("Security Status", fileInformation.Protection.ToString());
                 }
             }
-            else if(fileInformation.MediaType == OricExplorer.MediaType.ROMFile)
+            else if(fileInformation.MediaType == ConstantsAndEnums.MediaType.ROMFile)
             {
                 AddDetails("Name", Path.GetFileName(fileInformation.Name));
                 AddDetails("Format", "Oric ROM File");
 
-                AddDetails("Memory Location", String.Format("${0:X4} to ${1:X4}\n({2} to {3})",
+                AddDetails("Memory Location", string.Format("${0:X4} to ${1:X4}\n({2} to {3})",
                            fileInformation.StartAddress, fileInformation.EndAddress, fileInformation.StartAddress, fileInformation.EndAddress));
 
                 if (fileInformation.LengthBytes >= 1024)
                 {
-                    AddDetails("ROM Size", String.Format("{0:N0} bytes\n({1:N1} KB)",
+                    AddDetails("ROM Size", string.Format("{0:N0} bytes\n({1:N1} KB)",
                                fileInformation.LengthBytes, (float)fileInformation.LengthBytes / 1024));
                 }
                 else
                 {
-                    AddDetails("ROM Size", String.Format("{0:N0} bytes", fileInformation.LengthBytes));
+                    AddDetails("ROM Size", string.Format("{0:N0} bytes", fileInformation.LengthBytes));
                 }
             }
         }
