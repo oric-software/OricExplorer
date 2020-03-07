@@ -77,6 +77,10 @@ namespace OricExplorer
             this.enableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator21 = new System.Windows.Forms.ToolStripSeparator();
+            this.extractToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tapeFiletapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textFiletxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rawFilenoHeaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.switchViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -130,10 +134,17 @@ namespace OricExplorer
             this.contextMenuStripUnknownDisk = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.displaySectorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.extractToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textFiletxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rawFilenoHeaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tapeFiletapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.romContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator22 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator23 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
+            this.telestratToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -141,6 +152,7 @@ namespace OricExplorer
             this.tapeContextMenuStrip.SuspendLayout();
             this.diskContextMenuStrip.SuspendLayout();
             this.contextMenuStripUnknownDisk.SuspendLayout();
+            this.romContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -169,7 +181,7 @@ namespace OricExplorer
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -198,35 +210,35 @@ namespace OricExplorer
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // closeAllToolStripMenuItem
             // 
             this.closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.closeAllToolStripMenuItem.Text = "Close All";
             this.closeAllToolStripMenuItem.Click += new System.EventHandler(this.closeAllToolStripMenuItem_Click);
             // 
             // closeAllButThisOneToolStripMenuItem
             // 
             this.closeAllButThisOneToolStripMenuItem.Name = "closeAllButThisOneToolStripMenuItem";
-            this.closeAllButThisOneToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.closeAllButThisOneToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.closeAllButThisOneToolStripMenuItem.Text = "Close All But This";
             this.closeAllButThisOneToolStripMenuItem.Click += new System.EventHandler(this.closeAllButThisOneToolStripMenuItem_Click);
             // 
             // toolStripSeparator16
             // 
             this.toolStripSeparator16.Name = "toolStripSeparator16";
-            this.toolStripSeparator16.Size = new System.Drawing.Size(163, 6);
+            this.toolStripSeparator16.Size = new System.Drawing.Size(162, 6);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("refreshToolStripMenuItem.Image")));
             this.refreshToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
@@ -240,39 +252,39 @@ namespace OricExplorer
             this.optionsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
             // 
             // convertTextFileToolStripMenuItem
             // 
             this.convertTextFileToolStripMenuItem.Name = "convertTextFileToolStripMenuItem";
-            this.convertTextFileToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.convertTextFileToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.convertTextFileToolStripMenuItem.Text = "Convert Text File...";
             this.convertTextFileToolStripMenuItem.Click += new System.EventHandler(this.convertTextFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator18
             // 
             this.toolStripSeparator18.Name = "toolStripSeparator18";
-            this.toolStripSeparator18.Size = new System.Drawing.Size(184, 6);
+            this.toolStripSeparator18.Size = new System.Drawing.Size(185, 6);
             // 
             // syntaxHighlightingToolStripMenuItem
             // 
             this.syntaxHighlightingToolStripMenuItem.Name = "syntaxHighlightingToolStripMenuItem";
-            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.syntaxHighlightingToolStripMenuItem.Text = "Syntax Highlighting...";
             this.syntaxHighlightingToolStripMenuItem.Click += new System.EventHandler(this.syntaxHighlightingToolStripMenuItem_Click);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(184, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(185, 6);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("optionsToolStripMenuItem.Image")));
             this.optionsToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.optionsToolStripMenuItem.Text = "Settings...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
@@ -443,7 +455,7 @@ namespace OricExplorer
             this.toolStripSeparator21,
             this.extractToToolStripMenuItem});
             this.progContextMenuStrip.Name = "contextMenuStrip2";
-            this.progContextMenuStrip.Size = new System.Drawing.Size(178, 226);
+            this.progContextMenuStrip.Size = new System.Drawing.Size(178, 204);
             this.progContextMenuStrip.Text = "Program Menu";
             this.progContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.progContextMenuStrip_Opening);
             // 
@@ -542,6 +554,37 @@ namespace OricExplorer
             this.toolStripSeparator21.Name = "toolStripSeparator21";
             this.toolStripSeparator21.Size = new System.Drawing.Size(174, 6);
             // 
+            // extractToToolStripMenuItem
+            // 
+            this.extractToToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tapeFiletapToolStripMenuItem,
+            this.textFiletxtToolStripMenuItem,
+            this.rawFilenoHeaderToolStripMenuItem});
+            this.extractToToolStripMenuItem.Name = "extractToToolStripMenuItem";
+            this.extractToToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.extractToToolStripMenuItem.Text = "Extract To...";
+            // 
+            // tapeFiletapToolStripMenuItem
+            // 
+            this.tapeFiletapToolStripMenuItem.Name = "tapeFiletapToolStripMenuItem";
+            this.tapeFiletapToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.tapeFiletapToolStripMenuItem.Text = "Tape file (tap)";
+            this.tapeFiletapToolStripMenuItem.Click += new System.EventHandler(this.tapeFiletapToolStripMenuItem_Click);
+            // 
+            // textFiletxtToolStripMenuItem
+            // 
+            this.textFiletxtToolStripMenuItem.Name = "textFiletxtToolStripMenuItem";
+            this.textFiletxtToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.textFiletxtToolStripMenuItem.Text = "Text file (txt)";
+            this.textFiletxtToolStripMenuItem.Click += new System.EventHandler(this.textFiletxtToolStripMenuItem_Click);
+            // 
+            // rawFilenoHeaderToolStripMenuItem
+            // 
+            this.rawFilenoHeaderToolStripMenuItem.Name = "rawFilenoHeaderToolStripMenuItem";
+            this.rawFilenoHeaderToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.rawFilenoHeaderToolStripMenuItem.Text = "Raw file (no header)";
+            this.rawFilenoHeaderToolStripMenuItem.Click += new System.EventHandler(this.rawFilenoHeaderToolStripMenuItem_Click);
+            // 
             // switchViewToolStripMenuItem
             // 
             this.switchViewToolStripMenuItem.Name = "switchViewToolStripMenuItem";
@@ -598,40 +641,40 @@ namespace OricExplorer
             // 
             this.toolStripMenuItem25.Enabled = false;
             this.toolStripMenuItem25.Name = "toolStripMenuItem25";
-            this.toolStripMenuItem25.Size = new System.Drawing.Size(175, 22);
+            this.toolStripMenuItem25.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem25.Text = "Add to Disk...";
             // 
             // toolStripMenuItem20
             // 
             this.toolStripMenuItem20.Enabled = false;
             this.toolStripMenuItem20.Name = "toolStripMenuItem20";
-            this.toolStripMenuItem20.Size = new System.Drawing.Size(175, 22);
+            this.toolStripMenuItem20.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem20.Text = "Convert to Disk...";
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(172, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(177, 6);
             // 
             // editTapeToolStripMenuItem
             // 
             this.editTapeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("editTapeToolStripMenuItem.Image")));
             this.editTapeToolStripMenuItem.Name = "editTapeToolStripMenuItem";
-            this.editTapeToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.editTapeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.editTapeToolStripMenuItem.Text = "Edit Tape";
             this.editTapeToolStripMenuItem.Click += new System.EventHandler(this.editTapeToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(172, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
             // 
             // toolStripMenuItem19
             // 
             this.toolStripMenuItem19.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem19.Image")));
             this.toolStripMenuItem19.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMenuItem19.Name = "toolStripMenuItem19";
-            this.toolStripMenuItem19.Size = new System.Drawing.Size(175, 22);
+            this.toolStripMenuItem19.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem19.Text = "Copy";
             this.toolStripMenuItem19.Click += new System.EventHandler(this.toolStripMenuItem19_Click);
             // 
@@ -640,7 +683,7 @@ namespace OricExplorer
             this.toolStripMenuItem21.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem21.Image")));
             this.toolStripMenuItem21.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMenuItem21.Name = "toolStripMenuItem21";
-            this.toolStripMenuItem21.Size = new System.Drawing.Size(175, 22);
+            this.toolStripMenuItem21.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem21.Text = "Delete";
             this.toolStripMenuItem21.Click += new System.EventHandler(this.toolStripMenuItem21_Click);
             // 
@@ -649,14 +692,14 @@ namespace OricExplorer
             this.toolStripMenuItem22.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem22.Image")));
             this.toolStripMenuItem22.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMenuItem22.Name = "toolStripMenuItem22";
-            this.toolStripMenuItem22.Size = new System.Drawing.Size(175, 22);
+            this.toolStripMenuItem22.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem22.Text = "Rename";
             this.toolStripMenuItem22.Click += new System.EventHandler(this.toolStripMenuItem22_Click);
             // 
             // toolStripSeparator14
             // 
             this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(172, 6);
+            this.toolStripSeparator14.Size = new System.Drawing.Size(177, 6);
             // 
             // startToolStripMenuItem
             // 
@@ -665,14 +708,14 @@ namespace OricExplorer
             this.oricAtmosToolStripMenuItem});
             this.startToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("startToolStripMenuItem.Image")));
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.startToolStripMenuItem.Text = "Load into Emulator";
             // 
             // oric1ToolStripMenuItem
             // 
             this.oric1ToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("oric1ToolStripMenuItem.Image")));
             this.oric1ToolStripMenuItem.Name = "oric1ToolStripMenuItem";
-            this.oric1ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.oric1ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.oric1ToolStripMenuItem.Text = "Oric-1";
             this.oric1ToolStripMenuItem.Click += new System.EventHandler(this.oric1ToolStripMenuItem_Click_1);
             // 
@@ -680,26 +723,26 @@ namespace OricExplorer
             // 
             this.oricAtmosToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("oricAtmosToolStripMenuItem.Image")));
             this.oricAtmosToolStripMenuItem.Name = "oricAtmosToolStripMenuItem";
-            this.oricAtmosToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.oricAtmosToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.oricAtmosToolStripMenuItem.Text = "Oric Atmos";
             this.oricAtmosToolStripMenuItem.Click += new System.EventHandler(this.oricAtmosToolStripMenuItem_Click);
             // 
             // toolStripSeparator27
             // 
             this.toolStripSeparator27.Name = "toolStripSeparator27";
-            this.toolStripSeparator27.Size = new System.Drawing.Size(172, 6);
+            this.toolStripSeparator27.Size = new System.Drawing.Size(177, 6);
             // 
             // toolStripMenuItem26
             // 
             this.toolStripMenuItem26.Name = "toolStripMenuItem26";
-            this.toolStripMenuItem26.Size = new System.Drawing.Size(175, 22);
+            this.toolStripMenuItem26.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem26.Text = "Output Directory";
             this.toolStripMenuItem26.Click += new System.EventHandler(this.toolStripMenuItem26_Click);
             // 
             // toolStripSeparator15
             // 
             this.toolStripSeparator15.Name = "toolStripSeparator15";
-            this.toolStripSeparator15.Size = new System.Drawing.Size(172, 6);
+            this.toolStripSeparator15.Size = new System.Drawing.Size(177, 6);
             // 
             // toolStripMenuItem24
             // 
@@ -707,7 +750,7 @@ namespace OricExplorer
             this.toolStripMenuItem24.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem24.Image")));
             this.toolStripMenuItem24.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMenuItem24.Name = "toolStripMenuItem24";
-            this.toolStripMenuItem24.Size = new System.Drawing.Size(175, 22);
+            this.toolStripMenuItem24.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem24.Text = "Refresh";
             // 
             // dockPanel1
@@ -824,8 +867,9 @@ namespace OricExplorer
             this.toPDFToolStripMenuItem,
             this.toTextFileToolStripMenuItem,
             this.toPrinterToolStripMenuItem});
+            this.outputDirectoryToolStripMenuItem.Enabled = false;
             this.outputDirectoryToolStripMenuItem.Name = "outputDirectoryToolStripMenuItem";
-            this.outputDirectoryToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.outputDirectoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.outputDirectoryToolStripMenuItem.Text = "Output directory";
             // 
             // toPDFToolStripMenuItem
@@ -940,36 +984,99 @@ namespace OricExplorer
             this.displaySectorsToolStripMenuItem.Text = "Display Sectors";
             this.displaySectorsToolStripMenuItem.Click += new System.EventHandler(this.displaySectorsToolStripMenuItem_Click);
             // 
-            // extractToToolStripMenuItem
+            // romContextMenuStrip
             // 
-            this.extractToToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tapeFiletapToolStripMenuItem,
-            this.textFiletxtToolStripMenuItem,
-            this.rawFilenoHeaderToolStripMenuItem});
-            this.extractToToolStripMenuItem.Name = "extractToToolStripMenuItem";
-            this.extractToToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.extractToToolStripMenuItem.Text = "Extract To...";
+            this.romContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem4,
+            this.toolStripMenuItem5,
+            this.toolStripMenuItem6,
+            this.toolStripSeparator22,
+            this.toolStripMenuItem7,
+            this.toolStripSeparator23,
+            this.toolStripMenuItem11});
+            this.romContextMenuStrip.Name = "tapeContextMenuStrip";
+            this.romContextMenuStrip.Size = new System.Drawing.Size(181, 148);
             // 
-            // textFiletxtToolStripMenuItem
+            // toolStripMenuItem4
             // 
-            this.textFiletxtToolStripMenuItem.Name = "textFiletxtToolStripMenuItem";
-            this.textFiletxtToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.textFiletxtToolStripMenuItem.Text = "Text file (txt)";
-            this.textFiletxtToolStripMenuItem.Click += new System.EventHandler(this.textFiletxtToolStripMenuItem_Click);
+            this.toolStripMenuItem4.Enabled = false;
+            this.toolStripMenuItem4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem4.Image")));
+            this.toolStripMenuItem4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem4.Text = "Copy";
             // 
-            // rawFilenoHeaderToolStripMenuItem
+            // toolStripMenuItem5
             // 
-            this.rawFilenoHeaderToolStripMenuItem.Name = "rawFilenoHeaderToolStripMenuItem";
-            this.rawFilenoHeaderToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.rawFilenoHeaderToolStripMenuItem.Text = "Raw file (no header)";
-            this.rawFilenoHeaderToolStripMenuItem.Click += new System.EventHandler(this.rawFilenoHeaderToolStripMenuItem_Click);
+            this.toolStripMenuItem5.Enabled = false;
+            this.toolStripMenuItem5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem5.Image")));
+            this.toolStripMenuItem5.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem5.Text = "Delete";
             // 
-            // tapeFiletapToolStripMenuItem
+            // toolStripMenuItem6
             // 
-            this.tapeFiletapToolStripMenuItem.Name = "tapeFiletapToolStripMenuItem";
-            this.tapeFiletapToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.tapeFiletapToolStripMenuItem.Text = "Tape file (tap)";
-            this.tapeFiletapToolStripMenuItem.Click += new System.EventHandler(this.tapeFiletapToolStripMenuItem_Click);
+            this.toolStripMenuItem6.Enabled = false;
+            this.toolStripMenuItem6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem6.Image")));
+            this.toolStripMenuItem6.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem6.Text = "Rename";
+            // 
+            // toolStripSeparator22
+            // 
+            this.toolStripSeparator22.Name = "toolStripSeparator22";
+            this.toolStripSeparator22.Size = new System.Drawing.Size(172, 6);
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem8,
+            this.toolStripMenuItem9,
+            this.telestratToolStripMenuItem});
+            this.toolStripMenuItem7.Enabled = false;
+            this.toolStripMenuItem7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem7.Image")));
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem7.Text = "Load into Emulator";
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem8.Image")));
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem8.Text = "Oric-1";
+            this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem9.Image")));
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem9.Text = "Oric Atmos";
+            this.toolStripMenuItem9.Click += new System.EventHandler(this.toolStripMenuItem9_Click);
+            // 
+            // toolStripSeparator23
+            // 
+            this.toolStripSeparator23.Name = "toolStripSeparator23";
+            this.toolStripSeparator23.Size = new System.Drawing.Size(172, 6);
+            // 
+            // toolStripMenuItem11
+            // 
+            this.toolStripMenuItem11.Enabled = false;
+            this.toolStripMenuItem11.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem11.Image")));
+            this.toolStripMenuItem11.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMenuItem11.Name = "toolStripMenuItem11";
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(175, 22);
+            this.toolStripMenuItem11.Text = "Refresh";
+            // 
+            // telestratToolStripMenuItem
+            // 
+            this.telestratToolStripMenuItem.Name = "telestratToolStripMenuItem";
+            this.telestratToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.telestratToolStripMenuItem.Text = "Telestrat";
+            this.telestratToolStripMenuItem.Click += new System.EventHandler(this.telestratToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -984,7 +1091,7 @@ namespace OricExplorer
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Oric Explorer V2.0 © 2017 by Scott Davies";
+            this.Text = "Oric Explorer v{0} © {1} by Scott Davies";
             this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
@@ -997,6 +1104,7 @@ namespace OricExplorer
             this.tapeContextMenuStrip.ResumeLayout(false);
             this.diskContextMenuStrip.ResumeLayout(false);
             this.contextMenuStripUnknownDisk.ResumeLayout(false);
+            this.romContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1107,6 +1215,17 @@ namespace OricExplorer
         private ToolStripMenuItem tapeFiletapToolStripMenuItem;
         private ToolStripMenuItem textFiletxtToolStripMenuItem;
         private ToolStripMenuItem rawFilenoHeaderToolStripMenuItem;
+        private ContextMenuStrip romContextMenuStrip;
+        private ToolStripMenuItem toolStripMenuItem4;
+        private ToolStripMenuItem toolStripMenuItem5;
+        private ToolStripMenuItem toolStripMenuItem6;
+        private ToolStripSeparator toolStripSeparator22;
+        private ToolStripMenuItem toolStripMenuItem7;
+        private ToolStripMenuItem toolStripMenuItem8;
+        private ToolStripMenuItem toolStripMenuItem9;
+        private ToolStripMenuItem telestratToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator23;
+        private ToolStripMenuItem toolStripMenuItem11;
     }
 }
 

@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
-using System.Collections;
-using System.IO;
-
 namespace OricExplorer.User_Controls
 {
+    using System;
+    using System.Collections;
+    using System.Drawing;
+    using System.Text;
+    using System.Windows.Forms;
+
     public partial class DataFileViewer : UserControl
     {
         public Label FileInformation;
@@ -34,10 +30,10 @@ namespace OricExplorer.User_Controls
             ProgramData.New();
         }
 
-        public Boolean InitialiseView()
+        public bool InitialiseView()
         {
-            noOfRecords = ProgramInfo.m_ui16NoOfRecords;
-            recordLength = ProgramInfo.m_ui16RecordLength;
+            noOfRecords = ProgramInfo.NoOfRecords;
+            recordLength = ProgramInfo.RecordLength;
 
             cardIndexRecordNumber = 0;
 
@@ -79,7 +75,7 @@ namespace OricExplorer.User_Controls
             }
         }
 
-        private ArrayList ExtractFields(Byte[] recordBuffer)
+        private ArrayList ExtractFields(byte[] recordBuffer)
         {
             ArrayList fields = new ArrayList();
 
@@ -113,7 +109,7 @@ namespace OricExplorer.User_Controls
             return fields;
         }
 
-        private int CountNoOfFields(Byte[] recordBuffer)
+        private int CountNoOfFields(byte[] recordBuffer)
         {
             int fieldCount = 0;
             int index = 0;
@@ -136,7 +132,7 @@ namespace OricExplorer.User_Controls
             int recordIndex = 0;
             int bufferIndex = 0;
 
-            Byte[] buffer = new Byte[recordLength];
+            byte[] buffer = new byte[recordLength];
 
             while (recordIndex < noOfRecords)
             {
@@ -156,7 +152,7 @@ namespace OricExplorer.User_Controls
                     for (int colIndex = 0; colIndex < noOfFields; colIndex++)
                     {
                         ColumnHeader columnHeader = new ColumnHeader();
-                        columnHeader.Text = String.Format("Field {0}", colIndex + 1);
+                        columnHeader.Text = string.Format("Field {0}", colIndex + 1);
                         columnHeader.TextAlign = HorizontalAlignment.Left;
                         columnHeader.Width = 60;
 
@@ -170,7 +166,7 @@ namespace OricExplorer.User_Controls
                 if (fields.Count > 0)
                 {
                     ListViewItem listViewItem = new ListViewItem();
-                    listViewItem.Text = String.Format("{0:N0}", recordIndex + 1);
+                    listViewItem.Text = string.Format("{0:N0}", recordIndex + 1);
 
                     for (int index = 0; index < fields.Count; index++)
                     {
@@ -198,7 +194,7 @@ namespace OricExplorer.User_Controls
             // Calculate position
             int bufferIndex = recordNo * recordLength;
 
-            Byte[] buffer = new Byte[recordLength];
+            byte[] buffer = new byte[recordLength];
 
             // Move record into temporary buffer
             for (int index = 0; index < recordLength; index++)
@@ -286,12 +282,12 @@ namespace OricExplorer.User_Controls
             }
 
             // Setup the Card view tab text
-            tabPageCardView.Text = String.Format("Card View ({0} of {1})", cardIndexRecordNumber + 1, noOfRecords);
+            tabPageCardView.Text = string.Format("Card View ({0} of {1})", cardIndexRecordNumber + 1, noOfRecords);
         }
 
         private void SetupCardViewControls()
         {
-            Byte[] buffer = new Byte[recordLength];
+            byte[] buffer = new byte[recordLength];
 
             // Move record into temporary buffer
             for (int index = 0; index < recordLength; index++)
@@ -311,8 +307,8 @@ namespace OricExplorer.User_Controls
                 labelLocation.Y += (textBoxFieldData0.Height + 5);
 
                 Label label = new Label();
-                label.Name = String.Format("labelFieldID{0}", controlIndex);
-                label.Text = String.Format("Field {0} :", controlIndex + 1);
+                label.Name = string.Format("labelFieldID{0}", controlIndex);
+                label.Text = string.Format("Field {0} :", controlIndex + 1);
                 label.Location = labelLocation;
                 label.Width = labelFieldID0.Width;
                 label.Height = labelFieldID0.Height;
@@ -325,7 +321,7 @@ namespace OricExplorer.User_Controls
 
                 TextBox textbox = new TextBox();
                 textbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-                textbox.Name = String.Format("textBoxFieldData{0}", controlIndex);
+                textbox.Name = string.Format("textBoxFieldData{0}", controlIndex);
                 textbox.Text = "";
                 textbox.Location = textBoxLocation;
                 textbox.Width = textBoxFieldData0.Width;

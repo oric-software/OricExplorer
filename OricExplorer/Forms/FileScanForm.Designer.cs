@@ -146,7 +146,6 @@ namespace OricExplorer.Forms
             this.Name = "FileScanForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Oric Explorer V2.0 © 2017 by Scott Davies";
             this.Shown += new System.EventHandler(this.FileScanForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel1.ResumeLayout(false);

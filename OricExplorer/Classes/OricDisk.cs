@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Collections;
-
-namespace OricExplorer
+﻿namespace OricExplorer
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Text;
+
     public class OricDisk
     {
-        private static System.Text.Encoding AsciiEncoder = System.Text.Encoding.ASCII;
+        private static Encoding AsciiEncoder = Encoding.ASCII;
 
         public enum DiskTypes { Unknown, Master, Slave, Game };
         public enum DOSFormats { Unknown, OricDOS, SedOric, TDOS, StratSed, XLDos };
@@ -19,23 +18,23 @@ namespace OricExplorer
         protected DOSFormats dosFormat;
         protected DOSVersions dosVersion;
 
-        private DiskTypes diskType;
+        //private DiskTypes diskType;
 
-        public Boolean diskLoaded = false;
-        private Boolean diskModified = false;
+        public bool diskLoaded = false;
+        private bool diskModified = false;
 
-        private UInt16 noOfSides = 0;
-        private UInt16 tracksPerSide = 0;
-        private UInt16 sectorsPerTrack = 0;
-        private UInt16 noOfFiles = 0;
-        private UInt16 noOfDirectories = 0;
+        //private ushort noOfSides = 0;
+        //private ushort tracksPerSide = 0;
+        //private ushort sectorsPerTrack = 0;
+        //private ushort noOfFiles = 0;
+        //private ushort noOfDirectories = 0;
 
-        protected String diskPathname = "";
-        protected String diskFilename = "";
-        protected String diskFolder = "";
+        protected string diskPathname = "";
+        protected string diskFilename = "";
+        protected string diskFolder = "";
 
         private Hashtable sectorPointers;     // List of pointers to each sector in the diskBuffer
-        public Byte[] diskBuffer;            // Buffer used to store the entire disk
+        public byte[] diskBuffer;            // Buffer used to store the entire disk
 
         public OricDisk()
         {
@@ -43,30 +42,30 @@ namespace OricExplorer
             diskLoaded = false;
             diskModified = false;
 
-            noOfSides = 0;
-            tracksPerSide = 0;
-            sectorsPerTrack = 0;
-            noOfFiles = 0;
+            //noOfSides = 0;
+            //tracksPerSide = 0;
+            //sectorsPerTrack = 0;
+            //noOfFiles = 0;
 
             dosFormat = DOSFormats.Unknown;
             dosVersion = DOSVersions.Unknown;
-            diskType = DiskTypes.Unknown;
+            //diskType = DiskTypes.Unknown;
         }
 
-        public OricDisk(String diskPathname)
+        public OricDisk(string diskPathname)
         {
             // Initialise settings
             diskLoaded = false;
             diskModified = false;
 
-            noOfSides = 0;
-            tracksPerSide = 0;
-            sectorsPerTrack = 0;
-            noOfFiles = 0;
+            //noOfSides = 0;
+            //tracksPerSide = 0;
+            //sectorsPerTrack = 0;
+            //noOfFiles = 0;
 
             dosFormat = DOSFormats.Unknown;
             dosVersion = DOSVersions.Unknown;
-            diskType = DiskTypes.Unknown;
+            //diskType = DiskTypes.Unknown;
 
             if (!LoadDisk(diskPathname))
             {
@@ -78,14 +77,14 @@ namespace OricExplorer
             }
         }
 
-        public virtual Boolean DeleteFile(String diskName, String filename)
+        public virtual bool DeleteFile(string diskName, string filename)
         {
             return true;
         }
 
-        public Boolean SaveFile(String diskName, String fileName, OricProgram program)
+        public bool SaveFile(string diskName, string fileName, OricProgram program)
         {
-            Boolean fileSaved = false;
+            bool fileSaved = false;
 
             // Disk should be loaded
             if (diskLoaded)
@@ -100,7 +99,7 @@ namespace OricExplorer
             return fileSaved;
         }
 
-        public virtual OricProgram LoadFile(String diskName, OricFileInfo oricFileInfo)
+        public virtual OricProgram LoadFile(string diskName, OricFileInfo oricFileInfo)
         {
             OricProgram oricProgram = new OricProgram();
             oricProgram.New();
@@ -108,18 +107,18 @@ namespace OricExplorer
             return oricProgram;
         }
 
-        public virtual OricFileInfo[] ReadDirectory(String diskPathname)
+        public virtual OricFileInfo[] ReadDirectory(string diskPathname)
         {
             OricFileInfo[] files = new OricFileInfo[0];
             return files;
         }
 
         #region Disk functions
-        private DOSFormats GetDOSFormat(Byte track, Byte sector, ref DOSVersions version, Byte offset)
+        private DOSFormats GetDOSFormat(byte track, byte sector, ref DOSVersions version, byte offset)
         {
             DOSFormats format = DOSFormats.Unknown;
 
-            Byte[] sectorData = ReadSector(track, sector);
+            byte[] sectorData = ReadSector(track, sector);
 
             System.IO.MemoryStream memoryStream = new System.IO.MemoryStream(sectorData, 0, sectorData.Length);
             System.IO.BinaryReader binaryReader = new System.IO.BinaryReader(memoryStream);
@@ -134,10 +133,10 @@ namespace OricExplorer
                 memoryStream.Seek(offset, SeekOrigin.Begin);
             }
 
-            Byte[] dosFormat = new Byte[8];
+            byte[] dosFormat;
             dosFormat = binaryReader.ReadBytes(8);
 
-            String dosFormatString = AsciiEncoder.GetString(dosFormat).Trim();
+            string dosFormatString = AsciiEncoder.GetString(dosFormat).Trim();
 
             if (dosFormatString.Equals("SEDORIC"))
             {
@@ -151,7 +150,7 @@ namespace OricExplorer
                 delimiters[1] = '\n';
                 delimiters[2] = ' ';
 
-                String dosVersionString = AsciiEncoder.GetString(dosFormat).Trim(delimiters);
+                string dosVersionString = AsciiEncoder.GetString(dosFormat).Trim(delimiters);
 
                 switch(dosVersionString)
                 {
@@ -211,7 +210,7 @@ namespace OricExplorer
         private void IdentifyDosFormat(ref DOSFormats format, ref DOSVersions version)
         {
             // Identify the DOS format and version of the currently loaded disk
-            format = DOSFormats.Unknown;
+            //format = DOSFormats.Unknown;
             version = DOSVersions.Unknown;
 
             // Firstly lets see if it's a SedOric disk
@@ -236,7 +235,7 @@ namespace OricExplorer
                             if (format == DOSFormats.Unknown)
                             {
                                 // Check if it is a TDOS disk
-                                Byte[] DosID = ReadSector(20, 1);
+                                byte[] DosID = ReadSector(20, 1);
 
                                 if (DosID[0xF6] == 0x80 && DosID[0xF7] == 0x80)
                                 {
@@ -250,13 +249,13 @@ namespace OricExplorer
             }
         }
         
-        private Boolean ValidateDisk()
+        private bool ValidateDisk()
         {
             FileStream diskFile = new FileStream(diskPathname, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             BinaryReader binaryReader = new BinaryReader(diskFile);
 
             // Read the disk identifier (first 9 bytes)
-            Byte[] diskID = new Byte[8];
+            byte[] diskID;
             diskID = binaryReader.ReadBytes(8);
 
             // Close the disk file
@@ -277,33 +276,31 @@ namespace OricExplorer
             diskLoaded = false;
             diskModified = false;
 
-            noOfSides = 0;
-            tracksPerSide = 0;
-            sectorsPerTrack = 0;
-            noOfFiles = 0;
+            //noOfSides = 0;
+            //tracksPerSide = 0;
+            //sectorsPerTrack = 0;
+            //noOfFiles = 0;
         }
 
-        private Boolean LoadDiskIntoMemory()
+        private bool LoadDiskIntoMemory()
         {
             try
             {
                 diskBuffer = File.ReadAllBytes(diskPathname);
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
-                String strMessage = ex.Message;
                 return false;
             }
-            catch (IOException ex)
+            catch (IOException)
             {
-                String strMessage = ex.Message;
                 return false;
             }
 
             return true;
         }
 
-        public Boolean LoadDisk(String diskPathname)
+        public bool LoadDisk(string diskPathname)
         {
             this.diskPathname = diskPathname;
 
@@ -341,13 +338,13 @@ namespace OricExplorer
                 // Get information about the disk
 
                 //TODO: Remove
-                noOfFiles = 10;
+                //noOfFiles = 10;
             }
 
             return true;
         }
 
-        public Boolean WriteDisk()
+        public bool WriteDisk()
         {
             try
             {
@@ -356,9 +353,8 @@ namespace OricExplorer
                 // Reset the modified flag
                 diskModified = false;
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
-                String message = ex.Message;
                 return false;
             }
 
@@ -371,18 +367,18 @@ namespace OricExplorer
         {
             int noOfSectors = 0;
 
-            Byte currTrack = 0;
-            Byte currSide = 0;
-            Byte currSector = 0;
-            Byte sectorSize = 0;
+            byte currTrack;
+            byte currSide;
+            byte currSector;
+            byte sectorSize;
 
-            Boolean markerFound = false;
-            Boolean endOfDisk = false;
+            bool markerFound;
+            bool endOfDisk = false;
 
             sectorPointers = new Hashtable();
 
             // Set buffer index to start of first track
-            UInt32 bufferIndex = 0x0100;
+            uint bufferIndex = 0x0100;
 
             while (!endOfDisk)
             {
@@ -407,10 +403,8 @@ namespace OricExplorer
                             }
                         }
                     }
-                    catch (IndexOutOfRangeException ex)
+                    catch (IndexOutOfRangeException)
                     {
-                        String messageText = ex.Message;
-
                         Console.WriteLine("Index out of range error (Disk : {0}, Index: {1})", diskFilename, bufferIndex);
                         return 0;
                     }
@@ -448,12 +442,12 @@ namespace OricExplorer
                     bufferIndex++;
 
                     // Create the sector key
-                    String sectorKey = String.Format("{0:D2}{1:D2}{2:D2}", currSide, currTrack, currSector);
+                    string sectorKey = string.Format("{0:D2}{1:D2}{2:D2}", currSide, currTrack, currSector);
 
                     // Put sector data into the hashtable
                     if (!sectorPointers.ContainsKey(sectorKey))
                     {
-                        String sectoryInfo = String.Format("{0},{1}", sectorSize, bufferIndex);
+                        string sectoryInfo = string.Format("{0},{1}", sectorSize, bufferIndex);
                         sectorPointers.Add(sectorKey, sectoryInfo);
                     }
 
@@ -474,10 +468,8 @@ namespace OricExplorer
                             return 0;
                         }
                     }
-                    catch (IndexOutOfRangeException ex)
+                    catch (IndexOutOfRangeException)
                     {
-                        String messageText = ex.Message;
-
                         Console.WriteLine("> Index out of range error (Disk : {0}, Index: {1})", diskFilename, bufferIndex);
                         return 0;
                     }
@@ -487,20 +479,20 @@ namespace OricExplorer
             return noOfSectors;
         }
 
-        private Boolean GenerateSectorIndexes()
+        private bool GenerateSectorIndexes()
         {
-            Byte currTrack = 0;
-            Byte currSide = 0;
-            Byte currSector = 0;
-            Byte sectorSize = 0;
+            byte currTrack;
+            byte currSide;
+            byte currSector;
+            byte sectorSize;
 
-            Boolean markerFound = false;
-            Boolean endOfDisk = false;
+            bool markerFound;
+            bool endOfDisk = false;
 
             sectorPointers = new Hashtable();
 
             // Set buffer index to start of first track
-            UInt32 bufferIndex = 0x0100;
+            uint bufferIndex = 0x0100;
 
             while (!endOfDisk)
             {
@@ -527,10 +519,8 @@ namespace OricExplorer
                             }
                         }
                     }
-                    catch (IndexOutOfRangeException ex)
+                    catch (IndexOutOfRangeException)
                     {
-                        String messageText = ex.Message;
-
                         Console.WriteLine("Index out of range error (Disk : {0}, Index: {1})", diskFilename, bufferIndex);
                         return false;
                     }
@@ -565,14 +555,14 @@ namespace OricExplorer
                     bufferIndex++;
 
                     // Create the sector key
-                    String sectorKey = String.Format("{0:D2}{1:D2}{2:D2}", currSide, currTrack, currSector);
+                    string sectorKey = string.Format("{0:D2}{1:D2}{2:D2}", currSide, currTrack, currSector);
 
                     // Put sector data into the hashtable
                     if (!sectorPointers.ContainsKey(sectorKey))
                     {
                         //swLogfile.WriteLine("Creating sector key : {0}, Index {1}", sectorKey, bufferIndex);
 
-                        String sectoryInfo = String.Format("{0},{1}", sectorSize, bufferIndex);
+                        string sectoryInfo = string.Format("{0},{1}", sectorSize, bufferIndex);
                         sectorPointers.Add(sectorKey, sectoryInfo);
                     }
 
@@ -594,10 +584,8 @@ namespace OricExplorer
                             return false;
                         }
                     }
-                    catch (IndexOutOfRangeException ex)
+                    catch (IndexOutOfRangeException)
                     {
-                        String messageText = ex.Message;
-
                         Console.WriteLine("> Index out of range error (Disk : {0}, Index: {1})", diskFilename, bufferIndex);
                         return false;
                     }
@@ -607,109 +595,109 @@ namespace OricExplorer
             return true;
         }
 
-        public String CreateKey(UInt16 track, UInt16 sector)
+        public string CreateKey(ushort track, ushort sector)
         {
             // Set the default side
-            UInt16 side = 0;
+            ushort side = 0;
 
             if ((track & 0x80) == 0x80)
             {
-                track = (UInt16)(track & 0x7F);
+                track = (ushort)(track & 0x7F);
                 side = 1;
             }
 
-            return String.Format("{0:D2}{1:D2}{2:D2}", side, track, sector);
+            return string.Format("{0:D2}{1:D2}{2:D2}", side, track, sector);
         }
         
-        public Byte[] ReadSector(UInt16 track, UInt16 sector, ref UInt16 nextTrack, ref UInt16 nextSector)
+        public byte[] ReadSector(ushort track, ushort sector, ref ushort nextTrack, ref ushort nextSector)
         {
             // Create key
-            String sectorKey = CreateKey(track, sector);
+            string sectorKey = CreateKey(track, sector);
 
-            Byte[] sectorData;
+            byte[] sectorData;
 
             if (sectorPointers.ContainsKey(sectorKey))
             {
-                String[] sectorInfo = sectorPointers[sectorKey].ToString().Split(',');
+                string[] sectorInfo = sectorPointers[sectorKey].ToString().Split(',');
 
-                UInt16 bufferSize = Convert.ToUInt16(sectorInfo[0]);
-                UInt32 bufferIndex = Convert.ToUInt32(sectorInfo[1]);
+                ushort bufferSize = Convert.ToUInt16(sectorInfo[0]);
+                uint bufferIndex = Convert.ToUInt32(sectorInfo[1]);
 
-                sectorData = new Byte[bufferSize * 256];
+                sectorData = new byte[bufferSize * 256];
 
                 // Get first two bytes which point to next sector
                 nextTrack = Convert.ToUInt16(diskBuffer[bufferIndex]);
                 nextSector = Convert.ToUInt16(diskBuffer[bufferIndex + 1]);
 
                 // Copy the sector data
-                for (UInt16 loop = 0; loop < bufferSize * 256; loop++)
+                for (ushort loop = 0; loop < bufferSize * 256; loop++)
                 {
                     sectorData[loop] = diskBuffer[bufferIndex + loop];
                 }
             }
             else
             {
-                sectorData = new Byte[256];
+                sectorData = new byte[256];
                 sectorData.Initialize();
             }
 
             return sectorData;
         }
 
-        public Byte[] ReadSector(UInt16 track, UInt16 sector)
+        public byte[] ReadSector(ushort track, ushort sector)
         {
             // Create key
-            String sectorKey = CreateKey(track, sector);
+            string sectorKey = CreateKey(track, sector);
 
-            Byte[] sectorData;
+            byte[] sectorData;
 
             if (sectorPointers.ContainsKey(sectorKey))
             {
-                String[] sectorInfo = sectorPointers[sectorKey].ToString().Split(',');
+                string[] sectorInfo = sectorPointers[sectorKey].ToString().Split(',');
 
-                UInt16 bufferSize = Convert.ToUInt16(sectorInfo[0]);
-                UInt32 bufferIndex = Convert.ToUInt32(sectorInfo[1]);
+                ushort bufferSize = Convert.ToUInt16(sectorInfo[0]);
+                uint bufferIndex = Convert.ToUInt32(sectorInfo[1]);
 
-                sectorData = new Byte[bufferSize * 256];
+                sectorData = new byte[bufferSize * 256];
 
                 // Copy the sector data
-                for (UInt16 loop = 0; loop < bufferSize * 256; loop++)
+                for (ushort loop = 0; loop < bufferSize * 256; loop++)
                 {
                     sectorData[loop] = diskBuffer[bufferIndex + loop];
                 }
             }
             else
             {
-                sectorData = new Byte[256];
+                sectorData = new byte[256];
                 sectorData.Initialize();
             }
 
             return sectorData;
         }
 
-        public void WriteSector(UInt16 track, UInt16 sector, Byte[] sectorData)
+        public void WriteSector(ushort track, ushort sector, byte[] sectorData)
         {
-            String sectorKey = CreateKey(track, sector);
+            string sectorKey = CreateKey(track, sector);
 
             if (sectorPointers.ContainsKey(sectorKey))
             {
-                String[] strSectorInfo = sectorPointers[sectorKey].ToString().Split(',');
+                string[] strSectorInfo = sectorPointers[sectorKey].ToString().Split(',');
 
-                UInt16 bufferSize = Convert.ToUInt16(strSectorInfo[0]);
-                UInt32 bufferIndex = Convert.ToUInt32(strSectorInfo[1]);
+                //ushort bufferSize = Convert.ToUInt16(strSectorInfo[0]);
+                uint bufferIndex = Convert.ToUInt32(strSectorInfo[1]);
 
-                for (UInt16 loop = 0; loop < sectorData.Length; loop++)
+                for (ushort loop = 0; loop < sectorData.Length; loop++)
                 {
                     diskBuffer[bufferIndex + loop] = sectorData[loop];
                 }
             }
         }
 
-        public void InitialiseSector(UInt16 track, UInt16 sector)
+        public void InitialiseSector(ushort track, ushort sector)
         {
-            Byte[] sectorData = ReadSector(track, sector);
+            byte[] sectorData = ReadSector(track, sector);
 
-            for (UInt16 loop = 0; loop < sectorData.Length; loop++)
+            for (ushort loop = 0; loop < sectorData.Length; loop++)
             {
                 sectorData[loop] = 0x00;
             }
@@ -719,12 +707,12 @@ namespace OricExplorer
         #endregion
 
         #region Getters and Setters
-        public Boolean DiskLoaded()
+        public bool DiskLoaded()
         {
             return diskLoaded;
         }
 
-        public Boolean DiskModified()
+        public bool DiskModified()
         {
             return diskModified;
         }
@@ -739,10 +727,10 @@ namespace OricExplorer
             return dosVersion;
         }
 
-        public UInt16 FileCount()
-        {
-            return noOfFiles;
-        }
+        //public ushort FileCount()
+        //{
+        //    return noOfFiles;
+        //}
         #endregion
 
         #region Misc Functions
@@ -774,33 +762,33 @@ namespace OricExplorer
             return files;
         }*/
 
-        public OricFileInfo[] GetDirectory(String filter)
-        {
-            OricFileInfo fileInfo = new OricFileInfo();
-            fileInfo.Name = "DISKNAME";
+        //public OricFileInfo[] GetDirectory(string filter)
+        //{
+        //    OricFileInfo fileInfo = new OricFileInfo();
+        //    fileInfo.Name = "DISKNAME";
 
-            OricFileInfo[] fileList = new OricFileInfo[10];
+        //    OricFileInfo[] fileList = new OricFileInfo[10];
 
-            return fileList;
-        }
+        //    return fileList;
+        //}
 
-        public StringBuilder OutputDiskSectors(String diskPathname)
+        public StringBuilder OutputDiskSectors(string diskPathname)
         {
             StringBuilder sectorList = new StringBuilder();
 
             foreach (DictionaryEntry entry in sectorPointers)
             {
-                UInt16 side = Convert.ToUInt16(entry.Key.ToString().Substring(0, 2));
-                UInt16 track = Convert.ToUInt16(entry.Key.ToString().Substring(2, 2));
-                UInt16 sector = Convert.ToUInt16(entry.Key.ToString().Substring(4, 2));
+                ushort side = Convert.ToUInt16(entry.Key.ToString().Substring(0, 2));
+                ushort track = Convert.ToUInt16(entry.Key.ToString().Substring(2, 2));
+                ushort sector = Convert.ToUInt16(entry.Key.ToString().Substring(4, 2));
 
-                Byte[] sectorData = ReadSector(track, sector);
+                byte[] sectorData = ReadSector(track, sector);
 
                 sectorList.AppendFormat("      Side : {0}, Track : {1}, Sector : {2}", side, track, sector);
                 sectorList.AppendLine();
 
                 int count = 0;
-                String ascii = "";
+                string ascii = "";
 
                 for (int index = 0; index < sectorData.Length; index++)
                 {

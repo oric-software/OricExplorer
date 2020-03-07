@@ -33,10 +33,10 @@
             this.buttonBrowseForTextFile = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioButtonNewTape = new System.Windows.Forms.RadioButton();
-            this.radioButtonExistingTape = new System.Windows.Forms.RadioButton();
-            this.radioButtonNewDisk = new System.Windows.Forms.RadioButton();
             this.radioButtonExistingDisk = new System.Windows.Forms.RadioButton();
+            this.radioButtonNewDisk = new System.Windows.Forms.RadioButton();
+            this.radioButtonExistingTape = new System.Windows.Forms.RadioButton();
+            this.radioButtonNewTape = new System.Windows.Forms.RadioButton();
             this.textBoxProgramName = new System.Windows.Forms.TextBox();
             this.textBoxStartAddress = new System.Windows.Forms.TextBox();
             this.checkBoxAutoRun = new System.Windows.Forms.CheckBox();
@@ -46,12 +46,12 @@
             this.buttonBrowseForDestinationFile = new System.Windows.Forms.Button();
             this.textBoxDestinationFile = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonReset = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxEndAddress = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.buttonImport = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.textBoxEndAddress = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.buttonReset = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -109,29 +109,17 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Add To";
             // 
-            // radioButtonNewTape
+            // radioButtonExistingDisk
             // 
-            this.radioButtonNewTape.AutoSize = true;
-            this.radioButtonNewTape.Location = new System.Drawing.Point(9, 22);
-            this.radioButtonNewTape.Name = "radioButtonNewTape";
-            this.radioButtonNewTape.Size = new System.Drawing.Size(75, 17);
-            this.radioButtonNewTape.TabIndex = 0;
-            this.radioButtonNewTape.TabStop = true;
-            this.radioButtonNewTape.Text = "New Tape";
-            this.radioButtonNewTape.UseVisualStyleBackColor = true;
-            this.radioButtonNewTape.CheckedChanged += new System.EventHandler(this.radioButtonNewTape_CheckedChanged);
-            // 
-            // radioButtonExistingTape
-            // 
-            this.radioButtonExistingTape.AutoSize = true;
-            this.radioButtonExistingTape.Location = new System.Drawing.Point(9, 45);
-            this.radioButtonExistingTape.Name = "radioButtonExistingTape";
-            this.radioButtonExistingTape.Size = new System.Drawing.Size(89, 17);
-            this.radioButtonExistingTape.TabIndex = 1;
-            this.radioButtonExistingTape.TabStop = true;
-            this.radioButtonExistingTape.Text = "Existing Tape";
-            this.radioButtonExistingTape.UseVisualStyleBackColor = true;
-            this.radioButtonExistingTape.CheckedChanged += new System.EventHandler(this.radioButtonExistingTape_CheckedChanged);
+            this.radioButtonExistingDisk.AutoSize = true;
+            this.radioButtonExistingDisk.Location = new System.Drawing.Point(9, 101);
+            this.radioButtonExistingDisk.Name = "radioButtonExistingDisk";
+            this.radioButtonExistingDisk.Size = new System.Drawing.Size(85, 17);
+            this.radioButtonExistingDisk.TabIndex = 3;
+            this.radioButtonExistingDisk.TabStop = true;
+            this.radioButtonExistingDisk.Text = "Existing Disk";
+            this.radioButtonExistingDisk.UseVisualStyleBackColor = true;
+            this.radioButtonExistingDisk.CheckedChanged += new System.EventHandler(this.radioButtonExistingDisk_CheckedChanged);
             // 
             // radioButtonNewDisk
             // 
@@ -145,17 +133,29 @@
             this.radioButtonNewDisk.UseVisualStyleBackColor = true;
             this.radioButtonNewDisk.CheckedChanged += new System.EventHandler(this.radioButtonNewDisk_CheckedChanged);
             // 
-            // radioButtonExistingDisk
+            // radioButtonExistingTape
             // 
-            this.radioButtonExistingDisk.AutoSize = true;
-            this.radioButtonExistingDisk.Location = new System.Drawing.Point(9, 101);
-            this.radioButtonExistingDisk.Name = "radioButtonExistingDisk";
-            this.radioButtonExistingDisk.Size = new System.Drawing.Size(85, 17);
-            this.radioButtonExistingDisk.TabIndex = 3;
-            this.radioButtonExistingDisk.TabStop = true;
-            this.radioButtonExistingDisk.Text = "Existing Disk";
-            this.radioButtonExistingDisk.UseVisualStyleBackColor = true;
-            this.radioButtonExistingDisk.CheckedChanged += new System.EventHandler(this.radioButtonExistingDisk_CheckedChanged);
+            this.radioButtonExistingTape.AutoSize = true;
+            this.radioButtonExistingTape.Location = new System.Drawing.Point(9, 45);
+            this.radioButtonExistingTape.Name = "radioButtonExistingTape";
+            this.radioButtonExistingTape.Size = new System.Drawing.Size(89, 17);
+            this.radioButtonExistingTape.TabIndex = 1;
+            this.radioButtonExistingTape.TabStop = true;
+            this.radioButtonExistingTape.Text = "Existing Tape";
+            this.radioButtonExistingTape.UseVisualStyleBackColor = true;
+            this.radioButtonExistingTape.CheckedChanged += new System.EventHandler(this.radioButtonExistingTape_CheckedChanged);
+            // 
+            // radioButtonNewTape
+            // 
+            this.radioButtonNewTape.AutoSize = true;
+            this.radioButtonNewTape.Location = new System.Drawing.Point(9, 22);
+            this.radioButtonNewTape.Name = "radioButtonNewTape";
+            this.radioButtonNewTape.Size = new System.Drawing.Size(75, 17);
+            this.radioButtonNewTape.TabIndex = 0;
+            this.radioButtonNewTape.TabStop = true;
+            this.radioButtonNewTape.Text = "New Tape";
+            this.radioButtonNewTape.UseVisualStyleBackColor = true;
+            this.radioButtonNewTape.CheckedChanged += new System.EventHandler(this.radioButtonNewTape_CheckedChanged);
             // 
             // textBoxProgramName
             // 
@@ -211,7 +211,7 @@
             // 
             // buttonBrowseForDestinationFile
             // 
-            this.buttonBrowseForDestinationFile.Location = new System.Drawing.Point(274, 39);
+            this.buttonBrowseForDestinationFile.Location = new System.Drawing.Point(274, 40);
             this.buttonBrowseForDestinationFile.Name = "buttonBrowseForDestinationFile";
             this.buttonBrowseForDestinationFile.Size = new System.Drawing.Size(75, 22);
             this.buttonBrowseForDestinationFile.TabIndex = 5;
@@ -242,6 +242,34 @@
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Program Settings";
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.Location = new System.Drawing.Point(274, 21);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(75, 22);
+            this.buttonReset.TabIndex = 6;
+            this.buttonReset.Text = "Reset";
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(185, 51);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "End :";
+            // 
+            // textBoxEndAddress
+            // 
+            this.textBoxEndAddress.Location = new System.Drawing.Point(223, 48);
+            this.textBoxEndAddress.Name = "textBoxEndAddress";
+            this.textBoxEndAddress.ReadOnly = true;
+            this.textBoxEndAddress.Size = new System.Drawing.Size(45, 20);
+            this.textBoxEndAddress.TabIndex = 10;
+            this.textBoxEndAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // groupBox4
             // 
@@ -274,34 +302,6 @@
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
-            // 
-            // textBoxEndAddress
-            // 
-            this.textBoxEndAddress.Location = new System.Drawing.Point(223, 48);
-            this.textBoxEndAddress.Name = "textBoxEndAddress";
-            this.textBoxEndAddress.ReadOnly = true;
-            this.textBoxEndAddress.Size = new System.Drawing.Size(45, 20);
-            this.textBoxEndAddress.TabIndex = 10;
-            this.textBoxEndAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(185, 51);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "End :";
-            // 
-            // buttonReset
-            // 
-            this.buttonReset.Location = new System.Drawing.Point(274, 20);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(75, 22);
-            this.buttonReset.TabIndex = 6;
-            this.buttonReset.Text = "Reset";
-            this.buttonReset.UseVisualStyleBackColor = true;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
             // ImportTextFileForm
             // 

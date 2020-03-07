@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Reflection;
-using System.Diagnostics;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows.Forms;
+
     partial class AboutBox : Form
     {
         public AboutBox()

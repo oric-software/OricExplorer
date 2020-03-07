@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
-using System.Collections;
-
-namespace OricExplorer.Forms
+﻿namespace OricExplorer.Forms
 {
+    using System;
+    using System.IO;
+    using System.Windows.Forms;
+
     public partial class ImportTextFileForm : Form
     {
         BasicTokens basicTokens;
@@ -45,9 +38,9 @@ namespace OricExplorer.Forms
             //buttonImport.Enabled = false;
         }
 
-        private String BrowseForTextFile()
+        private string BrowseForTextFile()
         {
-            String textFilePathName = "";
+            string textFilePathName = "";
 
             OpenFileDialog fileDialog = new OpenFileDialog();
 
@@ -67,9 +60,9 @@ namespace OricExplorer.Forms
             return textFilePathName;
         }
 
-        private String BrowseForTapeFile()
+        private string BrowseForTapeFile()
         {
-            String tapeFilePathName = "";
+            string tapeFilePathName = "";
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
@@ -92,7 +85,7 @@ namespace OricExplorer.Forms
         #region Dialog Controls
         private void buttonBrowseForTextFile_Click(object sender, EventArgs e)
         {
-            String textFilePathName = BrowseForTextFile();
+            string textFilePathName = BrowseForTextFile();
 
             if (textFilePathName.Length > 0)
             {
@@ -102,7 +95,7 @@ namespace OricExplorer.Forms
 
         private void buttonBrowseForDestinationFile_Click(object sender, EventArgs e)
         {
-            String tapeFilePathName = BrowseForTapeFile();
+            string tapeFilePathName = BrowseForTapeFile();
 
             if (tapeFilePathName.Length > 0)
             {
@@ -191,20 +184,20 @@ namespace OricExplorer.Forms
         #endregion
 
         #region Text to BASIC Functions
-        private Boolean ConvertTextToBASIC(String[] textBuffer)
+        private bool ConvertTextToBASIC(String[] textBuffer)
         {
-            Boolean bREM = false;
-            Boolean bDATA = false;
-            Boolean bString = false;
+            bool bREM = false;
+            bool bDATA = false;
+            bool bString = false;
 
-            UInt16 ui16CurrentAddress = program.StartAddress;
+            ushort ui16CurrentAddress = program.StartAddress;
 
             int iProgramIdx = 0;
             int iBufferIdx = 0;
             int iAddressIdx = 0;
 
             // Initialise the program buffer
-            program.m_programData = new Byte[0xFFFF];
+            program.m_programData = new byte[0xFFFF];
             program.m_programData.Initialize();
 
             for (int iLoop = 0; iLoop < textBuffer.Length; iLoop++)
@@ -219,7 +212,7 @@ namespace OricExplorer.Forms
                     iBufferIdx = 0;
                     iBufferIdx = FindNextNonSpaceChar(textBuffer[iLoop], iBufferIdx);
 
-                    String lineno = "";
+                    string lineno = "";
 
                     // Get line no.
                     while (char.IsNumber(GetNextChar(textBuffer[iLoop], iBufferIdx)))
@@ -229,7 +222,7 @@ namespace OricExplorer.Forms
                         iBufferIdx++;
                     }
 
-                    UInt16 ui16LineNo = Convert.ToUInt16(lineno, 10);
+                    ushort ui16LineNo = Convert.ToUInt16(lineno, 10);
 
                     if (ui16LineNo < 0 || ui16LineNo > 0xFFFF)
                     {
@@ -245,17 +238,17 @@ namespace OricExplorer.Forms
                     program.m_programData[iProgramIdx] = 0xFE;
                     iProgramIdx++;
 
-                    program.m_programData[iProgramIdx] = (Byte)(ui16LineNo & 0xFF);
+                    program.m_programData[iProgramIdx] = (byte)(ui16LineNo & 0xFF);
 
                     iProgramIdx++;
 
-                    program.m_programData[iProgramIdx] = (Byte)(ui16LineNo >> 8);
+                    program.m_programData[iProgramIdx] = (byte)(ui16LineNo >> 8);
 
                     iProgramIdx++;
 
                     iBufferIdx = FindNextNonSpaceChar(textBuffer[iLoop], iBufferIdx);
 
-                    Boolean bEndOfLine = false;
+                    bool bEndOfLine = false;
 
                     while (!bEndOfLine)
                     {
@@ -302,7 +295,7 @@ namespace OricExplorer.Forms
                             {
                                 program.m_programData[iProgramIdx] = Convert.ToByte(iToken);
 
-                                String token = basicTokens.GetBasicToken((Byte)(iToken - 0x80));
+                                string token = basicTokens.GetBasicToken((byte)(iToken - 0x80));
                                 iBufferIdx += token.Length;
                             }
                         }
@@ -315,10 +308,10 @@ namespace OricExplorer.Forms
                         {
                             ui16CurrentAddress += 5;
 
-                            program.m_programData[iAddressIdx] = (Byte)(ui16CurrentAddress & 0xFF);
+                            program.m_programData[iAddressIdx] = (byte)(ui16CurrentAddress & 0xFF);
                             iAddressIdx++;
 
-                            program.m_programData[iAddressIdx] = (Byte)(ui16CurrentAddress >> 8);
+                            program.m_programData[iAddressIdx] = (byte)(ui16CurrentAddress >> 8);
 
                             program.m_programData[iProgramIdx] = 0x00;
                             iProgramIdx++;
@@ -340,43 +333,43 @@ namespace OricExplorer.Forms
             using (BinaryWriter binWriter = new BinaryWriter(fsm))
             {
                 // Write the Tape leader
-                binWriter.Write((Byte)0x16);
-                binWriter.Write((Byte)0x16);
-                binWriter.Write((Byte)0x16);
-                binWriter.Write((Byte)0x24);
-                binWriter.Write((Byte)0x00);
-                binWriter.Write((Byte)0x00);
+                binWriter.Write((byte)0x16);
+                binWriter.Write((byte)0x16);
+                binWriter.Write((byte)0x16);
+                binWriter.Write((byte)0x24);
+                binWriter.Write((byte)0x00);
+                binWriter.Write((byte)0x00);
 
                 // Write the Program format
                 if (program.Format == OricProgram.ProgramFormat.BasicProgram)
-                    binWriter.Write((Byte)0x00);
+                    binWriter.Write((byte)0x00);
                 else
-                    binWriter.Write((Byte)0x01);
+                    binWriter.Write((byte)0x01);
 
                 // Write the Auto run flag
                 if (program.AutoRun == OricProgram.AutoRunFlag.Enabled)
-                    binWriter.Write((Byte)0x00);
+                    binWriter.Write((byte)0x00);
                 else
-                    binWriter.Write((Byte)0x01);
+                    binWriter.Write((byte)0x01);
 
                 program.EndAddress = (ushort)(program.StartAddress + iProgramIdx);
 
                 // Get the High and Low bytes of the End address and write to file
-                Byte hi = Convert.ToByte((program.EndAddress >> 8) & 0xFF);
-                Byte lo = Convert.ToByte(program.EndAddress & 0xFF);
+                byte hi = Convert.ToByte((program.EndAddress >> 8) & 0xFF);
+                byte lo = Convert.ToByte(program.EndAddress & 0xFF);
 
-                binWriter.Write((Byte)hi);
-                binWriter.Write((Byte)lo);
+                binWriter.Write((byte)hi);
+                binWriter.Write((byte)lo);
 
                 // Get the High and Low bytes of the Start address and write to file
                 hi = Convert.ToByte((program.StartAddress >> 8) & 0xFF);
                 lo = Convert.ToByte(program.StartAddress & 0xFF);
 
-                binWriter.Write((Byte)hi);
-                binWriter.Write((Byte)lo);
+                binWriter.Write((byte)hi);
+                binWriter.Write((byte)lo);
 
                 // Write unused byte
-                binWriter.Write((Byte)0x00);
+                binWriter.Write((byte)0x00);
 
                 int iIndex = 0;
 
@@ -387,12 +380,12 @@ namespace OricExplorer.Forms
                 }
 
                 // NULL terminate the Program name
-                binWriter.Write((Byte)0x00);
+                binWriter.Write((byte)0x00);
 
                 // Write file data
                 for (iIndex = 0; iIndex < iProgramIdx; iIndex++)
                 {
-                    binWriter.Write((Byte)program.m_programData[iIndex]);
+                    binWriter.Write((byte)program.m_programData[iIndex]);
                 }
             }
 
@@ -421,7 +414,7 @@ namespace OricExplorer.Forms
             for (int iIndex = 0; iIndex < tapeCatalog.Length; iIndex++)
             {
                 OricProgram tapeProgram = new OricProgram();
-                tapeProgram = oricTape.Load(oricTape.TapeName, "", (short)iIndex);
+                tapeProgram = oricTape.Load(oricTape.TapeName, "", (ushort)iIndex);
 
                 if (iIndex == programInfo.ProgramIndex)
                 {
@@ -438,13 +431,13 @@ namespace OricExplorer.Forms
             //toolStripStatusLabelMain.Text = "File saved successfully.";
         }*/
 
-        private char GetNextChar(String buffer, int index)
+        private char GetNextChar(string buffer, int index)
         {
             char chChar = Convert.ToChar(buffer.Substring(index, 1));
             return chChar;
         }
 
-        private int FindNextNonSpaceChar(String buffer, int index)
+        private int FindNextNonSpaceChar(string buffer, int index)
         {
             while (char.Equals(buffer[index], ' '))
             {
@@ -454,16 +447,16 @@ namespace OricExplorer.Forms
             return index;
         }
 
-        private int MatchKeyword(String buffer, int index)
+        private int MatchKeyword(string buffer, int index)
         {
             int iToken = 0;
 
             int iLoop = 0;
-            Boolean bTokenFound = false;
+            bool bTokenFound = false;
 
             while (iLoop < basicTokens.TokenCount && !bTokenFound)
             {
-                String strToken = basicTokens.GetBasicToken((Byte)(iLoop));
+                string strToken = basicTokens.GetBasicToken((byte)(iLoop));
 
                 if (strToken.Length <= (buffer.Length - index))
                 {

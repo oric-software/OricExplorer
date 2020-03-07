@@ -1,36 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Text;
-using System.Windows.Forms;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Windows.Forms;
+
     public partial class TextScreenEditorForm : Form
     {
         private enum ScreenRegion { HORIZONTAL_RULER, VERTICAL_RULER, SCREEN_DISPLAY, OUTSIDE_REGION };
         private enum EditingMode { COLOUR_MODE, ATTRIBUTE_MODE, TEXT_MODE, ERASE_MODE };
 
-        public Byte[] stdCharSet;
-        public Byte[] bScrnData;
+        public byte[] stdCharSet;
+        public byte[] bScrnData;
 
         public Image screenImage;
 
-        public UInt16 m_ui16DataLength;
+        public ushort m_ui16DataLength;
 
-        private UInt16 m_ui16DisplayBytes;
+        private ushort m_ui16DisplayBytes;
 
-        public UInt16 m_ui16Offset;
-        public UInt16 m_ui16StartAddress;
+        public ushort m_ui16Offset;
+        public ushort m_ui16StartAddress;
 
-        public Byte cScrnPaper;
-        public Byte cScrnInk;
-        public Byte cResult;
+        public byte cScrnPaper;
+        public byte cScrnInk;
+        public byte cResult;
 
         public OricFileInfo fileInfo;
         public OricDiskInfo diskInfo;
@@ -50,16 +44,16 @@ namespace OricExplorer
         short screenOffsetX = 21;
         short screenOffsetY = 17;
 
-        public Boolean m_bFlash;
+        public bool m_bFlash;
 
-        private Boolean bShowGrid;
-        private Boolean bShowAttrIndicator;
+        private bool bShowGrid;
+        private bool bShowAttrIndicator;
 
-        public Boolean bScrnUpdated;
+        public bool bScrnUpdated;
 
-        private int _ZoomFactor;
+        //private int _ZoomFactor;
 
-        public OricExplorer.MediaType mediaType;
+        public ConstantsAndEnums.MediaType mediaType;
 
         private EditingMode editMode = EditingMode.COLOUR_MODE;
         private System.Windows.Forms.Timer FlashTimer;
@@ -155,7 +149,7 @@ namespace OricExplorer
 
             m_bFlash = true;
 
-            _ZoomFactor = 2;
+            //_ZoomFactor = 2;
 
             radioButtonColourMode.Checked = true;
             editMode = EditingMode.COLOUR_MODE;
@@ -163,22 +157,22 @@ namespace OricExplorer
 
         private void TextEditorForm_Load(object sender, EventArgs e)
         {
-            String strTitleText = Text;
-            Text = String.Format("Text Screen Editor - {0}", fileInfo.ProgramName);
+            string strTitleText = Text;
+            Text = string.Format("Text Screen Editor - {0}", fileInfo.ProgramName);
 
             // Initialise program settings
             loadedProgram.New();
 
-            if (mediaType == OricExplorer.MediaType.DiskFile)
+            if (mediaType == ConstantsAndEnums.MediaType.DiskFile)
             {
                 loadedProgram = fileInfo.LoadFile();
             }
-            else if (mediaType == OricExplorer.MediaType.TapeFile)
+            else if (mediaType == ConstantsAndEnums.MediaType.TapeFile)
             {
                 loadedProgram = oricTape.Load(Path.Combine(tapeInfo.Folder, tapeInfo.Name), fileInfo.ProgramName, fileInfo.ProgramIndex);
             }
 
-            bScrnData = new Byte[loadedProgram.ProgramLength];
+            bScrnData = new byte[loadedProgram.ProgramLength];
 
             for(int iIndex = 0; iIndex < loadedProgram.ProgramLength; iIndex++)
             {
@@ -204,10 +198,10 @@ namespace OricExplorer
 
             UpdateStandardImage();
 
-            infoBoxStartAddress.Text = String.Format("${0:X4}", loadedProgram.StartAddress);
-            infoBoxEndAddress.Text = String.Format("${0:X4}", loadedProgram.EndAddress);
-            infoBoxLength.Text = String.Format("{0:N0} bytes ({1:N1} KB)", loadedProgram.ProgramLength, loadedProgram.ProgramLength/1024);
-            infoBoxDimensions.Text = String.Format("40 columns by {0} rows", lastRow - firstRow);
+            infoBoxStartAddress.Text = string.Format("${0:X4}", loadedProgram.StartAddress);
+            infoBoxEndAddress.Text = string.Format("${0:X4}", loadedProgram.EndAddress);
+            infoBoxLength.Text = string.Format("{0:N0} bytes ({1:N1} KB)", loadedProgram.ProgramLength, loadedProgram.ProgramLength/1024);
+            infoBoxDimensions.Text = string.Format("40 columns by {0} rows", lastRow - firstRow);
         }
 
         private void pictureBoxEditor_MouseMove(object sender, MouseEventArgs e)
@@ -221,11 +215,11 @@ namespace OricExplorer
             switch(region)
             {
                 case ScreenRegion.HORIZONTAL_RULER:
-                    toolStripStatusLabel1.Text = String.Format("Mouse over horizontal ruler - X:{0:D2},Y{1:D2}", screenX, screenY);
+                    toolStripStatusLabel1.Text = string.Format("Mouse over horizontal ruler - X:{0:D2},Y{1:D2}", screenX, screenY);
                     break;
 
                 case ScreenRegion.VERTICAL_RULER:
-                    toolStripStatusLabel1.Text = String.Format("Mouse over vertical ruler - X:{0:D2},Y{1:D2}", screenX, screenY);
+                    toolStripStatusLabel1.Text = string.Format("Mouse over vertical ruler - X:{0:D2},Y{1:D2}", screenX, screenY);
                     break;
 
                 case ScreenRegion.SCREEN_DISPLAY:
@@ -273,11 +267,11 @@ namespace OricExplorer
             switch (region)
             {
                 case ScreenRegion.HORIZONTAL_RULER:
-                    toolStripStatusLabel1.Text = String.Format("Mouse over horizontal ruler - X:{0:D2},Y{1:D2}", screenX, screenY);
+                    toolStripStatusLabel1.Text = string.Format("Mouse over horizontal ruler - X:{0:D2},Y{1:D2}", screenX, screenY);
                     break;
 
                 case ScreenRegion.VERTICAL_RULER:
-                    toolStripStatusLabel1.Text = String.Format("Mouse over vertical ruler - X:{0:D2},Y{1:D2}", screenX, screenY);
+                    toolStripStatusLabel1.Text = string.Format("Mouse over vertical ruler - X:{0:D2},Y{1:D2}", screenX, screenY);
                     break;
 
                 case ScreenRegion.SCREEN_DISPLAY:
@@ -292,7 +286,7 @@ namespace OricExplorer
                             switch (editMode)
                             {
                                 case EditingMode.COLOUR_MODE:
-                                    Byte colourIndex = 0;
+                                    byte colourIndex = 0;
 
                                     if (e.Button == MouseButtons.Left)
                                     {
@@ -371,7 +365,7 @@ namespace OricExplorer
             // Set the screens PAPER attribute (Column 0)
             for (int iIndex = 0; iIndex < fileInfo.LengthBytes; iIndex += 40)
             {
-                Byte colourIndex = Convert.ToByte(labelSelectedPaperColour.Tag);
+                byte colourIndex = Convert.ToByte(labelSelectedPaperColour.Tag);
                 colourIndex += 16;
 
                 bScrnData[iIndex] = colourIndex;
@@ -401,7 +395,7 @@ namespace OricExplorer
             colourLabel = new Label();
 
             colourLabel = (Label)sender;
-            Byte bColour = Convert.ToByte(colourLabel.Tag);
+            byte bColour = Convert.ToByte(colourLabel.Tag);
 
             if (e.Button == MouseButtons.Left)
             {
@@ -477,27 +471,27 @@ namespace OricExplorer
             UpdateStandardImage();
         }
 
-        private void DisplayInfoText(int screenXPos, int screenYPos, Byte screenByte)
+        private void DisplayInfoText(int screenXPos, int screenYPos, byte screenByte)
         {
             int memoryOffset = (screenYPos * 40) + screenXPos;
             int screenAddress = fileInfo.StartAddress + memoryOffset;
 
             if (screenYPos == 0)
             {
-                toolStripStatusLabelPosition.Text = String.Format("{0:D2},SL", screenXPos);
+                toolStripStatusLabelPosition.Text = string.Format("{0:D2},SL", screenXPos);
             }
             else
             {
-                toolStripStatusLabelPosition.Text = String.Format("{0:D2},{1:D2}", screenXPos, screenYPos - 1);
+                toolStripStatusLabelPosition.Text = string.Format("{0:D2},{1:D2}", screenXPos, screenYPos - 1);
             }
 
-            toolStripStatusLabelAddress.Text = String.Format("${0:X4}", screenAddress);
-            toolStripStatusLabelAscii.Text = String.Format("#{0:X2} ({1:D3})", screenByte, screenByte);
+            toolStripStatusLabelAddress.Text = string.Format("${0:X4}", screenAddress);
+            toolStripStatusLabelAscii.Text = string.Format("#{0:X2} ({1:D3})", screenByte, screenByte);
 
             if ((screenByte >= 0 && screenByte <= 7) || (screenByte >= 16 && screenByte <= 23))
             {
                 int colourValue = 0;
-                String colourDescription = "";
+                string colourDescription = "";
 
                 if (screenByte >= 16)
                 {
@@ -539,13 +533,13 @@ namespace OricExplorer
                 }
                 else
                 {
-                    toolStripStatusLabelInfo.Text = String.Format("ASCII Character : {0}", Convert.ToChar(screenByte));
+                    toolStripStatusLabelInfo.Text = string.Format("ASCII Character : {0}", Convert.ToChar(screenByte));
                 }
 
             }
             else
             {
-                String attributeDescription = "";
+                string attributeDescription = "";
 
                 switch (screenByte)
                 {
@@ -580,7 +574,7 @@ namespace OricExplorer
 
         private void DrawTextPreview(Image textImage)
         {
-            Byte cByte = 0;
+            byte cByte = 0;
 
             short siXPos = 0;
             short siYPos = 0;
@@ -589,11 +583,11 @@ namespace OricExplorer
             short siLimit = 0;
             short siLine = 0;
 
-            UInt16 ui16Loop = 0;
-            UInt16 ui16ByteCount = 0;
+            ushort ui16Loop = 0;
+            ushort ui16ByteCount = 0;
 
-            Boolean bDoubleHeight = false;
-            Boolean bBlink = false;
+            bool bDoubleHeight = false;
+            bool bBlink = false;
 
             int imageWidth = 480 + screenOffsetX;
             int imageHeight = 448 + screenOffsetY;
@@ -611,7 +605,7 @@ namespace OricExplorer
             }
             catch(ObjectDisposedException ex)
             {
-                String message = ex.Message;
+                string message = ex.Message;
             }
 
             // Create graphics object for alteration.
@@ -662,7 +656,7 @@ namespace OricExplorer
                 {
                     if (cByte >= 16 && cByte <= 23)
                     {
-                        cScrnPaper = (Byte)(cByte - 16);
+                        cScrnPaper = (byte)(cByte - 16);
 
                         int iWidth = (40 - ui16ByteCount) * pixelWidth;
 
@@ -738,7 +732,7 @@ namespace OricExplorer
 
                         for (short siLoop3 = 2; siLoop3 < 8; siLoop3++)
                         {
-                            Byte cBit = (Byte)(siPattern << (siLoop3));
+                            byte cBit = (byte)(siPattern << (siLoop3));
 
                             cResult = Convert.ToByte(0x80 & cBit);
 
@@ -832,7 +826,7 @@ namespace OricExplorer
 
             for (int column = 0; column < 40; column++)
             {
-                String number = String.Format("{0:D2}", column);
+                string number = string.Format("{0:D2}", column);
 
                 if (screenX == column)
                 {
@@ -873,7 +867,7 @@ namespace OricExplorer
 
             for (int row = startRow; row < 27; row++)
             {
-                String number = "";
+                string number = "";
 
                 if (row == -1)
                 {
@@ -881,7 +875,7 @@ namespace OricExplorer
                 }
                 else
                 {
-                    number = String.Format("{0:D2}", row);
+                    number = string.Format("{0:D2}", row);
                 }
 
                 if (screenY == row)
@@ -939,7 +933,7 @@ namespace OricExplorer
             pictureBox1.Image = dataPreview.screenImageData;
         }
 
-        private Color Colour(Byte cIndex)
+        private Color Colour(byte cIndex)
         {
             Color crColour;
 
@@ -1039,7 +1033,7 @@ namespace OricExplorer
         {
             int iBufferLen = Properties.Resources.StdCharSet.Length;
 
-            stdCharSet = new Byte[iBufferLen];
+            stdCharSet = new byte[iBufferLen];
 
             Properties.Resources.StdCharSet.CopyTo(stdCharSet, 0);
         }
@@ -1052,11 +1046,11 @@ namespace OricExplorer
             return iAddress;
         }
 
-        private void UpdateScreenMemory(int iAddress, Byte bNewValue)
+        private void UpdateScreenMemory(int iAddress, byte bNewValue)
         {
             // Update form title to indicate amendments have been made
             bScrnUpdated = true;
-            Text = String.Format("Text Screen Editor - [{0}]*", fileInfo.ProgramName);
+            Text = string.Format("Text Screen Editor - [{0}]*", fileInfo.ProgramName);
 
             int iIndex = iAddress - fileInfo.StartAddress;
 

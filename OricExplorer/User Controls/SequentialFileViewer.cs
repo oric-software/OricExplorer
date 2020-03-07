@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
-
 namespace OricExplorer.User_Controls
 {
+    using System;
+    using System.Drawing;
+    using System.Text;
+    using System.Windows.Forms;
+
     public partial class SequentialFileViewer : UserControl
     {
         public Label FileInformation;
@@ -26,13 +23,13 @@ namespace OricExplorer.User_Controls
 
         public void InitialiseView()
         {
-            UInt16 ui16RecordCount = 0;
-            UInt16 ui16Index = 0;
+            ushort ui16RecordCount = 0;
+            ushort ui16Index = 0;
 
-            UInt16 ui16DataLength = 0;
+            ushort ui16DataLength = 0;
             ListViewItem lvItem;
             StringBuilder oData;
-            Byte bByte = 0;
+            byte bByte = 0;
 
             listViewRecords.Items.Clear();
 
@@ -61,13 +58,13 @@ namespace OricExplorer.User_Controls
                         ui16DataLength = ProgramData.m_programData[ui16Index];
 
                         lvItem = new ListViewItem();
-                        lvItem.Text = String.Format("{0}", ui16RecordCount);
+                        lvItem.Text = string.Format("{0}", ui16RecordCount);
                         lvItem.SubItems.Add("Numeric");
 
                         oData = new StringBuilder();
                         ui16Index++;
 
-                        Byte Exponent = ProgramData.m_programData[ui16Index];
+                        byte Exponent = ProgramData.m_programData[ui16Index];
                         ui16Index++;
 
                         StringBuilder Mantissa = new StringBuilder();
@@ -81,7 +78,7 @@ namespace OricExplorer.User_Controls
 
                         Int32 NumericValue = ConvertNumber(Exponent, Convert.ToUInt32(Mantissa.ToString(), 16));
 
-                        lvItem.SubItems.Add(String.Format("{0}", NumericValue));
+                        lvItem.SubItems.Add(string.Format("{0}", NumericValue));
                         lvItem.ForeColor = Color.DarkGreen;
                         listViewRecords.Items.Add(lvItem);
                         break;
@@ -90,7 +87,7 @@ namespace OricExplorer.User_Controls
                         ui16DataLength = ProgramData.m_programData[ui16Index];
 
                         lvItem = new ListViewItem();
-                        lvItem.Text = String.Format("{0}", ui16RecordCount);
+                        lvItem.Text = string.Format("{0}", ui16RecordCount);
                         lvItem.SubItems.Add("String");
 
                         oData = new StringBuilder();
@@ -123,8 +120,8 @@ namespace OricExplorer.User_Controls
                         ui16DataLength = ProgramData.m_programData[ui16Index];
 
                         lvItem = new ListViewItem();
-                        lvItem.Text = String.Format("{0}", ui16RecordCount);
-                        lvItem.SubItems.Add(String.Format("Unknown ({0:x2})", bByte));
+                        lvItem.Text = string.Format("{0}", ui16RecordCount);
+                        lvItem.SubItems.Add(string.Format("Unknown ({0:x2})", bByte));
 
                         oData = new StringBuilder();
                         ui16Index++;
@@ -145,7 +142,7 @@ namespace OricExplorer.User_Controls
             AdjustColumnHeaderWidths();
             listViewRecords.Items[0].Selected = true;
 
-            FileInformation.Text = String.Format("{0} Records\n{1:N0} Bytes\nFile is {2}",
+            FileInformation.Text = string.Format("{0} Records\n{1:N0} Bytes\nFile is {2}",
                                                  listViewRecords.Items.Count, ProgramInfo.LengthBytes,
                                                  ProgramInfo.Protection.ToString());
         }
@@ -167,21 +164,21 @@ namespace OricExplorer.User_Controls
             }
         }
 
-        private Int32 ConvertNumber(Byte Exponent, UInt32 Mantissa)
+        private Int32 ConvertNumber(byte Exponent, uint Mantissa)
         {
             Int32 Result = 0;
-            Boolean NegativeNumber = false;
+            bool NegativeNumber = false;
 
             if (Exponent == 0 & Mantissa == 0)
             {
                 return 0;
             }
 
-            Byte BitsToShift = (Byte)(Exponent - 128);
+            byte BitsToShift = (byte)(Exponent - 128);
 
             if ((Mantissa & 0x80000000) != 0x80000000)
             {
-                Mantissa = (UInt32)(Mantissa + 0x80000000);
+                Mantissa = (uint)(Mantissa + 0x80000000);
             }
             else
             {

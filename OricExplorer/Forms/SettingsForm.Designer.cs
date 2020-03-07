@@ -59,18 +59,18 @@ namespace OricExplorer
             this.tabPageTapeAndDiskFolders = new System.Windows.Forms.TabPage();
             this.tabPageEmulator = new System.Windows.Forms.TabPage();
             this.tabPageDirListings = new System.Windows.Forms.TabPage();
+            this.textBoxSample = new System.Windows.Forms.TextBox();
+            this.buttonMoveDown = new System.Windows.Forms.Button();
+            this.buttonMoveUp = new System.Windows.Forms.Button();
+            this.buttonRemoveField = new System.Windows.Forms.Button();
+            this.buttonAddField = new System.Windows.Forms.Button();
+            this.listViewFieldsSelected = new System.Windows.Forms.ListView();
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewFieldsAvailable = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPageOther = new System.Windows.Forms.TabPage();
             this.groupFrame5 = new GroupFrame.GroupFrame();
             this.checkBoxCheckForUpdatesOnStartup = new System.Windows.Forms.CheckBox();
-            this.listViewFieldsAvailable = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listViewFieldsSelected = new System.Windows.Forms.ListView();
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.buttonAddField = new System.Windows.Forms.Button();
-            this.buttonRemoveField = new System.Windows.Forms.Button();
-            this.buttonMoveUp = new System.Windows.Forms.Button();
-            this.buttonMoveDown = new System.Windows.Forms.Button();
-            this.textBoxSample = new System.Windows.Forms.TextBox();
             this.groupFrame1.SuspendLayout();
             this.groupFrame4.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -120,12 +120,13 @@ namespace OricExplorer
             this.checkBoxScanSubfolders.Checked = true;
             this.checkBoxScanSubfolders.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxScanSubfolders.ForeColor = System.Drawing.Color.Black;
-            this.checkBoxScanSubfolders.Location = new System.Drawing.Point(414, 19);
+            this.checkBoxScanSubfolders.Location = new System.Drawing.Point(414, 20);
             this.checkBoxScanSubfolders.Name = "checkBoxScanSubfolders";
             this.checkBoxScanSubfolders.Size = new System.Drawing.Size(108, 17);
             this.checkBoxScanSubfolders.TabIndex = 3;
             this.checkBoxScanSubfolders.Text = "Scan subfolders?";
             this.checkBoxScanSubfolders.UseVisualStyleBackColor = true;
+            this.checkBoxScanSubfolders.Visible = false;
             // 
             // radioButtonTapes
             // 
@@ -159,13 +160,14 @@ namespace OricExplorer
             this.listViewFolderList.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewFolderList.FullRowSelect = true;
             this.listViewFolderList.GridLines = true;
+            this.listViewFolderList.HideSelection = false;
             this.listViewFolderList.Location = new System.Drawing.Point(8, 135);
             this.listViewFolderList.Name = "listViewFolderList";
-            this.listViewFolderList.Size = new System.Drawing.Size(629, 160);
+            this.listViewFolderList.Size = new System.Drawing.Size(629, 184);
             this.listViewFolderList.TabIndex = 0;
             this.listViewFolderList.UseCompatibleStateImageBehavior = false;
             this.listViewFolderList.View = System.Windows.Forms.View.Details;
-            this.listViewFolderList.Click += new System.EventHandler(this.listViewFolderList_Click);
+            this.listViewFolderList.SelectedIndexChanged += new System.EventHandler(this.listViewFolderList_SelectedIndexChanged);
             this.listViewFolderList.DoubleClick += new System.EventHandler(this.listViewFolderList_DoubleClick);
             // 
             // columnHeaderFolderType
@@ -181,7 +183,7 @@ namespace OricExplorer
             // buttonEmulatorExecutable
             // 
             this.buttonEmulatorExecutable.ForeColor = System.Drawing.Color.Black;
-            this.buttonEmulatorExecutable.Location = new System.Drawing.Point(553, 48);
+            this.buttonEmulatorExecutable.Location = new System.Drawing.Point(553, 47);
             this.buttonEmulatorExecutable.Name = "buttonEmulatorExecutable";
             this.buttonEmulatorExecutable.Size = new System.Drawing.Size(77, 22);
             this.buttonEmulatorExecutable.TabIndex = 2;
@@ -230,7 +232,7 @@ namespace OricExplorer
             // buttonDirListingsFolder
             // 
             this.buttonDirListingsFolder.ForeColor = System.Drawing.Color.Black;
-            this.buttonDirListingsFolder.Location = new System.Drawing.Point(553, 48);
+            this.buttonDirListingsFolder.Location = new System.Drawing.Point(553, 44);
             this.buttonDirListingsFolder.Name = "buttonDirListingsFolder";
             this.buttonDirListingsFolder.Size = new System.Drawing.Size(77, 22);
             this.buttonDirListingsFolder.TabIndex = 2;
@@ -241,7 +243,7 @@ namespace OricExplorer
             // textBoxDirListingFolder
             // 
             this.textBoxDirListingFolder.ForeColor = System.Drawing.Color.Black;
-            this.textBoxDirListingFolder.Location = new System.Drawing.Point(9, 48);
+            this.textBoxDirListingFolder.Location = new System.Drawing.Point(9, 45);
             this.textBoxDirListingFolder.Name = "textBoxDirListingFolder";
             this.textBoxDirListingFolder.Size = new System.Drawing.Size(538, 20);
             this.textBoxDirListingFolder.TabIndex = 1;
@@ -254,7 +256,7 @@ namespace OricExplorer
             this.groupFrame1.ForeColor = System.Drawing.Color.Black;
             this.groupFrame1.Location = new System.Drawing.Point(7, 6);
             this.groupFrame1.Name = "groupFrame1";
-            this.groupFrame1.Size = new System.Drawing.Size(647, 301);
+            this.groupFrame1.Size = new System.Drawing.Size(647, 328);
             this.groupFrame1.TabIndex = 18;
             this.groupFrame1.TabStop = false;
             this.groupFrame1.Text = "Disk and Tape Folders";
@@ -381,6 +383,7 @@ namespace OricExplorer
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(669, 366);
             this.tabControl1.TabIndex = 21;
+            this.tabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Selecting);
             // 
             // tabPageTapeAndDiskFolders
             // 
@@ -421,6 +424,92 @@ namespace OricExplorer
             this.tabPageDirListings.Text = "Directory Listings";
             this.tabPageDirListings.UseVisualStyleBackColor = true;
             // 
+            // textBoxSample
+            // 
+            this.textBoxSample.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBoxSample.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxSample.Location = new System.Drawing.Point(7, 248);
+            this.textBoxSample.Multiline = true;
+            this.textBoxSample.Name = "textBoxSample";
+            this.textBoxSample.Size = new System.Drawing.Size(647, 89);
+            this.textBoxSample.TabIndex = 27;
+            this.textBoxSample.Text = "Filename                   Size                 Date....\r\nABC.dtd                " +
+    " 12,3434             01/01/1970 12:20";
+            // 
+            // buttonMoveDown
+            // 
+            this.buttonMoveDown.Location = new System.Drawing.Point(293, 196);
+            this.buttonMoveDown.Name = "buttonMoveDown";
+            this.buttonMoveDown.Size = new System.Drawing.Size(75, 23);
+            this.buttonMoveDown.TabIndex = 26;
+            this.buttonMoveDown.Text = "Move Down";
+            this.buttonMoveDown.UseVisualStyleBackColor = true;
+            // 
+            // buttonMoveUp
+            // 
+            this.buttonMoveUp.Location = new System.Drawing.Point(293, 167);
+            this.buttonMoveUp.Name = "buttonMoveUp";
+            this.buttonMoveUp.Size = new System.Drawing.Size(75, 23);
+            this.buttonMoveUp.TabIndex = 25;
+            this.buttonMoveUp.Text = "Move Up";
+            this.buttonMoveUp.UseVisualStyleBackColor = true;
+            // 
+            // buttonRemoveField
+            // 
+            this.buttonRemoveField.Location = new System.Drawing.Point(293, 138);
+            this.buttonRemoveField.Name = "buttonRemoveField";
+            this.buttonRemoveField.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemoveField.TabIndex = 24;
+            this.buttonRemoveField.Text = "<< Remove";
+            this.buttonRemoveField.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddField
+            // 
+            this.buttonAddField.Location = new System.Drawing.Point(293, 109);
+            this.buttonAddField.Name = "buttonAddField";
+            this.buttonAddField.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddField.TabIndex = 23;
+            this.buttonAddField.Text = "Add >>";
+            this.buttonAddField.UseVisualStyleBackColor = true;
+            // 
+            // listViewFieldsSelected
+            // 
+            this.listViewFieldsSelected.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader2});
+            this.listViewFieldsSelected.FullRowSelect = true;
+            this.listViewFieldsSelected.GridLines = true;
+            this.listViewFieldsSelected.HideSelection = false;
+            this.listViewFieldsSelected.Location = new System.Drawing.Point(374, 85);
+            this.listViewFieldsSelected.Name = "listViewFieldsSelected";
+            this.listViewFieldsSelected.Size = new System.Drawing.Size(280, 157);
+            this.listViewFieldsSelected.TabIndex = 22;
+            this.listViewFieldsSelected.UseCompatibleStateImageBehavior = false;
+            this.listViewFieldsSelected.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Field Name";
+            this.columnHeader2.Width = 258;
+            // 
+            // listViewFieldsAvailable
+            // 
+            this.listViewFieldsAvailable.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listViewFieldsAvailable.FullRowSelect = true;
+            this.listViewFieldsAvailable.GridLines = true;
+            this.listViewFieldsAvailable.HideSelection = false;
+            this.listViewFieldsAvailable.Location = new System.Drawing.Point(7, 85);
+            this.listViewFieldsAvailable.Name = "listViewFieldsAvailable";
+            this.listViewFieldsAvailable.Size = new System.Drawing.Size(280, 157);
+            this.listViewFieldsAvailable.TabIndex = 21;
+            this.listViewFieldsAvailable.UseCompatibleStateImageBehavior = false;
+            this.listViewFieldsAvailable.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Field Name";
+            this.columnHeader1.Width = 257;
+            // 
             // tabPageOther
             // 
             this.tabPageOther.Controls.Add(this.groupFrame5);
@@ -452,90 +541,6 @@ namespace OricExplorer
             this.checkBoxCheckForUpdatesOnStartup.Text = "Check for updates on startup?";
             this.checkBoxCheckForUpdatesOnStartup.UseVisualStyleBackColor = true;
             // 
-            // listViewFieldsAvailable
-            // 
-            this.listViewFieldsAvailable.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.listViewFieldsAvailable.FullRowSelect = true;
-            this.listViewFieldsAvailable.GridLines = true;
-            this.listViewFieldsAvailable.Location = new System.Drawing.Point(7, 85);
-            this.listViewFieldsAvailable.Name = "listViewFieldsAvailable";
-            this.listViewFieldsAvailable.Size = new System.Drawing.Size(280, 157);
-            this.listViewFieldsAvailable.TabIndex = 21;
-            this.listViewFieldsAvailable.UseCompatibleStateImageBehavior = false;
-            this.listViewFieldsAvailable.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Field Name";
-            this.columnHeader1.Width = 257;
-            // 
-            // listViewFieldsSelected
-            // 
-            this.listViewFieldsSelected.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader2});
-            this.listViewFieldsSelected.FullRowSelect = true;
-            this.listViewFieldsSelected.GridLines = true;
-            this.listViewFieldsSelected.Location = new System.Drawing.Point(374, 85);
-            this.listViewFieldsSelected.Name = "listViewFieldsSelected";
-            this.listViewFieldsSelected.Size = new System.Drawing.Size(280, 157);
-            this.listViewFieldsSelected.TabIndex = 22;
-            this.listViewFieldsSelected.UseCompatibleStateImageBehavior = false;
-            this.listViewFieldsSelected.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Field Name";
-            this.columnHeader2.Width = 258;
-            // 
-            // buttonAddField
-            // 
-            this.buttonAddField.Location = new System.Drawing.Point(293, 109);
-            this.buttonAddField.Name = "buttonAddField";
-            this.buttonAddField.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddField.TabIndex = 23;
-            this.buttonAddField.Text = "Add >>";
-            this.buttonAddField.UseVisualStyleBackColor = true;
-            // 
-            // buttonRemoveField
-            // 
-            this.buttonRemoveField.Location = new System.Drawing.Point(293, 138);
-            this.buttonRemoveField.Name = "buttonRemoveField";
-            this.buttonRemoveField.Size = new System.Drawing.Size(75, 23);
-            this.buttonRemoveField.TabIndex = 24;
-            this.buttonRemoveField.Text = "<< Remove";
-            this.buttonRemoveField.UseVisualStyleBackColor = true;
-            // 
-            // buttonMoveUp
-            // 
-            this.buttonMoveUp.Location = new System.Drawing.Point(293, 167);
-            this.buttonMoveUp.Name = "buttonMoveUp";
-            this.buttonMoveUp.Size = new System.Drawing.Size(75, 23);
-            this.buttonMoveUp.TabIndex = 25;
-            this.buttonMoveUp.Text = "Move Up";
-            this.buttonMoveUp.UseVisualStyleBackColor = true;
-            // 
-            // buttonMoveDown
-            // 
-            this.buttonMoveDown.Location = new System.Drawing.Point(293, 196);
-            this.buttonMoveDown.Name = "buttonMoveDown";
-            this.buttonMoveDown.Size = new System.Drawing.Size(75, 23);
-            this.buttonMoveDown.TabIndex = 26;
-            this.buttonMoveDown.Text = "Move Down";
-            this.buttonMoveDown.UseVisualStyleBackColor = true;
-            // 
-            // textBoxSample
-            // 
-            this.textBoxSample.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxSample.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxSample.Location = new System.Drawing.Point(7, 248);
-            this.textBoxSample.Multiline = true;
-            this.textBoxSample.Name = "textBoxSample";
-            this.textBoxSample.Size = new System.Drawing.Size(647, 89);
-            this.textBoxSample.TabIndex = 27;
-            this.textBoxSample.Text = "Filename                   Size                 Date....\r\nABC.dtd                " +
-    " 12,3434             01/01/1970 12:20";
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -555,7 +560,6 @@ namespace OricExplorer
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Oric Explorer Settings";
             this.Load += new System.EventHandler(this.SettingsForm_Load);
-            this.Shown += new System.EventHandler(this.SettingsForm_Shown);
             this.groupFrame1.ResumeLayout(false);
             this.groupFrame4.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);

@@ -1,42 +1,17 @@
-using System;
-using System.Collections;
-using System.IO;
-using System.Windows.Forms;
-using System.Text;
-using System.Drawing;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Drawing;
+    using System.Text;
+
     public class OricProgram
     {
         public enum ProgramFormat { BasicProgram, CodeFile, HiresScreen, TextScreen, CharacterSet, DirectAccessFile, SequentialFile, WindowFile, HelpFile, UnknownFile };
         public enum ProtectionStatus { Unprotected, Protected, Invisible, Unlocked, Locked };
         public enum AutoRunFlag { Disabled, Enabled };
 
-        // Used by both Tape and Disk programs
-        private String m_programName;
-        private String m_parentName;
-
-        private UInt16 m_startAddress = 0;
-        private UInt16 m_endAddress = 0;
-
-        // Used by SedOric Direct Access Files
-        private UInt16 m_recordCount = 0;
-        private UInt16 m_recordLength = 0;
-
-        // Basic, Code, HIRES, TEXT, Char Set, Data etc.
-        private OricProgram.ProgramFormat m_programFormat;
-
-        private OricProgram.AutoRunFlag m_autoRun;
-
-        // For tape programs this is the same as the start address
-        private UInt16 m_exeAddress = 0;
-
-        // Only used by Disk programs
-        private ProtectionStatus m_protectionStatus = ProtectionStatus.Unprotected;
-
-        // Byte array containing the actual program data
-        public Byte[] m_programData;
+        // byte array containing the actual program data
+        public byte[] m_programData;
 
         public BasicTokens basicTokens;
         public OpCodes opCodes;
@@ -47,7 +22,7 @@ namespace OricExplorer
         public OricProgram()
         {
             // Initialise the program data buffer
-            //m_programData = new Byte[0xFFFF];
+            //m_programData = new byte[0xFFFF];
 
             // Call New to reset values
             New();
@@ -57,10 +32,10 @@ namespace OricExplorer
         /// Renumbers a Basic program
         /// </summary>
         /// <returns></returns>
-        private Boolean Renumber(UInt16 ui16Start)
-        {
-            return true;
-        }
+        //private bool Renumber(ushort ui16Start)
+        //{
+        //    return true;
+        //}
 
         /// <summary>
         /// New - Resets the program settings and clears out the program data
@@ -77,9 +52,9 @@ namespace OricExplorer
             Format = 0;
 
             // Reset the program status flag
-            m_protectionStatus = ProtectionStatus.Unprotected;
+            Protection = ProtectionStatus.Unprotected;
 
-            m_programFormat = ProgramFormat.UnknownFile;
+            Format = ProgramFormat.UnknownFile;
 
             // Reset the AutoRun flag
             AutoRun = AutoRunFlag.Disabled;
@@ -94,11 +69,11 @@ namespace OricExplorer
             }
         }
 
-        public String Hexdump()
+        public string Hexdump()
         {
-            UInt16 ui16Index = 0;
-            UInt16 ui16Loop = 0;
-            UInt16 ui16Address = 0;
+            ushort ui16Index = 0;
+            ushort ui16Loop;
+            ushort ui16Address;
 
             StringBuilder strHexLine = new StringBuilder();
             StringBuilder strAscii = new StringBuilder();
@@ -115,7 +90,7 @@ namespace OricExplorer
                     strAscii.Length = 0;
                 }
 
-                Byte bByte = m_programData[ui16Loop];
+                byte bByte = m_programData[ui16Loop];
 
                 if(bByte < 32 || bByte > 126)
                 {
@@ -156,27 +131,27 @@ namespace OricExplorer
             return strHexDump.ToString();
         }
 
-        public String List()
+        public string List()
         {
             basicTokens = new BasicTokens(BasicTokens.ROMVersion.V1_1);
 
-            Byte HighByte = 0;
-            Byte LowByte = 0;
+            byte highByte;
+            byte lowByte;
 
-            Boolean bREMFlag = false;
-            Boolean bDATAFlag = false;
-            Boolean bStringFlag = false;
-            Boolean bKeyword = false;
-            Boolean bMCFlag = false;
+            bool bREMFlag;
+            bool bDATAFlag;
+            bool bStringFlag;
+            bool bKeyword;
+            bool bMCFlag;
 
-            UInt16 ui16Index = 0;
+            ushort ui16Index = 0;
 
             StringBuilder strListing = new StringBuilder();
             StringBuilder strBasic = new StringBuilder();
 
             strBasic.EnsureCapacity(255);
 
-            Boolean bEndOfProg = false;
+            bool bEndOfProg = false;
 
             strListing.Append("{\\rtf\\ansi\\deff0{\\fonttbl{\\f0\\fnil\\fcharset0 Consolas;}}");
             strListing.Append(BuildColourTable());
@@ -190,10 +165,10 @@ namespace OricExplorer
                 strBasic.Length = 0;
 
                 // Get the address of the next line
-                HighByte = m_programData[ui16Index];
-                LowByte = m_programData[ui16Index + 1];
+                highByte = m_programData[ui16Index];
+                lowByte = m_programData[ui16Index + 1];
 
-                UInt16 ui16NextAddress = Convert.ToUInt16(HighByte + (LowByte * 256));
+                ushort ui16NextAddress = Convert.ToUInt16(highByte + (lowByte * 256));
 
                 if(ui16NextAddress == 0)
                 {
@@ -210,10 +185,10 @@ namespace OricExplorer
                     ui16Index += 2;
 
                     // Get the current line number
-                    HighByte = m_programData[ui16Index];
-                    LowByte = m_programData[ui16Index + 1];
+                    highByte = m_programData[ui16Index];
+                    lowByte = m_programData[ui16Index + 1];
 
-                    UInt16 uiLineNo = Convert.ToUInt16(HighByte + (LowByte * 256));
+                    ushort uiLineNo = Convert.ToUInt16(highByte + (lowByte * 256));
 
                     strBasic.Append("\\cf1 ");
                     strBasic.AppendFormat("{0} ", uiLineNo);
@@ -222,7 +197,7 @@ namespace OricExplorer
 
                     do
                     {
-                        Byte bByte = m_programData[ui16Index];
+                        byte bByte = m_programData[ui16Index];
 
                         if(bByte >= 0x80 && bByte <= 0xF6)
                         {
@@ -372,26 +347,26 @@ namespace OricExplorer
             return strListing.ToString();
         }
 
-        public String ListAsText()
+        public string ListAsText()
         {
             basicTokens = new BasicTokens(BasicTokens.ROMVersion.V1_1);
 
-            Byte HighByte = 0;
-            Byte LowByte = 0;
+            byte highByte;
+            byte lowByte;
 
-            Boolean bREMFlag = false;
-            Boolean bDATAFlag = false;
-            Boolean bStringFlag = false;
-            Boolean bKeyword = false;
+            bool bREMFlag;
+            bool bDATAFlag;
+            bool bStringFlag;
+            bool bKeyword;
 
-            UInt16 ui16Index = 0;
+            ushort ui16Index = 0;
 
             StringBuilder strListing = new StringBuilder();
             StringBuilder strBasic = new StringBuilder();
 
             strBasic.EnsureCapacity(255);
 
-            Boolean bEndOfProg = false;
+            bool bEndOfProg = false;
 
             if (ProgramName == null)
             {
@@ -403,10 +378,10 @@ namespace OricExplorer
                 strBasic.Length = 0;
 
                 // Get the address of the next line
-                HighByte = m_programData[ui16Index];
-                LowByte = m_programData[ui16Index + 1];
+                highByte = m_programData[ui16Index];
+                lowByte = m_programData[ui16Index + 1];
 
-                UInt16 ui16NextAddress = Convert.ToUInt16(HighByte + (LowByte * 256));
+                ushort ui16NextAddress = Convert.ToUInt16(highByte + (lowByte * 256));
 
                 if(ui16NextAddress == 0)
                 {
@@ -422,10 +397,10 @@ namespace OricExplorer
                     ui16Index += 2;
 
                     // Get the current line number
-                    HighByte = m_programData[ui16Index];
-                    LowByte = m_programData[ui16Index + 1];
+                    highByte = m_programData[ui16Index];
+                    lowByte = m_programData[ui16Index + 1];
 
-                    UInt16 uiLineNo = Convert.ToUInt16(HighByte + (LowByte * 256));
+                    ushort uiLineNo = Convert.ToUInt16(highByte + (lowByte * 256));
                     strBasic.AppendFormat("{0} ", uiLineNo);
 
                     ui16Index += 2;
@@ -438,7 +413,7 @@ namespace OricExplorer
                     {
                         do
                         {
-                            Byte bByte = m_programData[ui16Index];
+                            byte bByte = m_programData[ui16Index];
 
                             if (bByte >= 0x80 && bByte <= 0xF6)
                             {
@@ -526,15 +501,15 @@ namespace OricExplorer
             return strListing.ToString();
         }
 
-        public String Assembly()
+        public string Assembly()
         {
             opCodes = new OpCodes();
 
-            UInt16 ui16Loop = 0;
-            UInt16 ui16Address = 0;
-            UInt16 ui16BranchAddr = 0;
+            ushort ui16Loop = 0;
+            ushort ui16Address;
+            ushort ui16BranchAddr;
 
-            String strAscii = "";
+            string strAscii;
 
             StringBuilder strDissassembly = new StringBuilder();
             strDissassembly.EnsureCapacity(65000);
@@ -546,25 +521,24 @@ namespace OricExplorer
 
             ui16Address = StartAddress;
 
-            Byte bByte = 0x00;
+            byte bByte;
 
-            while(ui16Loop < ProgramLength)
+            while (ui16Loop < ProgramLength)
             {
                 bByte = m_programData[ui16Loop];
 
-                OpCodes.sOpCode sTmpStructOpCodes = new OpCodes.sOpCode();
-                sTmpStructOpCodes = opCodes.FindOpInfo(bByte);
+                OpCodes.sOpCode sTmpStructOpCodes = opCodes.FindOpInfo(bByte);
 
                 strAscii = "";
 
-                String strOpParams = "";
+                string strOpParams = "";
 
                 // Current address
                 strDissassembly.AppendFormat("${0:X4}  ", ui16Address);
 
                 if (ui16Loop + sTmpStructOpCodes.bOpBytes > ProgramLength)
                 {
-                    Byte bCurrByte = Convert.ToByte(m_programData[ui16Loop]);
+                    byte bCurrByte = Convert.ToByte(m_programData[ui16Loop]);
 
                     strDissassembly.AppendFormat("{0:X2} ", bCurrByte);
 
@@ -582,9 +556,9 @@ namespace OricExplorer
                 }
                 else
                 {
-                    for (short siIndex = 0; siIndex < sTmpStructOpCodes.bOpBytes; siIndex++)
+                    for (ushort siIndex = 0; siIndex < sTmpStructOpCodes.bOpBytes; siIndex++)
                     {
-                        Byte bCurrByte = Convert.ToByte(m_programData[ui16Loop + siIndex]);
+                        byte bCurrByte = Convert.ToByte(m_programData[ui16Loop + siIndex]);
 
                         strDissassembly.AppendFormat("{0:X2} ", bCurrByte);
 
@@ -616,8 +590,8 @@ namespace OricExplorer
                     strDissassembly.Append("   ");
                 }
 
-                Byte bByte1 = 0;
-                Byte bByte2 = 0;
+                byte bByte1 = 0;
+                byte bByte2 = 0;
 
                 if (sTmpStructOpCodes.bOpBytes > 1)
                 {
@@ -635,51 +609,51 @@ namespace OricExplorer
                     case 1: strOpParams = "";
                         break;
 
-                    case 2: strOpParams = String.Format("#${0:X2}", bByte1);
+                    case 2: strOpParams = string.Format("#${0:X2}", bByte1);
                         break;
 
-                    case 3: strOpParams = String.Format("${0:X2}{1:X2}", bByte2, bByte1);
+                    case 3: strOpParams = string.Format("${0:X2}{1:X2}", bByte2, bByte1);
                         break;
 
-                    case 4: strOpParams = String.Format("${0:X2}", bByte1);
+                    case 4: strOpParams = string.Format("${0:X2}", bByte1);
                         break;
 
                     case 5: // Calculate jump address
                         if (bByte1 > 127)
                         {
-                            ui16BranchAddr = (UInt16)(ui16Address - (255 - bByte1));
+                            ui16BranchAddr = (ushort)(ui16Address - (255 - bByte1));
                             ui16BranchAddr++;
                         }
                         else
                         {
-                            ui16BranchAddr = (UInt16)((ui16Address + 2) + bByte1);
+                            ui16BranchAddr = (ushort)((ui16Address + 2) + bByte1);
                         }
 
-                        strOpParams = String.Format("${0:X4}", ui16BranchAddr);
+                        strOpParams = string.Format("${0:X4}", ui16BranchAddr);
                         break;
 
-                    case 6: strOpParams = String.Format("${0:X2}{1:X2},X", bByte2, bByte1);
+                    case 6: strOpParams = string.Format("${0:X2}{1:X2},X", bByte2, bByte1);
                         break;
 
-                    case 7: strOpParams = String.Format("${0:X2}{1:X2},Y", bByte2, bByte1);
+                    case 7: strOpParams = string.Format("${0:X2}{1:X2},Y", bByte2, bByte1);
                         break;
 
-                    case 8: strOpParams = String.Format("${0:X2},X", bByte1);
+                    case 8: strOpParams = string.Format("${0:X2},X", bByte1);
                         break;
 
-                    case 9: strOpParams = String.Format("${0:X2},Y", bByte1);
+                    case 9: strOpParams = string.Format("${0:X2},Y", bByte1);
                         break;
 
-                    case 10: strOpParams = String.Format("(${0:X2},X)", bByte1);
+                    case 10: strOpParams = string.Format("(${0:X2},X)", bByte1);
                         break;
 
-                    case 11: strOpParams = String.Format("(${0:X2}),Y", bByte1);
+                    case 11: strOpParams = string.Format("(${0:X2}),Y", bByte1);
                         break;
 
                     case 12: strOpParams = "A";
                         break;
 
-                    case 13: strOpParams = String.Format("${0:X2}{1:X2}", bByte2, bByte1);
+                    case 13: strOpParams = string.Format("${0:X2}{1:X2}", bByte2, bByte1);
                         break;
                 }
 
@@ -693,10 +667,10 @@ namespace OricExplorer
             return strDissassembly.ToString();
         }
 
-        private String BuildColourTable()
+        private string BuildColourTable()
         {
             // Colour table for BASIC listing
-            Color oDefault = Color.Black; // cf0
+            //Color oDefault = Color.Black; // cf0
             Color oLineNo = Color.Black; // cf1
             Color oKeyword = Color.FromArgb(0, 0, 200); // cf2
             Color oString = Color.FromArgb(200, 0, 0); // cf3
@@ -716,95 +690,55 @@ namespace OricExplorer
             return oColorTbl.ToString();
         }
 
-        public UInt16 StartAddress
+        public ushort StartAddress { get; set; } = 0;
+
+        public ushort EndAddress { get; set; } = 0;
+
+        public ushort ExeAddress { get; set; } = 0;
+
+        public ushort RecordCount { get; set; } = 0;
+
+        public ushort RecordLength { get; set; } = 0;
+
+        public ushort ProgramLength
         {
-            get {return m_startAddress;}
-            set {m_startAddress = value;}
+            get {return Convert.ToUInt16((EndAddress - StartAddress) + 1);}
         }
 
-        public UInt16 EndAddress
-        {
-            get {return m_endAddress;}
-            set {m_endAddress = value;}
-        }
+        public OricProgram.AutoRunFlag AutoRun { get; set; }
 
-        public UInt16 ExeAddress
-        {
-            get {return m_exeAddress;}
-            set {m_exeAddress = value;}
-        }
+        public OricProgram.ProgramFormat Format { get; set; }
 
-        public UInt16 RecordCount
-        {
-            get { return m_recordCount; }
-            set { m_recordCount = value; }
-        }
+        public string ProgramName { get; set; }
 
-        public UInt16 RecordLength
-        {
-            get { return m_recordLength; }
-            set { m_recordLength = value; }
-        }
+        public string ParentName { get; set; }
 
-        public UInt16 ProgramLength
-        {
-            get {return Convert.ToUInt16((m_endAddress - m_startAddress) + 1);}
-        }
+        public ProtectionStatus Protection { get; set; } = ProtectionStatus.Unprotected;
 
-        public OricProgram.AutoRunFlag AutoRun
-        {
-            get { return m_autoRun; }
-            set { m_autoRun = value; }
-        }
+        //public string DectoBin(ushort decVal)
+        //{
+        //    StringBuilder sBinary = new StringBuilder();
 
-        public OricProgram.ProgramFormat Format
-        {
-            get { return m_programFormat; }
-            set { m_programFormat = value; }
-        }
+        //    ushort siDivisor = 0x80;
 
-        public String ProgramName
-        {
-            get { return m_programName; }
-            set { m_programName = value; }
-        }
+        //    for (int iLoop = 0; iLoop < 8; iLoop++)
+        //    {
+        //        if ((decVal & siDivisor) == siDivisor)
+        //        {
+        //            sBinary.Append("1");
+        //        }
+        //        else
+        //        {
+        //            sBinary.Append("0");
+        //        }
 
-        public String ParentName
-        {
-            get { return m_parentName; }
-            set { m_parentName = value; }
-        }
+        //        siDivisor /= 2;
+        //    }
 
-        public ProtectionStatus Protection
-        {
-            get { return m_protectionStatus; }
-            set { m_protectionStatus = value; }
-        }
+        //    string Binary;
+        //    Binary = sBinary.ToString();
 
-        public string DectoBin(short decVal)
-        {
-            StringBuilder sBinary = new StringBuilder();
-
-            short siDivisor = 0x80;
-
-            for (int iLoop = 0; iLoop < 8; iLoop++)
-            {
-                if ((decVal & siDivisor) == siDivisor)
-                {
-                    sBinary.Append("1");
-                }
-                else
-                {
-                    sBinary.Append("0");
-                }
-
-                siDivisor /= 2;
-            }
-
-            String Binary;
-            Binary = sBinary.ToString();
-
-            return Binary;
-        }
+        //    return Binary;
+        //}
     }
 }

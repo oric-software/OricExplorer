@@ -144,7 +144,7 @@ namespace OricExplorer.User_Controls
             this.hexBox1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hexBox1.ForeColor = System.Drawing.Color.White;
             this.hexBox1.GroupSize = 2;
-            this.hexBox1.InfoForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(193)))), ((int)(((byte)(255)))));
+            this.hexBox1.InfoForeColor = System.Drawing.Color.Teal;
             this.hexBox1.LineInfoPrefix = "$";
             this.hexBox1.LineInfoVisible = true;
             this.hexBox1.LineInfoWidth = 4;
@@ -189,24 +189,24 @@ namespace OricExplorer.User_Controls
             this.closeAllToolStripMenuItem,
             this.closeAllButThisToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(167, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(166, 70);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.closeToolStripMenuItem.Text = "Close";
             // 
             // closeAllToolStripMenuItem
             // 
             this.closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.closeAllToolStripMenuItem.Text = "Close All";
             // 
             // closeAllButThisToolStripMenuItem
             // 
             this.closeAllButThisToolStripMenuItem.Name = "closeAllButThisToolStripMenuItem";
-            this.closeAllButThisToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.closeAllButThisToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.closeAllButThisToolStripMenuItem.Text = "Close All But This";
             // 
             // MainView

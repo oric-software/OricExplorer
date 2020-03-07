@@ -1,38 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections;
-using System.IO;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+
     internal class OricTape
     {
-        Boolean m_bWriteToLogfile = false;
         StreamWriter swLogfile;
-
-        Byte m_bProgramCount = 0;
-
-        String m_strTapeName = "";
-
-        Byte[] m_bTapeBuffer;
-        UInt32 m_ui32BufferIdx = 0;
+       
+        private byte[] m_bTapeBuffer;
+        private uint m_ui32BufferIdx = 0;
 
         private struct ProgramHeader
         {
-            public UInt16 ui16StartAddress;
-            public UInt16 ui16EndAddress;
-            public Byte bProgramFormat;
+            public ushort ui16StartAddress;
+            public ushort ui16EndAddress;
+            public byte bProgramFormat;
             public OricProgram.AutoRunFlag bAutoRun;
-            public String strProgramName;
+            public string strProgramName;
         };
 
         public OricFileInfo[] Catalog(FileInfo fiFileInfo)
         {
-            Int16 i16ProgramCount = 0;
-            Int16 i16NoNameCount = 1;
+            ushort i16ProgramCount = 0;
+            ushort i16NoNameCount = 1;
 
-            Boolean bReadError = false;
+            bool bReadError = false;
 
             // Store the tape name
             TapeName = fiFileInfo.FullName;
@@ -61,7 +54,7 @@ namespace OricExplorer
                 // Check details in Program header are valid
                 if (programHeader.ui16StartAddress >= programHeader.ui16EndAddress)
                 {
-                    if (m_bWriteToLogfile)
+                    if (WriteToLogFile)
                     {
                         swLogfile.WriteLine("> *** Invalid Start/End address found in header. ***");
                         swLogfile.WriteLine("> *** Start : ${0:X4}, End : ${1:X4} ***",
@@ -69,23 +62,24 @@ namespace OricExplorer
 
                         bReadError = true;
 
-                        m_ui32BufferIdx = (UInt32)(m_bTapeBuffer.Length + 1);
+                        m_ui32BufferIdx = (uint)(m_bTapeBuffer.Length + 1);
                     }
                 }
                 else
                 {
                     // Create a Catalog object to store tape information
-                    OricFileInfo tapeProgram = new OricFileInfo();
+                    OricFileInfo tapeProgram = new OricFileInfo
+                    {
+                        Folder = fiFileInfo.DirectoryName,
 
-                    tapeProgram.Folder = fiFileInfo.DirectoryName;
+                        // Set the parent name
+                        ParentName = fiFileInfo.Name,
 
-                    // Set the parent name
-                    tapeProgram.ParentName = fiFileInfo.Name;
-
-                    // Store program information
-                    tapeProgram.StartAddress = programHeader.ui16StartAddress;
-                    tapeProgram.EndAddress = programHeader.ui16EndAddress;
-                    tapeProgram.AutoRun = programHeader.bAutoRun;
+                        // Store program information
+                        StartAddress = programHeader.ui16StartAddress,
+                        EndAddress = programHeader.ui16EndAddress,
+                        AutoRun = programHeader.bAutoRun
+                    };
 
                     if (programHeader.bProgramFormat == 0x00)
                         tapeProgram.Format = OricProgram.ProgramFormat.BasicProgram;
@@ -103,7 +97,7 @@ namespace OricExplorer
 
                     if (programHeader.strProgramName == null)
                     {
-                        tapeProgram.ProgramName = String.Format("NONAME{0:G3}", i16NoNameCount);
+                        tapeProgram.ProgramName = string.Format("NONAME{0:G3}", i16NoNameCount);
                         i16NoNameCount++;
                     }
                     else
@@ -111,7 +105,7 @@ namespace OricExplorer
                         tapeProgram.ProgramName = programHeader.strProgramName;
                     }
 
-                    tapeProgram.MediaType = OricExplorer.MediaType.TapeFile;
+                    tapeProgram.MediaType = ConstantsAndEnums.MediaType.TapeFile;
 
                     tapeProgram.ProgramIndex = i16ProgramCount;
                     i16ProgramCount++;
@@ -133,9 +127,9 @@ namespace OricExplorer
             return programList;
         }
 
-        public Boolean CheckTapeLeader()
+        public bool CheckTapeLeader()
         {
-            m_bWriteToLogfile = false;
+            WriteToLogFile = false;
 
             // Read the entire tape into a buffer
             ReadTapeIntoBuffer();
@@ -144,22 +138,22 @@ namespace OricExplorer
             m_ui32BufferIdx = 0;
 
             // Check for a valid tape leader (i.e. 0x16, 0x16, 0x16, 0x24)
-            Boolean validTape = SyncTape();
+            bool validTape = SyncTape();
 
             return validTape;
         }
 
-        private Boolean SyncTape()
+        private bool SyncTape()
         {
-            UInt32 ui32Offset = 0;
-            Byte bByte = 0;
+            uint ui32Offset;
+            byte bByte;
 
             if (m_ui32BufferIdx >= (m_bTapeBuffer.Length - 1))
             {
                 return false;
             }
 
-            if (m_bWriteToLogfile)
+            if (WriteToLogFile)
             {
                 swLogfile.WriteLine("> Searching for tape leader. (Offset 0x{0:X4})", m_ui32BufferIdx);
             }
@@ -192,7 +186,7 @@ namespace OricExplorer
 
             if(bByte != 0x24)
             {
-                if (m_bWriteToLogfile)
+                if (WriteToLogFile)
                 {
                     ui32Offset--;
                     swLogfile.WriteLine("> *** Tape leader not found, invalid tape file. (Offset 0x{0:X4}) ***", ui32Offset);
@@ -203,7 +197,7 @@ namespace OricExplorer
 
             m_ui32BufferIdx++;
 
-            if (m_bWriteToLogfile)
+            if (WriteToLogFile)
             {
                 ui32Offset--;
                 swLogfile.WriteLine("> Tape leader found. (Offset 0x{0:X4})", ui32Offset);
@@ -214,21 +208,21 @@ namespace OricExplorer
 
         private ProgramHeader ReadProgramHeader()
         {
-            Byte HighByte = 0;
-            Byte LowByte = 0;
+            byte highByte;
+            byte lowByte;
 
             ProgramHeader programHeader = new ProgramHeader();
 
             // Skip passed the unused bytes
             m_ui32BufferIdx += 1;
 
-            if (m_bWriteToLogfile)
+            if (WriteToLogFile)
             {
                 swLogfile.WriteLine("> Reading program header. (Offset 0x{0:X4})", m_ui32BufferIdx);
             }
 
             // Get the program type
-            Byte bProgramFormat = m_bTapeBuffer[m_ui32BufferIdx];
+            byte bProgramFormat = m_bTapeBuffer[m_ui32BufferIdx];
 
             programHeader.bProgramFormat = m_bTapeBuffer[m_ui32BufferIdx];
 
@@ -243,31 +237,31 @@ namespace OricExplorer
             m_ui32BufferIdx++;
 
             // Get the programs end address
-            HighByte = m_bTapeBuffer[m_ui32BufferIdx];
-            LowByte = m_bTapeBuffer[m_ui32BufferIdx + 1];
+            highByte = m_bTapeBuffer[m_ui32BufferIdx];
+            lowByte = m_bTapeBuffer[m_ui32BufferIdx + 1];
 
-            programHeader.ui16EndAddress = Convert.ToUInt16(LowByte + (HighByte * 256));
+            programHeader.ui16EndAddress = Convert.ToUInt16(lowByte + (highByte * 256));
 
             m_ui32BufferIdx += 2;
 
             // Get the programs start address
-            HighByte = m_bTapeBuffer[m_ui32BufferIdx];
-            LowByte = m_bTapeBuffer[m_ui32BufferIdx + 1];
+            highByte = m_bTapeBuffer[m_ui32BufferIdx];
+            lowByte = m_bTapeBuffer[m_ui32BufferIdx + 1];
 
-            programHeader.ui16StartAddress = Convert.ToUInt16(LowByte + (HighByte * 256));
+            programHeader.ui16StartAddress = Convert.ToUInt16(lowByte + (highByte * 256));
 
             if(bProgramFormat == 0x00)
-                programHeader.bProgramFormat = (Byte)OricProgram.ProgramFormat.BasicProgram;
+                programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.BasicProgram;
             else
             {
                 if(programHeader.ui16StartAddress == 0xA000)
-                    programHeader.bProgramFormat = (Byte)OricProgram.ProgramFormat.HiresScreen;
+                    programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.HiresScreen;
                 else if(programHeader.ui16StartAddress == 0xB500)
-                    programHeader.bProgramFormat = (Byte)OricProgram.ProgramFormat.CharacterSet;
+                    programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.CharacterSet;
                 else if(programHeader.ui16StartAddress == 0xBB80 || programHeader.ui16StartAddress == 0xBBA8)
-                    programHeader.bProgramFormat = (Byte)OricProgram.ProgramFormat.TextScreen;
+                    programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.TextScreen;
                 else
-                    programHeader.bProgramFormat = (Byte)OricProgram.ProgramFormat.CodeFile;
+                    programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.CodeFile;
             }
 
             m_ui32BufferIdx += 3;
@@ -289,10 +283,10 @@ namespace OricExplorer
             m_bTapeBuffer = File.ReadAllBytes(TapeName);
         }
 
-        public OricProgram Load(String strTapeName, String strProgName, short siProgIndex)
+        public OricProgram Load(string strTapeName, string strProgName, ushort siProgIndex)
         {
-            Int16 i16ProgramCount = 0;
-            Int16 i16NoNameCount = 0;
+            ushort i16ProgramCount = 0;
+            ushort i16NoNameCount = 0;
 
             OricProgram loadProgram = new OricProgram();
 
@@ -331,7 +325,7 @@ namespace OricExplorer
 
                 if(programHeader.strProgramName == null)
                 {
-                    loadProgram.ProgramName = String.Format("NONAME{0:G3}", i16NoNameCount);
+                    loadProgram.ProgramName = string.Format("NONAME{0:G3}", i16NoNameCount);
                     i16NoNameCount++;
                 }
                 else
@@ -341,10 +335,10 @@ namespace OricExplorer
 
                 if(i16ProgramCount == siProgIndex)
                 {
-                    UInt16 ui16Count = 0;
-                    UInt16 ui16ProgLength = loadProgram.ProgramLength;
+                    ushort ui16Count = 0;
+                    ushort ui16ProgLength = loadProgram.ProgramLength;
 
-                    loadProgram.m_programData = new Byte[ui16ProgLength];
+                    loadProgram.m_programData = new byte[ui16ProgLength];
 
                     do
                     {
@@ -371,58 +365,58 @@ namespace OricExplorer
 
         public void WriteFiles(ArrayList ProgramList, FileMode WriteFileMode)
         {
-            FileStream tapeFile = new FileStream(m_strTapeName, WriteFileMode);
+            FileStream tapeFile = new FileStream(TapeName, WriteFileMode);
             
             using(BinaryWriter binWriter = new BinaryWriter(tapeFile))
             {
                 foreach(OricProgram program in ProgramList)
                 {
-                    binWriter.Write((Byte)0x16);
-                    binWriter.Write((Byte)0x16);
-                    binWriter.Write((Byte)0x16);
-                    binWriter.Write((Byte)0x24);
-                    binWriter.Write((Byte)0x00);
-                    binWriter.Write((Byte)0x00);
+                    binWriter.Write((byte)0x16);
+                    binWriter.Write((byte)0x16);
+                    binWriter.Write((byte)0x16);
+                    binWriter.Write((byte)0x24);
+                    binWriter.Write((byte)0x00);
+                    binWriter.Write((byte)0x00);
 
                     if(program.Format == OricProgram.ProgramFormat.BasicProgram)
-                        binWriter.Write((Byte)0x00);
+                        binWriter.Write((byte)0x00);
                     else
-                        binWriter.Write((Byte)0x01);
+                        binWriter.Write((byte)0x01);
 
                     if(program.AutoRun == OricProgram.AutoRunFlag.Enabled)
-                        binWriter.Write((Byte)0x01);
+                        binWriter.Write((byte)0x01);
                     else
-                        binWriter.Write((Byte)0x00);
+                        binWriter.Write((byte)0x00);
 
-                    //binWriter.Write((Byte)0x00);
+                    //binWriter.Write((byte)0x00);
 
-                    Byte hi = Convert.ToByte((program.EndAddress >> 8) & 0xFF);
-                    Byte lo = Convert.ToByte(program.EndAddress & 0xFF);
+                    byte hi = Convert.ToByte((program.EndAddress >> 8) & 0xFF);
+                    byte lo = Convert.ToByte(program.EndAddress & 0xFF);
 
-                    binWriter.Write((Byte)hi);
-                    binWriter.Write((Byte)lo);
+                    binWriter.Write((byte)hi);
+                    binWriter.Write((byte)lo);
 
                     hi = Convert.ToByte((program.StartAddress >> 8) & 0xFF);
                     lo = Convert.ToByte(program.StartAddress & 0xFF);
 
-                    binWriter.Write((Byte)hi);
-                    binWriter.Write((Byte)lo);
+                    binWriter.Write((byte)hi);
+                    binWriter.Write((byte)lo);
 
-                    binWriter.Write((Byte)0x00);
+                    binWriter.Write((byte)0x00);
 
-                    int iIndex = 0;
+                    int iIndex;
 
                     for(iIndex = 0; iIndex < program.ProgramName.Length; iIndex++)
                     {
                         binWriter.Write(Convert.ToByte(program.ProgramName[iIndex]));
                     }
 
-                    binWriter.Write((Byte)0x00);
+                    binWriter.Write((byte)0x00);
 
                     // Write file data
                     for(iIndex = 0; iIndex < program.ProgramLength; iIndex++)
                     {
-                        binWriter.Write((Byte)program.m_programData[iIndex]);
+                        binWriter.Write((byte)program.m_programData[iIndex]);
                     }
                 }
             }
@@ -430,51 +424,51 @@ namespace OricExplorer
             tapeFile.Close();
         }
 
-        public Boolean SaveFile(OricProgram oricFile)
+        public bool SaveFile(OricProgram oricFile)
         {
             // Open the Tape and set pointer to the end of file
-            FileStream tapeFile = new FileStream(m_strTapeName, FileMode.Append);
+            FileStream tapeFile = new FileStream(TapeName, FileMode.Append);
             
             using(BinaryWriter binWriter = new BinaryWriter(tapeFile))
             {
                 // Write the Tape leader
-                binWriter.Write((Byte)0x16);
-                binWriter.Write((Byte)0x16);
-                binWriter.Write((Byte)0x16);
-                binWriter.Write((Byte)0x24);
-                binWriter.Write((Byte)0x00);
-                binWriter.Write((Byte)0x00);
+                binWriter.Write((byte)0x16);
+                binWriter.Write((byte)0x16);
+                binWriter.Write((byte)0x16);
+                binWriter.Write((byte)0x24);
+                binWriter.Write((byte)0x00);
+                binWriter.Write((byte)0x00);
 
                 // Write the Program format
                 if (oricFile.Format == OricProgram.ProgramFormat.BasicProgram)
-                    binWriter.Write((Byte)0x00);
+                    binWriter.Write((byte)0x00);
                 else
-                    binWriter.Write((Byte)0x01);
+                    binWriter.Write((byte)0x01);
 
                 // Write the Auto run flag
                 if (oricFile.AutoRun == OricProgram.AutoRunFlag.Enabled)
-                    binWriter.Write((Byte)0x01);
+                    binWriter.Write((byte)0x01);
                 else
-                    binWriter.Write((Byte)0x00);
+                    binWriter.Write((byte)0x00);
 
                 // Get the High and Low bytes of the End address and write to file
-                Byte hi = Convert.ToByte((oricFile.EndAddress >> 8) & 0xFF);
-                Byte lo = Convert.ToByte(oricFile.EndAddress & 0xFF);
+                byte hi = Convert.ToByte((oricFile.EndAddress >> 8) & 0xFF);
+                byte lo = Convert.ToByte(oricFile.EndAddress & 0xFF);
 
-                binWriter.Write((Byte)hi);
-                binWriter.Write((Byte)lo);
+                binWriter.Write((byte)hi);
+                binWriter.Write((byte)lo);
 
                 // Get the High and Low bytes of the Start address and write to file
                 hi = Convert.ToByte((oricFile.StartAddress >> 8) & 0xFF);
                 lo = Convert.ToByte(oricFile.StartAddress & 0xFF);
 
-                binWriter.Write((Byte)hi);
-                binWriter.Write((Byte)lo);
+                binWriter.Write((byte)hi);
+                binWriter.Write((byte)lo);
 
                 // Write unused byte
-                binWriter.Write((Byte)0x00);
+                binWriter.Write((byte)0x00);
 
-                int iIndex = 0;
+                int iIndex;
 
                 // Write the Program name
                 for (iIndex = 0; iIndex < oricFile.ProgramName.Length; iIndex++)
@@ -483,12 +477,12 @@ namespace OricExplorer
                 }
 
                 // NULL terminate the Program name
-                binWriter.Write((Byte)0x00);
+                binWriter.Write((byte)0x00);
 
                 // Write file data
                 for (iIndex = 0; iIndex < oricFile.ProgramLength; iIndex++)
                 {
-                    binWriter.Write((Byte)oricFile.m_programData[iIndex]);
+                    binWriter.Write((byte)oricFile.m_programData[iIndex]);
                 }
             }
 
@@ -498,22 +492,11 @@ namespace OricExplorer
             return true;
         }
 
-        public String TapeName
-        {
-            get { return m_strTapeName; }
-            set { m_strTapeName = value; }
-        }
+        public string TapeName { get; set; } = "";
 
-        public Byte ProgramCount
-        {
-            get { return m_bProgramCount; }
-        }
+        public byte ProgramCount { get; } = 0;
 
-        public Boolean WriteToLogFile
-        {
-            get { return m_bWriteToLogfile; }
-            set { m_bWriteToLogfile = value; }
-        }
+        public bool WriteToLogFile { get; set; } = false;
 
         public StreamWriter SetLogfile
         {
@@ -537,7 +520,7 @@ namespace OricExplorer
     //for (int iIndex = 0; iIndex < tapeCatalog.Length; iIndex++)
     //{
     //    OricProgram tapeProgram = new OricProgram();
-    //    tapeProgram = oricTape.Load(oricTape.TapeName, "", (short)iIndex);
+    //    tapeProgram = oricTape.Load(oricTape.TapeName, "", (ushort)iIndex);
 
     //    if (iIndex == iTapeProgramIndex)
     //    {

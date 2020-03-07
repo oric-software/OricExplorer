@@ -1,23 +1,22 @@
-using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Drawing.Printing;
-using System.Text;
-using System.Windows.Forms;
-
 namespace OricExplorer
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+    using System.Drawing.Imaging;
+    using System.Text;
+    using System.Windows.Forms;
+
     public partial class ScreenViewerControl : UserControl
     {
         public Label FileHeadings;
         public Label FileInformation;
 
-        public Byte[] tmpScreenData;
+        public byte[] tmpScreenData;
         public OricProgram ProgramData;
         public OricFileInfo ProgramInfo;
-        public Boolean bScrnUpdated;
-        public OricExplorer.MediaType mediaType;
+        public bool bScrnUpdated;
+        public ConstantsAndEnums.MediaType mediaType;
 
         ScreenImage.ScreenImageSize screenImageSize;
         ScreenImage.ScreenImageFormat screenImageFormat;
@@ -78,7 +77,7 @@ namespace OricExplorer
             pictureBoxScreenImage.Image = oricScreenImage.screenImageData;
 
             // Make a copy of the screen data
-            tmpScreenData = new Byte[ProgramData.ProgramLength];
+            tmpScreenData = new byte[ProgramData.ProgramLength];
 
             for (int index = 0; index < ProgramData.ProgramLength; index++)
             {
@@ -99,40 +98,40 @@ namespace OricExplorer
 
         private void DisplayInfoText(int screenXPos, int screenYPos)
         {
-            UInt16 memoryAddress = 0;
+            ushort memoryAddress = 0;
             memoryAddress = CalculateMemoryAddress(screenYPos, screenXPos);
 
             infoBoxScreenPosition.Text = "--";
             infoBoxScreenByte.Text = "--";
 
-            UInt16 bufferIndex = (UInt16)(memoryAddress - ProgramInfo.StartAddress);
+            ushort bufferIndex = (ushort)(memoryAddress - ProgramInfo.StartAddress);
 
             if (bufferIndex < tmpScreenData.Length)
             {
-                Byte screenByte = tmpScreenData[bufferIndex];
+                byte screenByte = tmpScreenData[bufferIndex];
 
                 if (screenImageFormat == ScreenImage.ScreenImageFormat.IMAGE_FORMAT_TEXT)
                 {
                     if (screenYPos == 0)
                     {
-                        infoBoxScreenPosition.Text = String.Format("{0:D2},SL", screenXPos);
+                        infoBoxScreenPosition.Text = string.Format("{0:D2},SL", screenXPos);
                     }
                     else
                     {
-                        infoBoxScreenPosition.Text = String.Format("{0:D2},{1:D2}", screenXPos, screenYPos - 1);
+                        infoBoxScreenPosition.Text = string.Format("{0:D2},{1:D2}", screenXPos, screenYPos - 1);
                     }
                 }
                 else if (screenImageFormat == ScreenImage.ScreenImageFormat.IMAGE_FORMAT_HIRES)
                 {
-                    infoBoxScreenPosition.Text = String.Format("{0:D3},{1:D3}", screenXPos, screenYPos);
-                    infoBoxScreenByte.Text = String.Format("Byte {0}", (screenXPos / 6));
+                    infoBoxScreenPosition.Text = string.Format("{0:D3},{1:D3}", screenXPos, screenYPos);
+                    infoBoxScreenByte.Text = string.Format("byte {0}", (screenXPos / 6));
                 }
 
-                infoBoxAddressDec.Text = String.Format("{0}", memoryAddress);
-                infoBoxAddressHex.Text = String.Format("${0:X4}", memoryAddress);
+                infoBoxAddressDec.Text = string.Format("{0}", memoryAddress);
+                infoBoxAddressHex.Text = string.Format("${0:X4}", memoryAddress);
 
-                infoBoxAsciiDec.Text = String.Format("{0}", screenByte);
-                infoBoxAsciiHex.Text = String.Format("#{0:X2}", screenByte);
+                infoBoxAsciiDec.Text = string.Format("{0}", screenByte);
+                infoBoxAsciiHex.Text = string.Format("#{0:X2}", screenByte);
 
                 StringBuilder formatText = new StringBuilder();
 
@@ -184,7 +183,7 @@ namespace OricExplorer
                         }
                         else
                         {
-                            infoBoxCellDetails.Text = String.Format("{0}", Convert.ToChar(screenByte));
+                            infoBoxCellDetails.Text = string.Format("{0}", Convert.ToChar(screenByte));
                         }
                     }
                     else
@@ -193,15 +192,15 @@ namespace OricExplorer
                         int value = screenXPos % 6;
                         int result = 32 >> value;
 
-                        if ((Byte)(screenByte & result) == result)
+                        if ((byte)(screenByte & result) == result)
                         {
                             infoBoxCellFormat.Text = "Pixel is SET";
-                            infoBoxCellDetails.Text = String.Format("Bit settings {0}", DectoBin(screenByte));
+                            infoBoxCellDetails.Text = string.Format("Bit settings {0}", DectoBin(screenByte));
                         }
-                        else if ((Byte)(screenByte & result) == 0)
+                        else if ((byte)(screenByte & result) == 0)
                         {
                             infoBoxCellFormat.Text = "Pixel is NOT set";
-                            infoBoxCellDetails.Text = String.Format("Bit settings {0}", DectoBin(screenByte));
+                            infoBoxCellDetails.Text = string.Format("Bit settings {0}", DectoBin(screenByte));
                         }
                         else
                         {
@@ -353,7 +352,7 @@ namespace OricExplorer
                 }
             }
 
-            groupBoxZoomedImage.Text = String.Format("Zoomed Image (x{0})", _ZoomFactor);
+            groupBoxZoomedImage.Text = string.Format("Zoomed Image (x{0})", _ZoomFactor);
         }
 
         private void checkBoxGrid_CheckedChanged(object sender, EventArgs e)
@@ -395,7 +394,7 @@ namespace OricExplorer
             }
         }
 
-        private UInt16 CalculateMemoryAddress(int screenRow, int screenColumn)
+        private ushort CalculateMemoryAddress(int screenRow, int screenColumn)
         {
             int screenAddress = 0;
 
@@ -414,7 +413,7 @@ namespace OricExplorer
 
             if (screenImageFormat == ScreenImage.ScreenImageFormat.IMAGE_FORMAT_HIRES)
             {
-                Byte byteAddress = (Byte)(screenColumn / 6);
+                byte byteAddress = (byte)(screenColumn / 6);
                 screenAddress = screenAddress + byteAddress;
             }
             else
@@ -422,14 +421,14 @@ namespace OricExplorer
                 screenAddress = screenAddress + screenColumn;
             }
 
-            return (UInt16)(screenAddress);
+            return (ushort)(screenAddress);
         }
 
-        private String DectoBin(short decVal)
+        private string DectoBin(ushort decVal)
         {
             StringBuilder sBinary = new StringBuilder();
 
-            short siDivisor = 0x80;
+            ushort siDivisor = 0x80;
 
             for (int iLoop = 0; iLoop < 8; iLoop++)
             {
@@ -445,7 +444,7 @@ namespace OricExplorer
                 siDivisor /= 2;
             }
 
-            String Binary;
+            string Binary;
             Binary = sBinary.ToString();
 
             return Binary;
@@ -586,7 +585,7 @@ namespace OricExplorer
                 _ZoomFactor++;
             }
 
-            groupBoxZoomedImage.Text = String.Format("Zoomed Image (x{0})", _ZoomFactor);
+            groupBoxZoomedImage.Text = string.Format("Zoomed Image (x{0})", _ZoomFactor);
         }
 
         private void buttonZoomOut_Click(object sender, EventArgs e)
@@ -596,14 +595,14 @@ namespace OricExplorer
                 _ZoomFactor--;
             }
 
-            groupBoxZoomedImage.Text = String.Format("Zoomed Image (x{0})", _ZoomFactor);
+            groupBoxZoomedImage.Text = string.Format("Zoomed Image (x{0})", _ZoomFactor);
         }
 
         private void buttonZoomReset_Click(object sender, EventArgs e)
         {
             _ZoomFactor = 2;
 
-            groupBoxZoomedImage.Text = String.Format("Zoomed Image (x{0})", _ZoomFactor);
+            groupBoxZoomedImage.Text = string.Format("Zoomed Image (x{0})", _ZoomFactor);
         }
     }
 }

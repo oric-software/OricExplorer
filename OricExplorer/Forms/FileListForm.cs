@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
-using System.IO;
-
-namespace OricExplorer
+﻿namespace OricExplorer
 {
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Windows.Forms;
+    using WeifenLuo.WinFormsUI.Docking;
+
     public partial class FileListForm : DockContent
     {
         MainForm pParent;
@@ -42,13 +37,21 @@ namespace OricExplorer
             Point pt = ((TreeView)sender).PointToClient(new Point(e.X, e.Y));
             TreeNode currentNode = ((TreeView)sender).GetNodeAt(pt);
 
-            // Make sure the next visible node is in view
-            if (currentNode.NextVisibleNode != null)
-                currentNode.NextVisibleNode.EnsureVisible();
+            // deactivate the drop if the tag of the overflown node is null
+            if (currentNode.Tag == null)
+            {
+                e.Effect = DragDropEffects.None;
+            }
+            else
+            {
+                // Make sure the next visible node is in view
+                if (currentNode.NextVisibleNode != null)
+                    currentNode.NextVisibleNode.EnsureVisible();
 
-            // Ensure the previous visible node is in view too!
-            if (currentNode.PrevVisibleNode != null)
-                currentNode.PrevVisibleNode.EnsureVisible();
+                // Ensure the previous visible node is in view too!
+                if (currentNode.PrevVisibleNode != null)
+                    currentNode.PrevVisibleNode.EnsureVisible();
+            }
         }
 
         private void treeFileList_DragDrop(object sender, DragEventArgs e)
@@ -61,22 +64,22 @@ namespace OricExplorer
                 TreeNode SourceNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
 
                 // Obtain Source media type
-                OricExplorer.MediaType SourceMediaType = DragDropGetMediaType(SourceNode);
+                ConstantsAndEnums.MediaType SourceMediaType = DragDropGetMediaType(SourceNode);
 
                 // Obtain Destination media type
-                OricExplorer.MediaType DestinationMediaType = DragDropGetMediaType(DestinationNode);
+                ConstantsAndEnums.MediaType DestinationMediaType = DragDropGetMediaType(DestinationNode);
 
                 // Perform drag and drop if valid media
                 switch (DestinationMediaType)
                 {
-                    case OricExplorer.MediaType.OricTape:
-                    case OricExplorer.MediaType.TapeFile:
-                        if (DestinationMediaType == OricExplorer.MediaType.TapeFile)
+                    case ConstantsAndEnums.MediaType.OricTape:
+                    case ConstantsAndEnums.MediaType.TapeFile:
+                        if (DestinationMediaType == ConstantsAndEnums.MediaType.TapeFile)
                         {
                             DestinationNode = DestinationNode.Parent;
                         }
 
-                        if (SourceMediaType == OricExplorer.MediaType.TapeFile || SourceMediaType == OricExplorer.MediaType.OricTape)
+                        if (SourceMediaType == ConstantsAndEnums.MediaType.TapeFile || SourceMediaType == ConstantsAndEnums.MediaType.OricTape)
                         {
                             CopyTapeFilesToTape(SourceNode, DestinationNode);
                         }
@@ -88,24 +91,24 @@ namespace OricExplorer
             }
         }
 
-        private OricExplorer.MediaType DragDropGetMediaType(TreeNode fileNode)
+        private ConstantsAndEnums.MediaType DragDropGetMediaType(TreeNode fileNode)
         {
             // Initialise the media type
-            OricExplorer.MediaType MediaType = OricExplorer.MediaType.UnknownMedia;
+            ConstantsAndEnums.MediaType MediaType = ConstantsAndEnums.MediaType.UnknownMedia;
 
             // Determine the mediatype based on the Node tag
             if (fileNode.Tag.GetType().ToString().Equals("OricExplorer.TapeInfo"))
             {
-                MediaType = OricExplorer.MediaType.OricTape;
+                MediaType = ConstantsAndEnums.MediaType.OricTape;
             }
             else if (fileNode.Tag.GetType().ToString().Equals("OricExplorer.Catalog"))
             {
                 OricFileInfo programInfo = new OricFileInfo();
                 programInfo = (OricFileInfo)fileNode.Tag;
 
-                if (programInfo.MediaType == OricExplorer.MediaType.TapeFile)
+                if (programInfo.MediaType == ConstantsAndEnums.MediaType.TapeFile)
                 {
-                    MediaType = OricExplorer.MediaType.TapeFile;
+                    MediaType = ConstantsAndEnums.MediaType.TapeFile;
                 }
             }
 
@@ -192,10 +195,10 @@ namespace OricExplorer
                         if (selectedNode.Tag.GetType().ToString().Equals("OricExplorer.TapeInfo"))
                         {
                             TapeInfo tapeInfo = (TapeInfo)selectedNode.Tag;
-                            String strFolder = tapeInfo.Folder;
+                            string strFolder = tapeInfo.Folder;
 
-                            String sourceFileName = String.Format("{0}\\{1}", strFolder, tapeInfo.Name);
-                            String destFileName = String.Format("{0}\\{1}", strFolder, e.Label);
+                            string sourceFileName = string.Format("{0}\\{1}", strFolder, tapeInfo.Name);
+                            string destFileName = string.Format("{0}\\{1}", strFolder, e.Label);
 
                             try
                             {
@@ -218,7 +221,7 @@ namespace OricExplorer
                                 // Cancel the label edit action, inform the user and place the node in edit mode again.
                                 e.CancelEdit = true;
 
-                                String errorMessage = String.Format("Failed to rename tape\n\n{0}", ex.Message);
+                                string errorMessage = string.Format("Failed to rename tape\n\n{0}", ex.Message);
 
                                 MessageBox.Show(errorMessage, "Tape Rename");
                                 e.Node.BeginEdit();
@@ -270,7 +273,7 @@ namespace OricExplorer
             if ((e.Button != MouseButtons.Left) || (selectedNode == null || selectedNode.Tag == null))
                 return;
 
-            String nodeTag = selectedNode.Tag.GetType().ToString();
+            string nodeTag = selectedNode.Tag.GetType().ToString();
 
             switch (nodeTag)
             {
@@ -306,7 +309,7 @@ namespace OricExplorer
             if ((e.Button != MouseButtons.Left) || (selectedNode == null || selectedNode.Tag == null))
                 return;
 
-            String nodeTag = selectedNode.Tag.GetType().ToString();
+            string nodeTag = selectedNode.Tag.GetType().ToString();
 
             switch (nodeTag)
             {
