@@ -63,69 +63,9 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _1downarrow {
-            get {
-                object obj = ResourceManager.GetObject("1downarrow", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap _1downarrow1 {
-            get {
-                object obj = ResourceManager.GetObject("1downarrow1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap _1uparrow {
-            get {
-                object obj = ResourceManager.GetObject("1uparrow", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap _1uparrow1 {
-            get {
-                object obj = ResourceManager.GetObject("1uparrow1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap apply {
             get {
                 object obj = ResourceManager.GetObject("apply", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap atmosset {
-            get {
-                object obj = ResourceManager.GetObject("atmosset", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Atmosset2 {
-            get {
-                object obj = ResourceManager.GetObject("Atmosset2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,39 +83,9 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap button_cancel1 {
-            get {
-                object obj = ResourceManager.GetObject("button_cancel1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap CharacterSetViewer {
             get {
                 object obj = ResourceManager.GetObject("CharacterSetViewer", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Collapse_small {
-            get {
-                object obj = ResourceManager.GetObject("Collapse_small", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Collapse_small1 {
-            get {
-                object obj = ResourceManager.GetObject("Collapse_small1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -196,6 +106,16 @@ namespace OricExplorer.Properties {
         internal static System.Drawing.Bitmap control_fastforward_blue {
             get {
                 object obj = ResourceManager.GetObject("control_fastforward_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap control_fastrewind_blue {
+            get {
+                object obj = ResourceManager.GetObject("control_fastrewind_blue", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,29 +153,9 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap control_rewind_blue {
-            get {
-                object obj = ResourceManager.GetObject("control_rewind_blue", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap control_start_blue {
             get {
                 object obj = ResourceManager.GetObject("control_start_blue", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap control_start_blue1 {
-            get {
-                object obj = ResourceManager.GetObject("control_start_blue1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,6 +173,26 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap copy {
+            get {
+                object obj = ResourceManager.GetObject("copy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete {
+            get {
+                object obj = ResourceManager.GetObject("delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap disk {
             get {
                 object obj = ResourceManager.GetObject("disk", resourceCulture);
@@ -283,9 +203,9 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Expand_small {
+        internal static System.Drawing.Bitmap down_arrow {
             get {
-                object obj = ResourceManager.GetObject("Expand_small", resourceCulture);
+                object obj = ResourceManager.GetObject("down_arrow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -293,29 +213,9 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GoToNextHS {
+        internal static System.Drawing.Bitmap emulator {
             get {
-                object obj = ResourceManager.GetObject("GoToNextHS", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap GoToPrevious {
-            get {
-                object obj = ResourceManager.GetObject("GoToPrevious", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap image_tape {
-            get {
-                object obj = ResourceManager.GetObject("image_tape", resourceCulture);
+                object obj = ResourceManager.GetObject("emulator", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -363,26 +263,6 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap OricAtmos1 {
-            get {
-                object obj = ResourceManager.GetObject("OricAtmos1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap picture_save {
-            get {
-                object obj = ResourceManager.GetObject("picture_save", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap PrintHS {
             get {
                 object obj = ResourceManager.GetObject("PrintHS", resourceCulture);
@@ -403,9 +283,9 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap PrintPreviewHS1 {
+        internal static System.Drawing.Bitmap PrintSetupHS {
             get {
-                object obj = ResourceManager.GetObject("PrintPreviewHS1", resourceCulture);
+                object obj = ResourceManager.GetObject("PrintSetupHS", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -413,9 +293,19 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap PrintSetupHS {
+        internal static System.Drawing.Bitmap refresh {
             get {
-                object obj = ResourceManager.GetObject("PrintSetupHS", resourceCulture);
+                object obj = ResourceManager.GetObject("refresh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap rename {
+            get {
+                object obj = ResourceManager.GetObject("rename", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -433,9 +323,19 @@ namespace OricExplorer.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap text_align_justify {
+        internal static System.Drawing.Bitmap tape {
             get {
-                object obj = ResourceManager.GetObject("text_align_justify", resourceCulture);
+                object obj = ResourceManager.GetObject("tape", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap up_arrow {
+            get {
+                object obj = ResourceManager.GetObject("up_arrow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -446,6 +346,16 @@ namespace OricExplorer.Properties {
         internal static System.Drawing.Bitmap UpdatedCharacterSetViewer {
             get {
                 object obj = ResourceManager.GetObject("UpdatedCharacterSetViewer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap view {
+            get {
+                object obj = ResourceManager.GetObject("view", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

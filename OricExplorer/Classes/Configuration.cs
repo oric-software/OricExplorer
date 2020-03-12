@@ -6,12 +6,28 @@
     using System.Drawing;
     using System.IO;
     using System.Web.Script.Serialization;
+    using static OricExplorer.ConstantsAndEnums;
 
     public static class Configuration
     {
         private const string DEFAULT_FILENAME = "OricExplorer.json";
 
-        public static Settings Persistent = Settings.Load();
+        public static Settings Persistent;
+
+        public static bool ListOfFoldersModified = false;
+
+        static Configuration()
+        {
+            Persistent = Settings.Load();
+
+            foreach (ConstantsAndEnums.SyntaxHighlightingItems item in Enum.GetValues(typeof(ConstantsAndEnums.SyntaxHighlightingItems)))
+            {
+                if (!Persistent.SyntaxHighlightingStyles.ContainsKey(item))
+                {
+                    Persistent.SyntaxHighlightingStyles.Add(item, ConstantsAndEnums.SyntaxHighlightingDefaultValues[(int)item]);
+                }
+            }
+        }
 
         public class Settings : AppSettings<Settings>
         {
@@ -20,30 +36,16 @@
             public List<string> DiskFolders { get; set; } = new List<string>();
             public List<string> RomFolders { get; set; } = new List<string>();
             public string EmulatorExecutable { get; set; }
+            public Machine DefaultMachineForTape { get; set; } = Machine.Atmos;
             public bool CheckForUpdatesOnStartup { get; set; } = false;
             public Color PageBackground { get; set; } = ConstantsAndEnums.BACKGROUND;
             public Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> SyntaxHighlightingStyles { get; set; }
+            public bool TapeIndex { get; set; } = true;
 
             public Point MainWindowLocation { get; set; }
             public Size MainWindowSize { get; set; }
             public bool MainWindowMaximized { get; set; }
             public string DockPanelLayout { get; set; }
-
-            public Settings()
-            {
-                SyntaxHighlightingStyles = new Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle>();
-
-                foreach (ConstantsAndEnums.SyntaxHighlightingItems item in Enum.GetValues(typeof(ConstantsAndEnums.SyntaxHighlightingItems)))
-                {
-                    SyntaxHighlightingStyles.Add(item, ConstantsAndEnums.SyntaxHighlightingDefaultValues[(int)item]);
-                }
-
-                //    tapeFolders = new StringCollection();
-                //    diskFolders = new StringCollection();
-                //    romFolders = new StringCollection();
-
-                //    emulatorExecutable = "";
-            }
         }
 
         public class AppSettings<T> where T : new()

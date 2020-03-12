@@ -104,15 +104,23 @@ namespace OricExplorer
 
             switch(Format)
             {
-                case OricProgram.ProgramFormat.BasicProgram:
+                case OricProgram.ProgramFormat.AtmosBasicProgram:
                     strFormat = "BASIC program";
                     break;
 
+                case OricProgram.ProgramFormat.HyperbasicSource:
+                    strFormat = "HYPERBASIC source";
+                    break;
+
+                case OricProgram.ProgramFormat.TeleassSource:
+                    strFormat = "TELEASS source";
+                    break;
+                
                 case OricProgram.ProgramFormat.CharacterSet:
                     strFormat = "Character set";
                     break;
 
-                case OricProgram.ProgramFormat.CodeFile:
+                case OricProgram.ProgramFormat.BinaryFile:
                     strFormat = "Code/Data file";
                     break;
 

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+    using System.Diagnostics;
     using System.IO;
     using System.Text;
 
@@ -772,58 +773,58 @@
         //    return fileList;
         //}
 
-        public StringBuilder OutputDiskSectors(string diskPathname)
-        {
-            StringBuilder sectorList = new StringBuilder();
+        //public StringBuilder OutputDiskSectors(string diskPathname)
+        //{
+        //    StringBuilder sectorList = new StringBuilder();
 
-            foreach (DictionaryEntry entry in sectorPointers)
-            {
-                ushort side = Convert.ToUInt16(entry.Key.ToString().Substring(0, 2));
-                ushort track = Convert.ToUInt16(entry.Key.ToString().Substring(2, 2));
-                ushort sector = Convert.ToUInt16(entry.Key.ToString().Substring(4, 2));
+        //    foreach (DictionaryEntry entry in sectorPointers)
+        //    {
+        //        ushort side = Convert.ToUInt16(entry.Key.ToString().Substring(0, 2));
+        //        ushort track = Convert.ToUInt16(entry.Key.ToString().Substring(2, 2));
+        //        ushort sector = Convert.ToUInt16(entry.Key.ToString().Substring(4, 2));
 
-                byte[] sectorData = ReadSector(track, sector);
+        //        byte[] sectorData = ReadSector(track, sector);
 
-                sectorList.AppendFormat("      Side : {0}, Track : {1}, Sector : {2}", side, track, sector);
-                sectorList.AppendLine();
+        //        sectorList.AppendFormat("      Side : {0}, Track : {1}, Sector : {2}", side, track, sector);
+        //        sectorList.AppendLine();
 
-                int count = 0;
-                string ascii = "";
+        //        int count = 0;
+        //        string ascii = "";
 
-                for (int index = 0; index < sectorData.Length; index++)
-                {
-                    if (count == 0)
-                    {
-                        ascii = "";
-                        sectorList.AppendFormat("${0:X4}|", index);
-                    }
+        //        for (int index = 0; index < sectorData.Length; index++)
+        //        {
+        //            if (count == 0)
+        //            {
+        //                ascii = "";
+        //                sectorList.AppendFormat("${0:X4}|", index);
+        //            }
 
-                    sectorList.AppendFormat("{0:X2} ", sectorData[index]);
+        //            sectorList.AppendFormat("{0:X2} ", sectorData[index]);
 
-                    if (sectorData[index] >= 32 && sectorData[index] <= 127)
-                    {
-                        ascii += Convert.ToChar(sectorData[index]);
-                    }
-                    else
-                    {
-                        ascii += ".";
-                    }
+        //            if (sectorData[index] >= 32 && sectorData[index] <= 127)
+        //            {
+        //                ascii += Convert.ToChar(sectorData[index]);
+        //            }
+        //            else
+        //            {
+        //                ascii += ".";
+        //            }
 
-                    count++;
+        //            count++;
 
-                    if (count == 16)
-                    {
-                        sectorList.Append(ascii);
-                        sectorList.AppendLine();
-                        count = 0;
-                    }
-                }
+        //            if (count == 16)
+        //            {
+        //                sectorList.Append(ascii);
+        //                sectorList.AppendLine();
+        //                count = 0;
+        //            }
+        //        }
 
-                sectorList.AppendLine();
-            }
+        //        sectorList.AppendLine();
+        //    }
 
-            return sectorList;
-        }
+        //    return sectorList;
+        //}
         #endregion
     }
 }

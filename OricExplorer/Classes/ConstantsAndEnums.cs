@@ -6,7 +6,7 @@
     public static class ConstantsAndEnums
     {
         //public const string APP_VERSION_URL = "http://oric.mrandmrsdavies.com/app_version.xml";
-        public const string APP_VERSION_URL = "https://github.com/laurentd75/OricExplorer/blob/master/dist/app_version.xml";
+        public const string APP_VERSION_URL = "https://raw.githubusercontent.com/laurentd75/OricExplorer/master/dist/app_version.xml";
 
         public static readonly Color BACKGROUND = Color.FromArgb(30, 30, 30);
         public static readonly TextStyle BASIC_LINE_NUMBER_STYLE = new TextStyle(Brushes.Teal, null, FontStyle.Regular);
@@ -33,11 +33,18 @@
         public static readonly TextStyle DUMP_MAIN_SELECTION_FRONT_STYLE = new TextStyle(Brushes.Yellow, null, FontStyle.Regular);
         public static readonly TextStyle DUMP_SECONDARY_SELECTION_BACK_STYLE = new TextStyle(new SolidBrush(Color.FromArgb(60, 188, 255)), null, FontStyle.Regular);
 
-        public static readonly TextStyle[] SyntaxHighlightingDefaultValues = { BASIC_LINE_NUMBER_STYLE, BASIC_KEYWORD_STYLE, BASIC_BRANCHES_STYLE, BASIC_LOOPS_STYLE, BASIC_STRING_STYLE, BASIC_HEX_NUMBER_STYLE, BASIC_NUMBER_STYLE, BASIC_DATA_KEYWORD_STYLE, BASIC_COMMENT_STYLE, ASSEMBLER_ADDRESS_STYLE, ASSEMBLER_HEX_STYLE, ASSEMBLER_MNEMONIC_STYLE, ASSEMBLER_OPERAND_STYLE, ASSEMBLER_ASCII_STYLE, ASSEMBLER_UNKNOWN_STYLE, DUMP_HEADERS_STYLE, DUMP_HEX_STYLE, DUMP_ASCII_STYLE, DUMP_MAIN_SELECTION_BACK_STYLE, DUMP_MAIN_SELECTION_FRONT_STYLE, DUMP_SECONDARY_SELECTION_BACK_STYLE };
+        public static readonly TextStyle TELEASS_ADDRESS_STYLE = new TextStyle(Brushes.Teal, null, FontStyle.Regular);
+        public static readonly TextStyle TELEASS_COMMENT_STYLE = new TextStyle(new SolidBrush(Color.FromArgb(120, 120, 120)), null, FontStyle.Regular);
+        public static readonly TextStyle TELEASS_CODE_STYLE = new TextStyle(new SolidBrush(Color.FromArgb(240, 240, 240)), null, FontStyle.Regular);
 
-        public enum SyntaxHighlightingItems { BasicLineNumber, BasicKeyword, BasicBranches, BasicLoops, BasicString, BasicHexNumber, BasicNumber, BasicDataKeyword, BasicComment, AssemblerAddressStyle, AssemblerHexStyle, AssemblerMnemonicStyle, AssemblerOperandStyle, AssemblerAsciiStyle, AssemblerUnknownStyle, DumpHeadersStyle, DumpHexStyle, DumpAsciiStyle, DumpMainSelectionBackStyle, DumpMainSelectionFrontStyle, DumpSecondarySelectionBackStyle };
+        public static readonly TextStyle[] SyntaxHighlightingDefaultValues = { BASIC_LINE_NUMBER_STYLE, BASIC_KEYWORD_STYLE, BASIC_BRANCHES_STYLE, BASIC_LOOPS_STYLE, BASIC_STRING_STYLE, BASIC_HEX_NUMBER_STYLE, BASIC_NUMBER_STYLE, BASIC_DATA_KEYWORD_STYLE, BASIC_COMMENT_STYLE, ASSEMBLER_ADDRESS_STYLE, ASSEMBLER_HEX_STYLE, ASSEMBLER_MNEMONIC_STYLE, ASSEMBLER_OPERAND_STYLE, ASSEMBLER_ASCII_STYLE, ASSEMBLER_UNKNOWN_STYLE, DUMP_HEADERS_STYLE, DUMP_HEX_STYLE, DUMP_ASCII_STYLE, DUMP_MAIN_SELECTION_BACK_STYLE, DUMP_MAIN_SELECTION_FRONT_STYLE, DUMP_SECONDARY_SELECTION_BACK_STYLE, TELEASS_ADDRESS_STYLE, TELEASS_CODE_STYLE, TELEASS_COMMENT_STYLE };
+
+        public enum SyntaxHighlightingItems { BasicLineNumber, BasicKeyword, BasicBranches, BasicLoops, BasicString, BasicHexNumber, BasicNumber, BasicDataKeyword, BasicComment, AssemblerAddressStyle, AssemblerHexStyle, AssemblerMnemonicStyle, AssemblerOperandStyle, AssemblerAsciiStyle, AssemblerUnknownStyle, DumpHeadersStyle, DumpHexStyle, DumpAsciiStyle, DumpMainSelectionBackStyle, DumpMainSelectionFrontStyle, DumpSecondarySelectionBackStyle, TeleassAddressStyle, TeleassCodeStyle, TeleassCommentStyle };
 
         public enum SortMode { SORT_BY_NAME, SORT_BY_TYPE };
+        public enum Machine { Oric1, Atmos, Pravetz, Telestrat };
         public enum MediaType { OricTape, TapeFile, OricDisk, DiskFile, ROMFile, UnknownMedia };
+        public enum UserControls { MainView, DataViewer, SectorViewer, ScreenViewer, CharacterSetViewer, DataFileViewer, SequentialFileViewer, None };
+        public enum ExportTo { Tape, Text, Raw };
     }
 }

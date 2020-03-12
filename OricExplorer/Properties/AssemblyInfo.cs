@@ -30,4 +30,4 @@ using System.Resources;
 //      Revision
 //
 [assembly: NeutralResourcesLanguageAttribute("en-GB")]
-[assembly: AssemblyVersionAttribute("2.1.0.0")]
+[assembly: AssemblyVersionAttribute("2.2.0.0")]

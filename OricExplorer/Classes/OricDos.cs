@@ -55,8 +55,7 @@
 
             byte[] bByteArray = rdr.ReadBytes(21);
 
-            diskName = enc.GetString(bByteArray);
-            diskName.Trim();
+            diskName = enc.GetString(bByteArray).Trim().Trim(new char[] { '\0' });
 
             diskType = OricDisk.DiskTypes.Master;
 
@@ -192,7 +191,7 @@
             sectorData[0x06] = Convert.ToByte((program.EndAddress >> 8) & 0xFF);
             sectorData[0x07] = Convert.ToByte(program.EndAddress & 0xFF);
 
-            if(program.Format == OricProgram.ProgramFormat.BasicProgram)
+            if(program.Format == OricProgram.ProgramFormat.AtmosBasicProgram)
             {
                 if(program.AutoRun == OricProgram.AutoRunFlag.Enabled)
                 {
@@ -433,29 +432,29 @@
                                 if (ui16ExeAddress == 0x0000)
                                 {
                                     diskFile.ExeAddress = diskFile.StartAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.CodeFile;
+                                    diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
                                     diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
                                 }
                                 else if (ui16ExeAddress == 0x0001)
                                 {
                                     diskFile.ExeAddress = diskFile.StartAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
+                                    diskFile.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
                                     diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
                                 }
                                 else if (ui16ExeAddress == 0x0002)
                                 {
                                     diskFile.ExeAddress = diskFile.StartAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
+                                    diskFile.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
                                     diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
                                 }
                                 else
                                 {
                                     diskFile.ExeAddress = ui16ExeAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.CodeFile;
+                                    diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
                                     diskFile.AutoRun = OricProgram.AutoRunFlag.Enabled;
                                 }
 
-                                if (diskFile.Format == OricProgram.ProgramFormat.CodeFile)
+                                if (diskFile.Format == OricProgram.ProgramFormat.BinaryFile)
                                 {
                                     switch (diskFile.StartAddress)
                                     {
@@ -472,7 +471,7 @@
                                             diskFile.Format = OricProgram.ProgramFormat.CharacterSet; 
                                             break;
                                         default:
-                                            diskFile.Format = OricProgram.ProgramFormat.CodeFile;
+                                            diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
                                             break;
                                     }
 

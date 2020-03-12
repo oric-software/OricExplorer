@@ -84,6 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\TeleassTokens.cs" />
     <Compile Include="Classes\ConstantsAndEnums.cs" />
     <Compile Include="Classes\FTDos.cs" />
     <Compile Include="Classes\OricFileInfo.cs" />
@@ -95,260 +96,244 @@
     <Compile Include="Classes\StratSed.cs" />
     <Compile Include="Classes\SedOric.cs" />
     <Compile Include="Classes\RomInfo.cs" />
-    <Compile Include="Forms\AboutBox.cs">
+    <Compile Include="Forms\frmAboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AboutBox.Designer.cs">
-      <DependentUpon>AboutBox.cs</DependentUpon>
+    <Compile Include="Forms\frmAboutBox.Designer.cs">
+      <DependentUpon>frmAboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\BasicTokens.cs" />
-    <Compile Include="Forms\CheckForUpdateForm.cs">
+    <Compile Include="Forms\frmCheckForUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\CheckForUpdateForm.Designer.cs">
-      <DependentUpon>CheckForUpdateForm.cs</DependentUpon>
+    <Compile Include="Forms\frmCheckForUpdate.Designer.cs">
+      <DependentUpon>frmCheckForUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CreateNewDiskForm.cs">
+    <Compile Include="Forms\frmCreateNewDisk.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\CreateNewDiskForm.Designer.cs">
-      <DependentUpon>CreateNewDiskForm.cs</DependentUpon>
+    <Compile Include="Forms\frmCreateNewDisk.Designer.cs">
+      <DependentUpon>frmCreateNewDisk.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DataViewerForm.cs">
+    <Compile Include="Forms\frmDataViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\DataViewerForm.Designer.cs">
-      <DependentUpon>DataViewerForm.cs</DependentUpon>
+    <Compile Include="Forms\frmDataViewer.Designer.cs">
+      <DependentUpon>frmDataViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DiskDataForm.cs">
+    <Compile Include="Forms\frmDiskData.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\DiskDataForm.Designer.cs">
-      <DependentUpon>DiskDataForm.cs</DependentUpon>
+    <Compile Include="Forms\frmDiskData.Designer.cs">
+      <DependentUpon>frmDiskData.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FileManagerForm.cs">
+    <Compile Include="Forms\frmImportAtmosBasicFile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FileManagerForm.Designer.cs">
-      <DependentUpon>FileManagerForm.cs</DependentUpon>
+    <Compile Include="Forms\frmImportAtmosBasicFile.Designer.cs">
+      <DependentUpon>frmImportAtmosBasicFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ImportTextFileForm.cs">
+    <Compile Include="Forms\frmEditTape.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ImportTextFileForm.Designer.cs">
-      <DependentUpon>ImportTextFileForm.cs</DependentUpon>
+    <Compile Include="Forms\frmEditTape.Designer.cs">
+      <DependentUpon>frmEditTape.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditTapeForm.cs">
+    <Compile Include="Forms\frmFileList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\EditTapeForm.Designer.cs">
-      <DependentUpon>EditTapeForm.cs</DependentUpon>
+    <Compile Include="Forms\frmFileList.Designer.cs">
+      <DependentUpon>frmFileList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FileListForm.cs">
+    <Compile Include="Forms\frmScreenViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FileListForm.Designer.cs">
-      <DependentUpon>FileListForm.cs</DependentUpon>
+    <Compile Include="Forms\frmScreenViewer.Designer.cs">
+      <DependentUpon>frmScreenViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ScreenViewerForm.cs">
+    <Compile Include="Forms\frmProgramInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ScreenViewerForm.Designer.cs">
-      <DependentUpon>ScreenViewerForm.cs</DependentUpon>
+    <Compile Include="Forms\frmProgramInfo.Designer.cs">
+      <DependentUpon>frmProgramInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProgramInfoForm.cs">
+    <Compile Include="Forms\frmSyntaxHighlighting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ProgramInfoForm.Designer.cs">
-      <DependentUpon>ProgramInfoForm.cs</DependentUpon>
+    <Compile Include="Forms\frmSyntaxHighlighting.Designer.cs">
+      <DependentUpon>frmSyntaxHighlighting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SyntaxHighlightingForm.cs">
+    <Compile Include="Forms\frmTextScreenEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SyntaxHighlightingForm.Designer.cs">
-      <DependentUpon>SyntaxHighlightingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\TextScreenEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\TextScreenEditorForm.designer.cs">
-      <DependentUpon>TextScreenEditorForm.cs</DependentUpon>
+    <Compile Include="Forms\frmTextScreenEditor.designer.cs">
+      <DependentUpon>frmTextScreenEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="User Controls\CharacterSetViewer.cs">
+    <Compile Include="User Controls\ctlCharacterSetViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="User Controls\CharacterSetViewer.Designer.cs">
-      <DependentUpon>CharacterSetViewer.cs</DependentUpon>
+    <Compile Include="User Controls\ctlCharacterSetViewer.Designer.cs">
+      <DependentUpon>ctlCharacterSetViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="User Controls\DataFileViewer.cs">
+    <Compile Include="User Controls\ctlDataFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="User Controls\DataFileViewer.Designer.cs">
-      <DependentUpon>DataFileViewer.cs</DependentUpon>
+    <Compile Include="User Controls\ctlDataFileViewer.Designer.cs">
+      <DependentUpon>ctlDataFileViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="User Controls\DataViewer.cs">
+    <Compile Include="User Controls\ctlDataViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="User Controls\DataViewer.Designer.cs">
-      <DependentUpon>DataViewer.cs</DependentUpon>
+    <Compile Include="User Controls\ctlDataViewer.Designer.cs">
+      <DependentUpon>ctlDataViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FileScanForm.cs">
+    <Compile Include="Forms\frmFileScan.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FileScanForm.Designer.cs">
-      <DependentUpon>FileScanForm.cs</DependentUpon>
+    <Compile Include="Forms\frmFileScan.Designer.cs">
+      <DependentUpon>frmFileScan.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MainView.cs">
+    <Compile Include="Forms\frmMainView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainView.Designer.cs">
-      <DependentUpon>MainView.cs</DependentUpon>
+    <Compile Include="Forms\frmMainView.Designer.cs">
+      <DependentUpon>frmMainView.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\OpCodes.cs" />
-    <Compile Include="Forms\MainForm.cs">
+    <Compile Include="Forms\frmMainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="Forms\frmMainForm.Designer.cs">
+      <DependentUpon>frmMainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Classes\OricProgram.cs" />
     <Compile Include="Classes\OricTape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\AboutBox.resx">
+    <EmbeddedResource Include="Forms\frmAboutBox.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>AboutBox.cs</DependentUpon>
+      <DependentUpon>frmAboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CheckForUpdateForm.resx">
+    <EmbeddedResource Include="Forms\frmCheckForUpdate.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>CheckForUpdateForm.cs</DependentUpon>
+      <DependentUpon>frmCheckForUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CreateNewDiskForm.resx">
-      <DependentUpon>CreateNewDiskForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmCreateNewDisk.resx">
+      <DependentUpon>frmCreateNewDisk.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DataViewerForm.resx">
-      <DependentUpon>DataViewerForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmDataViewer.resx">
+      <DependentUpon>frmDataViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DiskDataForm.resx">
-      <DependentUpon>DiskDataForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmDiskData.resx">
+      <DependentUpon>frmDiskData.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileManagerForm.resx">
-      <DependentUpon>FileManagerForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmImportAtmosBasicFile.resx">
+      <DependentUpon>frmImportAtmosBasicFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ImportTextFileForm.resx">
-      <DependentUpon>ImportTextFileForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmEditTape.resx">
+      <DependentUpon>frmEditTape.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditTapeForm.resx">
-      <DependentUpon>EditTapeForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmFileList.resx">
+      <DependentUpon>frmFileList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileListForm.resx">
-      <DependentUpon>FileListForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmScreenViewer.resx">
+      <DependentUpon>frmScreenViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ScreenViewerForm.resx">
-      <DependentUpon>ScreenViewerForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmProgramInfo.resx">
+      <DependentUpon>frmProgramInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ProgramInfoForm.resx">
-      <DependentUpon>ProgramInfoForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmSyntaxHighlighting.resx">
+      <DependentUpon>frmSyntaxHighlighting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SyntaxHighlightingForm.resx">
-      <DependentUpon>SyntaxHighlightingForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmTextScreenEditor.resx">
+      <DependentUpon>frmTextScreenEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\TextScreenEditorForm.resx">
-      <DependentUpon>TextScreenEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="User Controls\CharacterSetViewer.resx">
-      <DependentUpon>CharacterSetViewer.cs</DependentUpon>
+    <EmbeddedResource Include="User Controls\ctlCharacterSetViewer.resx">
+      <DependentUpon>ctlCharacterSetViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="User Controls\DataFileViewer.resx">
+    <EmbeddedResource Include="User Controls\ctlDataFileViewer.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>DataFileViewer.cs</DependentUpon>
+      <DependentUpon>ctlDataFileViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="User Controls\DataViewer.resx">
-      <DependentUpon>DataViewer.cs</DependentUpon>
+    <EmbeddedResource Include="User Controls\ctlDataViewer.resx">
+      <DependentUpon>ctlDataViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileScanForm.resx">
+    <EmbeddedResource Include="Forms\frmFileScan.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>FileScanForm.cs</DependentUpon>
+      <DependentUpon>frmFileScan.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainForm.resx">
+    <EmbeddedResource Include="Forms\frmMainForm.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>MainForm.cs</DependentUpon>
+      <DependentUpon>frmMainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainView.resx">
+    <EmbeddedResource Include="Forms\frmMainView.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>MainView.cs</DependentUpon>
+      <DependentUpon>frmMainView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SettingsForm.resx">
+    <EmbeddedResource Include="Forms\frmSettings.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+      <DependentUpon>frmSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="User Controls\ScreenViewer.resx">
-      <DependentUpon>ScreenViewer.cs</DependentUpon>
+    <EmbeddedResource Include="User Controls\ctlScreenViewer.resx">
+      <DependentUpon>ctlScreenViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DiskInfoViewer.resx">
-      <DependentUpon>DiskInfoViewer.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmDiskInfoViewer.resx">
+      <DependentUpon>frmDiskInfoViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\ctlSequentialFileViewer.resx">
+      <DependentUpon>ctlSequentialFileViewer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Resources\OpCodes.dat" />
     <None Include="Resources\StdCharSet.dat" />
     <Compile Include="Classes\Preview.cs" />
-    <Compile Include="Forms\SettingsForm.cs">
+    <Compile Include="Forms\frmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+    <Compile Include="Forms\frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\TapeInfo.cs" />
-    <Compile Include="User Controls\ScreenViewer.cs">
+    <Compile Include="User Controls\ctlScreenViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="User Controls\ScreenViewer.Designer.cs">
-      <DependentUpon>ScreenViewer.cs</DependentUpon>
+    <Compile Include="User Controls\ctlScreenViewer.Designer.cs">
+      <DependentUpon>ctlScreenViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DiskInfoViewer.cs">
+    <Compile Include="Forms\frmDiskInfoViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\DiskInfoViewer.Designer.cs">
-      <DependentUpon>DiskInfoViewer.cs</DependentUpon>
+    <Compile Include="Forms\frmDiskInfoViewer.Designer.cs">
+      <DependentUpon>frmDiskInfoViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="User Controls\SequentialFileViewer.cs">
+    <Compile Include="User Controls\ctlSequentialFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="User Controls\SequentialFileViewer.Designer.cs">
-      <DependentUpon>SequentialFileViewer.cs</DependentUpon>
+    <Compile Include="User Controls\ctlSequentialFileViewer.Designer.cs">
+      <DependentUpon>ctlSequentialFileViewer.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\tape.png" />
+    <None Include="Resources\view.png" />
+    <None Include="Resources\rename.png" />
     <None Include="Resources\UpdatedCharacterSetViewer.bmp" />
     <None Include="Resources\picture_save.png" />
-    <None Include="Resources\text_align_justify.png" />
-    <None Include="Resources\PrintPreviewHS1.png" />
     <None Include="Resources\CharacterSetViewer.bmp" />
-    <None Include="Resources\GoToNextHS.png" />
-    <None Include="Resources\GoToPrevious.png" />
-    <None Include="Resources\atmosset.gif" />
-    <None Include="Resources\Atmosset2.gif" />
-    <None Include="Resources\Oric-atmos-48k.jpg" />
-    <None Include="Resources\OricAtmos.png" />
-    <None Include="Resources\OricAtmos1.png" />
-    <None Include="Resources\image_tape.png" />
-    <None Include="Resources\Collapse_small1.bmp" />
-    <None Include="Resources\1uparrow.png" />
-    <None Include="Resources\1downarrow.png" />
-    <None Include="Resources\button_cancel.png" />
     <None Include="Resources\1uparrow1.png" />
     <None Include="Resources\1downarrow1.png" />
     <None Include="Resources\button_cancel1.png" />
@@ -357,7 +342,6 @@
     <None Include="Resources\control_rewind_blue.png" />
     <None Include="Resources\control_fastforward_blue.png" />
     <None Include="Resources\control_end_blue.png" />
-    <None Include="Resources\control_start_blue1.png" />
     <None Include="Resources\control_play_blue.png" />
     <None Include="Resources\control_pause_blue.png" />
     <None Include="Resources\control_stop_blue.png" />
@@ -366,12 +350,13 @@
     <None Include="Resources\disk.png" />
     <None Include="Resources\magnifier_zoom_in.png" />
     <None Include="Resources\information.png" />
+    <None Include="Resources\copy.png" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\emulator.png" />
     <Content Include="Resources\OricExplorer.ico" />
     <None Include="Resources\PrintHS.png" />
     <None Include="Resources\PrintPreviewHS.png" />
     <None Include="Resources\PrintSetupHS.png" />
-    <None Include="Resources\Collapse_small.bmp" />
-    <None Include="Resources\Expand_small.bmp" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

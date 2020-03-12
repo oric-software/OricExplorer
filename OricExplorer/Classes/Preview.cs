@@ -1061,15 +1061,41 @@ namespace OricExplorer
 
             switch(cIndex)
             {
-                case 0: crColour = Color.Black; break;
-                case 1: crColour = Color.FromArgb(255, 0, 0); break;
-                case 2: crColour = Color.FromArgb(0, 255, 0); break;
-                case 3: crColour = Color.Yellow; break;
-                case 4: crColour = Color.FromArgb(0, 0, 255); break;
-                case 5: crColour = Color.Magenta; break;
-                case 6: crColour = Color.Cyan; break;
-                case 7: crColour = Color.White; break;
-                default: crColour = Color.Black; break;
+                case 0:
+                    crColour = Color.Black;
+                    break;
+
+                case 1:
+                    crColour = Color.FromArgb(255, 0, 0);
+                    break;
+
+                case 2:
+                    crColour = Color.FromArgb(0, 255, 0);
+                    break;
+
+                case 3: 
+                    crColour = Color.Yellow;
+                    break;
+
+                case 4: 
+                    crColour = Color.FromArgb(0, 0, 255);
+                    break;
+
+                case 5:
+                    crColour = Color.Magenta;
+                    break;
+
+                case 6:
+                    crColour = Color.Cyan;
+                    break;
+
+                case 7: 
+                    crColour = Color.White; 
+                    break;
+
+                default: 
+                    crColour = Color.Black; 
+                    break;
             }
 
             return crColour;

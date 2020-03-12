@@ -37,8 +37,7 @@
 
             byte[] bByteArray = rdr.ReadBytes(21);
 
-            diskName = enc.GetString(bByteArray);
-            diskName.Trim();
+            diskName = enc.GetString(bByteArray).Trim().Trim(new char[] { '\0' });
 
             ReadBitmap1();
             ReadBitmap2();
@@ -251,13 +250,16 @@
                         else if ((FileType & 0x20) == 0x20)
                             diskFileInfo.Format = OricProgram.ProgramFormat.WindowFile;
                         else if ((FileType & 0x40) == 0x40)
-                            diskFileInfo.Format = OricProgram.ProgramFormat.CodeFile;
+                            diskFileInfo.Format = OricProgram.ProgramFormat.BinaryFile;
                         else if ((FileType & 0x80) == 0x80)
-                            diskFileInfo.Format = OricProgram.ProgramFormat.BasicProgram;
+                            if (diskFileInfo.StartAddress == 0x501)
+                                diskFileInfo.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
+                            else
+                                diskFileInfo.Format = OricProgram.ProgramFormat.BinaryFile;
                         else
                             diskFileInfo.Format = OricProgram.ProgramFormat.UnknownFile;
 
-                        if (diskFileInfo.Format == OricProgram.ProgramFormat.CodeFile)
+                        if (diskFileInfo.Format == OricProgram.ProgramFormat.BinaryFile)
                         {
                             switch (diskFileInfo.StartAddress)
                             {
@@ -275,9 +277,17 @@
                                         diskFileInfo.Format = OricProgram.ProgramFormat.TextScreen;
                                     break;
 
-                                case 0xA000: diskFileInfo.Format = OricProgram.ProgramFormat.HiresScreen; break;
-                                case 0xB500: diskFileInfo.Format = OricProgram.ProgramFormat.CharacterSet; break;
-                                default: diskFileInfo.Format = OricProgram.ProgramFormat.CodeFile; break;
+                                case 0xA000: 
+                                    diskFileInfo.Format = OricProgram.ProgramFormat.HiresScreen;
+                                    break;
+
+                                case 0xB500:
+                                    diskFileInfo.Format = OricProgram.ProgramFormat.CharacterSet;
+                                    break;
+
+                                default: 
+                                    diskFileInfo.Format = OricProgram.ProgramFormat.BinaryFile;
+                                    break;
                             }
 
                             if (diskFileInfo.StartAddress >= 0xA000 && diskFileInfo.StartAddress <= 0xBF3F)
@@ -480,13 +490,16 @@
             else if ((formatFlag & 0x20) == 0x20)
                 programFormat = OricProgram.ProgramFormat.WindowFile;
             else if ((formatFlag & 0x40) == 0x40)
-                programFormat = OricProgram.ProgramFormat.CodeFile;
+                programFormat = OricProgram.ProgramFormat.BinaryFile;
             else if ((formatFlag & 0x80) == 0x80)
-                programFormat = OricProgram.ProgramFormat.BasicProgram;
+                if (tmpStartAddr == 0x501)
+                    programFormat = OricProgram.ProgramFormat.AtmosBasicProgram;
+                else
+                    programFormat = OricProgram.ProgramFormat.BinaryFile;
             else
                 programFormat = OricProgram.ProgramFormat.UnknownFile;
 
-            if (programFormat == OricProgram.ProgramFormat.CodeFile)
+            if (programFormat == OricProgram.ProgramFormat.BinaryFile)
             {
                 switch (tmpStartAddr)
                 {
@@ -506,7 +519,7 @@
                         programFormat = OricProgram.ProgramFormat.CharacterSet;
                         break;
                     default: 
-                        programFormat = OricProgram.ProgramFormat.CodeFile;
+                        programFormat = OricProgram.ProgramFormat.BinaryFile;
                         break;
                 }
             }
@@ -1150,10 +1163,22 @@
                         // Directory is full, setup details of next directory
                         switch (directoryCount)
                         {
-                            case 1: directorySector = 7; break;
-                            case 2: directorySector = 10; break;
-                            case 3: directorySector = 13; break;
-                            case 4: directorySector = 16; break;
+                            case 1:
+                                directorySector = 7; 
+                                break;
+
+                            case 2:
+                                directorySector = 10; 
+                                break;
+
+                            case 3:
+                                directorySector = 13;
+                                break;
+
+                            case 4:
+                                directorySector = 16;
+                                break;
+
                             default:
                                 // Find next free sector and use that
                                 break;
