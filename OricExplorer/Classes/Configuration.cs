@@ -16,7 +16,7 @@
 
         public static bool ListOfFoldersModified = false;
 
-        static Configuration()
+        public static void Init()
         {
             Persistent = Settings.Load();
 
@@ -39,7 +39,7 @@
             public Machine DefaultMachineForTape { get; set; } = Machine.Atmos;
             public bool CheckForUpdatesOnStartup { get; set; } = false;
             public Color PageBackground { get; set; } = ConstantsAndEnums.BACKGROUND;
-            public Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> SyntaxHighlightingStyles { get; set; }
+            public Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> SyntaxHighlightingStyles { get; set; } = new Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle>();
             public bool TapeIndex { get; set; } = true;
 
             public Point MainWindowLocation { get; set; }

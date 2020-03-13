@@ -561,22 +561,21 @@ namespace OricExplorer
                     break;
             }
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = Configuration.Persistent.EmulatorExecutable,
-                WorkingDirectory = Path.GetDirectoryName(Configuration.Persistent.EmulatorExecutable)
-            };
-
-            startInfo.WindowStyle = ProcessWindowStyle.Normal;
-            startInfo.Arguments = string.Format("--machine {0} --disk \"{1}\"", machineName, diskInfo.FullName);
-
             try
             {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = Configuration.Persistent.EmulatorExecutable,
+                    WorkingDirectory = Path.GetDirectoryName(Configuration.Persistent.EmulatorExecutable),
+                    WindowStyle = ProcessWindowStyle.Normal,
+                    Arguments = string.Format("--machine {0} --disk \"{1}\"", machineName, diskInfo.FullName)
+                };
+
                 Process.Start(startInfo);
             }
             catch (Exception)
             {
-                string errorMessage = "Failed to start the Emulator.\r\n\r\nPlease check the Emulator location in Options.";
+                string errorMessage = "Failed to start the Emulator.\r\n\r\nPlease check the Emulator location in Settings.";
                 MessageBox.Show(errorMessage, "Run in Emulator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -773,12 +772,6 @@ namespace OricExplorer
         {
             TapeInfo tapeInfo = (TapeInfo)fileListForm.tvwFileList.SelectedNode.Tag;
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = Configuration.Persistent.EmulatorExecutable,
-                WorkingDirectory = Path.GetDirectoryName(Configuration.Persistent.EmulatorExecutable)
-            };
-
             string machineName = "";
 
             if (machineType == Machine.Oric1)
@@ -794,16 +787,21 @@ namespace OricExplorer
                 machineName = "pravetz";
             }
 
-            startInfo.WindowStyle = ProcessWindowStyle.Normal;
-            startInfo.Arguments = string.Format("--machine {0} --tape \"{1}\"", machineName, tapeInfo.FullName);
-
             try
             {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = Configuration.Persistent.EmulatorExecutable,
+                    WorkingDirectory = Path.GetDirectoryName(Configuration.Persistent.EmulatorExecutable),
+                    WindowStyle = ProcessWindowStyle.Normal,
+                    Arguments = string.Format("--machine {0} --tape \"{1}\"", machineName, tapeInfo.FullName)
+                };
+
                 Process.Start(startInfo);
             }
             catch (Exception)
             {
-                string errorMessage = "Failed to start the Emulator.\r\n\r\nPlease check the Emulator location in Options.";
+                string errorMessage = "Failed to start the Emulator.\r\n\r\nPlease check the Emulator location in Settings.";
                 MessageBox.Show(errorMessage, "Run in Emulator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

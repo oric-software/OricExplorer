@@ -11,6 +11,8 @@ namespace OricExplorer
         [STAThread]
         static void Main()
         {
+            Configuration.Init();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmMainForm());

@@ -12,8 +12,6 @@
 
     public partial class frmSyntaxHighlighting : Form
     {
-        //Configuration configuration;
-
         private Color pageBackground;
         
         private Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> syntaxHighlightingStyles;
@@ -60,7 +58,7 @@
         {
             SetupUserColours();
 
-            optBasicListing.Checked = true;
+            optHexDumpListing.Checked = true;
         }
 
         private void SetupUserColours()

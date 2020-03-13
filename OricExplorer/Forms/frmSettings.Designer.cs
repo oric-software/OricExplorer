@@ -51,6 +51,7 @@ namespace OricExplorer
             this.btnBrowseForFolder = new System.Windows.Forms.Button();
             this.txtSelectedFolder = new System.Windows.Forms.TextBox();
             this.grpEmulator = new GroupFrame.GroupFrame();
+            this.optDefaultMachinePravetz = new System.Windows.Forms.RadioButton();
             this.optDefaultMachineAtmos = new System.Windows.Forms.RadioButton();
             this.optDefaultMachineOric1 = new System.Windows.Forms.RadioButton();
             this.lblDefaultMachine = new System.Windows.Forms.Label();
@@ -75,7 +76,6 @@ namespace OricExplorer
             this.chkTapeIndex = new System.Windows.Forms.CheckBox();
             this.grpUpdates = new GroupFrame.GroupFrame();
             this.chkCheckForUpdatesOnStartup = new System.Windows.Forms.CheckBox();
-            this.optDefaultMachinePravetz = new System.Windows.Forms.RadioButton();
             this.grpTapeAndDiskFolders.SuspendLayout();
             this.grpOptions.SuspendLayout();
             this.grpFolderDetails.SuspendLayout();
@@ -96,7 +96,7 @@ namespace OricExplorer
             this.btnAddFolder.Name = "btnAddFolder";
             this.btnAddFolder.Size = new System.Drawing.Size(75, 23);
             this.btnAddFolder.TabIndex = 0;
-            this.btnAddFolder.Text = "Add...";
+            this.btnAddFolder.Text = "Add";
             this.btnAddFolder.UseVisualStyleBackColor = true;
             this.btnAddFolder.Click += new System.EventHandler(this.btnAddFolder_Click);
             // 
@@ -336,6 +336,16 @@ namespace OricExplorer
             this.grpEmulator.Text = "Emulator";
             this.grpEmulator.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
+            // optDefaultMachinePravetz
+            // 
+            this.optDefaultMachinePravetz.AutoSize = true;
+            this.optDefaultMachinePravetz.Location = new System.Drawing.Point(9, 105);
+            this.optDefaultMachinePravetz.Name = "optDefaultMachinePravetz";
+            this.optDefaultMachinePravetz.Size = new System.Drawing.Size(61, 17);
+            this.optDefaultMachinePravetz.TabIndex = 5;
+            this.optDefaultMachinePravetz.Text = "Pravetz";
+            this.optDefaultMachinePravetz.UseVisualStyleBackColor = true;
+            // 
             // optDefaultMachineAtmos
             // 
             this.optDefaultMachineAtmos.AutoSize = true;
@@ -372,7 +382,7 @@ namespace OricExplorer
             // 
             this.lblEmulatorExecutable.AutoSize = true;
             this.lblEmulatorExecutable.ForeColor = System.Drawing.Color.Black;
-            this.lblEmulatorExecutable.Location = new System.Drawing.Point(6, 29);
+            this.lblEmulatorExecutable.Location = new System.Drawing.Point(6, 28);
             this.lblEmulatorExecutable.Name = "lblEmulatorExecutable";
             this.lblEmulatorExecutable.Size = new System.Drawing.Size(532, 13);
             this.lblEmulatorExecutable.TabIndex = 1;
@@ -397,7 +407,7 @@ namespace OricExplorer
             // 
             this.lblDirListingFolder.AutoSize = true;
             this.lblDirListingFolder.ForeColor = System.Drawing.Color.Black;
-            this.lblDirListingFolder.Location = new System.Drawing.Point(6, 22);
+            this.lblDirListingFolder.Location = new System.Drawing.Point(6, 28);
             this.lblDirListingFolder.Name = "lblDirListingFolder";
             this.lblDirListingFolder.Size = new System.Drawing.Size(627, 13);
             this.lblDirListingFolder.TabIndex = 1;
@@ -600,16 +610,6 @@ namespace OricExplorer
             this.chkCheckForUpdatesOnStartup.TabIndex = 1;
             this.chkCheckForUpdatesOnStartup.Text = "Check for updates on startup";
             this.chkCheckForUpdatesOnStartup.UseVisualStyleBackColor = true;
-            // 
-            // optDefaultMachinePravetz
-            // 
-            this.optDefaultMachinePravetz.AutoSize = true;
-            this.optDefaultMachinePravetz.Location = new System.Drawing.Point(9, 105);
-            this.optDefaultMachinePravetz.Name = "optDefaultMachinePravetz";
-            this.optDefaultMachinePravetz.Size = new System.Drawing.Size(61, 17);
-            this.optDefaultMachinePravetz.TabIndex = 5;
-            this.optDefaultMachinePravetz.Text = "Pravetz";
-            this.optDefaultMachinePravetz.UseVisualStyleBackColor = true;
             // 
             // frmSettings
             // 

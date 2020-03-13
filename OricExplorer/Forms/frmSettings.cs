@@ -3,6 +3,7 @@ namespace OricExplorer
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Windows.Forms;
     using static OricExplorer.ConstantsAndEnums;
 
@@ -23,9 +24,9 @@ namespace OricExplorer
             btnUpdateFolder.Enabled = false;
             btnRemoveFolder.Enabled = false;
 
-            mlstTapeFolders = Configuration.Persistent.TapeFolders;
-            mlstDiskFolders = Configuration.Persistent.DiskFolders;
-            mlstRomFolders = Configuration.Persistent.RomFolders;
+            mlstTapeFolders = Configuration.Persistent.TapeFolders.ToList();
+            mlstDiskFolders = Configuration.Persistent.DiskFolders.ToList();
+            mlstRomFolders = Configuration.Persistent.RomFolders.ToList();
 
             BuildFoldersList();
 
@@ -152,7 +153,7 @@ namespace OricExplorer
             using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
             {
                 folderDialog.Description = "Select folder for Output Directory functions";
-                folderDialog.RootFolder = Environment.SpecialFolder.Desktop;
+                folderDialog.RootFolder = Environment.SpecialFolder.MyComputer;
 
                 if (txtDirListingFolder.TextLength > 0 && Directory.Exists(txtDirListingFolder.Text))
                 {
@@ -298,7 +299,7 @@ namespace OricExplorer
                     folderBrowser.Description = "Select ROM Folder";
                 }
 
-                folderBrowser.RootFolder = Environment.SpecialFolder.Desktop;
+                folderBrowser.RootFolder = Environment.SpecialFolder.MyComputer;
                 folderBrowser.ShowNewFolderButton = false;
 
                 if (txtSelectedFolder.TextLength > 0 && Directory.Exists(txtSelectedFolder.Text))
