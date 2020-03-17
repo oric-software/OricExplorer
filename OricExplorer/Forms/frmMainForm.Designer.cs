@@ -84,6 +84,7 @@ namespace OricExplorer
             this.cmnuTapeOutputDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuTapeSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.cmnuTapeLoadIntoEmulator = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnuTapeLoadIntoEmulatorPravetz = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuTapeLoadIntoEmulatorOric1 = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuTapeLoadIntoEmulatorAtmos = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuTapeSep3 = new System.Windows.Forms.ToolStripSeparator();
@@ -123,6 +124,12 @@ namespace OricExplorer
             this.cmnuDiskRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuUnknownDisk = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmnuUnknownDiskRawDataViewer = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmnuUnknownDiskLoadIntoEmulator = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnuUnknownDiskLoadIntoEmulatorPravetz = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnuUnknownDiskLoadIntoEmulatorOric1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnuUnknownDiskLoadIntoEmulatorAtmos = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuRom = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmnuRomViewRom = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuRomSep1 = new System.Windows.Forms.ToolStripSeparator();
@@ -132,13 +139,14 @@ namespace OricExplorer
             this.cmnuRomSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.cmnuRomRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.tmrAfterLabelEdit = new System.Windows.Forms.Timer(this.components);
-            this.cmnuTapeLoadIntoEmulatorPravetz = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmnuUnknownDiskLoadIntoEmulator = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmnuUnknownDiskLoadIntoEmulatorPravetz = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmnuUnknownDiskLoadIntoEmulatorOric1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmnuUnknownDiskLoadIntoEmulatorAtmos = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
-            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnuOtherFiles = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmnuOtherFilesViewFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu.SuspendLayout();
             this.ssStatusBar.SuspendLayout();
             this.cmnuProgram.SuspendLayout();
@@ -146,6 +154,7 @@ namespace OricExplorer
             this.cmnuDisk.SuspendLayout();
             this.cmnuUnknownDisk.SuspendLayout();
             this.cmnuRom.SuspendLayout();
+            this.cmnuOtherFiles.SuspendLayout();
             this.SuspendLayout();
             // 
             // mnu
@@ -373,7 +382,7 @@ namespace OricExplorer
             this.cmnuProgramSep3,
             this.cmnuProgramExtractTo});
             this.cmnuProgram.Name = "contextMenuStrip2";
-            this.cmnuProgram.Size = new System.Drawing.Size(178, 198);
+            this.cmnuProgram.Size = new System.Drawing.Size(181, 220);
             this.cmnuProgram.Text = "Program Menu";
             this.cmnuProgram.Opening += new System.ComponentModel.CancelEventHandler(this.cmnuProgram_Opening);
             // 
@@ -383,9 +392,9 @@ namespace OricExplorer
             this.cmnuProgramViewFile.Image = global::OricExplorer.Properties.Resources.view;
             this.cmnuProgramViewFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmnuProgramViewFile.Name = "cmnuProgramViewFile";
-            this.cmnuProgramViewFile.Size = new System.Drawing.Size(177, 22);
+            this.cmnuProgramViewFile.Size = new System.Drawing.Size(180, 22);
             this.cmnuProgramViewFile.Text = "View file";
-            this.cmnuProgramViewFile.Click += new System.EventHandler(this.cmnuRomViewRom_Click);
+            this.cmnuProgramViewFile.Click += new System.EventHandler(this.cmnuProgramViewFile_Click);
             // 
             // cmnuProgramOpenDataViewer
             // 
@@ -585,12 +594,21 @@ namespace OricExplorer
             this.cmnuTapeLoadIntoEmulator.Text = "Load into Emulator";
             this.cmnuTapeLoadIntoEmulator.DropDownOpening += new System.EventHandler(this.cmnuTapeLoadIntoEmulator_DropDownOpening);
             // 
+            // cmnuTapeLoadIntoEmulatorPravetz
+            // 
+            this.cmnuTapeLoadIntoEmulatorPravetz.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmnuTapeLoadIntoEmulatorPravetz.Image = ((System.Drawing.Image)(resources.GetObject("cmnuTapeLoadIntoEmulatorPravetz.Image")));
+            this.cmnuTapeLoadIntoEmulatorPravetz.Name = "cmnuTapeLoadIntoEmulatorPravetz";
+            this.cmnuTapeLoadIntoEmulatorPravetz.Size = new System.Drawing.Size(112, 22);
+            this.cmnuTapeLoadIntoEmulatorPravetz.Text = "Pravetz";
+            this.cmnuTapeLoadIntoEmulatorPravetz.Click += new System.EventHandler(this.cmnuTapeLoadIntoEmulatorPravetz_Click);
+            // 
             // cmnuTapeLoadIntoEmulatorOric1
             // 
             this.cmnuTapeLoadIntoEmulatorOric1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmnuTapeLoadIntoEmulatorOric1.Image = ((System.Drawing.Image)(resources.GetObject("cmnuTapeLoadIntoEmulatorOric1.Image")));
             this.cmnuTapeLoadIntoEmulatorOric1.Name = "cmnuTapeLoadIntoEmulatorOric1";
-            this.cmnuTapeLoadIntoEmulatorOric1.Size = new System.Drawing.Size(180, 22);
+            this.cmnuTapeLoadIntoEmulatorOric1.Size = new System.Drawing.Size(112, 22);
             this.cmnuTapeLoadIntoEmulatorOric1.Text = "Oric-1";
             this.cmnuTapeLoadIntoEmulatorOric1.Click += new System.EventHandler(this.cmnuTapeLoadIntoEmulatorOric1_Click);
             // 
@@ -599,7 +617,7 @@ namespace OricExplorer
             this.cmnuTapeLoadIntoEmulatorAtmos.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmnuTapeLoadIntoEmulatorAtmos.Image = ((System.Drawing.Image)(resources.GetObject("cmnuTapeLoadIntoEmulatorAtmos.Image")));
             this.cmnuTapeLoadIntoEmulatorAtmos.Name = "cmnuTapeLoadIntoEmulatorAtmos";
-            this.cmnuTapeLoadIntoEmulatorAtmos.Size = new System.Drawing.Size(180, 22);
+            this.cmnuTapeLoadIntoEmulatorAtmos.Size = new System.Drawing.Size(112, 22);
             this.cmnuTapeLoadIntoEmulatorAtmos.Text = "Atmos";
             this.cmnuTapeLoadIntoEmulatorAtmos.Click += new System.EventHandler(this.cmnuTapeLoadIntoEmulatorAtmos_Click);
             // 
@@ -908,14 +926,68 @@ namespace OricExplorer
             this.toolStripMenuItem5,
             this.cmnuUnknownDiskLoadIntoEmulator});
             this.cmnuUnknownDisk.Name = "contextMenuStripUnknownDisk";
-            this.cmnuUnknownDisk.Size = new System.Drawing.Size(181, 76);
+            this.cmnuUnknownDisk.Size = new System.Drawing.Size(176, 54);
             // 
             // cmnuUnknownDiskRawDataViewer
             // 
             this.cmnuUnknownDiskRawDataViewer.Name = "cmnuUnknownDiskRawDataViewer";
-            this.cmnuUnknownDiskRawDataViewer.Size = new System.Drawing.Size(180, 22);
+            this.cmnuUnknownDiskRawDataViewer.Size = new System.Drawing.Size(175, 22);
             this.cmnuUnknownDiskRawDataViewer.Text = "Raw Data Viewer";
             this.cmnuUnknownDiskRawDataViewer.Click += new System.EventHandler(this.cmnuUnknownDiskRawDataViewer_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(172, 6);
+            // 
+            // cmnuUnknownDiskLoadIntoEmulator
+            // 
+            this.cmnuUnknownDiskLoadIntoEmulator.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmnuUnknownDiskLoadIntoEmulatorPravetz,
+            this.cmnuUnknownDiskLoadIntoEmulatorOric1,
+            this.cmnuUnknownDiskLoadIntoEmulatorAtmos,
+            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat});
+            this.cmnuUnknownDiskLoadIntoEmulator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmnuUnknownDiskLoadIntoEmulator.Image = global::OricExplorer.Properties.Resources.emulator;
+            this.cmnuUnknownDiskLoadIntoEmulator.Name = "cmnuUnknownDiskLoadIntoEmulator";
+            this.cmnuUnknownDiskLoadIntoEmulator.Size = new System.Drawing.Size(175, 22);
+            this.cmnuUnknownDiskLoadIntoEmulator.Text = "Load into Emulator";
+            // 
+            // cmnuUnknownDiskLoadIntoEmulatorPravetz
+            // 
+            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Image = ((System.Drawing.Image)(resources.GetObject("cmnuUnknownDiskLoadIntoEmulatorPravetz.Image")));
+            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Name = "cmnuUnknownDiskLoadIntoEmulatorPravetz";
+            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Size = new System.Drawing.Size(117, 22);
+            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Text = "Pravetz";
+            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Click += new System.EventHandler(this.cmnuUnknownDiskLoadIntoEmulatorPravetz_Click);
+            // 
+            // cmnuUnknownDiskLoadIntoEmulatorOric1
+            // 
+            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Image = ((System.Drawing.Image)(resources.GetObject("cmnuUnknownDiskLoadIntoEmulatorOric1.Image")));
+            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Name = "cmnuUnknownDiskLoadIntoEmulatorOric1";
+            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Size = new System.Drawing.Size(117, 22);
+            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Text = "Oric-1";
+            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Click += new System.EventHandler(this.cmnuUnknownDiskLoadIntoEmulatorOric1_Click);
+            // 
+            // cmnuUnknownDiskLoadIntoEmulatorAtmos
+            // 
+            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Image = ((System.Drawing.Image)(resources.GetObject("cmnuUnknownDiskLoadIntoEmulatorAtmos.Image")));
+            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Name = "cmnuUnknownDiskLoadIntoEmulatorAtmos";
+            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Size = new System.Drawing.Size(117, 22);
+            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Text = "Atmos";
+            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Click += new System.EventHandler(this.cmnuUnknownDiskLoadIntoEmulatorAtmos_Click);
+            // 
+            // cmnuUnknownDiskLoadIntoEmulatorTelestrat
+            // 
+            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Image = ((System.Drawing.Image)(resources.GetObject("cmnuUnknownDiskLoadIntoEmulatorTelestrat.Image")));
+            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Name = "cmnuUnknownDiskLoadIntoEmulatorTelestrat";
+            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Size = new System.Drawing.Size(117, 22);
+            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Text = "Telestrat";
+            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Click += new System.EventHandler(this.cmnuUnknownDiskLoadIntoEmulatorTelestrat_Click);
             // 
             // cmnuRom
             // 
@@ -996,68 +1068,80 @@ namespace OricExplorer
             // 
             this.tmrAfterLabelEdit.Tick += new System.EventHandler(this.tmrAfterLabelEdit_Tick);
             // 
-            // cmnuTapeLoadIntoEmulatorPravetz
+            // cmnuOtherFiles
             // 
-            this.cmnuTapeLoadIntoEmulatorPravetz.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmnuTapeLoadIntoEmulatorPravetz.Image = ((System.Drawing.Image)(resources.GetObject("cmnuTapeLoadIntoEmulatorPravetz.Image")));
-            this.cmnuTapeLoadIntoEmulatorPravetz.Name = "cmnuTapeLoadIntoEmulatorPravetz";
-            this.cmnuTapeLoadIntoEmulatorPravetz.Size = new System.Drawing.Size(180, 22);
-            this.cmnuTapeLoadIntoEmulatorPravetz.Text = "Pravetz";
-            this.cmnuTapeLoadIntoEmulatorPravetz.Click += new System.EventHandler(this.cmnuTapeLoadIntoEmulatorPravetz_Click);
+            this.cmnuOtherFiles.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmnuOtherFilesViewFile,
+            this.toolStripSeparator1,
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem3,
+            this.toolStripMenuItem4,
+            this.toolStripSeparator2,
+            this.toolStripMenuItem6});
+            this.cmnuOtherFiles.Name = "tapeContextMenuStrip";
+            this.cmnuOtherFiles.Size = new System.Drawing.Size(119, 126);
             // 
-            // cmnuUnknownDiskLoadIntoEmulator
+            // cmnuOtherFilesViewFile
             // 
-            this.cmnuUnknownDiskLoadIntoEmulator.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmnuUnknownDiskLoadIntoEmulatorPravetz,
-            this.cmnuUnknownDiskLoadIntoEmulatorOric1,
-            this.cmnuUnknownDiskLoadIntoEmulatorAtmos,
-            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat});
-            this.cmnuUnknownDiskLoadIntoEmulator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmnuUnknownDiskLoadIntoEmulator.Image = global::OricExplorer.Properties.Resources.emulator;
-            this.cmnuUnknownDiskLoadIntoEmulator.Name = "cmnuUnknownDiskLoadIntoEmulator";
-            this.cmnuUnknownDiskLoadIntoEmulator.Size = new System.Drawing.Size(180, 22);
-            this.cmnuUnknownDiskLoadIntoEmulator.Text = "Load into Emulator";
+            this.cmnuOtherFilesViewFile.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmnuOtherFilesViewFile.Image = global::OricExplorer.Properties.Resources.view;
+            this.cmnuOtherFilesViewFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmnuOtherFilesViewFile.Name = "cmnuOtherFilesViewFile";
+            this.cmnuOtherFilesViewFile.Size = new System.Drawing.Size(180, 22);
+            this.cmnuOtherFilesViewFile.Text = "View file";
+            this.cmnuOtherFilesViewFile.Click += new System.EventHandler(this.cmnuOtherFilesViewFile_Click);
             // 
-            // cmnuUnknownDiskLoadIntoEmulatorPravetz
+            // toolStripSeparator1
             // 
-            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Image = ((System.Drawing.Image)(resources.GetObject("cmnuUnknownDiskLoadIntoEmulatorPravetz.Image")));
-            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Name = "cmnuUnknownDiskLoadIntoEmulatorPravetz";
-            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Size = new System.Drawing.Size(180, 22);
-            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Text = "Pravetz";
-            this.cmnuUnknownDiskLoadIntoEmulatorPravetz.Click += new System.EventHandler(this.cmnuUnknownDiskLoadIntoEmulatorPravetz_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Visible = false;
             // 
-            // cmnuUnknownDiskLoadIntoEmulatorOric1
+            // toolStripMenuItem2
             // 
-            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Image = ((System.Drawing.Image)(resources.GetObject("cmnuUnknownDiskLoadIntoEmulatorOric1.Image")));
-            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Name = "cmnuUnknownDiskLoadIntoEmulatorOric1";
-            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Size = new System.Drawing.Size(180, 22);
-            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Text = "Oric-1";
-            this.cmnuUnknownDiskLoadIntoEmulatorOric1.Click += new System.EventHandler(this.cmnuUnknownDiskLoadIntoEmulatorOric1_Click);
+            this.toolStripMenuItem2.Enabled = false;
+            this.toolStripMenuItem2.Image = global::OricExplorer.Properties.Resources.copy;
+            this.toolStripMenuItem2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Text = "Copy";
+            this.toolStripMenuItem2.Visible = false;
             // 
-            // cmnuUnknownDiskLoadIntoEmulatorAtmos
+            // toolStripMenuItem3
             // 
-            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Image = ((System.Drawing.Image)(resources.GetObject("cmnuUnknownDiskLoadIntoEmulatorAtmos.Image")));
-            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Name = "cmnuUnknownDiskLoadIntoEmulatorAtmos";
-            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Size = new System.Drawing.Size(180, 22);
-            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Text = "Atmos";
-            this.cmnuUnknownDiskLoadIntoEmulatorAtmos.Click += new System.EventHandler(this.cmnuUnknownDiskLoadIntoEmulatorAtmos_Click);
+            this.toolStripMenuItem3.Enabled = false;
+            this.toolStripMenuItem3.Image = global::OricExplorer.Properties.Resources.delete;
+            this.toolStripMenuItem3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem3.Text = "Delete";
+            this.toolStripMenuItem3.Visible = false;
             // 
-            // toolStripMenuItem5
+            // toolStripMenuItem4
             // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem4.Enabled = false;
+            this.toolStripMenuItem4.Image = global::OricExplorer.Properties.Resources.rename;
+            this.toolStripMenuItem4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem4.Text = "Rename";
+            this.toolStripMenuItem4.Visible = false;
             // 
-            // cmnuUnknownDiskLoadIntoEmulatorTelestrat
+            // toolStripSeparator2
             // 
-            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Image = ((System.Drawing.Image)(resources.GetObject("cmnuUnknownDiskLoadIntoEmulatorTelestrat.Image")));
-            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Name = "cmnuUnknownDiskLoadIntoEmulatorTelestrat";
-            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Size = new System.Drawing.Size(180, 22);
-            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Text = "Telestrat";
-            this.cmnuUnknownDiskLoadIntoEmulatorTelestrat.Click += new System.EventHandler(this.cmnuUnknownDiskLoadIntoEmulatorTelestrat_Click);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Visible = false;
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Enabled = false;
+            this.toolStripMenuItem6.Image = global::OricExplorer.Properties.Resources.refresh;
+            this.toolStripMenuItem6.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem6.Text = "Refresh";
+            this.toolStripMenuItem6.Visible = false;
             // 
             // frmMainForm
             // 
@@ -1085,6 +1169,7 @@ namespace OricExplorer
             this.cmnuDisk.ResumeLayout(false);
             this.cmnuUnknownDisk.ResumeLayout(false);
             this.cmnuRom.ResumeLayout(false);
+            this.cmnuOtherFiles.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1200,6 +1285,14 @@ namespace OricExplorer
         private ToolStripMenuItem cmnuUnknownDiskLoadIntoEmulatorOric1;
         private ToolStripMenuItem cmnuUnknownDiskLoadIntoEmulatorAtmos;
         private ToolStripMenuItem cmnuUnknownDiskLoadIntoEmulatorTelestrat;
+        private ContextMenuStrip cmnuOtherFiles;
+        private ToolStripMenuItem cmnuOtherFilesViewFile;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem toolStripMenuItem2;
+        private ToolStripMenuItem toolStripMenuItem3;
+        private ToolStripMenuItem toolStripMenuItem4;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem toolStripMenuItem6;
     }
 }
 

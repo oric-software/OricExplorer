@@ -43,6 +43,7 @@ namespace OricExplorer
             // 
             this.btnOK.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnOK.BackColor = System.Drawing.SystemColors.Control;
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnOK.ForeColor = System.Drawing.Color.Black;
             this.btnOK.Location = new System.Drawing.Point(160, 418);
             this.btnOK.Name = "btnOK";
@@ -124,6 +125,7 @@ namespace OricExplorer
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.CancelButton = this.btnOK;
             this.ClientSize = new System.Drawing.Size(395, 445);
             this.Controls.Add(this.grpContributors);
             this.Controls.Add(this.lklContact);

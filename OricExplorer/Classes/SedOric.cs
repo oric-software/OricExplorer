@@ -253,7 +253,7 @@
                             diskFileInfo.Format = OricProgram.ProgramFormat.BinaryFile;
                         else if ((FileType & 0x80) == 0x80)
                             if (diskFileInfo.StartAddress == 0x501)
-                                diskFileInfo.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
+                                diskFileInfo.Format = OricProgram.ProgramFormat.BasicProgram;
                             else
                                 diskFileInfo.Format = OricProgram.ProgramFormat.BinaryFile;
                         else
@@ -432,7 +432,7 @@
                     int programLength = (loadedProgram.EndAddress - loadedProgram.StartAddress) + 1;
 
                     //loadedProgram.m_programData = new byte[0xFFFF];
-                    loadedProgram.m_programData = new byte[programLength];
+                    loadedProgram.ProgramData = new byte[programLength];
 
                     while (dataSector != 0 && descriptorIndex < totalDescriptors)
                     {
@@ -449,7 +449,7 @@
 
                             if (index < programLength)
                             {
-                                loadedProgram.m_programData[index] = tmpByte;
+                                loadedProgram.ProgramData[index] = tmpByte;
                             }
 
                             index++;
@@ -493,7 +493,7 @@
                 programFormat = OricProgram.ProgramFormat.BinaryFile;
             else if ((formatFlag & 0x80) == 0x80)
                 if (tmpStartAddr == 0x501)
-                    programFormat = OricProgram.ProgramFormat.AtmosBasicProgram;
+                    programFormat = OricProgram.ProgramFormat.BasicProgram;
                 else
                     programFormat = OricProgram.ProgramFormat.BinaryFile;
             else

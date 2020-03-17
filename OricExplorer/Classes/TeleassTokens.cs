@@ -8,7 +8,7 @@ namespace OricExplorer
 
         public TeleassTokens()
         {
-            // Build the Basic token list
+            // Build the Teleass token list
             BuildTokenList();
         }
 

@@ -1,23 +1,25 @@
 namespace OricExplorer
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
-    using System.Linq;
     using System.Text;
     using System.Windows.Forms;
 
     public class OricProgram
     {
-        public enum ProgramFormat { AtmosBasicProgram, HyperbasicSource, TeleassSource, BinaryFile, HiresScreen, TextScreen, CharacterSet, DirectAccessFile, SequentialFile, WindowFile, HelpFile, UnknownFile };
+        public enum ProgramFormat { BasicProgram, HyperbasicProgram, TeleassSource, BinaryFile, OrixProgram, HiresScreen, TextScreen, CharacterSet, DirectAccessFile, SequentialFile, WindowFile, HelpFile, UnknownFile };
         public enum ProtectionStatus { Unprotected, Protected, Invisible, Unlocked, Locked };
         public enum AutoRunFlag { Disabled, Enabled };
+        public enum SpecialMode { None, Telestrat, Orix };
 
         // byte array containing the actual program data
-        public byte[] m_programData;
+        public byte[] ProgramData { get; set; }
 
-        public BasicTokens basicTokens;
-        public TeleassTokens teleassTokens;
-        public OpCodes opCodes;
+        private BasicTokens basicTokens;
+        private HyperbasicTokens hyperbasicTokens;
+        private TeleassTokens teleassTokens;
+        private OpCodes opCodes;
 
         /// <summary>
         /// Constructor builds the Basic token list and calls the New() function to reset the values
@@ -66,9 +68,9 @@ namespace OricExplorer
             ProgramName = "";
 
             // Reset the program data
-            if (m_programData != null)
+            if (ProgramData != null)
             {
-                m_programData.Initialize();
+                ProgramData.Initialize();
             }
         }
 
@@ -93,7 +95,7 @@ namespace OricExplorer
                     stbAscii.Length = 0;
                 }
 
-                byte bByte = m_programData[ui16Loop];
+                byte bByte = ProgramData[ui16Loop];
 
                 if (bByte < 32 || bByte > 126)
                 {
@@ -168,8 +170,8 @@ namespace OricExplorer
                 stbBasic.Length = 0;
 
                 // Get the address of the next line
-                highByte = m_programData[ui16Index];
-                lowByte = m_programData[ui16Index + 1];
+                highByte = ProgramData[ui16Index];
+                lowByte = ProgramData[ui16Index + 1];
 
                 ushort ui16NextAddress = Convert.ToUInt16(highByte + (lowByte * 256));
 
@@ -188,8 +190,8 @@ namespace OricExplorer
                     ui16Index += 2;
 
                     // Get the current line number
-                    highByte = m_programData[ui16Index];
-                    lowByte = m_programData[ui16Index + 1];
+                    highByte = ProgramData[ui16Index];
+                    lowByte = ProgramData[ui16Index + 1];
 
                     ushort uiLineNo = Convert.ToUInt16(highByte + (lowByte * 256));
 
@@ -200,7 +202,7 @@ namespace OricExplorer
 
                     do
                     {
-                        byte bByte = m_programData[ui16Index];
+                        byte bByte = ProgramData[ui16Index];
 
                         if (bByte >= 0x80 && bByte <= 0xF6)
                         {
@@ -336,7 +338,7 @@ namespace OricExplorer
                         }
 
                         ui16Index++;
-                    } while (m_programData[ui16Index] != 0);
+                    } while (ProgramData[ui16Index] != 0);
 
                     stbListing.Append(stbBasic.ToString());
                     stbListing.Append("\\i0\\par\n");
@@ -350,7 +352,7 @@ namespace OricExplorer
             return stbListing.ToString().Replace('`', '©');
         }
 
-        public string ListAtmosBasicSourceAsText()
+        public string ListBasicSourceAsText()
         {
             basicTokens = new BasicTokens(BasicTokens.ROMVersion.V1_1);
 
@@ -381,8 +383,8 @@ namespace OricExplorer
                 stbLine.Length = 0;
 
                 // Get the address of the next line
-                highByte = m_programData[ui16Index];
-                lowByte = m_programData[ui16Index + 1];
+                highByte = ProgramData[ui16Index];
+                lowByte = ProgramData[ui16Index + 1];
 
                 ushort ui16NextAddress = Convert.ToUInt16(highByte + (lowByte * 256));
 
@@ -400,15 +402,15 @@ namespace OricExplorer
                     ui16Index += 2;
 
                     // Get the current line number
-                    highByte = m_programData[ui16Index];
-                    lowByte = m_programData[ui16Index + 1];
+                    highByte = ProgramData[ui16Index];
+                    lowByte = ProgramData[ui16Index + 1];
 
                     ushort uiLineNo = Convert.ToUInt16(highByte + (lowByte * 256));
                     stbLine.AppendFormat("{0} ", uiLineNo);
 
                     ui16Index += 2;
 
-                    if (ui16Index >= m_programData.Length)
+                    if (ui16Index >= ProgramData.Length)
                     {
                         bEndOfProg = true;
                     }
@@ -416,7 +418,7 @@ namespace OricExplorer
                     {
                         do
                         {
-                            byte bByte = m_programData[ui16Index];
+                            byte bByte = ProgramData[ui16Index];
 
                             if (bByte >= 0x80 && bByte <= 0xF6)
                             {
@@ -487,11 +489,11 @@ namespace OricExplorer
 
                             ui16Index++;
 
-                            if (ui16Index >= m_programData.Length)
+                            if (ui16Index >= ProgramData.Length)
                             {
                                 bEndOfProg = true;
                             }
-                        } while (!bEndOfProg && m_programData[ui16Index] != 0 && ui16Index < m_programData.Length);
+                        } while (!bEndOfProg && ProgramData[ui16Index] != 0 && ui16Index < ProgramData.Length);
                     }
 
                     stbListing.Append(stbLine.ToString());
@@ -504,43 +506,188 @@ namespace OricExplorer
             return stbListing.ToString().Replace('`', '©');
         }
 
-        //public string ListHyperbasicSourceAsText()
-        //{
-        //    StringBuilder stbListing = new StringBuilder();
+        public string ListHyperbasicSourceAsText()
+        {
+            Dictionary<ushort, string> dicVariables = new Dictionary<ushort, string>();
+            StringBuilder stbListing = new StringBuilder();
+            StringBuilder stbDebug = new StringBuilder();
+            ushort ushActualLineStartIndex = 16;
+            bool boolEndOfProg = false;
 
-        //    int intIndex = 16;
-        //    bool boolEndOfProg = false;
+            hyperbasicTokens = new HyperbasicTokens();
 
-        //    while (!boolEndOfProg)
-        //    {
-        //        try
-        //        {
-        //            byte bytLineLength = m_programData[intIndex++];
+            // determine the address of variable block
+            byte bytHigh = ProgramData[13];
+            byte bytLow = ProgramData[14];
+            ushort ushVariableIndex = (ushort)(bytHigh + (bytLow * 256));
 
-        //            byte bytHigh = m_programData[intIndex++];
-        //            byte bytLow = m_programData[intIndex++];
+    // display debug
+    ushort ushIndex = 0;
+    while ((ushVariableIndex + ushIndex - 0x7f0) < ProgramData.Length)
+    {
+        stbDebug.Append($"{(ushIndex % 16 == 0 ? $"\r\n{ushVariableIndex + ushIndex:X4} " : " ")}{ProgramData[ushVariableIndex + ushIndex++ - 0x7f0]:X2}");
+    }
+    stbDebug.Append($"\r\n\r\nDébut des variables : {ushVariableIndex:X4}\r\n\r\n");
 
-        //            int intLineNumber = bytHigh + (bytLow * 256);
-        //            stbListing.Append($"{intLineNumber,6} ");
+            
+            // build the dictionary of variables
+            ushVariableIndex -= 0x7f0;
+            bytHigh = ProgramData[ushVariableIndex++];
+            bytLow = ProgramData[ushVariableIndex++];
+            ushort ushNextVariableStartIndex = (ushort)(bytHigh + (bytLow * 256));
+            byte b;
+Console.WriteLine($"{ushNextVariableStartIndex:X4}");
 
-        //            for (byte b = 2; b < bytLineLength - 1; b++)
-        //            {
-        //                stbListing.Append($"{m_programData[intIndex++]:X2} ");
-        //            }
+            while (ushNextVariableStartIndex > 0)
+            {
+                ushNextVariableStartIndex -= 0x7f0;
 
-        //            stbListing.Append("\n");
+                bytHigh = ProgramData[ushVariableIndex++];
+                bytLow = ProgramData[ushVariableIndex++];
+                ushort ushVariableType = (ushort)((bytHigh * 256) + bytLow);
+Console.WriteLine($"{ushVariableType:X4}");
 
-        //            boolEndOfProg = (m_programData[intIndex] == 0);
-        //        }
-        //        catch (Exception)
-        //        {
-        //            MessageBox.Show("Error displaying file: file seems to be corrupted or truncated.", "Display file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //            boolEndOfProg = true;
-        //        }
-        //    }
+                if (ushVariableType > 0)
+                {
+                    bytHigh = ProgramData[ushVariableIndex++];
+                    bytLow = ProgramData[ushVariableIndex++];
+                    ushort ushVariableId = (ushort)((bytHigh * 256) + bytLow);
+Console.WriteLine($"{ushVariableId:X4}");
+                    
+                    string strPs = (ushVariableType == 0x1000 ? "\"" : "");
 
-        //    return stbListing.ToString();
-        //}
+                    StringBuilder stbVariable = new StringBuilder();
+                    byte bytVariableLength = (byte)(ProgramData[ushVariableIndex++] - 7);
+                    for (b = 0; b < bytVariableLength; b++)
+                    {
+                        stbVariable.Append((char)ProgramData[ushVariableIndex++]);
+                    }
+
+                    dicVariables.Add(ushVariableId, $"{strPs}{stbVariable.ToString()}{strPs}");
+
+                    ushVariableIndex = ushNextVariableStartIndex;
+                    bytHigh = ProgramData[ushVariableIndex++];
+                    bytLow = ProgramData[ushVariableIndex++];
+                    ushNextVariableStartIndex = (ushort)(bytHigh + (bytLow * 256));
+Console.WriteLine($"{ushNextVariableStartIndex:X4}");
+                }
+                else
+                {
+                    ushNextVariableStartIndex = 0;
+                }
+            }
+
+            ushort ushIndentation = 2;
+            ushort ushAdjust = 0;
+            // treat the code
+            while (!boolEndOfProg)
+            {
+                //try
+                {
+                    byte bytLineLength = ProgramData[ushActualLineStartIndex];
+                    ushort ushNextLineStartIndex = (ushort)(ushActualLineStartIndex + bytLineLength);
+
+//ushIndex = ushActualLineStartIndex;
+//while (ushIndex < ushNextLineStartIndex)
+//{
+//    stbListing.Append($"{m_programData[ushIndex++]:X2} ");
+//}
+//stbListing.Append("\r\n");
+
+                    bytHigh = ProgramData[ushActualLineStartIndex + 1];
+                    bytLow = ProgramData[ushActualLineStartIndex + 2];
+                    ushort ushLineNumber = (ushort)(bytHigh + (bytLow * 256));
+                    stbListing.Append($"{ushLineNumber, 6} ");
+
+                    ushIndex = (ushort)(ushActualLineStartIndex + 4);
+
+                    bool boolFirst = true;
+                    while (ushIndex < ushNextLineStartIndex)
+                    {
+                        string strKeyword = string.Empty;
+                        ushort token = 0;
+                        byte bytToken = ProgramData[ushIndex];
+
+                        if (bytToken < 0xD0)
+                        {
+                            ushIndex++;
+
+                            byte bytParam = (bytToken == 0xC0 ? ProgramData[ushIndex++] : (byte)0);
+                            token = (bytParam == 0 && bytToken != 0xC0 ? bytToken : (ushort)((bytToken * 256) + bytParam));
+                            Console.WriteLine($"{token:X4}");
+
+                            strKeyword = hyperbasicTokens.GetKeyword(token);
+                        }
+
+                        if (boolFirst)
+                        {
+                            switch (strKeyword.Trim())
+                            {
+                                case "]":
+                                case "RETURN":
+                                case "END":
+                                case "'":
+                                    ushIndentation = 0;
+                                    ushAdjust = 2;
+                                    break;
+
+                                case "FOR":
+                                case "REPEAT":
+                                case "COUNT":
+                                case "WHILE":
+                                    ushAdjust = (ushort)(ushIndentation + 1);
+                                    break;
+
+                                case "NEXT":
+                                case "UNTIL":
+                                case "UNCOUNT":
+                                case "WEND":
+                                    ushIndentation -= 1;
+                                    ushAdjust = 0;
+                                    break;
+                            }
+
+                            stbListing.Append(new String(' ', ushIndentation));
+
+                            if (ushAdjust > 0)
+                            {
+                                ushIndentation = ushAdjust;
+                                ushAdjust = 0;
+                            }
+                        }
+
+                        stbListing.Append(strKeyword);
+
+                        if (token == 0x20)
+                        {
+                        }
+                        else if (ProgramData[ushIndex] >= 0xD0 && ushIndex < ushNextLineStartIndex)
+                        {
+                            bytHigh = ProgramData[ushIndex++];
+                            bytLow = ProgramData[ushIndex++];
+                            ushort ushVariableId = (ushort)((bytHigh * 256) + bytLow);
+
+                            stbListing.Append(dicVariables[ushVariableId]);
+                        }
+                        
+                        boolFirst = false;
+                    }
+
+                    stbListing.Append("\n");
+
+                    boolEndOfProg = (ProgramData[ushNextLineStartIndex] == 0);
+                    ushActualLineStartIndex = ushNextLineStartIndex;
+                }
+                //catch (Exception)
+                //{
+                //    MessageBox.Show("Error displaying file: file seems to be corrupted or truncated.", "Display file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //    boolEndOfProg = true;
+                //}
+            }
+
+            //return stbDebug.ToString() + stbListing.ToString();
+            return stbListing.ToString();
+        }
 
         public string ListTeleassSourceAsText()
         {
@@ -555,17 +702,17 @@ namespace OricExplorer
             {
                 try
                 {
-                    byte _ = m_programData[intIndex++];
+                    byte _ = ProgramData[intIndex++];
 
-                    byte bytHigh = m_programData[intIndex++];
-                    byte bytLow = m_programData[intIndex++];
+                    byte bytHigh = ProgramData[intIndex++];
+                    byte bytLow = ProgramData[intIndex++];
 
                     int intLineNumber = bytHigh + (bytLow * 256);
                     stbListing.Append($"{intLineNumber,6} ");
 
                     StringBuilder stbLabel = new StringBuilder();
                     byte bytByte;
-                    while ((bytByte = m_programData[intIndex]) > 0 && bytByte < 0x80)
+                    while ((bytByte = ProgramData[intIndex]) > 0 && bytByte < 0x80)
                     {
                         stbLabel.Append((char)bytByte);
                         intIndex++;
@@ -578,7 +725,7 @@ namespace OricExplorer
                         intIndex++;
                     }
 
-                    while ((bytByte = m_programData[intIndex]) > 0)
+                    while ((bytByte = ProgramData[intIndex]) > 0)
                     {
                         stbListing.Append((char)bytByte);
                         intIndex++;
@@ -587,7 +734,7 @@ namespace OricExplorer
                     stbListing.Append("\n");
 
                     intIndex++;
-                    boolEndOfProg = (m_programData[intIndex] == 0);
+                    boolEndOfProg = (ProgramData[intIndex] == 0);
                 }
                 catch (Exception)
                 {
@@ -599,46 +746,54 @@ namespace OricExplorer
             return stbListing.ToString().Replace('`', '©');
         }
 
-        public string ListAssembler()
+        public string ListAssembler(SpecialMode specialMode = SpecialMode.None)
         {
             opCodes = new OpCodes();
 
-            ushort ui16Loop = 0;
+            ushort ui16Loop = (ushort)(Format == ProgramFormat.OrixProgram ? OtherFileInfo.ORIX_HEADER_LENGTH : 0);
             ushort ui16Address;
             ushort ui16BranchAddr;
 
             string strAscii;
 
-            StringBuilder strDissassembly = new StringBuilder();
-            strDissassembly.EnsureCapacity(65000);
+            StringBuilder stbDissassembly = new StringBuilder();
+            stbDissassembly.EnsureCapacity(65000);
 
             if (ProgramName == null)
             {
                 ProgramName = "";
             }
 
-            ui16Address = StartAddress;
+            ui16Address = (ushort)(StartAddress + (Format == ProgramFormat.OrixProgram ? OtherFileInfo.ORIX_HEADER_LENGTH : 0));
 
             byte bByte;
 
             while (ui16Loop < ProgramLength)
             {
-                bByte = m_programData[ui16Loop];
+                bByte = ProgramData[ui16Loop];
 
                 OpCodes.sOpCode sTmpStructOpCodes = opCodes.FindOpInfo(bByte);
+
+                // if the byte is 00 (BRK instruction) and it is a Telestrat (Stratsed) floppy disk,
+                // this mnemonic is accompanied by an argument so we adjust the default properties
+                if (bByte == 0 && specialMode == SpecialMode.Telestrat)
+                {
+                    sTmpStructOpCodes.bOpBytes = 2;//instead of 1
+                    sTmpStructOpCodes.bOpMode = 4;//instead of 1
+                }
 
                 strAscii = "";
 
                 string strOpParams = "";
 
                 // Current address
-                strDissassembly.AppendFormat("${0:X4}  ", ui16Address);
+                stbDissassembly.AppendFormat("${0:X4}  ", ui16Address);
 
                 if (ui16Loop + sTmpStructOpCodes.bOpBytes > ProgramLength)
                 {
-                    byte bCurrByte = Convert.ToByte(m_programData[ui16Loop]);
+                    byte bCurrByte = Convert.ToByte(ProgramData[ui16Loop]);
 
-                    strDissassembly.AppendFormat("{0:X2} ", bCurrByte);
+                    stbDissassembly.AppendFormat("{0:X2} ", bCurrByte);
 
                     sTmpStructOpCodes.bOpBytes = 1;
                     sTmpStructOpCodes.bOpMode = 0;
@@ -656,9 +811,9 @@ namespace OricExplorer
                 {
                     for (ushort siIndex = 0; siIndex < sTmpStructOpCodes.bOpBytes; siIndex++)
                     {
-                        byte bCurrByte = Convert.ToByte(m_programData[ui16Loop + siIndex]);
+                        byte bCurrByte = Convert.ToByte(ProgramData[ui16Loop + siIndex]);
 
-                        strDissassembly.AppendFormat("{0:X2} ", bCurrByte);
+                        stbDissassembly.AppendFormat("{0:X2} ", bCurrByte);
 
                         if (bCurrByte < 32 || bCurrByte > 126)
                         {
@@ -673,12 +828,12 @@ namespace OricExplorer
 
                 if (sTmpStructOpCodes.bOpBytes < 2)
                 {
-                    strDissassembly.Append("   ");
+                    stbDissassembly.Append("   ");
                 }
 
                 if (sTmpStructOpCodes.bOpBytes < 3)
                 {
-                    strDissassembly.Append("   ");
+                    stbDissassembly.Append("   ");
                 }
 
                 byte bByte1 = 0;
@@ -686,12 +841,12 @@ namespace OricExplorer
 
                 if (sTmpStructOpCodes.bOpBytes > 1)
                 {
-                    bByte1 = Convert.ToByte(m_programData[ui16Loop + 1]);
+                    bByte1 = Convert.ToByte(ProgramData[ui16Loop + 1]);
                 }
 
                 if (sTmpStructOpCodes.bOpBytes > 2)
                 {
-                    bByte2 = Convert.ToByte(m_programData[ui16Loop + 2]);
+                    bByte2 = Convert.ToByte(ProgramData[ui16Loop + 2]);
                 }
 
                 switch (sTmpStructOpCodes.bOpMode)
@@ -760,14 +915,14 @@ namespace OricExplorer
                         break;
                 }
 
-                strDissassembly.AppendFormat("   {0,-3:G} {1,-8:G}   {2,-3}\n",
+                stbDissassembly.AppendFormat("   {0,-3:G} {1,-8:G}   {2,-3}\n",
                                              sTmpStructOpCodes.strOpMne, strOpParams, strAscii);
 
                 ui16Address += sTmpStructOpCodes.bOpBytes;
                 ui16Loop += sTmpStructOpCodes.bOpBytes;
             }
 
-            return strDissassembly.ToString().Replace('`', '©');
+            return stbDissassembly.ToString().Replace('`', '©');
         }
 
         private string BuildColourTable()

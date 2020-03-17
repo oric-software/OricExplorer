@@ -56,10 +56,10 @@ namespace OricExplorer.User_Controls
         '\"',
         '\'',
         '\''};
-            this.fctSourceCode.AutoScrollMinSize = new System.Drawing.Size(2, 14);
+            this.fctSourceCode.AutoScrollMinSize = new System.Drawing.Size(10, 22);
             this.fctSourceCode.BackBrush = null;
             this.fctSourceCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.fctSourceCode.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.fctSourceCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.fctSourceCode.CharHeight = 14;
             this.fctSourceCode.CharWidth = 7;
             this.fctSourceCode.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -70,13 +70,13 @@ namespace OricExplorer.User_Controls
             this.fctSourceCode.IsReplaceMode = false;
             this.fctSourceCode.Location = new System.Drawing.Point(0, 0);
             this.fctSourceCode.Name = "fctSourceCode";
-            this.fctSourceCode.Paddings = new System.Windows.Forms.Padding(0);
+            this.fctSourceCode.Paddings = new System.Windows.Forms.Padding(4);
             this.fctSourceCode.ReadOnly = true;
             this.fctSourceCode.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.fctSourceCode.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fctSourceCode.ServiceColors")));
             this.fctSourceCode.ShowLineNumbers = false;
             this.fctSourceCode.Size = new System.Drawing.Size(835, 504);
-            this.fctSourceCode.TabIndex = 2;
+            this.fctSourceCode.TabIndex = 0;
             this.fctSourceCode.Zoom = 100;
             this.fctSourceCode.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fctSourceCode_TextChanged);
             // 
@@ -93,7 +93,7 @@ namespace OricExplorer.User_Controls
             this.tabMainView.Name = "tabMainView";
             this.tabMainView.SelectedItem = this.tabpHexDump;
             this.tabMainView.Size = new System.Drawing.Size(837, 525);
-            this.tabMainView.TabIndex = 4;
+            this.tabMainView.TabIndex = 0;
             // 
             // tabpHexDump
             // 
@@ -129,7 +129,7 @@ namespace OricExplorer.User_Controls
             this.hxbDump.Size = new System.Drawing.Size(835, 504);
             this.hxbDump.StringViewColour = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
             this.hxbDump.StringViewVisible = true;
-            this.hxbDump.TabIndex = 4;
+            this.hxbDump.TabIndex = 0;
             this.hxbDump.UseFixedBytesPerLine = true;
             this.hxbDump.VScrollBarVisible = true;
             // 

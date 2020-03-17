@@ -346,7 +346,8 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(406, 286);
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(414, 286);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 0;
@@ -356,7 +357,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(325, 286);
+            this.btnSave.Location = new System.Drawing.Point(333, 286);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 4;
@@ -368,6 +369,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(501, 316);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnClose);

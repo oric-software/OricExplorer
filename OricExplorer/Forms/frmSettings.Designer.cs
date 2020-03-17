@@ -47,7 +47,7 @@ namespace OricExplorer
             this.grpTapeAndDiskFolders = new GroupFrame.GroupFrame();
             this.grpOptions = new GroupFrame.GroupFrame();
             this.grpFolderDetails = new System.Windows.Forms.GroupBox();
-            this.optROM = new System.Windows.Forms.RadioButton();
+            this.optRom = new System.Windows.Forms.RadioButton();
             this.btnBrowseForFolder = new System.Windows.Forms.Button();
             this.txtSelectedFolder = new System.Windows.Forms.TextBox();
             this.grpEmulator = new GroupFrame.GroupFrame();
@@ -76,6 +76,7 @@ namespace OricExplorer
             this.chkTapeIndex = new System.Windows.Forms.CheckBox();
             this.grpUpdates = new GroupFrame.GroupFrame();
             this.chkCheckForUpdatesOnStartup = new System.Windows.Forms.CheckBox();
+            this.optOtherFiles = new System.Windows.Forms.RadioButton();
             this.grpTapeAndDiskFolders.SuspendLayout();
             this.grpOptions.SuspendLayout();
             this.grpFolderDetails.SuspendLayout();
@@ -126,10 +127,10 @@ namespace OricExplorer
             this.chkScanSubfolders.Checked = true;
             this.chkScanSubfolders.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkScanSubfolders.ForeColor = System.Drawing.Color.Black;
-            this.chkScanSubfolders.Location = new System.Drawing.Point(414, 20);
+            this.chkScanSubfolders.Location = new System.Drawing.Point(9, 77);
             this.chkScanSubfolders.Name = "chkScanSubfolders";
             this.chkScanSubfolders.Size = new System.Drawing.Size(108, 17);
-            this.chkScanSubfolders.TabIndex = 3;
+            this.chkScanSubfolders.TabIndex = 6;
             this.chkScanSubfolders.Text = "Scan subfolders?";
             this.chkScanSubfolders.UseVisualStyleBackColor = true;
             this.chkScanSubfolders.Visible = false;
@@ -150,7 +151,7 @@ namespace OricExplorer
             // 
             this.optDisk.AutoSize = true;
             this.optDisk.ForeColor = System.Drawing.Color.Black;
-            this.optDisk.Location = new System.Drawing.Point(113, 19);
+            this.optDisk.Location = new System.Drawing.Point(121, 19);
             this.optDisk.Name = "optDisk";
             this.optDisk.Size = new System.Drawing.Size(96, 17);
             this.optDisk.TabIndex = 1;
@@ -217,6 +218,7 @@ namespace OricExplorer
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(587, 378);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(77, 22);
@@ -273,7 +275,8 @@ namespace OricExplorer
             // 
             // grpFolderDetails
             // 
-            this.grpFolderDetails.Controls.Add(this.optROM);
+            this.grpFolderDetails.Controls.Add(this.optOtherFiles);
+            this.grpFolderDetails.Controls.Add(this.optRom);
             this.grpFolderDetails.Controls.Add(this.btnBrowseForFolder);
             this.grpFolderDetails.Controls.Add(this.txtSelectedFolder);
             this.grpFolderDetails.Controls.Add(this.optTape);
@@ -286,17 +289,17 @@ namespace OricExplorer
             this.grpFolderDetails.TabStop = false;
             this.grpFolderDetails.Text = "Folder Details";
             // 
-            // optROM
+            // optRom
             // 
-            this.optROM.AutoSize = true;
-            this.optROM.ForeColor = System.Drawing.Color.Black;
-            this.optROM.Location = new System.Drawing.Point(215, 19);
-            this.optROM.Name = "optROM";
-            this.optROM.Size = new System.Drawing.Size(100, 17);
-            this.optROM.TabIndex = 2;
-            this.optROM.TabStop = true;
-            this.optROM.Text = "ROM files (.rom)";
-            this.optROM.UseVisualStyleBackColor = true;
+            this.optRom.AutoSize = true;
+            this.optRom.ForeColor = System.Drawing.Color.Black;
+            this.optRom.Location = new System.Drawing.Point(231, 19);
+            this.optRom.Name = "optRom";
+            this.optRom.Size = new System.Drawing.Size(100, 17);
+            this.optRom.TabIndex = 2;
+            this.optRom.TabStop = true;
+            this.optRom.Text = "ROM files (.rom)";
+            this.optRom.UseVisualStyleBackColor = true;
             // 
             // btnBrowseForFolder
             // 
@@ -611,10 +614,23 @@ namespace OricExplorer
             this.chkCheckForUpdatesOnStartup.Text = "Check for updates on startup";
             this.chkCheckForUpdatesOnStartup.UseVisualStyleBackColor = true;
             // 
+            // optOtherFiles
+            // 
+            this.optOtherFiles.AutoSize = true;
+            this.optOtherFiles.ForeColor = System.Drawing.Color.Black;
+            this.optOtherFiles.Location = new System.Drawing.Point(345, 19);
+            this.optOtherFiles.Name = "optOtherFiles";
+            this.optOtherFiles.Size = new System.Drawing.Size(72, 17);
+            this.optOtherFiles.TabIndex = 3;
+            this.optOtherFiles.TabStop = true;
+            this.optOtherFiles.Text = "Other files";
+            this.optOtherFiles.UseVisualStyleBackColor = true;
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(679, 408);
             this.Controls.Add(this.tabSettings);
             this.Controls.Add(this.btnCancel);
@@ -683,7 +699,7 @@ namespace OricExplorer
         private System.Windows.Forms.TabPage tabpOther;
         private System.Windows.Forms.CheckBox chkCheckForUpdatesOnStartup;
         private GroupFrame.GroupFrame grpUpdates;
-        private System.Windows.Forms.RadioButton optROM;
+        private System.Windows.Forms.RadioButton optRom;
         private System.Windows.Forms.TextBox txtSample;
         private System.Windows.Forms.Button btnMoveDown;
         private System.Windows.Forms.Button btnMoveUp;
@@ -699,5 +715,6 @@ namespace OricExplorer
         private GroupFrame.GroupFrame grpTapeRepresentation;
         private System.Windows.Forms.CheckBox chkTapeIndex;
         private System.Windows.Forms.RadioButton optDefaultMachinePravetz;
+        private System.Windows.Forms.RadioButton optOtherFiles;
     }
 }

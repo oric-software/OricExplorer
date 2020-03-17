@@ -41,7 +41,7 @@ namespace OricExplorer.User_Controls
 
                     //if (ProgramInfo.MediaType == OricExplorer.MediaType. OricDisk.DOSFormat.SedOric)
                     //{
-                    bByte = ProgramData.m_programData[ui16Index];
+                    bByte = ProgramData.ProgramData[ui16Index];
                     ui16Index++;
                     //}
                     //else
@@ -57,7 +57,7 @@ namespace OricExplorer.User_Controls
                     switch (bByte)
                     {
                         case 0x00:
-                            ui16DataLength = ProgramData.m_programData[ui16Index];
+                            ui16DataLength = ProgramData.ProgramData[ui16Index];
 
                             lvItem = new ListViewItem();
                             lvItem.Text = string.Format("{0}", ui16RecordCount);
@@ -66,7 +66,7 @@ namespace OricExplorer.User_Controls
                             oData = new StringBuilder();
                             ui16Index++;
 
-                            byte Exponent = ProgramData.m_programData[ui16Index];
+                            byte Exponent = ProgramData.ProgramData[ui16Index];
                             ui16Index++;
 
                             StringBuilder Mantissa = new StringBuilder();
@@ -74,7 +74,7 @@ namespace OricExplorer.User_Controls
 
                             for (int iIndex = 1; iIndex < ui16DataLength; iIndex++)
                             {
-                                Mantissa.AppendFormat("{0:X2}", ProgramData.m_programData[ui16Index]);
+                                Mantissa.AppendFormat("{0:X2}", ProgramData.ProgramData[ui16Index]);
                                 ui16Index++;
                             }
 
@@ -86,7 +86,7 @@ namespace OricExplorer.User_Controls
                             break;
 
                         case 0x80:
-                            ui16DataLength = ProgramData.m_programData[ui16Index];
+                            ui16DataLength = ProgramData.ProgramData[ui16Index];
 
                             lvItem = new ListViewItem();
                             lvItem.Text = string.Format("{0}", ui16RecordCount);
@@ -99,7 +99,7 @@ namespace OricExplorer.User_Controls
                             {
                                 for (int iIndex = 0; iIndex < ui16DataLength; iIndex++)
                                 {
-                                    oData.Append(Convert.ToChar(ProgramData.m_programData[ui16Index]));
+                                    oData.Append(Convert.ToChar(ProgramData.ProgramData[ui16Index]));
                                     ui16Index++;
                                 }
 
@@ -119,7 +119,7 @@ namespace OricExplorer.User_Controls
                             break;
 
                         default:
-                            ui16DataLength = ProgramData.m_programData[ui16Index];
+                            ui16DataLength = ProgramData.ProgramData[ui16Index];
 
                             lvItem = new ListViewItem();
                             lvItem.Text = string.Format("{0}", ui16RecordCount);
@@ -130,7 +130,7 @@ namespace OricExplorer.User_Controls
 
                             for (int iIndex = 0; iIndex < ui16DataLength; iIndex++)
                             {
-                                oData.AppendFormat("{0:X2} ", ProgramData.m_programData[ui16Index]);
+                                oData.AppendFormat("{0:X2} ", ProgramData.ProgramData[ui16Index]);
                                 ui16Index++;
                             }
 

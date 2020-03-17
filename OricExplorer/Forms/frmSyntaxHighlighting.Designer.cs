@@ -44,6 +44,7 @@
             this.lblPageBackgroundColor = new System.Windows.Forms.Label();
             this.btnDefault = new System.Windows.Forms.Button();
             this.grpShowSettingsFor = new GroupFrame.GroupFrame();
+            this.optHyperbasicListing = new System.Windows.Forms.RadioButton();
             this.optTeleassListing = new System.Windows.Forms.RadioButton();
             this.optHexDumpListing = new System.Windows.Forms.RadioButton();
             this.grpDisplayItems = new GroupFrame.GroupFrame();
@@ -63,22 +64,23 @@
             // optBasicListing
             // 
             this.optBasicListing.AutoSize = true;
-            this.optBasicListing.Location = new System.Drawing.Point(127, 21);
+            this.optBasicListing.Location = new System.Drawing.Point(92, 22);
             this.optBasicListing.Name = "optBasicListing";
-            this.optBasicListing.Size = new System.Drawing.Size(121, 17);
+            this.optBasicListing.Size = new System.Drawing.Size(89, 17);
             this.optBasicListing.TabIndex = 1;
             this.optBasicListing.TabStop = true;
-            this.optBasicListing.Text = "Atmos BASIC Listing";
+            this.optBasicListing.Text = "BASIC Listing";
             this.optBasicListing.UseVisualStyleBackColor = true;
             this.optBasicListing.CheckedChanged += new System.EventHandler(this.optBasicListing_CheckedChanged);
             // 
             // optAssemblerListing
             // 
+            this.optAssemblerListing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.optAssemblerListing.AutoSize = true;
-            this.optAssemblerListing.Location = new System.Drawing.Point(273, 21);
+            this.optAssemblerListing.Location = new System.Drawing.Point(437, 22);
             this.optAssemblerListing.Name = "optAssemblerListing";
             this.optAssemblerListing.Size = new System.Drawing.Size(106, 17);
-            this.optAssemblerListing.TabIndex = 2;
+            this.optAssemblerListing.TabIndex = 4;
             this.optAssemblerListing.TabStop = true;
             this.optAssemblerListing.Text = "Assembler Listing";
             this.optAssemblerListing.UseVisualStyleBackColor = true;
@@ -86,7 +88,8 @@
             // 
             // fcSample
             // 
-            this.fcSample.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.fcSample.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.fcSample.AutoCompleteBracketsList = new char[] {
         '(',
@@ -117,7 +120,7 @@
             this.fcSample.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.fcSample.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fcSample.ServiceColors")));
             this.fcSample.ShowLineNumbers = false;
-            this.fcSample.Size = new System.Drawing.Size(506, 239);
+            this.fcSample.Size = new System.Drawing.Size(538, 246);
             this.fcSample.TabIndex = 0;
             this.fcSample.Zoom = 100;
             this.fcSample.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fcSample_TextChanged);
@@ -174,10 +177,10 @@
             this.lvwDisplayItems.FullRowSelect = true;
             this.lvwDisplayItems.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvwDisplayItems.HideSelection = false;
-            this.lvwDisplayItems.Location = new System.Drawing.Point(6, 21);
+            this.lvwDisplayItems.Location = new System.Drawing.Point(6, 20);
             this.lvwDisplayItems.MultiSelect = false;
             this.lvwDisplayItems.Name = "lvwDisplayItems";
-            this.lvwDisplayItems.Size = new System.Drawing.Size(298, 177);
+            this.lvwDisplayItems.Size = new System.Drawing.Size(330, 177);
             this.lvwDisplayItems.TabIndex = 0;
             this.lvwDisplayItems.UseCompatibleStateImageBehavior = false;
             this.lvwDisplayItems.View = System.Windows.Forms.View.Details;
@@ -190,8 +193,8 @@
             // 
             // btnSave
             // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(361, 542);
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(393, 550);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 4;
@@ -201,8 +204,9 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(442, 542);
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(474, 550);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 5;
@@ -222,7 +226,8 @@
             // 
             // btnDefault
             // 
-            this.btnDefault.Location = new System.Drawing.Point(12, 542);
+            this.btnDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnDefault.Location = new System.Drawing.Point(12, 550);
             this.btnDefault.Name = "btnDefault";
             this.btnDefault.Size = new System.Drawing.Size(75, 23);
             this.btnDefault.TabIndex = 3;
@@ -234,6 +239,7 @@
             // 
             this.grpShowSettingsFor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpShowSettingsFor.Controls.Add(this.optHyperbasicListing);
             this.grpShowSettingsFor.Controls.Add(this.optTeleassListing);
             this.grpShowSettingsFor.Controls.Add(this.optHexDumpListing);
             this.grpShowSettingsFor.Controls.Add(this.optAssemblerListing);
@@ -241,15 +247,27 @@
             this.grpShowSettingsFor.ForeColor = System.Drawing.Color.Black;
             this.grpShowSettingsFor.Location = new System.Drawing.Point(6, 6);
             this.grpShowSettingsFor.Name = "grpShowSettingsFor";
-            this.grpShowSettingsFor.Size = new System.Drawing.Size(518, 52);
+            this.grpShowSettingsFor.Size = new System.Drawing.Size(550, 52);
             this.grpShowSettingsFor.TabIndex = 0;
             this.grpShowSettingsFor.TabStop = false;
             this.grpShowSettingsFor.Text = "Show Settings For";
             // 
+            // optHyperbasicListing
+            // 
+            this.optHyperbasicListing.AutoSize = true;
+            this.optHyperbasicListing.Location = new System.Drawing.Point(189, 22);
+            this.optHyperbasicListing.Name = "optHyperbasicListing";
+            this.optHyperbasicListing.Size = new System.Drawing.Size(126, 17);
+            this.optHyperbasicListing.TabIndex = 2;
+            this.optHyperbasicListing.TabStop = true;
+            this.optHyperbasicListing.Text = "HYPERBASIC Listing";
+            this.optHyperbasicListing.UseVisualStyleBackColor = true;
+            this.optHyperbasicListing.CheckedChanged += new System.EventHandler(this.optHyperbasicListing_CheckedChanged);
+            // 
             // optTeleassListing
             // 
             this.optTeleassListing.AutoSize = true;
-            this.optTeleassListing.Location = new System.Drawing.Point(404, 21);
+            this.optTeleassListing.Location = new System.Drawing.Point(323, 22);
             this.optTeleassListing.Name = "optTeleassListing";
             this.optTeleassListing.Size = new System.Drawing.Size(106, 17);
             this.optTeleassListing.TabIndex = 3;
@@ -261,7 +279,7 @@
             // optHexDumpListing
             // 
             this.optHexDumpListing.AutoSize = true;
-            this.optHexDumpListing.Location = new System.Drawing.Point(24, 21);
+            this.optHexDumpListing.Location = new System.Drawing.Point(6, 22);
             this.optHexDumpListing.Name = "optHexDumpListing";
             this.optHexDumpListing.Size = new System.Drawing.Size(78, 17);
             this.optHexDumpListing.TabIndex = 0;
@@ -279,7 +297,7 @@
             this.grpDisplayItems.Controls.Add(this.grpPageBackgroundColor);
             this.grpDisplayItems.Location = new System.Drawing.Point(6, 64);
             this.grpDisplayItems.Name = "grpDisplayItems";
-            this.grpDisplayItems.Size = new System.Drawing.Size(518, 204);
+            this.grpDisplayItems.Size = new System.Drawing.Size(550, 204);
             this.grpDisplayItems.TabIndex = 1;
             this.grpDisplayItems.TabStop = false;
             this.grpDisplayItems.Text = "Display Items";
@@ -293,7 +311,7 @@
             this.grpItemColorAndStyle.Controls.Add(this.lblStyle);
             this.grpItemColorAndStyle.Controls.Add(this.chkStyleBold);
             this.grpItemColorAndStyle.Controls.Add(this.lblForegroundColor);
-            this.grpItemColorAndStyle.Location = new System.Drawing.Point(312, 16);
+            this.grpItemColorAndStyle.Location = new System.Drawing.Point(344, 15);
             this.grpItemColorAndStyle.Name = "grpItemColorAndStyle";
             this.grpItemColorAndStyle.Size = new System.Drawing.Size(200, 117);
             this.grpItemColorAndStyle.TabIndex = 1;
@@ -325,7 +343,7 @@
             // 
             this.grpPageBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPageBackgroundColor.Controls.Add(this.lblPageBackgroundColor);
-            this.grpPageBackgroundColor.Location = new System.Drawing.Point(312, 139);
+            this.grpPageBackgroundColor.Location = new System.Drawing.Point(344, 138);
             this.grpPageBackgroundColor.Name = "grpPageBackgroundColor";
             this.grpPageBackgroundColor.Size = new System.Drawing.Size(200, 59);
             this.grpPageBackgroundColor.TabIndex = 2;
@@ -335,12 +353,13 @@
             // 
             // grpSampleOuput
             // 
-            this.grpSampleOuput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.grpSampleOuput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpSampleOuput.Controls.Add(this.fcSample);
             this.grpSampleOuput.Location = new System.Drawing.Point(6, 274);
             this.grpSampleOuput.Name = "grpSampleOuput";
-            this.grpSampleOuput.Size = new System.Drawing.Size(518, 262);
+            this.grpSampleOuput.Size = new System.Drawing.Size(550, 270);
             this.grpSampleOuput.TabIndex = 2;
             this.grpSampleOuput.TabStop = false;
             this.grpSampleOuput.Text = "Sample Output";
@@ -350,7 +369,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(529, 572);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(561, 580);
             this.Controls.Add(this.grpSampleOuput);
             this.Controls.Add(this.grpDisplayItems);
             this.Controls.Add(this.grpShowSettingsFor);
@@ -401,5 +421,6 @@
         private GroupFrame.GroupFrame grpPageBackgroundColor;
         private GroupFrame.GroupFrame grpItemColorAndStyle;
         private System.Windows.Forms.RadioButton optTeleassListing;
+        private System.Windows.Forms.RadioButton optHyperbasicListing;
     }
 }

@@ -692,7 +692,7 @@ namespace OricExplorer.User_Controls
 
                 byte bMarker = (byte)(SectorMapGetMarker(bCurrTrack, bCurrSector) >> 8);
 
-                if (bMarker == 0x10 || bMarker == 0x11)
+                if (bMarker.In((byte)0x10, (byte)0x11))
                 {
                     if (bMarker == 0x10)
                         iSelectedIndex = ((SectorMapGetMarker(bCurrTrack, bCurrSector) - 0x1000) - 1);
@@ -755,13 +755,13 @@ namespace OricExplorer.User_Controls
 
                         switch (programInfo.Format)
                         {
-                            case OricProgram.ProgramFormat.AtmosBasicProgram:
+                            case OricProgram.ProgramFormat.BasicProgram:
                                 strFormat = "BASIC program";
                                 colItemColour = Color.Black;
                                 ui16GroupIndex = 0;
                                 break;
 
-                            case OricProgram.ProgramFormat.HyperbasicSource:
+                            case OricProgram.ProgramFormat.HyperbasicProgram:
                                 strFormat = "HYPERBASIC source";
                                 colItemColour = Color.Black;
                                 ui16GroupIndex = 1;
@@ -1169,7 +1169,7 @@ namespace OricExplorer.User_Controls
             ListViewItem listviewY = (ListViewItem)y;
 
 			// Compare the two items
-            if (ColumnToSort == 2 || ColumnToSort == 3)
+            if (ColumnToSort.In(2, 3))
                 compareResult = decimal.Compare(Convert.ToDecimal(listviewX.SubItems[ColumnToSort].Text), Convert.ToDecimal(listviewY.SubItems[ColumnToSort].Text));
             else
                 compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);

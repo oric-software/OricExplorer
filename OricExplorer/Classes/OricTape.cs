@@ -83,14 +83,14 @@ namespace OricExplorer
                     };
 
                     if (programHeader.bProgramFormat == 0x00)
-                        tapeProgram.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
+                        tapeProgram.Format = OricProgram.ProgramFormat.BasicProgram;
                     else
                     {
                         if (programHeader.ui16StartAddress == 0xA000)
                             tapeProgram.Format = OricProgram.ProgramFormat.HiresScreen;
                         else if (programHeader.ui16StartAddress == 0xB500)
                             tapeProgram.Format = OricProgram.ProgramFormat.CharacterSet;
-                        else if (programHeader.ui16StartAddress == 0xBB80 || programHeader.ui16StartAddress == 0xBBA8)
+                        else if (programHeader.ui16StartAddress.In((ushort)0xBB80, (ushort)0xBBA8))
                             tapeProgram.Format = OricProgram.ProgramFormat.TextScreen;
                         else
                             tapeProgram.Format = OricProgram.ProgramFormat.BinaryFile;
@@ -264,14 +264,14 @@ namespace OricExplorer
             programHeader.ui16StartAddress = Convert.ToUInt16(lowByte + (highByte * 256));
 
             if(bProgramFormat == 0x00)
-                programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.AtmosBasicProgram;
+                programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.BasicProgram;
             else
             {
                 if(programHeader.ui16StartAddress == 0xA000)
                     programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.HiresScreen;
                 else if(programHeader.ui16StartAddress == 0xB500)
                     programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.CharacterSet;
-                else if(programHeader.ui16StartAddress == 0xBB80 || programHeader.ui16StartAddress == 0xBBA8)
+                else if(programHeader.ui16StartAddress.In((ushort)0xBB80, (ushort)0xBBA8))
                     programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.TextScreen;
                 else
                     programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.BinaryFile;
@@ -323,14 +323,14 @@ namespace OricExplorer
                 loadProgram.AutoRun = programHeader.bAutoRun;
 
                 if(programHeader.bProgramFormat == 0x00)
-                    loadProgram.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
+                    loadProgram.Format = OricProgram.ProgramFormat.BasicProgram;
                 else
                 {
                     if(programHeader.ui16StartAddress == 0xA000)
                         loadProgram.Format = OricProgram.ProgramFormat.HiresScreen;
                     else if(programHeader.ui16StartAddress == 0xB500)
                         loadProgram.Format = OricProgram.ProgramFormat.CharacterSet;
-                    else if(programHeader.ui16StartAddress == 0xBB80 || programHeader.ui16StartAddress == 0xBBA8)
+                    else if(programHeader.ui16StartAddress.In((ushort)0xBB80, (ushort)0xBBA8))
                         loadProgram.Format = OricProgram.ProgramFormat.TextScreen;
                     else
                         loadProgram.Format = OricProgram.ProgramFormat.BinaryFile;
@@ -351,11 +351,11 @@ namespace OricExplorer
                     ushort ui16Count = 0;
                     ushort ui16ProgLength = loadProgram.ProgramLength;
 
-                    loadProgram.m_programData = new byte[ui16ProgLength];
+                    loadProgram.ProgramData = new byte[ui16ProgLength];
 
                     do
                     {
-                        loadProgram.m_programData[ui16Count] = m_bTapeBuffer[m_ui32BufferIdx];
+                        loadProgram.ProgramData[ui16Count] = m_bTapeBuffer[m_ui32BufferIdx];
 
                         ui16Count++;
                         m_ui32BufferIdx++;
@@ -391,7 +391,7 @@ namespace OricExplorer
                     binWriter.Write((byte)0x00);
                     binWriter.Write((byte)0x00);
 
-                    if(program.Format == OricProgram.ProgramFormat.AtmosBasicProgram)
+                    if(program.Format == OricProgram.ProgramFormat.BasicProgram)
                         binWriter.Write((byte)0x00);
                     else
                         binWriter.Write((byte)0x01);
@@ -429,7 +429,7 @@ namespace OricExplorer
                     // Write file data
                     for(iIndex = 0; iIndex < program.ProgramLength; iIndex++)
                     {
-                        binWriter.Write((byte)program.m_programData[iIndex]);
+                        binWriter.Write((byte)program.ProgramData[iIndex]);
                     }
                 }
             }
@@ -453,7 +453,7 @@ namespace OricExplorer
                 binWriter.Write((byte)0x00);
 
                 // Write the Program format
-                if (oricFile.Format == OricProgram.ProgramFormat.AtmosBasicProgram)
+                if (oricFile.Format == OricProgram.ProgramFormat.BasicProgram)
                     binWriter.Write((byte)0x00);
                 else
                     binWriter.Write((byte)0x01);
@@ -495,7 +495,7 @@ namespace OricExplorer
                 // Write file data
                 for (iIndex = 0; iIndex < oricFile.ProgramLength; iIndex++)
                 {
-                    binWriter.Write((byte)oricFile.m_programData[iIndex]);
+                    binWriter.Write((byte)oricFile.ProgramData[iIndex]);
                 }
             }
 

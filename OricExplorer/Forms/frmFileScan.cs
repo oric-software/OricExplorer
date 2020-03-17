@@ -52,7 +52,8 @@ namespace OricExplorer.Forms
 
             GetListOfTapes();
             GetListOfDisks();
-            GetListOfROMs();
+            GetListOfRoms();
+            GetListOfOtherFiles();
 
             // Switch back to default cursor
             Cursor.Current = Cursors.Default;
@@ -157,7 +158,7 @@ namespace OricExplorer.Forms
             }
         }
 
-        public void GetListOfROMs()
+        public void GetListOfRoms()
         {
             filesScanned = 0;
 
@@ -178,7 +179,7 @@ namespace OricExplorer.Forms
                             lblFile.Text = fileInfo.FullName;
 
                             // Add the disk to the tree
-                            if (parent.AddROMToTree(fileInfo) != null)
+                            if (parent.AddRomToTree(fileInfo) != null)
                             {
                                 romsFound++;
                             }
@@ -193,6 +194,50 @@ namespace OricExplorer.Forms
                             float percentage = (100 / (float)romFileInfo.Length) * filesScanned;
                             pbProgress.PercentageValue = (int)percentage;
                             pbProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, romFileInfo.Length);
+
+                            Application.DoEvents();
+                        }
+                    }
+                }
+            }
+        }
+
+        public void GetListOfOtherFiles()
+        {
+            filesScanned = 0;
+
+            foreach (string directory in Configuration.Persistent.OtherFilesFolders)
+            {
+                DirectoryInfo otherFilesDirectoryInfo = new DirectoryInfo(directory);
+
+                // Get list of Disk files
+                if (otherFilesDirectoryInfo.Exists)
+                {
+                    FileInfo[] otherFilesFileInfo = otherFilesDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories);
+
+                    if (otherFilesFileInfo != null)
+                    {
+                        foreach (FileInfo fileInfo in otherFilesFileInfo)
+                        {
+                            lblInfo.Text = "Scanning folders for other files...";
+                            lblFile.Text = fileInfo.FullName;
+
+                            // Add the disk to the tree
+                            if (parent.AddOtherFileToTree(fileInfo) != null)
+                            {
+                                romsFound++;
+                            }
+                            else
+                            {
+                                filesSkipped++;
+                                romsSkipped++;
+                            }
+
+                            filesScanned++;
+
+                            float percentage = (100 / (float)otherFilesFileInfo.Length) * filesScanned;
+                            pbProgress.PercentageValue = (int)percentage;
+                            pbProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, otherFilesFileInfo.Length);
 
                             Application.DoEvents();
                         }

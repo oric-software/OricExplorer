@@ -182,9 +182,9 @@
                             }
                             else if (strExtension.Equals("BAS"))
                             {
-                                diskFile.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
+                                diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
                             }
-                            else if (strExtension.Equals("CMD") || strExtension.Equals("BIN") || strExtension.Equals("SYS"))
+                            else if (strExtension.In("CMD", "BIN", "SYS"))
                             {
                                 diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
                             }
@@ -272,7 +272,7 @@
             {
                 byte[] fileDescriptor = base.ReadSector(oricFileInfo.FirstTrack, oricFileInfo.FirstSector);
 
-                loadedProgram.Format = OricProgram.ProgramFormat.AtmosBasicProgram; // GetFileFormat(fileDescriptor);
+                loadedProgram.Format = OricProgram.ProgramFormat.BasicProgram; // GetFileFormat(fileDescriptor);
                 loadedProgram.ProgramName = oricFileInfo.ProgramName;
 
                 if (loadedProgram.ProgramName.ToUpper().EndsWith(".CHS"))
@@ -369,7 +369,7 @@
 
                     int programLength = (loadedProgram.EndAddress - loadedProgram.StartAddress) + 1;
 
-                    loadedProgram.m_programData = new byte[programLength];
+                    loadedProgram.ProgramData = new byte[programLength];
 
                     while (dataSector != 0xFF && descriptorIndex < totalDescriptors)
                     {
@@ -382,7 +382,7 @@
 
                         int loopStart = 0;
 
-                        if (loadedProgram.Format == OricProgram.ProgramFormat.AtmosBasicProgram)
+                        if (loadedProgram.Format == OricProgram.ProgramFormat.BasicProgram)
                         {
                             if (descriptorIndex == 0)
                             {
@@ -398,7 +398,7 @@
 
                             if (index < programLength)
                             {
-                                loadedProgram.m_programData[index] = tmpByte;
+                                loadedProgram.ProgramData[index] = tmpByte;
                             }
 
                             index++;
@@ -470,7 +470,7 @@
             else if ((formatFlag & 0x40) == 0x40)
                 programFormat = OricProgram.ProgramFormat.BinaryFile;
             else if ((formatFlag & 0x80) == 0x80)
-                programFormat = OricProgram.ProgramFormat.AtmosBasicProgram;
+                programFormat = OricProgram.ProgramFormat.BasicProgram;
             else
                 programFormat = OricProgram.ProgramFormat.UnknownFile;
 

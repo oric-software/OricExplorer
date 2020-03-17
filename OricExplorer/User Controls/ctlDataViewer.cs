@@ -2,178 +2,32 @@ namespace OricExplorer
 {
     using System;
     using System.Drawing;
+    using System.Linq;
     using System.Windows.Forms;
 
     public partial class ctlDataViewerControl : UserControl
     {
-        public Label FileInformation;
-        public OricFileInfo ProgramInfo;
-        public OricProgram ProgramData;
+        public OricFileInfo ProgramInfo { get; set; }
+        public OricProgram ProgramData { get; set; }
 
         private Preview dataPreview;
-        private Point panStartingPoint;
-        private double ZOOMFACTOR = 2;
-
-        private byte AddressOffset = 0;
-        private byte ScreenWidth = 40;
+        private Point ptStartingPoint;
+        
+        private byte bytZoomFactor = 1;
+        private byte bytAddressOffset = 0;
+        private byte bytScreenWidth = 40;
 
         public ctlDataViewerControl()
         {
             InitializeComponent();
 
-            FileInformation = new Label();
-
             // Set some defaults for the dataviewer
             dataPreview = new Preview(false);
-            dataPreview.m_scrnFormat = OricProgram.ProgramFormat.UnknownFile;
+            dataPreview.ScreenFormat = OricProgram.ProgramFormat.UnknownFile;
             dataPreview.DataLength = 0;
 
             ProgramInfo = new OricFileInfo();
             ProgramData = new OricProgram();
-        }
-
-        public void InitialiseView()
-        {
-            AddressOffset = 0;
-            ScreenWidth = 40;
-
-            DisplayZoomLevel();
-
-            dataPreview.StartAddress = ProgramData.StartAddress;
-            dataPreview.DataLength = ProgramData.ProgramLength;
-            dataPreview.bScrnData = ProgramData.m_programData;
-
-            dataPreview.DisablePaper = false;
-            dataPreview.DisableInk = false;
-
-            chkAttributesBackground.Checked = true;
-            chkAttributesForeground.Checked = true;
-            chkAttributesOthers.Checked = true;
-
-            switch (ProgramData.Format)
-            {
-                case OricProgram.ProgramFormat.HiresScreen:
-                    optDisplayHires.Checked = true;
-                    dataPreview.m_scrnFormat = OricProgram.ProgramFormat.HiresScreen;
-                    break;
-
-                case OricProgram.ProgramFormat.TextScreen:
-                    optDisplayText.Checked = true;
-                    dataPreview.m_scrnFormat = OricProgram.ProgramFormat.TextScreen;
-                    break;
-
-                case OricProgram.ProgramFormat.CharacterSet:
-                    optDisplayCharSet.Checked = true;
-                    dataPreview.m_scrnFormat = OricProgram.ProgramFormat.CharacterSet;
-                    break;
-
-                default:
-                    optDisplayHires.Checked = true;
-                    dataPreview.m_scrnFormat = OricProgram.ProgramFormat.HiresScreen;
-                    break;
-            }
-
-            UpdateScreen();
-            Application.DoEvents();
-
-        }
-        
-        private void UpdateScreen()
-        {
-            switch (ScreenWidth)
-            {
-                case 1:
-                    btnWidthDec.Enabled = false;
-                    btnWidthInc.Enabled = true;
-                    btnWidthReset.Enabled = true;
-
-                    ibxWidth.Text = "1 Byte";
-                    break;
-
-                default:
-                    btnWidthDec.Enabled = true;
-
-                    if (ScreenWidth == 40)
-                    {
-                        btnWidthInc.Enabled = false;
-                        btnWidthReset.Enabled = false;
-                    }
-                    else
-                    {
-                        btnWidthInc.Enabled = true;
-                        btnWidthReset.Enabled = true;
-                    }
-
-                    ibxWidth.Text = string.Format("{0} Bytes", ScreenWidth);
-                    break;
-            }
-
-            switch (AddressOffset)
-            {
-                case 0:
-                    btnOffsetDec.Enabled = false;
-                    btnOffsetInc.Enabled = true;
-                    btnOffsetReset.Enabled = false;
-
-                    ibxOffset.Text = string.Format("0 Bytes (${0:X4})", ProgramInfo.StartAddress);
-                    break;
-
-                case 1:
-                    btnOffsetDec.Enabled = true;
-                    btnOffsetInc.Enabled = true;
-                    btnOffsetReset.Enabled = true;
-
-                    ibxOffset.Text = string.Format("1 byte (${0:X4})", ProgramInfo.StartAddress + 1);
-                    break;
-
-                default:
-                    btnOffsetDec.Enabled = true;
-
-                    if (AddressOffset == 40)
-                    {
-                        btnOffsetInc.Enabled = false;
-                        btnOffsetReset.Enabled = true;
-                    }
-                    else
-                    {
-                        btnOffsetInc.Enabled = true;
-                        btnOffsetReset.Enabled = true;
-                    }
-
-                    ibxOffset.Text = string.Format("{0} Bytes (${1:X4})", AddressOffset, ProgramInfo.StartAddress + AddressOffset);
-                    break;
-            }
-
-            // If CharacterSet view then disable the Width controls
-            if (ProgramData.Format == OricProgram.ProgramFormat.CharacterSet)
-            {
-                btnWidthDec.Enabled = false;
-                btnWidthInc.Enabled = false;
-                btnWidthReset.Enabled = false;
-
-                ibxWidth.Text = "----";
-            }
-
-            redrawPreview();
-        }
-
-        private void redrawPreview()
-        {
-            // Set cursor to the wait cursor
-            Cursor.Current = Cursors.WaitCursor;
-
-            dataPreview.Offset = AddressOffset;
-            dataPreview.WidthBytes = ScreenWidth;
-
-            Application.DoEvents();
-            dataPreview.DrawDataView();
-
-            picImage.Image = dataPreview.screenImage;
-            picImage.SizeMode = PictureBoxSizeMode.Normal;
-            picImage.Size = picImage.Image.Size;
-
-            // Set the cursor back to the default cursor
-            Cursor.Current = Cursors.Default;
         }
 
         private void ChangePreviewFormat(object sender, EventArgs e)
@@ -184,29 +38,30 @@ namespace OricExplorer
 
             if (optDisplayText.Checked)
             {
-                dataPreview.m_scrnFormat = OricProgram.ProgramFormat.TextScreen;
+                dataPreview.ScreenFormat = OricProgram.ProgramFormat.TextScreen;
             }
             else if (optDisplayHires.Checked)
             {
-                dataPreview.m_scrnFormat = OricProgram.ProgramFormat.HiresScreen;
+                dataPreview.ScreenFormat = OricProgram.ProgramFormat.HiresScreen;
             }
             else
             {
-                dataPreview.m_scrnFormat = OricProgram.ProgramFormat.CharacterSet;
+                dataPreview.ScreenFormat = OricProgram.ProgramFormat.CharacterSet;
 
                 btnWidthDec.Enabled = false;
                 btnWidthInc.Enabled = false;
                 btnWidthReset.Enabled = false;
             }
 
-            AddressOffset = 0;
-            ScreenWidth = 40;
-            redrawPreview();
+            bytAddressOffset = 0;
+            bytScreenWidth = 40;
+            
+            RedrawPreview();
 
             DisplayZoomLevel();
 
-            ibxWidth.Text = string.Format("{0} Bytes", ScreenWidth);
-            ibxOffset.Text = string.Format("0 Bytes (${0:X4})", ProgramInfo.StartAddress);
+            ibxWidth.Text = string.Format("{0} Bytes", bytScreenWidth);
+            ibxOffset.Text = string.Format("0 Bytes (${0:X4})", dataPreview.StartAddress);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -224,10 +79,10 @@ namespace OricExplorer
 
         private void picImage_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
-                int DeltaX = panStartingPoint.X - e.X;
-                int DeltaY = panStartingPoint.Y - e.Y; 
+                int DeltaX = ptStartingPoint.X - e.X;
+                int DeltaY = ptStartingPoint.Y - e.Y; 
 
                 panImageInner.AutoScrollPosition = new Point(DeltaX - panImageInner.AutoScrollPosition.X, DeltaY - panImageInner.AutoScrollPosition.Y);
             }
@@ -235,7 +90,7 @@ namespace OricExplorer
 
         private void picImage_MouseDown(object sender, MouseEventArgs e)
         {
-            panStartingPoint = new Point(e.X, e.Y);
+            ptStartingPoint = new Point(e.X, e.Y);
         }
 
         /*private void pictureBoxImage_MouseWheel(object sender, MouseEventArgs e)
@@ -250,110 +105,96 @@ namespace OricExplorer
             }
         }*/
 
-        private void ZoomIn()
-        {
-            if ((picImage.Width / ZOOMFACTOR) <= 2400)
-            {
-                picImage.Width = Convert.ToInt32(picImage.Width * ZOOMFACTOR);
-                picImage.Height = Convert.ToInt32(picImage.Height * ZOOMFACTOR);
-                picImage.SizeMode = PictureBoxSizeMode.StretchImage;
-
-                DisplayZoomLevel();
-            }
-        }
-
-        private void ZoomOut()
-        {
-            if((picImage.Width / ZOOMFACTOR) >= 480)
-            {
-                picImage.SizeMode = PictureBoxSizeMode.StretchImage;
-                picImage.Width = Convert.ToInt32(picImage.Width / ZOOMFACTOR);
-                picImage.Height = Convert.ToInt32(picImage.Height / ZOOMFACTOR);
-
-                DisplayZoomLevel();
-            }
-        }
-
-        private void DisplayZoomLevel()
-        {
-            float zoomLevel = (float)picImage.Width / 240;
-            ibxZoom.Text = string.Format("Zoom Level x{0:N0}", zoomLevel);
-        }
-
         private void btnZoomIn_Click(object sender, EventArgs e)
         {
-            ZoomIn();
+            if (bytZoomFactor < 32)
+            {
+                bytZoomFactor++;
+                picImage.Width = Convert.ToInt32(picImage.Image.Width * bytZoomFactor);
+                picImage.Height = Convert.ToInt32(picImage.Image.Height * bytZoomFactor);
+                picImage.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                DisplayZoomLevel();
+            }
         }
 
         private void btnZoomOut_Click(object sender, EventArgs e)
         {
-            ZoomOut();
+            if (bytZoomFactor > 1)
+            {
+                bytZoomFactor--;
+                picImage.Width = Convert.ToInt32(picImage.Image.Width * bytZoomFactor);
+                picImage.Height = Convert.ToInt32(picImage.Image.Height * bytZoomFactor);
+                picImage.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                DisplayZoomLevel();
+            }
         }
 
         private void btnOffsetDec_Click(object sender, EventArgs e)
         {
-            if (AddressOffset > 0)
+            if (bytAddressOffset > 0)
             {
-                AddressOffset--;
+                bytAddressOffset--;
                 UpdateScreen();
 
-                dataPreview.Offset = AddressOffset;
-                redrawPreview();
+                dataPreview.Offset = bytAddressOffset;
+                RedrawPreview();
             }
         }
 
         private void btnOffsetInc_Click(object sender, EventArgs e)
         {
-            if (AddressOffset < 39)
+            if (bytAddressOffset < 39)
             {
-                AddressOffset++;
+                bytAddressOffset++;
                 UpdateScreen();
 
-                dataPreview.Offset = AddressOffset;
-                redrawPreview();
+                dataPreview.Offset = bytAddressOffset;
+                RedrawPreview();
             }
         }
 
         private void btnWidthDec_Click(object sender, EventArgs e)
         {
-            if (ScreenWidth > 1)
+            if (bytScreenWidth > 1)
             {
-                ScreenWidth--;
+                bytScreenWidth--;
                 UpdateScreen();
 
-                dataPreview.WidthBytes = (byte)ScreenWidth;
-                redrawPreview();
+                dataPreview.WidthBytes = (byte)bytScreenWidth;
+                RedrawPreview();
             }
         }
 
         private void btnWidthInc_Click(object sender, EventArgs e)
         {
-            if (ScreenWidth < 40)
+            if (bytScreenWidth < 40)
             {
-                ScreenWidth++;
+                bytScreenWidth++;
                 UpdateScreen();
 
-                dataPreview.WidthBytes = (byte)ScreenWidth;
-                redrawPreview();
+                dataPreview.WidthBytes = (byte)bytScreenWidth;
+                RedrawPreview();
             }
         }
 
         private void btnOffsetReset_Click(object sender, EventArgs e)
         {
-            AddressOffset = 0;
+            bytAddressOffset = 0;
             UpdateScreen();
         }
 
         private void btnWidthReset_Click(object sender, EventArgs e)
         {
-            ScreenWidth = 40;
+            bytScreenWidth = 40;
             UpdateScreen();
         }
 
         private void btnZoomReset_Click(object sender, EventArgs e)
         {
-            ZOOMFACTOR = 2;
-            redrawPreview();
+            bytZoomFactor = 1;
+            RedrawPreview();
 
             DisplayZoomLevel();
         }
@@ -420,6 +261,112 @@ namespace OricExplorer
             {
                 prtDocument.Print();
             }
+        }
+
+
+        public void InitialiseView()
+        {
+            bytAddressOffset = 0;
+            bytScreenWidth = 40;
+
+            DisplayZoomLevel();
+
+            if (ProgramData.Format == OricProgram.ProgramFormat.OrixProgram)
+            {
+                dataPreview.StartAddress = (ushort)(ProgramData.StartAddress + OtherFileInfo.ORIX_HEADER_LENGTH);
+                dataPreview.ScreenData = ProgramData.ProgramData.Skip(OtherFileInfo.ORIX_HEADER_LENGTH).ToArray();
+            }
+            else
+            {
+                dataPreview.StartAddress = ProgramData.StartAddress;
+                dataPreview.ScreenData = ProgramData.ProgramData;
+            }
+
+            dataPreview.DataLength = ProgramData.ProgramLength;
+            dataPreview.DisablePaper = false;
+            dataPreview.DisableInk = false;
+
+            chkAttributesBackground.Checked = true;
+            chkAttributesForeground.Checked = true;
+            chkAttributesOthers.Checked = true;
+
+            switch (ProgramData.Format)
+            {
+                case OricProgram.ProgramFormat.HiresScreen:
+                    optDisplayHires.Checked = true;
+                    dataPreview.ScreenFormat = OricProgram.ProgramFormat.HiresScreen;
+                    break;
+
+                case OricProgram.ProgramFormat.TextScreen:
+                    optDisplayText.Checked = true;
+                    dataPreview.ScreenFormat = OricProgram.ProgramFormat.TextScreen;
+                    break;
+
+                case OricProgram.ProgramFormat.CharacterSet:
+                    optDisplayCharSet.Checked = true;
+                    dataPreview.ScreenFormat = OricProgram.ProgramFormat.CharacterSet;
+                    break;
+
+                default:
+                    optDisplayHires.Checked = true;
+                    dataPreview.ScreenFormat = OricProgram.ProgramFormat.HiresScreen;
+                    break;
+            }
+
+            UpdateScreen();
+            Application.DoEvents();
+        }
+
+        private void DisplayZoomLevel()
+        {
+            btnZoomOut.Enabled = (bytZoomFactor > 1);
+            btnZoomIn.Enabled = (bytZoomFactor < 32);
+            btnZoomReset.Enabled = (bytZoomFactor > 1);
+            ibxZoom.Text = string.Format("Zoom Level x{0:N0}", bytZoomFactor);
+        }
+
+        private void UpdateScreen()
+        {
+            btnWidthDec.Enabled = (bytScreenWidth > 0);
+            btnWidthInc.Enabled = (bytScreenWidth < 40);
+            btnWidthReset.Enabled = (bytScreenWidth < 40);
+            ibxWidth.Text = string.Format("{0} Byte(s)", bytScreenWidth);
+
+            btnOffsetDec.Enabled = (bytAddressOffset > 0);
+            btnOffsetInc.Enabled = (bytAddressOffset < 40);
+            btnOffsetReset.Enabled = (bytAddressOffset > 0);
+            ibxOffset.Text = string.Format("{0} Byte(s) (${1:X4})", bytAddressOffset, dataPreview.StartAddress + bytAddressOffset);
+
+            // If CharacterSet view then disable the Width controls
+            if (ProgramData.Format == OricProgram.ProgramFormat.CharacterSet)
+            {
+                btnWidthDec.Enabled = false;
+                btnWidthInc.Enabled = false;
+                btnWidthReset.Enabled = false;
+
+                ibxWidth.Text = "----";
+            }
+
+            RedrawPreview();
+        }
+
+        private void RedrawPreview()
+        {
+            // Set cursor to the wait cursor
+            Cursor.Current = Cursors.WaitCursor;
+
+            dataPreview.Offset = bytAddressOffset;
+            dataPreview.WidthBytes = bytScreenWidth;
+
+            Application.DoEvents();
+            dataPreview.DrawDataView();
+
+            picImage.Image = dataPreview.ScreenImage;
+            picImage.SizeMode = PictureBoxSizeMode.Normal;
+            picImage.Size = picImage.Image.Size;
+
+            // Set the cursor back to the default cursor
+            Cursor.Current = Cursors.Default;
         }
     }
 }

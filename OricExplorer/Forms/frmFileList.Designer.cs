@@ -42,6 +42,7 @@
             this.tvwFileList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tvwFileList.ForeColor = System.Drawing.Color.White;
             this.tvwFileList.FullRowSelect = true;
+            this.tvwFileList.HideSelection = false;
             this.tvwFileList.ImageIndex = 0;
             this.tvwFileList.ImageList = this.imlIcons;
             this.tvwFileList.LineColor = System.Drawing.Color.DimGray;
@@ -75,15 +76,16 @@
             this.imlIcons.Images.SetKeyName(7, "disk_game");
             this.imlIcons.Images.SetKeyName(8, "disk_unknown");
             this.imlIcons.Images.SetKeyName(9, "disk_hs");
-            this.imlIcons.Images.SetKeyName(10, "binary");
-            this.imlIcons.Images.SetKeyName(11, "text");
-            this.imlIcons.Images.SetKeyName(12, "image_text");
-            this.imlIcons.Images.SetKeyName(13, "image_hires");
-            this.imlIcons.Images.SetKeyName(14, "image_unknown");
-            this.imlIcons.Images.SetKeyName(15, "sequential");
-            this.imlIcons.Images.SetKeyName(16, "direct");
-            this.imlIcons.Images.SetKeyName(17, "font");
-            this.imlIcons.Images.SetKeyName(18, "helpdoc");
+            this.imlIcons.Images.SetKeyName(10, "other_file");
+            this.imlIcons.Images.SetKeyName(11, "binary");
+            this.imlIcons.Images.SetKeyName(12, "text");
+            this.imlIcons.Images.SetKeyName(13, "image_text");
+            this.imlIcons.Images.SetKeyName(14, "image_hires");
+            this.imlIcons.Images.SetKeyName(15, "image_unknown");
+            this.imlIcons.Images.SetKeyName(16, "sequential");
+            this.imlIcons.Images.SetKeyName(17, "direct");
+            this.imlIcons.Images.SetKeyName(18, "font");
+            this.imlIcons.Images.SetKeyName(19, "helpdoc");
             // 
             // frmFileList
             // 

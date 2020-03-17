@@ -62,7 +62,7 @@ namespace OricExplorer
 
             for (int iIndex = 0; iIndex < 8; iIndex++)
             {
-                charData[iIndex] = (byte)ProgramData.m_programData[ui16BufferOffset + iIndex];
+                charData[iIndex] = (byte)ProgramData.ProgramData[ui16BufferOffset + iIndex];
 
                 string labelToFind = string.Format("lblAddr{0}", iIndex + 1);
                 Control[] labelControl = grpCharacterDetails.Controls.Find(labelToFind, true);
@@ -231,9 +231,9 @@ namespace OricExplorer
 
                 for (short siLoop2 = 0; siLoop2 < 8; siLoop2++)
                 {
-                    if ((ui16Loop + siLoop2) < ProgramData.m_programData.Length)
+                    if ((ui16Loop + siLoop2) < ProgramData.ProgramData.Length)
                     {
-                        cByte = ProgramData.m_programData[ui16Loop + siLoop2];
+                        cByte = ProgramData.ProgramData[ui16Loop + siLoop2];
                     }
                     else
                     {

@@ -155,7 +155,7 @@
         private void WriteProgramData(OricProgram program)
         {
             // How many sectors are needed
-            int programLength = program.m_programData.Length;
+            int programLength = program.ProgramData.Length;
             int noOfSectors;
 
             if(programLength < 245)
@@ -191,7 +191,7 @@
             sectorData[0x06] = Convert.ToByte((program.EndAddress >> 8) & 0xFF);
             sectorData[0x07] = Convert.ToByte(program.EndAddress & 0xFF);
 
-            if(program.Format == OricProgram.ProgramFormat.AtmosBasicProgram)
+            if(program.Format == OricProgram.ProgramFormat.BasicProgram)
             {
                 if(program.AutoRun == OricProgram.AutoRunFlag.Enabled)
                 {
@@ -236,7 +236,7 @@
             // Write program data to first program sector
             while (dataPos < programLength && sectorPos < 0xFF)
             {
-                sectorData[sectorPos] = program.m_programData[dataPos];
+                sectorData[sectorPos] = program.ProgramData[dataPos];
 
                 sectorPos++;
                 dataPos++;
@@ -276,7 +276,7 @@
                 // Write program data to the next program sector
                 while (dataPos < programLength && sectorPos < 0xFF)
                 {
-                    sectorData[sectorPos] = program.m_programData[dataPos];
+                    sectorData[sectorPos] = program.ProgramData[dataPos];
 
                     sectorPos++;
                     dataPos++;
@@ -438,13 +438,13 @@
                                 else if (ui16ExeAddress == 0x0001)
                                 {
                                     diskFile.ExeAddress = diskFile.StartAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
+                                    diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
                                     diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
                                 }
                                 else if (ui16ExeAddress == 0x0002)
                                 {
                                     diskFile.ExeAddress = diskFile.StartAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
+                                    diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
                                     diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
                                 }
                                 else
@@ -558,7 +558,7 @@
                     bNoOfBytes = rdr.ReadByte();
                 }
 
-                loadProgram.m_programData = new byte[programInfo.LengthBytes];
+                loadProgram.ProgramData = new byte[programInfo.LengthBytes];
 
                 byte bByte = 0;
                 int iIndex = 0;
@@ -566,7 +566,7 @@
                 for (int iLoop = 0; iLoop < bNoOfBytes; iLoop++)
                 {
                     bByte = rdr.ReadByte();
-                    loadProgram.m_programData[iIndex] = bByte;
+                    loadProgram.ProgramData[iIndex] = bByte;
                     iIndex++;
                 }
 
@@ -589,7 +589,7 @@
                         try
                         {
                             bByte = rdr2.ReadByte();
-                            loadProgram.m_programData[iIndex] = bByte;
+                            loadProgram.ProgramData[iIndex] = bByte;
                             iIndex++;
                         }
                         catch(IndexOutOfRangeException)

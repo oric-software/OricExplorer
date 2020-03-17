@@ -139,7 +139,7 @@ namespace OricExplorer.User_Controls
                 // Move record into temporary buffer
                 for (int index = 0; index < recordLength; index++)
                 {
-                    buffer[index] = ProgramData.m_programData[bufferIndex];
+                    buffer[index] = ProgramData.ProgramData[bufferIndex];
                     bufferIndex++;
                 }
 
@@ -201,7 +201,7 @@ namespace OricExplorer.User_Controls
                 // Move record into temporary buffer
                 for (int index = 0; index < recordLength; index++)
                 {
-                    buffer[index] = ProgramData.m_programData[bufferIndex];
+                    buffer[index] = ProgramData.ProgramData[bufferIndex];
                     bufferIndex++;
                 }
 
@@ -301,7 +301,7 @@ namespace OricExplorer.User_Controls
                 // Move record into temporary buffer
                 for (int index = 0; index < recordLength; index++)
                 {
-                    buffer[index] = ProgramData.m_programData[index];
+                    buffer[index] = ProgramData.ProgramData[index];
                 }
 
                 // Count no. of Fields in record

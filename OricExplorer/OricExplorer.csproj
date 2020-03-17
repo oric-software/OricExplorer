@@ -84,6 +84,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Extensions.cs" />
+    <Compile Include="Classes\HyperbasicTokens.cs" />
+    <Compile Include="Classes\OtherFileInfo.cs" />
     <Compile Include="Classes\TeleassTokens.cs" />
     <Compile Include="Classes\ConstantsAndEnums.cs" />
     <Compile Include="Classes\FTDos.cs" />

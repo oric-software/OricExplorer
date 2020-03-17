@@ -53,7 +53,7 @@
             {
                 OricFileInfo programInfo = (OricFileInfo)lvwPrograms.SelectedItems[0].Tag;
                 txtProgramName.Text = programInfo.ProgramName;
-                (programInfo.Format == OricProgram.ProgramFormat.AtmosBasicProgram ? optBasic : optCodeData).Checked = true;
+                (programInfo.Format == OricProgram.ProgramFormat.BasicProgram ? optBasic : optCodeData).Checked = true;
                 chkAutoRun.Checked = (programInfo.AutoRun == OricProgram.AutoRunFlag.Enabled);
                 nudStartAddress.Value = programInfo.StartAddress;
                 nudStartAddress.Maximum = 65535 - programInfo.LengthBytes;

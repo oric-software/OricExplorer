@@ -4,7 +4,6 @@ namespace OricExplorer.User_Controls
     using FastColoredTextBoxNS;
     using System.Collections.Generic;
     using System.Drawing;
-    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
     using WeifenLuo.WinFormsUI.Docking;
@@ -12,16 +11,6 @@ namespace OricExplorer.User_Controls
 
     public partial class frmMainView : DockContent
     {
-        // Text styles for BASIC Listing
-        private TextStyle basicLineNumberStyle;
-        private TextStyle basicKeywordStyle;
-        private TextStyle basicBranchesStyle;
-        private TextStyle basicLoopsStyle;
-        private TextStyle basicStringStyle;
-        private TextStyle basicHexNumberStyle;
-        private TextStyle basicNumberStyle;
-        private TextStyle basicDataKeywordStyle;
-        private TextStyle basicCommentStyle;
 
         // Text styles for Assembler Listings
         private TextStyle assemblerAddressStyle;
@@ -31,8 +20,34 @@ namespace OricExplorer.User_Controls
         private TextStyle assemblerAsciiStyle;
         private TextStyle assemblerUnknownStyle;
 
+        
+        // Text styles for BASIC Listing
+        private TextStyle basicLineNumberStyle;
+        private TextStyle basicKeywordStyle;
+        private TextStyle basicBranchesStyle;
+        private TextStyle basicLoopsStyle;
+        private TextStyle basicStringStyle;
+        private TextStyle basicNumberStyle;
+        private TextStyle basicDataKeywordStyle;
+        private TextStyle basicCommentStyle;
+
+        // Text styles for HYPERBASIC Listing
+        private TextStyle hyperbasicAddressStyle;
+        private TextStyle hyperbasicLabelStyle;
+        private TextStyle hyperbasicNumberStyle;
+        private TextStyle hyperbasicStringStyle;
+        private TextStyle hyperbasicLoopsStyle;
+        private TextStyle hyperbasicBranchesStyle;
+        private TextStyle hyperbasicCodeStyle;
+        private TextStyle hyperbasicCommentStyle;
+
+        // Text styles for TELEASS Listing
         private TextStyle teleassAddressStyle;
+        private TextStyle teleassLabelStyle;
+        private TextStyle teleassMnemonicStyle;
+        private TextStyle teleassOperandStyle;
         private TextStyle teleassCommentStyle;
+
 
         //MarkerStyle SameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(40, Color.Gray)));
 
@@ -55,36 +70,47 @@ namespace OricExplorer.User_Controls
 
             this.mMainForm = mainForm;
 
-            Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> syntaxHighlightingStyles = Configuration.Persistent.SyntaxHighlightingStyles;
-            
-            basicLineNumberStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLineNumber];
-            basicKeywordStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicKeyword];
-            basicBranchesStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicBranches];
-            basicLoopsStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLoops];
-            basicStringStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicString];
-            basicHexNumberStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicHexNumber];
-            basicNumberStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicNumber];
-            basicDataKeywordStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicDataKeyword];
-            basicCommentStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicComment];
-
-            assemblerAddressStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAddressStyle];
-            assemblerHexStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerHexStyle];
-            assemblerMnemonicStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerMnemonicStyle];
-            assemblerOperandStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerOperandStyle];
-            assemblerAsciiStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAsciiStyle];
-            assemblerUnknownStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerUnknownStyle];
+            Dictionary<SyntaxHighlightingItems, TextStyle> syntaxHighlightingStyles = Configuration.Persistent.SyntaxHighlightingStyles;
 
             hxbDump.BackColor = Configuration.Persistent.PageBackground;
-            hxbDump.InfoForeColor = ((SolidBrush)syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHeadersStyle].ForeBrush).Color;
-            hxbDump.ForeColor = ((SolidBrush)syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHexStyle].ForeBrush).Color;
-            hxbDump.StringViewColour = ((SolidBrush)syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpAsciiStyle].ForeBrush).Color;
-            hxbDump.SelectionBackColor = ((SolidBrush)syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionBackStyle].ForeBrush).Color;
-            hxbDump.SelectionForeColor = ((SolidBrush)syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionFrontStyle].ForeBrush).Color;
-            hxbDump.ShadowSelectionColor = ((SolidBrush)syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpSecondarySelectionBackStyle].ForeBrush).Color;
+            hxbDump.InfoForeColor = ((SolidBrush)syntaxHighlightingStyles[SyntaxHighlightingItems.DumpHeadersStyle].ForeBrush).Color;
+            hxbDump.ForeColor = ((SolidBrush)syntaxHighlightingStyles[SyntaxHighlightingItems.DumpHexStyle].ForeBrush).Color;
+            hxbDump.StringViewColour = ((SolidBrush)syntaxHighlightingStyles[SyntaxHighlightingItems.DumpAsciiStyle].ForeBrush).Color;
+            hxbDump.SelectionBackColor = ((SolidBrush)syntaxHighlightingStyles[SyntaxHighlightingItems.DumpMainSelectionBackStyle].ForeBrush).Color;
+            hxbDump.SelectionForeColor = ((SolidBrush)syntaxHighlightingStyles[SyntaxHighlightingItems.DumpMainSelectionFrontStyle].ForeBrush).Color;
+            hxbDump.ShadowSelectionColor = ((SolidBrush)syntaxHighlightingStyles[SyntaxHighlightingItems.DumpSecondarySelectionBackStyle].ForeBrush).Color;
             hxbDump.ShadowSelectionColor = Color.FromArgb(100, hxbDump.ShadowSelectionColor.R, hxbDump.ShadowSelectionColor.G, hxbDump.ShadowSelectionColor.B);
 
-            teleassAddressStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassAddressStyle];
-            teleassCommentStyle = syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassCommentStyle];
+            assemblerAddressStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.AssemblerAddressStyle];
+            assemblerHexStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.AssemblerHexStyle];
+            assemblerMnemonicStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.AssemblerMnemonicStyle];
+            assemblerOperandStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.AssemblerOperandStyle];
+            assemblerAsciiStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.AssemblerAsciiStyle];
+            assemblerUnknownStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.AssemblerUnknownStyle];
+            
+            basicLineNumberStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.BasicLineNumber];
+            basicKeywordStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.BasicKeyword];
+            basicBranchesStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.BasicBranches];
+            basicLoopsStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.BasicLoops];
+            basicStringStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.BasicString];
+            basicNumberStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.BasicNumber];
+            basicDataKeywordStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.BasicDataKeyword];
+            basicCommentStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.BasicComment];
+
+            hyperbasicAddressStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.HyperbasicAddressStyle];
+            hyperbasicLabelStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.HyperbasicLabelStyle];
+            hyperbasicNumberStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.HyperbasicNumberStyle];
+            hyperbasicStringStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.HyperbasicStringStyle];
+            hyperbasicLoopsStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.HyperbasicLoopStyle];
+            hyperbasicBranchesStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.HyperbasicBrancheStyle];
+            hyperbasicCodeStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.HyperbasicCodeStyle];
+            hyperbasicCommentStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.HyperbasicCommentStyle];
+
+            teleassAddressStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.TeleassAddressStyle];
+            teleassLabelStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.TeleassLabelStyle];
+            teleassMnemonicStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.TeleassMnemonicStyle];
+            teleassOperandStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.TeleassOperandStyle];
+            teleassCommentStyle = syntaxHighlightingStyles[SyntaxHighlightingItems.TeleassCommentStyle];
 
             fctSourceCode.BackColor = Configuration.Persistent.PageBackground;
         }
@@ -237,10 +263,10 @@ namespace OricExplorer.User_Controls
             Invalidate();
         }
 
-        public void DisplayData()
+        public void DisplayData(OricProgram.SpecialMode specialMode = OricProgram.SpecialMode.None)
         {
             DynamicByteProvider dynamicByteProvider;
-            dynamicByteProvider = new DynamicByteProvider(ProgramData.m_programData);
+            dynamicByteProvider = new DynamicByteProvider(ProgramData.ProgramData);
 
             hxbDump.ByteProvider = dynamicByteProvider;
             hxbDump.LineInfoOffset = ProgramInfo.StartAddress;
@@ -251,22 +277,26 @@ namespace OricExplorer.User_Controls
             if (ShowSourceCode)
             {
                 // Display the programs sourcecode
-                if (ProgramInfo.Format == OricProgram.ProgramFormat.AtmosBasicProgram)
+                if (ProgramInfo.Format == OricProgram.ProgramFormat.BinaryFile)
                 {
-                    fctSourceCode.Text = ProgramData.ListAtmosBasicSourceAsText();
+                    fctSourceCode.Text = ProgramData.ListAssembler(specialMode);
                 }
-                else if (ProgramInfo.Format == OricProgram.ProgramFormat.BinaryFile)
+                else if (ProgramInfo.Format == OricProgram.ProgramFormat.BasicProgram)
                 {
-                    fctSourceCode.Text = ProgramData.ListAssembler();
+                    fctSourceCode.Text = ProgramData.ListBasicSourceAsText();
                 }
+                else if (ProgramInfo.Format == OricProgram.ProgramFormat.HyperbasicProgram)
+                {
+                    fctSourceCode.Text = ProgramData.ListHyperbasicSourceAsText();
+                } 
                 else if (ProgramInfo.Format == OricProgram.ProgramFormat.TeleassSource)
                 {
                     fctSourceCode.Text = ProgramData.ListTeleassSourceAsText();
                 }
-                //else if (ProgramInfo.Format == OricProgram.ProgramFormat.HyperbasicSource)
-                //{
-                //    fctSourceCode.Text = ProgramData.ListHyperbasicSourceAsText();
-                //}
+                else if (ProgramInfo.Format == OricProgram.ProgramFormat.OrixProgram)
+                {
+                    fctSourceCode.Text = ProgramData.ListAssembler(specialMode);
+                }
             }
 
             switch (UserControl)
@@ -323,7 +353,7 @@ namespace OricExplorer.User_Controls
             e.ChangedRange.SetStyle(assemblerAsciiStyle, @"\S", RegexOptions.Multiline);
         }
 
-        private void DisplayAtmosBasicListing(TextChangedEventArgs e)
+        private void DisplayBasicListing(TextChangedEventArgs e)
         {
             fctSourceCode.LeftBracket = '(';
             fctSourceCode.RightBracket = ')';
@@ -337,11 +367,30 @@ namespace OricExplorer.User_Controls
             e.ChangedRange.SetStyle(basicStringStyle, @"""""|@""""|@"".*?""|(?<!@)(?<range>"".*?[^\\]"")");
             e.ChangedRange.SetStyle(basicCommentStyle, @"(REM.*|\s'.*)", RegexOptions.Multiline);
             e.ChangedRange.SetStyle(basicLineNumberStyle, @"^[0-9]{1,5}", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(basicHexNumberStyle, @"#([0-9A-Fa-f]){1,4}");
             e.ChangedRange.SetStyle(basicNumberStyle, @"\d+[\.]?\d*([eE]\-?\d+)?");
             e.ChangedRange.SetStyle(basicLoopsStyle, @"(REPEAT|UNTIL|FOR|NEXT)");
             e.ChangedRange.SetStyle(basicBranchesStyle, @"(GOSUB|GOTO|ON|RETURN)");
             e.ChangedRange.SetStyle(basicKeywordStyle, @"(POP|PULL|RESTORE|STEP|PING|EXPLODE|DEF|POKE|PRINT|CONT|LIST|CLEAR|GET|CALL|NEW|TAB|TO|FN|SPC|AUTO|ELSE|THEN|NOT|AND|OR|SGN|INT|ABS|USR|FRE|POS|HEX\$|SQR|RND|LN|EXP|COS|SIN|TAN|ATN|PEEK|DEEK|LOG|LEN|STR\$|VAL|ASC|CHR\$|PI|TRUE|FALSE|KEY\$|SCRN|POINT|LEFT\$|RIGHT\$|MID\$|END|EDIT|STORE|RECALL|TRON|TROFF|PLOT|LORES|DOKE|LLIST|LPRINT|INPUT|DIM|CLS|READ|LET|RUN|IF|HIMEM|GRAB|RELEASE|TEXT|HIRES|SHOOT|ZAP|SOUND|MUSIC|PLAY|CURSET|CURMOV|DRAW|CIRCLE|PATTERN|FILL|CHAR|PAPER|INK|STOP|ON|WAIT|CLOAD|CSAVE)");
+        }
+
+        private void DisplayHyperbasicListing(TextChangedEventArgs e)
+        {
+            fctSourceCode.LeftBracket = '(';
+            fctSourceCode.RightBracket = ')';
+            fctSourceCode.LeftBracket2 = '\x0';
+            fctSourceCode.RightBracket2 = '\x0';
+
+            // Clear style of changed range
+            fctSourceCode.ClearStylesBuffer();
+
+            e.ChangedRange.SetStyle(hyperbasicAddressStyle, @"^[ 0-9]{6} ", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(hyperbasicCommentStyle, @"(REM|'\s).*$", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(hyperbasicLabelStyle, @"\]\w*", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(hyperbasicNumberStyle, @"#(([0-9A-Fa-f]){1,4})|(\d+[\.]?\d*([eE]\-?\d+)?)");
+            e.ChangedRange.SetStyle(hyperbasicStringStyle, @"""""|@""""|@"".*?""|(?<!@)(?<range>"".*?[^\\]"")");
+            e.ChangedRange.SetStyle(hyperbasicLoopsStyle, @"(REPEAT|UNTIL|FOR|TO|NEXT|STEP|WHILE|WEND|COUNT|UNCOUNT)");
+            e.ChangedRange.SetStyle(hyperbasicBranchesStyle, @"(GOSUB|GOTO|ON|RETURN)");
+            e.ChangedRange.SetStyle(hyperbasicCodeStyle, @"\S", RegexOptions.Multiline);
         }
 
         private void DisplayTeleassListing(TextChangedEventArgs e)
@@ -350,7 +399,10 @@ namespace OricExplorer.User_Controls
             fctSourceCode.ClearStylesBuffer();
 
             e.ChangedRange.SetStyle(teleassAddressStyle, @"^[ 0-9]{6} ", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(teleassCommentStyle, @"'.*$", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(teleassLabelStyle, @"^((.){6}) [^'].{0,6}", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(teleassMnemonicStyle, @"^((.){6}) [^'].{0,9}", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(teleassCommentStyle, @"\'.*$", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(teleassOperandStyle, @"\S", RegexOptions.Multiline);
         }
 
         private void fctSourceCode_TextChanged(object sender, TextChangedEventArgs e)
@@ -359,12 +411,17 @@ namespace OricExplorer.User_Controls
             {
                 switch (ProgramInfo.Format)
                 {
-                    case OricProgram.ProgramFormat.AtmosBasicProgram:
-                        DisplayAtmosBasicListing(e);
+                    case OricProgram.ProgramFormat.BinaryFile:
+                    case OricProgram.ProgramFormat.OrixProgram:
+                        DisplayAssemblerListing(e);
                         break;
 
-                    case OricProgram.ProgramFormat.BinaryFile:
-                        DisplayAssemblerListing(e);
+                    case OricProgram.ProgramFormat.BasicProgram:
+                        DisplayBasicListing(e);
+                        break;
+
+                    case OricProgram.ProgramFormat.HyperbasicProgram:
+                        DisplayHyperbasicListing(e);
                         break;
 
                     case OricProgram.ProgramFormat.TeleassSource:

@@ -12,6 +12,7 @@ namespace OricExplorer
         private List<string> mlstTapeFolders;
         private List<string> mlstDiskFolders;
         private List<string> mlstRomFolders;
+        private List<string> mlstOtherFilesFolders;
 
         public frmSettings()
         {
@@ -27,6 +28,7 @@ namespace OricExplorer
             mlstTapeFolders = Configuration.Persistent.TapeFolders.ToList();
             mlstDiskFolders = Configuration.Persistent.DiskFolders.ToList();
             mlstRomFolders = Configuration.Persistent.RomFolders.ToList();
+            mlstOtherFilesFolders = Configuration.Persistent.OtherFilesFolders.ToList();
 
             BuildFoldersList();
 
@@ -56,9 +58,13 @@ namespace OricExplorer
                 {
                     mlstDiskFolders.Add(txtSelectedFolder.Text);
                 }
-                else
+                else if (optRom.Checked)
                 {
                     mlstRomFolders.Add(txtSelectedFolder.Text);
+                }
+                else
+                {
+                    mlstOtherFilesFolders.Add(txtSelectedFolder.Text);
                 }
 
                 // Rebuild folder list
@@ -86,9 +92,13 @@ namespace OricExplorer
                 {
                     mlstDiskFolders.Remove(folder);
                 }
-                else
+                else if (lvItem[0].Text.Equals("ROM"))
                 {
                     mlstRomFolders.Remove(folder);
+                }
+                else
+                {
+                    mlstOtherFilesFolders.Remove(folder);
                 }
 
                 btnAddFolder.PerformClick();
@@ -111,9 +121,13 @@ namespace OricExplorer
                     {
                         mlstDiskFolders.Remove(folder);
                     }
-                    else
+                    else if (selectedItem.Text.Equals("ROM"))
                     {
                         mlstRomFolders.Remove(folder);
+                    }
+                    else 
+                    {
+                        mlstOtherFilesFolders.Remove(folder);
                     }
                 }
 
@@ -174,6 +188,7 @@ namespace OricExplorer
             Configuration.Persistent.TapeFolders = mlstTapeFolders;
             Configuration.Persistent.DiskFolders = mlstDiskFolders;
             Configuration.Persistent.RomFolders = mlstRomFolders;
+            Configuration.Persistent.OtherFilesFolders = mlstOtherFilesFolders;
 
             Configuration.Persistent.EmulatorExecutable = txtEmulatorExecutable.Text;
             Configuration.Persistent.DefaultMachineForTape = (optDefaultMachineOric1.Checked ? Machine.Oric1 : (optDefaultMachineAtmos.Checked ? Machine.Atmos : Machine.Pravetz));
@@ -215,9 +230,13 @@ namespace OricExplorer
             {
                 optDisk.Checked = true;
             }
+            else if (selectedItem[0].Text.Equals("ROM"))
+            {
+                optRom.Checked = true;
+            }
             else
             {
-                optROM.Checked = true;
+                optOtherFiles.Checked = true;
             }
 
             txtSelectedFolder.Text = folder;
@@ -238,7 +257,10 @@ namespace OricExplorer
             AddDiskFoldersToList();
 
             // Add rom folders to list
-            AddROMFoldersToList();
+            AddRomFoldersToList();
+
+            // Add other files folders to list
+            AddOtherFilesFoldersToList();
 
             // Enable updates
             lvwFolderList.EndUpdate();
@@ -270,13 +292,25 @@ namespace OricExplorer
             }
         }
 
-        private void AddROMFoldersToList()
+        private void AddRomFoldersToList()
         {
             foreach (string romFolder in mlstRomFolders)
             {
                 ListViewItem listViewItem = new ListViewItem();
                 listViewItem.Text = "ROM";
                 listViewItem.SubItems.Add(romFolder);
+
+                lvwFolderList.Items.Add(listViewItem);
+            }
+        }
+
+        private void AddOtherFilesFoldersToList()
+        {
+            foreach (string otherFilesFolder in mlstOtherFilesFolders)
+            {
+                ListViewItem listViewItem = new ListViewItem();
+                listViewItem.Text = "Other Files";
+                listViewItem.SubItems.Add(otherFilesFolder);
 
                 lvwFolderList.Items.Add(listViewItem);
             }
@@ -294,9 +328,13 @@ namespace OricExplorer
                 {
                     folderBrowser.Description = "Select Disk Folder";
                 }
-                else
+                else if (optRom.Checked)
                 {
-                    folderBrowser.Description = "Select ROM Folder";
+                    folderBrowser.Description = "Select Rom Folder";
+                }
+                else 
+                {
+                    folderBrowser.Description = "Select Other Files Folder";
                 }
 
                 folderBrowser.RootFolder = Environment.SpecialFolder.MyComputer;

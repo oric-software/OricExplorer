@@ -254,7 +254,7 @@
                             diskFileInfo.Format = OricProgram.ProgramFormat.BinaryFile;
                         else if ((FileType & 0x80) == 0x80)
                             if (diskFileInfo.StartAddress == 0x7f0)
-                                diskFileInfo.Format = OricProgram.ProgramFormat.HyperbasicSource;
+                                diskFileInfo.Format = OricProgram.ProgramFormat.HyperbasicProgram;
                             else if (diskFileInfo.StartAddress == 0x800)
                                 diskFileInfo.Format = OricProgram.ProgramFormat.TeleassSource;
                             else
@@ -434,7 +434,7 @@
 
                     int programLength = (loadedProgram.EndAddress - loadedProgram.StartAddress) + 1;
 
-                    loadedProgram.m_programData = new byte[programLength];
+                    loadedProgram.ProgramData = new byte[programLength];
 
                     while (dataSector != 0 && descriptorIndex < totalDescriptors)
                     {
@@ -456,7 +456,7 @@
 
                             if (index < programLength)
                             {
-                                loadedProgram.m_programData[index] = tmpByte;
+                                loadedProgram.ProgramData[index] = tmpByte;
                             }
 
                             index++;
@@ -500,7 +500,7 @@
                 programFormat = OricProgram.ProgramFormat.BinaryFile;
             else if ((formatFlag & 0x80) == 0x80)
                 if (tmpStartAddr == 0x7f0)
-                    programFormat = OricProgram.ProgramFormat.HyperbasicSource;
+                    programFormat = OricProgram.ProgramFormat.HyperbasicProgram;
                 else if (tmpStartAddr == 0x800)
                     programFormat = OricProgram.ProgramFormat.TeleassSource;
                 else

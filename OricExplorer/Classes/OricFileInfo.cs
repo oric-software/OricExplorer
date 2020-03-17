@@ -1,7 +1,6 @@
 namespace OricExplorer
 {
     using System;
-    using System.Collections;
     using System.IO;
 
     public class OricFileInfo
@@ -104,11 +103,11 @@ namespace OricExplorer
 
             switch(Format)
             {
-                case OricProgram.ProgramFormat.AtmosBasicProgram:
+                case OricProgram.ProgramFormat.BasicProgram:
                     strFormat = "BASIC program";
                     break;
 
-                case OricProgram.ProgramFormat.HyperbasicSource:
+                case OricProgram.ProgramFormat.HyperbasicProgram:
                     strFormat = "HYPERBASIC source";
                     break;
 

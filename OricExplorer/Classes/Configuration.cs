@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Web.Script.Serialization;
     using static OricExplorer.ConstantsAndEnums;
 
@@ -35,6 +36,7 @@
             public List<string> TapeFolders { get; set; } = new List<string>();
             public List<string> DiskFolders { get; set; } = new List<string>();
             public List<string> RomFolders { get; set; } = new List<string>();
+            public List<string> OtherFilesFolders { get; set; } = new List<string>();
             public string EmulatorExecutable { get; set; }
             public Machine DefaultMachineForTape { get; set; } = Machine.Atmos;
             public bool CheckForUpdatesOnStartup { get; set; } = false;
@@ -122,8 +124,11 @@
                     
                     foreach (var tup in dictionary)
                     {
-                        var value = tup.Value.ToString().Split('|');
-                        dic[(ConstantsAndEnums.SyntaxHighlightingItems)Enum.Parse(typeof(ConstantsAndEnums.SyntaxHighlightingItems), tup.Key.ToString())] = new TextStyle(new SolidBrush(ColorTranslator.FromHtml(value[0])), null, (FontStyle)int.Parse(value[1]));
+                        if (Enum.GetNames(typeof(ConstantsAndEnums.SyntaxHighlightingItems)).Contains(tup.Key.ToString()))
+                        {
+                            var value = tup.Value.ToString().Split('|');
+                            dic[(ConstantsAndEnums.SyntaxHighlightingItems)Enum.Parse(typeof(ConstantsAndEnums.SyntaxHighlightingItems), tup.Key.ToString())] = new TextStyle(new SolidBrush(ColorTranslator.FromHtml(value[0])), null, (FontStyle)int.Parse(value[1]));
+                        }
                     }
 
                     return dic;

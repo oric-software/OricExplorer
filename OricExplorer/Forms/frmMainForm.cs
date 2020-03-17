@@ -4,6 +4,7 @@ namespace OricExplorer
     using global::OricExplorer.User_Controls;
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Drawing;
@@ -24,6 +25,7 @@ namespace OricExplorer
         private TreeNode tapeTreeNode;
         private TreeNode diskTreeNode;
         private TreeNode romTreeNode;
+        private TreeNode otherFileTreeNode;
 
         // Tree nodes for disk groups
         private TreeNode oricDosGroupNode;
@@ -125,7 +127,7 @@ namespace OricExplorer
 
         private void frmMainForm_Shown(object sender, EventArgs e)
         {
-            if (Configuration.Persistent.TapeFolders.Count == 0 && Configuration.Persistent.DiskFolders.Count == 0)
+            if (Configuration.Persistent.TapeFolders.Count + Configuration.Persistent.DiskFolders.Count + Configuration.Persistent.RomFolders.Count + Configuration.Persistent.OtherFilesFolders.Count == 0)
             {
                 // Open the settings dialog
                 using (frmSettings settingsForm = new frmSettings())
@@ -808,7 +810,15 @@ namespace OricExplorer
         #endregion
 
         #region Rom Context Menu
-        
+        private void cmnuRomViewRom_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = fileListForm.tvwFileList.SelectedNode;
+
+            if (selectedNode == null || selectedNode.Tag == null)
+                return;
+
+            DisplayROMContents((RomInfo)selectedNode.Tag);
+        }
         #endregion
 
         #region Program Context Menu
@@ -873,31 +883,14 @@ namespace OricExplorer
             }*/
         }
 
-        private void cmnuRomViewRom_Click(object sender, EventArgs e)
+        private void cmnuProgramViewFile_Click(object sender, EventArgs e)
         {
             TreeNode selectedNode = fileListForm.tvwFileList.SelectedNode;
 
             if (selectedNode == null || selectedNode.Tag == null)
                 return;
 
-            if (selectedNode.Tag.GetType() == typeof(OricFileInfo))
-            {
-                DisplayFileContents((OricFileInfo)selectedNode.Tag);
-            }
-            else if (selectedNode.Tag.GetType() == typeof(OricDiskInfo))
-            {
-                // Disk of Unknown format selected, display file contents
-                OricDiskInfo diskInfo = (OricDiskInfo)selectedNode.Tag;
-
-                if (diskInfo.DOSFormat == OricDisk.DOSFormats.Unknown)
-                {
-                    DisplayUnknownDisk(diskInfo);
-                }
-            }
-            else if (selectedNode.Tag.GetType() == typeof(RomInfo))
-            {
-                DisplayROMContents((RomInfo)selectedNode.Tag);
-            }
+            DisplayFileContents((OricFileInfo)selectedNode.Tag);
         }
 
         private void cmnuProgramOpenDataViewer_Click(object sender, EventArgs e)
@@ -936,7 +929,7 @@ namespace OricExplorer
 
             switch (fileInfo.Format)
             {
-                case OricProgram.ProgramFormat.AtmosBasicProgram:
+                case OricProgram.ProgramFormat.BasicProgram:
                     break;
 
                 case OricProgram.ProgramFormat.CharacterSet:
@@ -1111,9 +1104,9 @@ namespace OricExplorer
                     case ExportTo.Text:
                         using (StreamWriter sw = File.CreateText(saveFileDialog.FileName))
                         {
-                            if (program.Format == OricProgram.ProgramFormat.AtmosBasicProgram)
+                            if (program.Format == OricProgram.ProgramFormat.BasicProgram)
                             {
-                                sw.Write(program.ListAtmosBasicSourceAsText());
+                                sw.Write(program.ListBasicSourceAsText());
                             }
                             else
                             {
@@ -1128,7 +1121,7 @@ namespace OricExplorer
                         // Create a new binary file
                         using (BinaryWriter bw = new BinaryWriter(new FileStream(saveFileDialog.FileName, FileMode.Create), utf8))
                         {
-                            bw.Write(program.m_programData);
+                            bw.Write(program.ProgramData);
                         }
                         break;
 
@@ -1168,6 +1161,16 @@ namespace OricExplorer
             LoadDiskInEmulator(Machine.Telestrat);
         }
         #endregion
+
+        private void cmnuOtherFilesViewFile_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = fileListForm.tvwFileList.SelectedNode;
+
+            if (selectedNode == null || selectedNode.Tag == null)
+                return;
+
+            DisplayOtherFileContents((OtherFileInfo)selectedNode.Tag);
+        }
 
         #region File Tree Functions
         // Create a node sorter that implements the IComparer interface.
@@ -1272,6 +1275,7 @@ namespace OricExplorer
             diskTreeNode = AddNodeToTree("Disks", rootNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("disk"), "Oric Disks");
             tapeTreeNode = AddNodeToTree("Tapes", rootNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("tape"), "Oric Tapes");
             romTreeNode = AddNodeToTree("ROM's", rootNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("rom"), "ROM Files");
+            otherFileTreeNode = AddNodeToTree("Other files", rootNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("other_file"), "Other Files");
 
             ftDosGroupNode = AddNodeToTree("FT-Dos", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "FT-Dos Disks");
             oricDosGroupNode = AddNodeToTree("OricDOS", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "OricDOS Disks");
@@ -1303,6 +1307,23 @@ namespace OricExplorer
                 fileScanForm.ShowDialog();
                 fileScanForm.Dispose();
             }
+
+
+            // remove empty nodes
+            List<TreeNode> nodContainers = new List<TreeNode>() { ftDosGroupNode, xlDosGroupNode, sedOricGroupNode, stratSedGroupNode, oricDosGroupNode, unknownGroupNode, diskTreeNode, romTreeNode, otherFileTreeNode };
+            if (Configuration.Persistent.TapeIndex)
+            {
+                nodContainers.AddRange(tapeTreeNode.Nodes.Cast<TreeNode>());
+            }
+            nodContainers.Add(tapeTreeNode);
+            foreach (TreeNode node in nodContainers)
+            {
+                if (node.Nodes.Count == 0)
+                {
+                    node.Remove();
+                }
+            }
+
 
             // Expand all of the TreeView nodes.
             rootNode.Expand();
@@ -1339,32 +1360,26 @@ namespace OricExplorer
             {
                 case OricDisk.DOSFormats.TDOS:
                     groupTreeNode = ftDosGroupNode;
-                    //nodeImageIndex = fileListForm.treeFileList.ImageList.Images.IndexOfKey("disk");
                     break;
 
                 case OricDisk.DOSFormats.OricDOS:
                     groupTreeNode = oricDosGroupNode;
-                    //nodeImageIndex = fileListForm.treeFileList.ImageList.Images.IndexOfKey("disk_oricdos");
                     break;
 
                 case OricDisk.DOSFormats.SedOric:
                     groupTreeNode = sedOricGroupNode;
-                    //nodeImageIndex = fileListForm.treeFileList.ImageList.Images.IndexOfKey("disk_sedoric");
                     break;
 
                 case OricDisk.DOSFormats.StratSed:
                     groupTreeNode = stratSedGroupNode;
-                    //nodeImageIndex = fileListForm.treeFileList.ImageList.Images.IndexOfKey("disk_sedoric");
                     break;
 
                 case OricDisk.DOSFormats.XLDos:
                     groupTreeNode = xlDosGroupNode;
-                    //nodeImageIndex = fileListForm.treeFileList.ImageList.Images.IndexOfKey("disk_sedoric");
                     break;
 
                 default:
                     groupTreeNode = unknownGroupNode;
-                    //nodeImageIndex = fileListForm.treeFileList.ImageList.Images.IndexOfKey("disk_unknown");
                     break;
             }
 
@@ -1470,94 +1485,101 @@ namespace OricExplorer
 
         private void AddDirectoryToDiskBranch(TreeNode diskNode, OricFileInfo[] Directory)
         {
-            foreach (OricFileInfo FileInfo in Directory)
+            foreach (OricFileInfo programInfo in Directory)
             {
-                int imageIndex;
+                int imageIndex = DetermineIcon(programInfo);
 
-                switch (FileInfo.Format)
-                {
-                    case OricProgram.ProgramFormat.AtmosBasicProgram:
-                    case OricProgram.ProgramFormat.TeleassSource:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("text");
-                        break;
-                    case OricProgram.ProgramFormat.HyperbasicSource:
-                    case OricProgram.ProgramFormat.BinaryFile:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("binary");
-                        break;
-                    case OricProgram.ProgramFormat.CharacterSet:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("font");
-                        break;
-                    case OricProgram.ProgramFormat.DirectAccessFile:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("direct");
-                        break;
-                    case OricProgram.ProgramFormat.HiresScreen:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_hires");
-                        break;
-                    case OricProgram.ProgramFormat.SequentialFile:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("sequential");
-                        break;
-                    case OricProgram.ProgramFormat.TextScreen:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_text");
-                        break;
-                    case OricProgram.ProgramFormat.WindowFile:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_text");
-                        break;
-                    case OricProgram.ProgramFormat.HelpFile:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("helpdoc");
-                        break;
-                    default:
-                        imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_unknown");
-                        break;
-                }
-
-                TreeNode ProgramNode = AddNodeToTree(FileInfo.ProgramName, diskNode, imageIndex, "");
-                ProgramNode.Tag = FileInfo;
-                ProgramNode.ImageIndex = imageIndex;
+                TreeNode ProgramNode = AddNodeToTree(programInfo.ProgramName, diskNode, imageIndex, "");
+                ProgramNode.Tag = programInfo;
+                //ProgramNode.ImageIndex = imageIndex;
                 ProgramNode.ContextMenuStrip = cmnuProgram;
 
                 StringBuilder stbToolTip = new StringBuilder();
-                stbToolTip.AppendFormat("Name\t: {0}\r\n", FileInfo.ProgramName);
-                stbToolTip.AppendFormat("Format\t: {0}\r\n", FileInfo.FormatToString());
+                stbToolTip.AppendFormat("Name\t: {0}\r\n", programInfo.ProgramName);
+                stbToolTip.AppendFormat("Format\t: {0}\r\n", programInfo.FormatToString());
 
-                if (FileInfo.Format == OricProgram.ProgramFormat.DirectAccessFile)
+                if (programInfo.Format == OricProgram.ProgramFormat.DirectAccessFile)
                 {
-                    stbToolTip.AppendFormat("Records\t: {0:N0}\r\n", FileInfo.NoOfRecords);
-                    stbToolTip.AppendFormat("Length\t: {0:N0}\r\n", FileInfo.RecordLength);
+                    stbToolTip.AppendFormat("Records\t: {0:N0}\r\n", programInfo.NoOfRecords);
+                    stbToolTip.AppendFormat("Length\t: {0:N0}\r\n", programInfo.RecordLength);
                 }
                 else
                 {
-                    stbToolTip.AppendFormat("Address\t: ${0:X4} - ${1:X4}\r\n", FileInfo.StartAddress, FileInfo.EndAddress);
+                    stbToolTip.AppendFormat("Address\t: ${0:X4} - ${1:X4}\r\n", programInfo.StartAddress, programInfo.EndAddress);
 
-                    if (FileInfo.StartAddress > FileInfo.EndAddress)
+                    if (programInfo.StartAddress > programInfo.EndAddress)
                     {
                         // Problem with address values
                         stbToolTip.Append("Length\t: Address Error\r\n");
                     }
                     else
                     {
-                        if (FileInfo.LengthBytes >= 1024)
+                        if (programInfo.LengthBytes >= 1024)
                         {
-                            stbToolTip.AppendFormat("Length\t: {0:N0} bytes ({1:N1} KB)\r\n", FileInfo.LengthBytes, (float)FileInfo.LengthBytes / 1024);
+                            stbToolTip.AppendFormat("Length\t: {0:N0} bytes ({1:N1} KB)\r\n", programInfo.LengthBytes, (float)programInfo.LengthBytes / 1024);
                         }
                         else
                         {
-                            stbToolTip.AppendFormat("Length\t: {0:N0} bytes\r\n", FileInfo.LengthBytes);
+                            stbToolTip.AppendFormat("Length\t: {0:N0} bytes\r\n", programInfo.LengthBytes);
                         }
                     }
 
-                    stbToolTip.AppendFormat("Size\t: {0} sectors\r\n", FileInfo.LengthSectors);
+                    stbToolTip.AppendFormat("Size\t: {0} sectors\r\n", programInfo.LengthSectors);
                 }
 
-                stbToolTip.AppendFormat("Status\t: {0}", FileInfo.Protection.ToString());
+                stbToolTip.AppendFormat("Status\t: {0}", programInfo.Protection.ToString());
 
-                if (FileInfo.Format == OricProgram.ProgramFormat.AtmosBasicProgram ||
-                    FileInfo.Format == OricProgram.ProgramFormat.BinaryFile)
+                if (programInfo.Format == OricProgram.ProgramFormat.BasicProgram ||
+                    programInfo.Format == OricProgram.ProgramFormat.BinaryFile)
                 {
-                    stbToolTip.AppendFormat("\r\nAuto\t: {0}", FileInfo.AutoRun.ToString());
+                    stbToolTip.AppendFormat("\r\nAuto\t: {0}", programInfo.AutoRun.ToString());
                 }
 
                 ProgramNode.ToolTipText = stbToolTip.ToString();
             }
+        }
+
+        private int DetermineIcon(OricFileInfo FileInfo)
+        {
+            int imageIndex;
+
+            switch (FileInfo.Format)
+            {
+                case OricProgram.ProgramFormat.BasicProgram:
+                case OricProgram.ProgramFormat.HyperbasicProgram:
+                case OricProgram.ProgramFormat.TeleassSource:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("text");
+                    break;
+                case OricProgram.ProgramFormat.BinaryFile:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("binary");
+                    break;
+                case OricProgram.ProgramFormat.CharacterSet:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("font");
+                    break;
+                case OricProgram.ProgramFormat.DirectAccessFile:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("direct");
+                    break;
+                case OricProgram.ProgramFormat.HiresScreen:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_hires");
+                    break;
+                case OricProgram.ProgramFormat.SequentialFile:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("sequential");
+                    break;
+                case OricProgram.ProgramFormat.TextScreen:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_text");
+                    break;
+                case OricProgram.ProgramFormat.WindowFile:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_text");
+                    break;
+                case OricProgram.ProgramFormat.HelpFile:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("helpdoc");
+                    break;
+                default:
+                    imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_unknown");
+                    break;
+            }
+
+            return imageIndex;
         }
 
         public TreeNode AddTapeToTree(FileInfo fiFileInfo)
@@ -1603,25 +1625,25 @@ namespace OricExplorer
                 {
                     tapeNode.ContextMenuStrip = cmnuTape;
 
-                    StringBuilder tapeToolTipText = new StringBuilder();
-                    tapeToolTipText.AppendFormat("Name\t\t: {0}\r\n", fiFileInfo.Name);
-                    tapeToolTipText.AppendFormat("Folder\t\t: {0}\r\n\r\n", fiFileInfo.DirectoryName);
-                    tapeToolTipText.AppendFormat("No. of files\t: {0}\r\n", tapeCatalog.Length);
+                    StringBuilder stbToolTip = new StringBuilder();
+                    stbToolTip.AppendFormat("Name\t\t: {0}\r\n", fiFileInfo.Name);
+                    stbToolTip.AppendFormat("Folder\t\t: {0}\r\n\r\n", fiFileInfo.DirectoryName);
+                    stbToolTip.AppendFormat("No. of files\t: {0}\r\n", tapeCatalog.Length);
 
                     if (fiFileInfo.Length >= 1024)
                     {
-                        tapeToolTipText.AppendFormat("Length\t\t: {0:N0} bytes ({1:N1} KB)\r\n", fiFileInfo.Length, (float)fiFileInfo.Length / 1024);
+                        stbToolTip.AppendFormat("Length\t\t: {0:N0} bytes ({1:N1} KB)\r\n", fiFileInfo.Length, (float)fiFileInfo.Length / 1024);
                     }
                     else
                     {
-                        tapeToolTipText.AppendFormat("Length\t\t: {0:N0} bytes\r\n", fiFileInfo.Length);
+                        stbToolTip.AppendFormat("Length\t\t: {0:N0} bytes\r\n", fiFileInfo.Length);
                     }
 
-                    tapeToolTipText.AppendFormat("\r\nLast modified\t: {0}, {1}",
+                    stbToolTip.AppendFormat("\r\nLast modified\t: {0}, {1}",
                                                  fiFileInfo.LastWriteTime.ToLongDateString(),
                                                  fiFileInfo.LastWriteTime.ToLongTimeString());
 
-                    tapeNode.ToolTipText = tapeToolTipText.ToString();
+                    tapeNode.ToolTipText = stbToolTip.ToString();
 
                     TapeInfo tapeInfo = new TapeInfo(fiFileInfo.FullName)
                     {
@@ -1632,67 +1654,31 @@ namespace OricExplorer
 
                     foreach (OricFileInfo programInfo in tapeCatalog)
                     {
-                        int imageIndex;
-
-                        switch (programInfo.Format)
-                        {
-                            case OricProgram.ProgramFormat.AtmosBasicProgram:
-                            case OricProgram.ProgramFormat.TeleassSource:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("text");
-                                break;
-                            case OricProgram.ProgramFormat.HyperbasicSource:
-                            case OricProgram.ProgramFormat.BinaryFile:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("binary");
-                                break;
-                            case OricProgram.ProgramFormat.CharacterSet:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("font");
-                                break;
-                            case OricProgram.ProgramFormat.DirectAccessFile:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("direct");
-                                break;
-                            case OricProgram.ProgramFormat.HiresScreen:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_hires");
-                                break;
-                            case OricProgram.ProgramFormat.SequentialFile:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("sequential");
-                                break;
-                            case OricProgram.ProgramFormat.TextScreen:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_text");
-                                break;
-                            case OricProgram.ProgramFormat.WindowFile:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_text");
-                                break;
-                            case OricProgram.ProgramFormat.HelpFile:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("helpdoc");
-                                break;
-                            default:
-                                imageIndex = fileListForm.tvwFileList.ImageList.Images.IndexOfKey("image_unknown");
-                                break;
-                        }
+                        int imageIndex = DetermineIcon(programInfo);
 
                         TreeNode progNode = AddNodeToTree(programInfo.ProgramName, tapeNode, imageIndex, "");
                         progNode.Tag = programInfo;
-                        progNode.ImageIndex = imageIndex;
+                        //progNode.ImageIndex = imageIndex;
                         progNode.ContextMenuStrip = cmnuProgram;
 
-                        tapeToolTipText.Length = 0;
+                        stbToolTip.Length = 0;
 
-                        tapeToolTipText.AppendFormat("Name\t: {0}\r\n", programInfo.ProgramName);
-                        tapeToolTipText.AppendFormat("Format\t: {0}\r\n", programInfo.FormatToString());
-                        tapeToolTipText.AppendFormat("Address\t: ${0:X4} - ${1:X4}\r\n", programInfo.StartAddress, programInfo.EndAddress);
+                        stbToolTip.AppendFormat("Name\t: {0}\r\n", programInfo.ProgramName);
+                        stbToolTip.AppendFormat("Format\t: {0}\r\n", programInfo.FormatToString());
+                        stbToolTip.AppendFormat("Address\t: ${0:X4} - ${1:X4}\r\n", programInfo.StartAddress, programInfo.EndAddress);
 
                         if (programInfo.LengthBytes >= 1024)
                         {
-                            tapeToolTipText.AppendFormat("Length\t: {0:N0} bytes ({1:N1} KB)\r\n", programInfo.LengthBytes, (float)programInfo.LengthBytes / 1024);
+                            stbToolTip.AppendFormat("Length\t: {0:N0} bytes ({1:N1} KB)\r\n", programInfo.LengthBytes, (float)programInfo.LengthBytes / 1024);
                         }
                         else
                         {
-                            tapeToolTipText.AppendFormat("Length\t: {0:N0} bytes\r\n", programInfo.LengthBytes, programInfo.LengthBytes / 1024);
+                            stbToolTip.AppendFormat("Length\t: {0:N0} bytes\r\n", programInfo.LengthBytes, programInfo.LengthBytes / 1024);
                         }
 
-                        tapeToolTipText.AppendFormat("Status\t: Auto Run is {0}", programInfo.AutoRun.ToString());
+                        stbToolTip.AppendFormat("Status\t: Auto Run is {0}", programInfo.AutoRun.ToString());
 
-                        progNode.ToolTipText = tapeToolTipText.ToString();
+                        progNode.ToolTipText = stbToolTip.ToString();
                     }
                 }
             }
@@ -1700,7 +1686,7 @@ namespace OricExplorer
             return tapeNode;
         }
 
-        public TreeNode AddROMToTree(FileInfo fiFileInfo)
+        public TreeNode AddRomToTree(FileInfo fiFileInfo)
         {
             TreeNode romNode = AddNodeToTree(fiFileInfo.Name, romTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("rom"), "");
 
@@ -1733,6 +1719,49 @@ namespace OricExplorer
             }
 
             return romNode;
+        }
+
+        public TreeNode AddOtherFileToTree(FileInfo fileInfo)
+        {
+            TreeNode otherFileNode = AddNodeToTree(fileInfo.Name, otherFileTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("other_file"), "");
+
+            if (otherFileNode != null)
+            {
+                OtherFileInfo otherFileInfo = new OtherFileInfo(fileInfo.FullName);
+
+                otherFileNode.ContextMenuStrip = cmnuOtherFiles;
+
+                StringBuilder stbToolTipText = new StringBuilder();
+                stbToolTipText.Append($"Name\t\t: {fileInfo.Name}\r\n");
+                stbToolTipText.Append($"Folder\t\t: {fileInfo.DirectoryName}\r\n\r\n");
+                stbToolTipText.Append($"Format\t\t: {otherFileInfo.Format}\r\n");
+
+                ushort ushStartAddress = otherFileInfo.StartAddress;
+                ushort ushLength = otherFileInfo.Length;
+
+                if (otherFileInfo.Format == OricProgram.ProgramFormat.OrixProgram)
+                {
+                    ushStartAddress += OtherFileInfo.ORIX_HEADER_LENGTH;
+                    stbToolTipText.Append($"Address\t\t: {ushStartAddress:X4}-{ushStartAddress + ushLength - 1:X4}\r\n");
+                }
+
+                if (fileInfo.Length >= 1024)
+                {
+                    stbToolTipText.Append($"Length\t\t: {ushLength:N0} bytes ({(float)ushLength / 1024:N1} KB)\r\n");
+                }
+                else
+                {
+                    stbToolTipText.Append($"Length\t\t: {ushLength:N0} bytes\r\n");
+                }
+
+                stbToolTipText.AppendFormat($"\r\nLast modified\t: {fileInfo.LastWriteTime.ToLongDateString()}, {fileInfo.LastWriteTime.ToLongTimeString()}");
+
+                otherFileNode.ToolTipText = stbToolTipText.ToString();
+
+                otherFileNode.Tag = otherFileInfo;
+            }
+
+            return otherFileNode;
         }
 
         /*private void UpdateTreeNode(TreeNode parentNode, OricExplorer.MediaType mediaType)
@@ -1920,7 +1949,7 @@ namespace OricExplorer
         {
             mainViewControl = new frmMainView(this);
 
-            if (programInfo.MediaType != ConstantsAndEnums.MediaType.ROMFile)
+            if (programInfo.MediaType.In(MediaType.DiskFile, MediaType.TapeFile))
             {
                 mainViewControl.Text = string.Format("{0} [{1}]", programInfo.ProgramName, programInfo.ParentName);
             }
@@ -1970,11 +1999,11 @@ namespace OricExplorer
             Application.UseWaitCursor = true;
             Cursor.Current = Cursors.WaitCursor;
 
-            string romName = romInfo.FullName;
+            //string romName = romInfo.FullName;
 
             if (dkpPanel.Contents.Count > 1)
             {
-                string matchingName = string.Format("{0}", romName);
+                string matchingName = $"{Path.GetFileName(romInfo.FullName)} [{Path.GetDirectoryName(romInfo.FullName)}]";
 
                 foreach (IDockContent item in dkpPanel.Contents)
                 {
@@ -1988,14 +2017,14 @@ namespace OricExplorer
 
             if (!documentOpen)
             {
-                tsslStatusMain.Text = string.Format("Loading {0}, please wait...", romName);
+                tsslStatusMain.Text = string.Format("Loading {0}, please wait...", romInfo.FullName);
                 Application.DoEvents();
 
                 byte[] romData = File.ReadAllBytes(romInfo.FullName);
 
                 OricFileInfo fileInfo = new OricFileInfo
                 {
-                    Name = romName,
+                    Name = romInfo.FullName,
 
                     StartAddress = 0xC000,
                     EndAddress = (ushort)(0xC000 + (ushort)(romData.Length - 1)),
@@ -2007,7 +2036,7 @@ namespace OricExplorer
 
                 OricProgram prog = new OricProgram
                 {
-                    m_programData = romData,
+                    ProgramData = romData,
                     StartAddress = 0xC000,
                     EndAddress = (ushort)(0xC000 + (ushort)(romData.Length - 1)),
                     Format = OricProgram.ProgramFormat.BinaryFile
@@ -2024,7 +2053,7 @@ namespace OricExplorer
             Application.UseWaitCursor = false;
         }
 
-        public void DisplayFileContents(OricFileInfo programInfo)
+        public void DisplayFileContents(OricFileInfo programInfo, OricProgram.SpecialMode specialMode = OricProgram.SpecialMode.None)
         {
             bool documentOpen = false;
 
@@ -2082,7 +2111,7 @@ namespace OricExplorer
                 // Determine how we are going to display the file data
                 switch (loadedProgram.Format)
                 {
-                    case OricProgram.ProgramFormat.AtmosBasicProgram:
+                    case OricProgram.ProgramFormat.BasicProgram:
                         SetupUserControl(UserControls.DataViewer, true, programInfo);
                         break;
 
@@ -2090,9 +2119,9 @@ namespace OricExplorer
                         SetupUserControl(UserControls.DataViewer, true, programInfo);
                         break;
 
-                    //case OricProgram.ProgramFormat.HyperbasicSource:
-                    //    SetupUserControl(UserControls.DataViewer, true, programInfo);
-                    //    break;
+                    case OricProgram.ProgramFormat.HyperbasicProgram:
+                        SetupUserControl(UserControls.DataViewer, true, programInfo);
+                        break;
 
                     case OricProgram.ProgramFormat.CharacterSet:
                         SetupUserControl(UserControls.CharacterSetViewer, false, programInfo);
@@ -2134,7 +2163,7 @@ namespace OricExplorer
                 stopWatch.Reset();
                 stopWatch.Start();
 
-                mainViewControl.DisplayData();
+                mainViewControl.DisplayData(specialMode);
 
                 stopWatch.Stop();
                 TimeSpan displayTime = stopWatch.Elapsed;
@@ -2171,6 +2200,68 @@ namespace OricExplorer
                 tsslLoadTime.Text = string.Format("Load time {0:N2} secs", loadTime.TotalSeconds);
                 tsslDisplayTime.Text = string.Format("Display time {0:N2} secs", displayTime.TotalSeconds);
                 tsslOverallTime.Text = string.Format("Overall time {0:N2} secs", totaltime.TotalSeconds);
+
+                tsslStatusMain.Text = "Ready.";
+            }
+
+            // Display default cursor
+            Application.UseWaitCursor = false;
+        }
+
+        public void DisplayOtherFileContents(OtherFileInfo otherFileInfo)
+        {
+            bool documentOpen = false;
+
+            // Display wait cursor
+            Application.UseWaitCursor = true;
+            Cursor.Current = Cursors.WaitCursor;
+
+            string otherFileName = otherFileInfo.FullName;
+
+            if (dkpPanel.Contents.Count > 1)
+            {
+                string matchingName = $"{Path.GetFileName(otherFileInfo.FullName)} [{Path.GetDirectoryName(otherFileInfo.FullName)}]";
+
+                foreach (IDockContent item in dkpPanel.Contents)
+                {
+                    if (item.DockHandler.Form.Text.Equals(matchingName))
+                    {
+                        item.DockHandler.Activate(); // this will re active if the form already Docked
+                        documentOpen = true;
+                    }
+                }
+            }
+
+            if (!documentOpen)
+            {
+                tsslStatusMain.Text = string.Format("Loading {0}, please wait...", otherFileName);
+                Application.DoEvents();
+
+                OricFileInfo fileInfo = new OricFileInfo
+                {
+                    Name = otherFileName,
+
+                    StartAddress = otherFileInfo.StartAddress,
+                    EndAddress = (ushort)(otherFileInfo.StartAddress + (ushort)(otherFileInfo.Length - 1)),
+                    Format = otherFileInfo.Format,
+                    MediaType = ConstantsAndEnums.MediaType.UnknownMedia
+                };
+
+                SetupUserControl(UserControls.DataViewer, true, fileInfo);
+
+                OricProgram prog = new OricProgram
+                {
+                    ProgramData = File.ReadAllBytes(otherFileInfo.FullName),
+                    StartAddress = otherFileInfo.StartAddress,
+                    EndAddress = (ushort)(otherFileInfo.StartAddress + (ushort)(otherFileInfo.Length - 1)),
+                    Format = otherFileInfo.Format
+                };
+
+                OricProgram.SpecialMode specialMode = (otherFileInfo.Format == OricProgram.ProgramFormat.OrixProgram ? OricProgram.SpecialMode.Telestrat : OricProgram.SpecialMode.None);
+
+                mainViewControl.ProgramData = prog;
+                mainViewControl.ProgramInfo = fileInfo;
+                mainViewControl.DisplayData(specialMode);
 
                 tsslStatusMain.Text = "Ready.";
             }

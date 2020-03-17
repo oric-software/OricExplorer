@@ -156,7 +156,7 @@
                 ScreenImage thumbnailImage = new ScreenImage();
                 thumbnailImage.m_ui16StartAddress = oricProgram.StartAddress;
                 thumbnailImage.m_ui16DataLength = oricProgram.ProgramLength;
-                thumbnailImage.bScrnData = oricProgram.m_programData;
+                thumbnailImage.bScrnData = oricProgram.ProgramData;
 
                 if (oricProgram.Format == OricProgram.ProgramFormat.HiresScreen)
                 {
@@ -327,7 +327,7 @@
                     case OricProgram.ProgramFormat.HiresScreen:
                         hiresCount++;
 
-                        if(imageFormatsToShow == ImageFormatsToDisplay.BOTH || imageFormatsToShow == ImageFormatsToDisplay.HIRES_ONLY)
+                        if(imageFormatsToShow.In(ImageFormatsToDisplay.BOTH, ImageFormatsToDisplay.HIRES_ONLY))
                         {
                             listOfImages.Add(fileInfo);
                         }
@@ -338,7 +338,7 @@
                     case OricProgram.ProgramFormat.WindowFile:
                         textCount++;
 
-                        if (imageFormatsToShow == ImageFormatsToDisplay.BOTH || imageFormatsToShow == ImageFormatsToDisplay.TEXT_ONLY)
+                        if (imageFormatsToShow.In(ImageFormatsToDisplay.BOTH, ImageFormatsToDisplay.TEXT_ONLY))
                         {
                             listOfImages.Add(fileInfo);
                         }
@@ -429,7 +429,7 @@
 
             oricScreenImage.m_ui16StartAddress = oricProgram.StartAddress;
             oricScreenImage.m_ui16DataLength = oricProgram.ProgramLength;
-            oricScreenImage.bScrnData = oricProgram.m_programData;
+            oricScreenImage.bScrnData = oricProgram.ProgramData;
             oricScreenImage.m_bFlash = !oricScreenImage.m_bFlash;
 
             if (oricProgram.Format == OricProgram.ProgramFormat.HiresScreen)

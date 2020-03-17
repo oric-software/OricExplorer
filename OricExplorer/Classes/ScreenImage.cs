@@ -369,16 +369,16 @@ namespace OricExplorer
                     {
                         if (!m_bDisableAttributes)
                         {
-                            if (cByte == 0x08 || cByte == 0x09 || cByte == 0x0C || cByte == 0x0D)
+                            if (cByte.In((byte)0x08, (byte)0x09, (byte)0x0C, (byte)0x0D))
                                 bDoubleHeight = false;
 
-                            if (cByte == 0x0A || cByte == 0x0B || cByte == 0x0E || cByte == 0x0F)
+                            if (cByte.In((byte)0x0A, (byte)0x0B, (byte)0x0E, (byte)0x0F))
                                 bDoubleHeight = true;
 
-                            if (cByte == 0x08 || cByte == 0x09 || cByte == 0x0A || cByte == 0x0B)
+                            if (cByte.In((byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B))
                                 bBlink = false;
 
-                            if (cByte == 0x0C || cByte == 0x0D || cByte == 0x0E || cByte == 0x0F)
+                            if (cByte.In((byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F))
                                 bBlink = true;
                         }
                         else

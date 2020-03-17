@@ -5,6 +5,7 @@
     using System.IO;
     using System.Windows.Forms;
     using WeifenLuo.WinFormsUI.Docking;
+    using static OricExplorer.ConstantsAndEnums;
 
     public partial class frmFileList : DockContent
     {
@@ -25,9 +26,9 @@
             TreeNode selectedNode = (TreeNode)e.Item;
             tvwFileList.SelectedNode = selectedNode;
 
-            ConstantsAndEnums.MediaType SourceMediaType = DragDropGetMediaType(selectedNode);
+            MediaType SourceMediaType = DragDropGetMediaType(selectedNode);
 
-            if (SourceMediaType == ConstantsAndEnums.MediaType.OricTape || SourceMediaType == ConstantsAndEnums.MediaType.TapeFile)
+            if (SourceMediaType.In(MediaType.OricTape, MediaType.TapeFile))
             {
                 DoDragDrop(e.Item, DragDropEffects.All);
             }
@@ -80,16 +81,16 @@
             TreeNode SourceNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
 
             // Obtain Source media type
-            ConstantsAndEnums.MediaType SourceMediaType = DragDropGetMediaType(SourceNode);
+            MediaType SourceMediaType = DragDropGetMediaType(SourceNode);
 
             // Obtain Destination media type
-            ConstantsAndEnums.MediaType DestinationMediaType = DragDropGetMediaType(DestinationNode);
+            MediaType DestinationMediaType = DragDropGetMediaType(DestinationNode);
 
             // Perform drag and drop if valid media
             switch (DestinationMediaType)
             {
-                case ConstantsAndEnums.MediaType.OricTape:
-                    if (SourceMediaType == ConstantsAndEnums.MediaType.TapeFile || SourceMediaType == ConstantsAndEnums.MediaType.OricTape)
+                case MediaType.OricTape:
+                    if (SourceMediaType.In(MediaType.TapeFile, MediaType.OricTape))
                     {
                         CopyTapeFilesToTape(SourceNode, DestinationNode);
                     }
@@ -107,10 +108,10 @@
             }
         }
 
-        private ConstantsAndEnums.MediaType DragDropGetMediaType(TreeNode fileNode)
+        private MediaType DragDropGetMediaType(TreeNode fileNode)
         {
             // Initialise the media type
-            ConstantsAndEnums.MediaType MediaType = ConstantsAndEnums.MediaType.UnknownMedia;
+            MediaType MediaType = MediaType.UnknownMedia;
 
             // Determine the mediatype based on the Node tag
             if (fileNode.Tag == null)
@@ -119,15 +120,15 @@
             }
             else if (fileNode.Tag.GetType() == typeof(TapeInfo))
             {
-                MediaType = ConstantsAndEnums.MediaType.OricTape;
+                MediaType = MediaType.OricTape;
             }
             else if (fileNode.Tag.GetType() == typeof(OricFileInfo))
             {
                 OricFileInfo programInfo = (OricFileInfo)fileNode.Tag;
 
-                if (programInfo.MediaType == ConstantsAndEnums.MediaType.TapeFile)
+                if (programInfo.MediaType == MediaType.TapeFile)
                 {
-                    MediaType = ConstantsAndEnums.MediaType.TapeFile;
+                    MediaType = MediaType.TapeFile;
                 }
             }
 
@@ -317,11 +318,22 @@
             }
             else if (selectedNode.Tag.GetType() == typeof(OricFileInfo))
             {
-                mMainForm.DisplayFileContents((OricFileInfo)selectedNode.Tag);
+                OricProgram.SpecialMode specialMode = OricProgram.SpecialMode.None;
+                if (selectedNode.Parent.Tag.GetType() == typeof(OricDiskInfo))
+                {
+                    OricDiskInfo diskInfo = (OricDiskInfo)(selectedNode.Parent.Tag);
+                    specialMode = (diskInfo.DOSFormat == OricDisk.DOSFormats.StratSed ? OricProgram.SpecialMode.Telestrat : OricProgram.SpecialMode.None);
+                }
+
+                mMainForm.DisplayFileContents((OricFileInfo)selectedNode.Tag, specialMode);
             }
             else if (selectedNode.Tag.GetType() == typeof(RomInfo))
             {
                 mMainForm.DisplayROMContents((RomInfo)selectedNode.Tag);
+            }
+            else if (selectedNode.Tag.GetType() == typeof(OtherFileInfo))
+            {
+                mMainForm.DisplayOtherFileContents((OtherFileInfo)selectedNode.Tag);
             }
         }
 

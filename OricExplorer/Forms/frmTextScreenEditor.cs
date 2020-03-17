@@ -169,7 +169,6 @@ namespace OricExplorer
             }
             else if (mediaType == ConstantsAndEnums.MediaType.TapeFile)
             {
-                //loadedProgram = oricTape.Load(Path.Combine(tapeInfo.Folder, tapeInfo.Name), fileInfo.ProgramName, fileInfo.ProgramIndex);
                 loadedProgram = oricTape.Load(tapeInfo.FullName, fileInfo.ProgramName, fileInfo.ProgramIndex);
             }
 
@@ -177,7 +176,7 @@ namespace OricExplorer
 
             for(int iIndex = 0; iIndex < loadedProgram.ProgramLength; iIndex++)
             {
-                bScrnData[iIndex] = loadedProgram.m_programData[iIndex];
+                bScrnData[iIndex] = loadedProgram.ProgramData[iIndex];
             }
 
             m_ui16StartAddress = loadedProgram.StartAddress;
@@ -692,16 +691,16 @@ namespace OricExplorer
                     }
                     else
                     {
-                        if (cByte == 0x08 || cByte == 0x09 || cByte == 0x0C || cByte == 0x0D)
+                        if (cByte.In((byte)0x08, (byte)0x09, (byte)0x0C, (byte)0x0D))
                             bDoubleHeight = false;
 
-                        if (cByte == 0x0A || cByte == 0x0B || cByte == 0x0E || cByte == 0x0F)
+                        if (cByte.In((byte)0x0A, (byte)0x0B, (byte)0x0E, (byte)0x0F))
                             bDoubleHeight = true;
 
-                        if (cByte == 0x08 || cByte == 0x09 || cByte == 0x0A || cByte == 0x0B)
+                        if (cByte.In((byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B))
                             bBlink = false;
 
-                        if (cByte == 0x0C || cByte == 0x0D || cByte == 0x0E || cByte == 0x0F)
+                        if (cByte.In((byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F))
                             bBlink = true;
                     }
 

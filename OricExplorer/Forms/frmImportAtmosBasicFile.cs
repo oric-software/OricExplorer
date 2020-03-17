@@ -13,9 +13,6 @@
         {
             InitializeComponent();
 
-            //program = new OricProgram();
-            //program.New();
-
             basicTokens = new BasicTokens(BasicTokens.ROMVersion.V1_1);
         }
 
@@ -88,7 +85,7 @@
                 program.ProgramName = txtProgramName.Text;
             }
 
-            program.Format = OricProgram.ProgramFormat.AtmosBasicProgram;
+            program.Format = OricProgram.ProgramFormat.BasicProgram;
             program.AutoRun = (chkAutoRun.Checked ? OricProgram.AutoRunFlag.Enabled : OricProgram.AutoRunFlag.Disabled);
 
             txtStartAddress.Text = txtStartAddress.Text.Replace("$", "0x");
@@ -202,8 +199,8 @@
                 int iAddressIdx = 0;
 
                 // Initialise the program buffer
-                program.m_programData = new byte[0xFFFF];
-                program.m_programData.Initialize();
+                program.ProgramData = new byte[0xFFFF];
+                program.ProgramData.Initialize();
 
                 for (int iLoop = 0; iLoop < textBuffer.Length; iLoop++)
                 {
@@ -237,17 +234,17 @@
 
                         iAddressIdx = iProgramIdx;
 
-                        program.m_programData[iProgramIdx] = 0xFF;
+                        program.ProgramData[iProgramIdx] = 0xFF;
                         iProgramIdx++;
 
-                        program.m_programData[iProgramIdx] = 0xFE;
+                        program.ProgramData[iProgramIdx] = 0xFE;
                         iProgramIdx++;
 
-                        program.m_programData[iProgramIdx] = (byte)(ui16LineNo & 0xFF);
+                        program.ProgramData[iProgramIdx] = (byte)(ui16LineNo & 0xFF);
 
                         iProgramIdx++;
 
-                        program.m_programData[iProgramIdx] = (byte)(ui16LineNo >> 8);
+                        program.ProgramData[iProgramIdx] = (byte)(ui16LineNo >> 8);
 
                         iProgramIdx++;
 
@@ -259,7 +256,7 @@
                         {
                             if (bREM)
                             {
-                                program.m_programData[iProgramIdx] = Convert.ToByte(textBuffer[iLoop][iBufferIdx]);
+                                program.ProgramData[iProgramIdx] = Convert.ToByte(textBuffer[iLoop][iBufferIdx]);
                                 iBufferIdx++;
                             }
                             else if (bString)
@@ -267,7 +264,7 @@
                                 if (textBuffer[iLoop][iBufferIdx] == '"')
                                     bString = false;
 
-                                program.m_programData[iProgramIdx] = Convert.ToByte(textBuffer[iLoop][iBufferIdx]);
+                                program.ProgramData[iProgramIdx] = Convert.ToByte(textBuffer[iLoop][iBufferIdx]);
                                 iBufferIdx++;
                             }
                             else if (bDATA)
@@ -275,7 +272,7 @@
                                 if (textBuffer[iLoop][iBufferIdx] == ':')
                                     bDATA = false;
 
-                                program.m_programData[iProgramIdx] = Convert.ToByte(textBuffer[iLoop][iBufferIdx]);
+                                program.ProgramData[iProgramIdx] = Convert.ToByte(textBuffer[iLoop][iBufferIdx]);
                                 iBufferIdx++;
                             }
                             else
@@ -293,12 +290,12 @@
 
                                 if (iToken == 0)
                                 {
-                                    program.m_programData[iProgramIdx] = Convert.ToByte(textBuffer[iLoop][iBufferIdx]);
+                                    program.ProgramData[iProgramIdx] = Convert.ToByte(textBuffer[iLoop][iBufferIdx]);
                                     iBufferIdx++;
                                 }
                                 else
                                 {
-                                    program.m_programData[iProgramIdx] = Convert.ToByte(iToken);
+                                    program.ProgramData[iProgramIdx] = Convert.ToByte(iToken);
 
                                     string token = basicTokens.GetBasicToken((byte)(iToken - 0x80));
                                     iBufferIdx += token.Length;
@@ -313,12 +310,12 @@
                             {
                                 ui16CurrentAddress += 5;
 
-                                program.m_programData[iAddressIdx] = (byte)(ui16CurrentAddress & 0xFF);
+                                program.ProgramData[iAddressIdx] = (byte)(ui16CurrentAddress & 0xFF);
                                 iAddressIdx++;
 
-                                program.m_programData[iAddressIdx] = (byte)(ui16CurrentAddress >> 8);
+                                program.ProgramData[iAddressIdx] = (byte)(ui16CurrentAddress >> 8);
 
-                                program.m_programData[iProgramIdx] = 0x00;
+                                program.ProgramData[iProgramIdx] = 0x00;
                                 iProgramIdx++;
 
                                 bEndOfLine = true;
@@ -327,9 +324,9 @@
                     }
                 }
 
-                program.m_programData[iProgramIdx] = 0x00;
+                program.ProgramData[iProgramIdx] = 0x00;
                 iProgramIdx++;
-                program.m_programData[iProgramIdx] = 0x00;
+                program.ProgramData[iProgramIdx] = 0x00;
                 program.EndAddress = (ushort)(program.StartAddress + iProgramIdx);
                 
                 return true;

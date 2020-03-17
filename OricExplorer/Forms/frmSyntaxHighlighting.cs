@@ -4,36 +4,14 @@
     using System;
     using System.Collections.Generic;
     using System.Drawing;
-    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
-    using static global::OricExplorer.Configuration;
-    using static System.Windows.Forms.ListView;
 
     public partial class frmSyntaxHighlighting : Form
     {
         private Color pageBackground;
         
         private Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> syntaxHighlightingStyles;
-
-        // Text styles for BASIC Listing
-        private TextStyle basicLineNumberStyle;
-        private TextStyle basicKeywordStyle;
-        private TextStyle basicBranchesStyle;
-        private TextStyle basicLoopsStyle;
-        private TextStyle basicStringStyle;
-        private TextStyle basicHexNumberStyle;
-        private TextStyle basicNumberStyle;
-        private TextStyle basicDataKeywordStyle;
-        private TextStyle basicCommentStyle;
-
-        // Text styles for Assembler Listings
-        private TextStyle assemblerAddressStyle;
-        private TextStyle assemblerHexStyle;
-        private TextStyle assemblerMnemonicStyle;
-        private TextStyle assemblerOperandStyle;
-        private TextStyle assemblerAsciiStyle;
-        private TextStyle assemblerUnknownStyle;
 
         // Text styles for Dump Listings
         private TextStyle dumpHeadersStyle;
@@ -43,8 +21,39 @@
         private TextStyle dumpMainSelectionFrontStyle;
         private TextStyle dumpSecondarySelectionBackStyle;
 
+        // Text styles for Assembler Listings
+        private TextStyle assemblerAddressStyle;
+        private TextStyle assemblerHexStyle;
+        private TextStyle assemblerMnemonicStyle;
+        private TextStyle assemblerOperandStyle;
+        private TextStyle assemblerAsciiStyle;
+        private TextStyle assemblerUnknownStyle;
+
+        // Text styles for BASIC Listing
+        private TextStyle basicLineNumberStyle;
+        private TextStyle basicKeywordStyle;
+        private TextStyle basicBrancheStyle;
+        private TextStyle basicLoopStyle;
+        private TextStyle basicStringStyle;
+        private TextStyle basicNumberStyle;
+        private TextStyle basicDataKeywordStyle;
+        private TextStyle basicCommentStyle;
+
+        // Text styles for HYPERBASIC Listing
+        private TextStyle hyperbasicAddressStyle;
+        private TextStyle hyperbasicLabelStyle;
+        private TextStyle hyperbasicNumberStyle;
+        private TextStyle hyperbasicStringStyle;
+        private TextStyle hyperbasicLoopStyle;
+        private TextStyle hyperbasicBrancheStyle;
+        private TextStyle hyperbasicCodeStyle;
+        private TextStyle hyperbasicCommentStyle;
+
+        // Text styles for TELEASS Listing
         private TextStyle teleassAddressStyle;
-        private TextStyle teleassCodeStyle;
+        private TextStyle teleassLabelStyle;
+        private TextStyle teleassMnemonicStyle;
+        private TextStyle teleassOperandStyle;
         private TextStyle teleassCommentStyle;
 
         //private MarkerStyle SameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(40, Color.Gray)));
@@ -70,15 +79,12 @@
             // Setup colours from Configuration
             syntaxHighlightingStyles = Configuration.Persistent.SyntaxHighlightingStyles;
 
-            basicLineNumberStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLineNumber].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLineNumber].FontStyle);
-            basicKeywordStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicKeyword].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicKeyword].FontStyle);
-            basicBranchesStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicBranches].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicBranches].FontStyle);
-            basicLoopsStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLoops].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLoops].FontStyle);
-            basicStringStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicString].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicString].FontStyle);
-            basicHexNumberStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicHexNumber].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicHexNumber].FontStyle);
-            basicNumberStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicNumber].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicNumber].FontStyle);
-            basicDataKeywordStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicDataKeyword].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicDataKeyword].FontStyle);
-            basicCommentStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicComment].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicComment].FontStyle);
+            dumpHeadersStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHeadersStyle].ForeBrush, null, FontStyle.Regular);
+            dumpHexStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHexStyle].ForeBrush, null, FontStyle.Regular);
+            dumpAsciiStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpAsciiStyle].ForeBrush, null, FontStyle.Regular);
+            dumpMainSelectionBackStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionBackStyle].ForeBrush, null, FontStyle.Regular);
+            dumpMainSelectionFrontStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionFrontStyle].ForeBrush, null, FontStyle.Regular);
+            dumpSecondarySelectionBackStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpSecondarySelectionBackStyle].ForeBrush, null, FontStyle.Regular);
 
             assemblerAddressStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAddressStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAddressStyle].FontStyle);
             assemblerHexStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerHexStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerHexStyle].FontStyle);
@@ -87,18 +93,64 @@
             assemblerAsciiStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAsciiStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAsciiStyle].FontStyle);
             assemblerUnknownStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerUnknownStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerUnknownStyle].FontStyle);
 
-            dumpHeadersStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHeadersStyle].ForeBrush, null, FontStyle.Regular);
-            dumpHexStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHexStyle].ForeBrush, null, FontStyle.Regular);
-            dumpAsciiStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpAsciiStyle].ForeBrush, null, FontStyle.Regular);
-            dumpMainSelectionBackStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionBackStyle].ForeBrush, null, FontStyle.Regular);
-            dumpMainSelectionFrontStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionFrontStyle].ForeBrush, null, FontStyle.Regular);
-            dumpSecondarySelectionBackStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpSecondarySelectionBackStyle].ForeBrush, null, FontStyle.Regular);
+            basicLineNumberStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLineNumber].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLineNumber].FontStyle);
+            basicKeywordStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicKeyword].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicKeyword].FontStyle);
+            basicBrancheStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicBranches].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicBranches].FontStyle);
+            basicLoopStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLoops].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLoops].FontStyle);
+            basicStringStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicString].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicString].FontStyle);
+            basicNumberStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicNumber].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicNumber].FontStyle);
+            basicDataKeywordStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicDataKeyword].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicDataKeyword].FontStyle);
+            basicCommentStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicComment].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicComment].FontStyle);
 
+            hyperbasicAddressStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicAddressStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicAddressStyle].FontStyle);
+            hyperbasicLabelStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicLabelStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicLabelStyle].FontStyle);
+            hyperbasicNumberStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicNumberStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicNumberStyle].FontStyle);
+            hyperbasicStringStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicStringStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicStringStyle].FontStyle);
+            hyperbasicLoopStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicLoopStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicLoopStyle].FontStyle);
+            hyperbasicBrancheStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicBrancheStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicBrancheStyle].FontStyle);
+            hyperbasicCodeStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicCodeStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicCodeStyle].FontStyle);
+            hyperbasicCommentStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicCommentStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicCommentStyle].FontStyle);
+            
             teleassAddressStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassAddressStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassAddressStyle].FontStyle);
-            teleassCodeStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassCodeStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassCodeStyle].FontStyle);
+            teleassLabelStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassLabelStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassLabelStyle].FontStyle);
+            teleassMnemonicStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassMnemonicStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassMnemonicStyle].FontStyle);
+            teleassOperandStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassOperandStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassOperandStyle].FontStyle);
             teleassCommentStyle = new TextStyle(syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassCommentStyle].ForeBrush, null, syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassCommentStyle].FontStyle);
 
             fcSample.OnTextChanged();
+        }
+
+        private void optHexDumpListing_CheckedChanged(object sender, EventArgs e)
+        {
+            fcSample.Text = "     00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\r\n\r\n";
+            fcSample.Text += "$00  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\r\n";
+            fcSample.Text += "$10  10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10  ................\r\n";
+            fcSample.Text += "$20  20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20                  \r\n";
+            fcSample.Text += "$30  30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30  0000000000000000\r\n";
+            fcSample.Text += "$40  40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40  @@@@@@@@@@@@@@@@\r\n";
+            fcSample.Text += "$50  40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40  @@@@@@@@@@@@@@@@\r\n";
+            fcSample.Text += "$60  40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40  @@@@@@@@@@@@@@@@\r\n";
+            fcSample.Text += "$70  40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40  @@@@@@@@@@@@@@@@\r\n";
+            fcSample.Text += "$80  40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40  @@@@@@@@@@@@@@@@\r\n";
+            fcSample.Text += "$90  40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40  @@@@@@@@@@@@@@@@\r\n";
+
+            SetupHexDumpItems();
+
+            chkStyleBold.Enabled = chkStyleItalic.Enabled = chkStyleUnderline.Enabled = false;
+        }
+
+        private void optAssemblerListing_CheckedChanged(object sender, EventArgs e)
+        {
+            fcSample.Text  = "$0500  4C 74 21    JMP $2174      Lt!\r\n";
+            fcSample.Text += "$0503  20 51 41    JSR $4151       QA\r\n";
+            fcSample.Text += "$0506  43          ???            C\r\n";
+            fcSample.Text += "$0507  54          ???            T\r\n";
+            fcSample.Text += "$0508  00          BRK            .\r\n";
+            fcSample.Text += "$0509  16 49       ASL $49,X      .I\r\n";
+
+            SetupAssemblerItems();
+        
+            chkStyleBold.Enabled = chkStyleItalic.Enabled = chkStyleUnderline.Enabled = true;
         }
 
         private void optBasicListing_CheckedChanged(object sender, EventArgs e)
@@ -123,17 +175,26 @@
             chkStyleBold.Enabled = chkStyleItalic.Enabled = chkStyleUnderline.Enabled = true;
         }
 
-        private void optAssemblerListing_CheckedChanged(object sender, EventArgs e)
+        private void optHyperbasicListing_CheckedChanged(object sender, EventArgs e)
         {
-            fcSample.Text  = "$0500  4C 74 21    JMP $2174      Lt!\r\n";
-            fcSample.Text += "$0503  20 51 41    JSR $4151       QA\r\n";
-            fcSample.Text += "$0506  43          ???            C\r\n";
-            fcSample.Text += "$0507  54          ???            T\r\n";
-            fcSample.Text += "$0508  00          BRK            .\r\n";
-            fcSample.Text += "$0509  16 49       ASL $49,X      .I\r\n";
+            fcSample.Text = "     0 ]DUMP ' Affichage des canaux utilises\r\n";
+            fcSample.Text += "    10   DIM P$(20)\r\n";
+            fcSample.Text += "    20   GOSUB CHAINES\r\n";
+            fcSample.Text += "    30   FOR I=#02AE TO #02BA STEP 4\r\n";
+            fcSample.Text += "    40    PRINT (I-#2AE)/4;\":\";\r\n";
+            fcSample.Text += "    50    FOR J=0 TO 3\r\n";
+            fcSample.Text += "    60     P=PEEK(I+J)-#80:IF P<0 THEN P=20\r\n";
+            fcSample.Text += "    70     PRINT R$;\" \";P$(P):PRINT \"   \";\r\n";
+            fcSample.Text += "    80    NEXT J\r\n";
+            fcSample.Text += "    90    PRINT \r\n";
+            fcSample.Text += "   100   NEXT I\r\n";
+            fcSample.Text += "   110 END\r\n";
+            fcSample.Text += "   200 ]CHAINES\r\n";
+            fcSample.Text += "   210   P$(0)=\"Clavier, Joystick, Souris\"\r\n";
+            fcSample.Text += "   220   P$(1)=\"Joystick\"\r\n";
 
-            SetupAssemblerItems();
-        
+            SetupHyperbasicItems();
+
             chkStyleBold.Enabled = chkStyleItalic.Enabled = chkStyleUnderline.Enabled = true;
         }
 
@@ -159,147 +220,7 @@
             chkStyleBold.Enabled = chkStyleItalic.Enabled = chkStyleUnderline.Enabled = true;
         }
 
-        private void optHexDumpListing_CheckedChanged(object sender, EventArgs e)
-        {
-            fcSample.Text  = "     00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\r\n\r\n";
-            fcSample.Text += "$00  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\r\n";
-            fcSample.Text += "$10  10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10  ................\r\n";
-            fcSample.Text += "$20  20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20                  \r\n";
-            fcSample.Text += "$30  30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30  0000000000000000\r\n";
-            fcSample.Text += "$40  40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40  @@@@@@@@@@@@@@@@\r\n";
-
-            SetupDumpItems();
-        
-            chkStyleBold.Enabled = chkStyleItalic.Enabled = chkStyleUnderline.Enabled = false;
-        }
-
-        private void SetupBasicItems()
-        {
-            lvwDisplayItems.BeginUpdate();
-
-            lvwDisplayItems.Items.Clear();
-
-            ListViewItem lvItem = new ListViewItem();
-            lvItem.Text = "Data Statements";
-            lvItem.Tag = basicDataKeywordStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Strings";
-            lvItem.Tag = basicStringStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Comments";
-            lvItem.Tag = basicCommentStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Line Number";
-            lvItem.Tag = basicLineNumberStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Hex Values";
-            lvItem.Tag = basicHexNumberStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Numerics";
-            lvItem.Tag = basicNumberStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Loops";
-            lvItem.Tag = basicLoopsStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Branches";
-            lvItem.Tag = basicBranchesStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Keywords";
-            lvItem.Tag = basicKeywordStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvwDisplayItems.EndUpdate();
-
-            lvwDisplayItems.Items[0].Selected = true;
-            lvwDisplayItems_SelectedIndexChanged(null, null);
-        }
-
-        private void SetupAssemblerItems()
-        {
-            lvwDisplayItems.BeginUpdate();
-
-            lvwDisplayItems.Items.Clear();
-
-            ListViewItem lvItem = new ListViewItem();
-            lvItem.Text = "Address";
-            lvItem.Tag = assemblerAddressStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Unknown";
-            lvItem.Tag = assemblerUnknownStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Operand";
-            lvItem.Tag = assemblerOperandStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Mnemonic";
-            lvItem.Tag = assemblerMnemonicStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Hex";
-            lvItem.Tag = assemblerHexStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Ascii";
-            lvItem.Tag = assemblerAsciiStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvwDisplayItems.EndUpdate();
-
-            lvwDisplayItems.Items[0].Selected = true;
-            lvwDisplayItems_SelectedIndexChanged(null, null);
-        }
-
-        private void SetupTeleassItems()
-        {
-            lvwDisplayItems.BeginUpdate();
-
-            lvwDisplayItems.Items.Clear();
-
-            ListViewItem lvItem = new ListViewItem();
-            lvItem.Text = "Address";
-            lvItem.Tag = teleassAddressStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Code";
-            lvItem.Tag = teleassCodeStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "Comment";
-            lvItem.Tag = teleassCommentStyle;
-            lvwDisplayItems.Items.Add(lvItem);
-
-            lvwDisplayItems.EndUpdate();
-
-            lvwDisplayItems.Items[0].Selected = true;
-            lvwDisplayItems_SelectedIndexChanged(null, null);
-        }
-
-        private void SetupDumpItems()
+        private void SetupHexDumpItems()
         {
             lvwDisplayItems.BeginUpdate();
 
@@ -341,25 +262,200 @@
             lvwDisplayItems_SelectedIndexChanged(null, null);
         }
 
-        private void DisplayBasicListing(TextChangedEventArgs e)
+        private void SetupAssemblerItems()
         {
-            fcSample.LeftBracket = '(';
-            fcSample.RightBracket = ')';
-            fcSample.LeftBracket2 = '\x0';
-            fcSample.RightBracket2 = '\x0';
+            lvwDisplayItems.BeginUpdate();
 
+            lvwDisplayItems.Items.Clear();
+
+            ListViewItem lvItem = new ListViewItem();
+            lvItem.Text = "Address";
+            lvItem.Tag = assemblerAddressStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Hex";
+            lvItem.Tag = assemblerHexStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Mnemonic";
+            lvItem.Tag = assemblerMnemonicStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Operand";
+            lvItem.Tag = assemblerOperandStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Ascii";
+            lvItem.Tag = assemblerAsciiStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Unknown";
+            lvItem.Tag = assemblerUnknownStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvwDisplayItems.EndUpdate();
+
+            lvwDisplayItems.Items[0].Selected = true;
+            lvwDisplayItems_SelectedIndexChanged(null, null);
+        }
+
+        private void SetupBasicItems()
+        {
+            lvwDisplayItems.BeginUpdate();
+
+            lvwDisplayItems.Items.Clear();
+
+            ListViewItem lvItem = new ListViewItem();
+            lvItem.Text = "Line Number";
+            lvItem.Tag = basicLineNumberStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "String";
+            lvItem.Tag = basicStringStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Number";
+            lvItem.Tag = basicNumberStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Keyword";
+            lvItem.Tag = basicKeywordStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Loop";
+            lvItem.Tag = basicLoopStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Branche";
+            lvItem.Tag = basicBrancheStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Data Statement";
+            lvItem.Tag = basicDataKeywordStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Comment";
+            lvItem.Tag = basicCommentStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvwDisplayItems.EndUpdate();
+
+            lvwDisplayItems.Items[0].Selected = true;
+            lvwDisplayItems_SelectedIndexChanged(null, null);
+        }
+
+        private void SetupHyperbasicItems()
+        {
+            lvwDisplayItems.BeginUpdate();
+
+            lvwDisplayItems.Items.Clear();
+
+            ListViewItem lvItem = new ListViewItem();
+            lvItem.Text = "Address";
+            lvItem.Tag = hyperbasicAddressStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Label";
+            lvItem.Tag = hyperbasicLabelStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Number";
+            lvItem.Tag = hyperbasicNumberStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "String";
+            lvItem.Tag = hyperbasicStringStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Loop";
+            lvItem.Tag = hyperbasicLoopStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Branche";
+            lvItem.Tag = hyperbasicBrancheStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Code";
+            lvItem.Tag = hyperbasicCodeStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Comment";
+            lvItem.Tag = hyperbasicCommentStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvwDisplayItems.EndUpdate();
+
+            lvwDisplayItems.Items[0].Selected = true;
+            lvwDisplayItems_SelectedIndexChanged(null, null);
+        }
+
+        private void SetupTeleassItems()
+        {
+            lvwDisplayItems.BeginUpdate();
+
+            lvwDisplayItems.Items.Clear();
+
+            ListViewItem lvItem = new ListViewItem();
+            lvItem.Text = "Address";
+            lvItem.Tag = teleassAddressStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Label";
+            lvItem.Tag = teleassLabelStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Mnemonic";
+            lvItem.Tag = teleassMnemonicStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Operand";
+            lvItem.Tag = teleassOperandStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "Comment";
+            lvItem.Tag = teleassCommentStyle;
+            lvwDisplayItems.Items.Add(lvItem);
+
+            lvwDisplayItems.EndUpdate();
+
+            lvwDisplayItems.Items[0].Selected = true;
+            lvwDisplayItems_SelectedIndexChanged(null, null);
+        }
+
+        private void DisplayHexDumpListing(TextChangedEventArgs e)
+        {
             // Clear style of changed range
             fcSample.ClearStylesBuffer();
 
-            e.ChangedRange.SetStyle(basicDataKeywordStyle, @"(DATA.*)", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(basicStringStyle, @"""""|@""""|@"".*?""|(?<!@)(?<range>"".*?[^\\]"")");
-            e.ChangedRange.SetStyle(basicCommentStyle, @"(REM.*|\s'.*)", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(basicLineNumberStyle, @"^[0-9]{1,5}", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(basicHexNumberStyle, @"#([0-9A-Fa-f]){1,4}");
-            e.ChangedRange.SetStyle(basicNumberStyle, @"\d+[\.]?\d*([eE]\-?\d+)?");
-            e.ChangedRange.SetStyle(basicLoopsStyle, @"(REPEAT|UNTIL|FOR|NEXT)");
-            e.ChangedRange.SetStyle(basicBranchesStyle, @"(GOSUB|GOTO|ON|RETURN)");
-            e.ChangedRange.SetStyle(basicKeywordStyle, @"(POP|PULL|RESTORE|STEP|PING|EXPLODE|DEF|POKE|PRINT|CONT|LIST|CLEAR|GET|CALL|NEW|TAB|TO|FN|SPC|AUTO|ELSE|THEN|NOT|AND|OR|SGN|INT|ABS|USR|FRE|POS|HEX\$|SQR|RND|LN|EXP|COS|SIN|TAN|ATN|PEEK|DEEK|LOG|LEN|STR\$|VAL|ASC|CHR\$|PI|TRUE|FALSE|KEY\$|SCRN|POINT|LEFT\$|RIGHT\$|MID\$|END|EDIT|STORE|RECALL|TRON|TROFF|PLOT|LORES|DOKE|LLIST|LPRINT|INPUT|DIM|CLS|READ|LET|RUN|IF|HIMEM|GRAB|RELEASE|TEXT|HIRES|SHOOT|ZAP|SOUND|MUSIC|PLAY|CURSET|CURMOV|DRAW|CIRCLE|PATTERN|FILL|CHAR|PAPER|INK|STOP|ON|WAIT|CLOAD|CSAVE)");
+            e.ChangedRange.SetStyle(dumpHeadersStyle, @"^(\$[0-9A-F]{2}\s)|(\s\s\s\s\s[0-9A-F]{2}(\s[0-9A-F]{2}){15})", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(dumpHexStyle, @"\s\s[0-9A-F]{2}(\s[0-9A-F]{2}){15}\s\s", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(dumpAsciiStyle, @"\s\s\S{16}", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(dumpMainSelectionBackStyle, "", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(dumpMainSelectionFrontStyle, "", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(dumpSecondarySelectionBackStyle, "", RegexOptions.Multiline);
         }
 
         private void DisplayAssemblerListing(TextChangedEventArgs e)
@@ -375,27 +471,56 @@
             e.ChangedRange.SetStyle(assemblerAsciiStyle, @"\S", RegexOptions.Multiline);
         }
 
+        private void DisplayBasicListing(TextChangedEventArgs e)
+        {
+            fcSample.LeftBracket = '(';
+            fcSample.RightBracket = ')';
+            fcSample.LeftBracket2 = '\x0';
+            fcSample.RightBracket2 = '\x0';
+
+            // Clear style of changed range
+            fcSample.ClearStylesBuffer();
+
+            e.ChangedRange.SetStyle(basicDataKeywordStyle, @"(DATA.*)", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(basicStringStyle, @"""""|@""""|@"".*?""|(?<!@)(?<range>"".*?[^\\]"")");
+            e.ChangedRange.SetStyle(basicCommentStyle, @"(REM|\s').*$", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(basicLineNumberStyle, @"^[0-9]{1,5}", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(basicNumberStyle, @"#(([0-9A-Fa-f]){1,4})|(\d+[\.]?\d*([eE]\-?\d+)?)");
+            e.ChangedRange.SetStyle(basicLoopStyle, @"(REPEAT|UNTIL|FOR|NEXT)");
+            e.ChangedRange.SetStyle(basicBrancheStyle, @"(GOSUB|GOTO|ON|RETURN)");
+            e.ChangedRange.SetStyle(basicKeywordStyle, @"(POP|PULL|RESTORE|STEP|PING|EXPLODE|DEF|POKE|PRINT|CONT|LIST|CLEAR|GET|CALL|NEW|TAB|TO|FN|SPC|AUTO|ELSE|THEN|NOT|AND|OR|SGN|INT|ABS|USR|FRE|POS|HEX\$|SQR|RND|LN|EXP|COS|SIN|TAN|ATN|PEEK|DEEK|LOG|LEN|STR\$|VAL|ASC|CHR\$|PI|TRUE|FALSE|KEY\$|SCRN|POINT|LEFT\$|RIGHT\$|MID\$|END|EDIT|STORE|RECALL|TRON|TROFF|PLOT|LORES|DOKE|LLIST|LPRINT|INPUT|DIM|CLS|READ|LET|RUN|IF|HIMEM|GRAB|RELEASE|TEXT|HIRES|SHOOT|ZAP|SOUND|MUSIC|PLAY|CURSET|CURMOV|DRAW|CIRCLE|PATTERN|FILL|CHAR|PAPER|INK|STOP|ON|WAIT|CLOAD|CSAVE)");
+        }
+
+        private void DisplayHyperbasicListing(TextChangedEventArgs e)
+        {
+            fcSample.LeftBracket = '(';
+            fcSample.RightBracket = ')';
+            fcSample.LeftBracket2 = '\x0';
+            fcSample.RightBracket2 = '\x0';
+
+            // Clear style of changed range
+            fcSample.ClearStylesBuffer();
+
+            e.ChangedRange.SetStyle(hyperbasicAddressStyle, @"^[ 0-9]{6} ", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(hyperbasicCommentStyle, @"(REM|'\s).*$", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(hyperbasicLabelStyle, @"\]\w*", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(hyperbasicNumberStyle, @"#(([0-9A-Fa-f]){1,4})|(\d+[\.]?\d*([eE]\-?\d+)?)");
+            e.ChangedRange.SetStyle(hyperbasicStringStyle, @"""""|@""""|@"".*?""|(?<!@)(?<range>"".*?[^\\]"")");
+            e.ChangedRange.SetStyle(hyperbasicLoopStyle, @"(REPEAT|UNTIL|FOR|TO|NEXT|STEP|WHILE|WEND|COUNT|UNCOUNT)");
+            e.ChangedRange.SetStyle(hyperbasicBrancheStyle, @"(GOSUB|GOTO|ON|RETURN)");
+            e.ChangedRange.SetStyle(hyperbasicCodeStyle, @"\S", RegexOptions.Multiline);
+        }
+
         private void DisplayTeleassListing(TextChangedEventArgs e)
         {
             // Clear style of changed range
             fcSample.ClearStylesBuffer();
 
             e.ChangedRange.SetStyle(teleassAddressStyle, @"^[ 0-9]{6} ", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(teleassLabelStyle, @"^((.){6}) [^'].{0,6}", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(teleassMnemonicStyle, @"^((.){6}) [^'].{0,9}", RegexOptions.Multiline);
             e.ChangedRange.SetStyle(teleassCommentStyle, @"\'.*$", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(teleassCodeStyle, @"\S", RegexOptions.Multiline);
-        }
-
-        private void DisplayDumpListing(TextChangedEventArgs e)
-        {
-            // Clear style of changed range
-            fcSample.ClearStylesBuffer();
-
-            e.ChangedRange.SetStyle(dumpHeadersStyle, @"^(\$[0-9A-F]{2}\s)|(\s\s\s\s\s[0-9A-F]{2}(\s[0-9A-F]{2}){15})", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(dumpHexStyle, @"\s\s[0-9A-F]{2}(\s[0-9A-F]{2}){15}\s\s", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(dumpAsciiStyle, @"\s\s\S{16}", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(dumpMainSelectionBackStyle, "", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(dumpMainSelectionFrontStyle, "", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(dumpSecondarySelectionBackStyle, "", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(teleassOperandStyle, @"\S", RegexOptions.Multiline);
         }
 
         private void lvwDisplayItems_SelectedIndexChanged(object sender, EventArgs e)
@@ -439,22 +564,6 @@
             Configuration.Persistent.PageBackground = pageBackground;
 
             // Save updates
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLineNumber] = new TextStyle(basicLineNumberStyle.ForeBrush, null, basicLineNumberStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicKeyword] = new TextStyle(basicKeywordStyle.ForeBrush, null, basicKeywordStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicBranches] = new TextStyle(basicBranchesStyle.ForeBrush, null, basicBranchesStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLoops] = new TextStyle(basicLoopsStyle.ForeBrush, null, basicLoopsStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicString] = new TextStyle(basicStringStyle.ForeBrush, null, basicStringStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicHexNumber] = new TextStyle(basicHexNumberStyle.ForeBrush, null, basicHexNumberStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicNumber] = new TextStyle(basicNumberStyle.ForeBrush, null, basicNumberStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicDataKeyword] = new TextStyle(basicDataKeywordStyle.ForeBrush, null, basicDataKeywordStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicComment] = new TextStyle(basicCommentStyle.ForeBrush, null, basicCommentStyle.FontStyle);
-
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAddressStyle] = new TextStyle(assemblerAddressStyle.ForeBrush, null, assemblerAddressStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerHexStyle] = new TextStyle(assemblerHexStyle.ForeBrush, null, assemblerHexStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerMnemonicStyle] = new TextStyle(assemblerMnemonicStyle.ForeBrush, null, assemblerMnemonicStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerOperandStyle] = new TextStyle(assemblerOperandStyle.ForeBrush, null, assemblerOperandStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAsciiStyle] = new TextStyle(assemblerAsciiStyle.ForeBrush, null, assemblerAsciiStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerUnknownStyle] = new TextStyle(assemblerUnknownStyle.ForeBrush, null, assemblerUnknownStyle.FontStyle);
 
             syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHeadersStyle] = new TextStyle(dumpHeadersStyle.ForeBrush, null, FontStyle.Regular);
             syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpHexStyle] = new TextStyle(dumpHexStyle.ForeBrush, null, FontStyle.Regular);
@@ -463,8 +572,35 @@
             syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpMainSelectionFrontStyle] = new TextStyle(dumpMainSelectionFrontStyle.ForeBrush, null, FontStyle.Regular);
             syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.DumpSecondarySelectionBackStyle] = new TextStyle(dumpSecondarySelectionBackStyle.ForeBrush, null, FontStyle.Regular);
 
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAddressStyle] = new TextStyle(assemblerAddressStyle.ForeBrush, null, assemblerAddressStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerHexStyle] = new TextStyle(assemblerHexStyle.ForeBrush, null, assemblerHexStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerMnemonicStyle] = new TextStyle(assemblerMnemonicStyle.ForeBrush, null, assemblerMnemonicStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerOperandStyle] = new TextStyle(assemblerOperandStyle.ForeBrush, null, assemblerOperandStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerAsciiStyle] = new TextStyle(assemblerAsciiStyle.ForeBrush, null, assemblerAsciiStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.AssemblerUnknownStyle] = new TextStyle(assemblerUnknownStyle.ForeBrush, null, assemblerUnknownStyle.FontStyle);
+            
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLineNumber] = new TextStyle(basicLineNumberStyle.ForeBrush, null, basicLineNumberStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicKeyword] = new TextStyle(basicKeywordStyle.ForeBrush, null, basicKeywordStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicBranches] = new TextStyle(basicBrancheStyle.ForeBrush, null, basicBrancheStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicLoops] = new TextStyle(basicLoopStyle.ForeBrush, null, basicLoopStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicString] = new TextStyle(basicStringStyle.ForeBrush, null, basicStringStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicNumber] = new TextStyle(basicNumberStyle.ForeBrush, null, basicNumberStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicDataKeyword] = new TextStyle(basicDataKeywordStyle.ForeBrush, null, basicDataKeywordStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.BasicComment] = new TextStyle(basicCommentStyle.ForeBrush, null, basicCommentStyle.FontStyle);
+
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicAddressStyle] = new TextStyle(hyperbasicAddressStyle.ForeBrush, null, hyperbasicAddressStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicLabelStyle] = new TextStyle(hyperbasicLabelStyle.ForeBrush, null, hyperbasicLabelStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicNumberStyle] = new TextStyle(hyperbasicNumberStyle.ForeBrush, null, hyperbasicNumberStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicStringStyle] = new TextStyle(hyperbasicStringStyle.ForeBrush, null, hyperbasicStringStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicLoopStyle] = new TextStyle(hyperbasicLoopStyle.ForeBrush, null, hyperbasicLoopStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicBrancheStyle] = new TextStyle(hyperbasicBrancheStyle.ForeBrush, null, hyperbasicBrancheStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicCodeStyle] = new TextStyle(hyperbasicCodeStyle.ForeBrush, null, hyperbasicCodeStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.HyperbasicCommentStyle] = new TextStyle(hyperbasicCommentStyle.ForeBrush, null, hyperbasicCommentStyle.FontStyle);
+
             syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassAddressStyle] = new TextStyle(teleassAddressStyle.ForeBrush, null, teleassAddressStyle.FontStyle);
-            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassCodeStyle] = new TextStyle(teleassCodeStyle.ForeBrush, null, teleassCodeStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassLabelStyle] = new TextStyle(teleassLabelStyle.ForeBrush, null, teleassLabelStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassMnemonicStyle] = new TextStyle(teleassMnemonicStyle.ForeBrush, null, teleassMnemonicStyle.FontStyle);
+            syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassOperandStyle] = new TextStyle(teleassOperandStyle.ForeBrush, null, teleassOperandStyle.FontStyle);
             syntaxHighlightingStyles[ConstantsAndEnums.SyntaxHighlightingItems.TeleassCommentStyle] = new TextStyle(teleassCommentStyle.ForeBrush, null, teleassCommentStyle.FontStyle);
 
             Configuration.Persistent.SyntaxHighlightingStyles = syntaxHighlightingStyles;
@@ -485,17 +621,21 @@
             fcSample.BackBrush = new SolidBrush(pageBackground);
             lblPageBackgroundColor.BackColor = pageBackground;
 
-            if (optBasicListing.Checked)
+            if (optHexDumpListing.Checked)
             {
-                SetupBasicItems();
+                SetupHexDumpItems();
             }
             else if (optAssemblerListing.Checked)
             {
                 SetupAssemblerItems();
             }
-            else if (optHexDumpListing.Checked)
+            else if (optBasicListing.Checked)
             {
-                SetupDumpItems();
+                SetupBasicItems();
+            }
+            else if (optHyperbasicListing.Checked)
+            {
+                SetupHyperbasicItems();
             }
             else if (optTeleassListing.Checked)
             {
@@ -509,16 +649,13 @@
         {
             pageBackground = ConstantsAndEnums.BACKGROUND;
 
-            // Text styles for BASIC listing
-            basicLineNumberStyle = new TextStyle(ConstantsAndEnums.BASIC_LINE_NUMBER_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_LINE_NUMBER_STYLE.FontStyle);
-            basicKeywordStyle = new TextStyle(ConstantsAndEnums.BASIC_KEYWORD_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_KEYWORD_STYLE.FontStyle);
-            basicBranchesStyle = new TextStyle(ConstantsAndEnums.BASIC_BRANCHES_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_BRANCHES_STYLE.FontStyle); 
-            basicLoopsStyle = new TextStyle(ConstantsAndEnums.BASIC_LOOPS_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_LOOPS_STYLE.FontStyle);
-            basicStringStyle = new TextStyle(ConstantsAndEnums.BASIC_STRING_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_STRING_STYLE.FontStyle);
-            basicHexNumberStyle = new TextStyle(ConstantsAndEnums.BASIC_HEX_NUMBER_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_HEX_NUMBER_STYLE.FontStyle);
-            basicNumberStyle = new TextStyle(ConstantsAndEnums.BASIC_NUMBER_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_NUMBER_STYLE.FontStyle); 
-            basicDataKeywordStyle = new TextStyle(ConstantsAndEnums.BASIC_DATA_KEYWORD_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_DATA_KEYWORD_STYLE.FontStyle);
-            basicCommentStyle = new TextStyle(ConstantsAndEnums.BASIC_COMMENT_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_COMMENT_STYLE.FontStyle);
+            // Text styles for dump listings
+            dumpHeadersStyle = new TextStyle(ConstantsAndEnums.DUMP_HEADER_STYLE.ForeBrush, null, FontStyle.Regular);
+            dumpHexStyle = new TextStyle(ConstantsAndEnums.DUMP_HEX_STYLE.ForeBrush, null, FontStyle.Regular);
+            dumpAsciiStyle = new TextStyle(ConstantsAndEnums.DUMP_ASCII_STYLE.ForeBrush, null, FontStyle.Regular);
+            dumpMainSelectionBackStyle = new TextStyle(ConstantsAndEnums.DUMP_MAIN_SELECTION_BACK_STYLE.ForeBrush, null, FontStyle.Regular);
+            dumpMainSelectionFrontStyle = new TextStyle(ConstantsAndEnums.DUMP_MAIN_SELECTION_FRONT_STYLE.ForeBrush, null, FontStyle.Regular);
+            dumpSecondarySelectionBackStyle = new TextStyle(ConstantsAndEnums.DUMP_SECONDARY_SELECTION_BACK_STYLE.ForeBrush, null, FontStyle.Regular);
 
             // Text styles for assembler listings
             assemblerAddressStyle = new TextStyle(ConstantsAndEnums.ASSEMBLER_ADDRESS_STYLE.ForeBrush, null, ConstantsAndEnums.ASSEMBLER_ADDRESS_STYLE.FontStyle);
@@ -528,16 +665,29 @@
             assemblerAsciiStyle = new TextStyle(ConstantsAndEnums.ASSEMBLER_ASCII_STYLE.ForeBrush, null, ConstantsAndEnums.ASSEMBLER_ASCII_STYLE.FontStyle);
             assemblerUnknownStyle = new TextStyle(ConstantsAndEnums.ASSEMBLER_UNKNOWN_STYLE.ForeBrush, null, ConstantsAndEnums.ASSEMBLER_UNKNOWN_STYLE.FontStyle);
 
-            // Text styles for dump listings
-            dumpHeadersStyle = new TextStyle(ConstantsAndEnums.DUMP_HEADERS_STYLE.ForeBrush, null, FontStyle.Regular);
-            dumpHexStyle = new TextStyle(ConstantsAndEnums.DUMP_HEX_STYLE.ForeBrush, null, FontStyle.Regular);
-            dumpAsciiStyle = new TextStyle(ConstantsAndEnums.DUMP_ASCII_STYLE.ForeBrush, null, FontStyle.Regular);
-            dumpMainSelectionBackStyle = new TextStyle(ConstantsAndEnums.DUMP_MAIN_SELECTION_BACK_STYLE.ForeBrush, null, FontStyle.Regular);
-            dumpMainSelectionFrontStyle = new TextStyle(ConstantsAndEnums.DUMP_MAIN_SELECTION_FRONT_STYLE.ForeBrush, null, FontStyle.Regular);
-            dumpSecondarySelectionBackStyle = new TextStyle(ConstantsAndEnums.DUMP_SECONDARY_SELECTION_BACK_STYLE.ForeBrush, null, FontStyle.Regular);
+            // Text styles for BASIC listing
+            basicLineNumberStyle = new TextStyle(ConstantsAndEnums.BASIC_LINE_NUMBER_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_LINE_NUMBER_STYLE.FontStyle);
+            basicKeywordStyle = new TextStyle(ConstantsAndEnums.BASIC_KEYWORD_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_KEYWORD_STYLE.FontStyle);
+            basicBrancheStyle = new TextStyle(ConstantsAndEnums.BASIC_BRANCHE_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_BRANCHE_STYLE.FontStyle); 
+            basicLoopStyle = new TextStyle(ConstantsAndEnums.BASIC_LOOP_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_LOOP_STYLE.FontStyle);
+            basicStringStyle = new TextStyle(ConstantsAndEnums.BASIC_STRING_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_STRING_STYLE.FontStyle);
+            basicNumberStyle = new TextStyle(ConstantsAndEnums.BASIC_NUMBER_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_NUMBER_STYLE.FontStyle); 
+            basicDataKeywordStyle = new TextStyle(ConstantsAndEnums.BASIC_DATA_KEYWORD_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_DATA_KEYWORD_STYLE.FontStyle);
+            basicCommentStyle = new TextStyle(ConstantsAndEnums.BASIC_COMMENT_STYLE.ForeBrush, null, ConstantsAndEnums.BASIC_COMMENT_STYLE.FontStyle);
+
+            hyperbasicAddressStyle = new TextStyle(ConstantsAndEnums.HYPERBASIC_ADDRESS_STYLE.ForeBrush, null, ConstantsAndEnums.HYPERBASIC_ADDRESS_STYLE.FontStyle);
+            hyperbasicLabelStyle = new TextStyle(ConstantsAndEnums.HYPERBASIC_LABEL_STYLE.ForeBrush, null, ConstantsAndEnums.HYPERBASIC_LABEL_STYLE.FontStyle);
+            hyperbasicNumberStyle = new TextStyle(ConstantsAndEnums.HYPERBASIC_NUMBER_STYLE.ForeBrush, null, ConstantsAndEnums.HYPERBASIC_NUMBER_STYLE.FontStyle);
+            hyperbasicStringStyle = new TextStyle(ConstantsAndEnums.HYPERBASIC_STRING_STYLE.ForeBrush, null, ConstantsAndEnums.HYPERBASIC_STRING_STYLE.FontStyle);
+            hyperbasicLoopStyle = new TextStyle(ConstantsAndEnums.HYPERBASIC_LOOP_STYLE.ForeBrush, null, ConstantsAndEnums.HYPERBASIC_LOOP_STYLE.FontStyle);
+            hyperbasicBrancheStyle = new TextStyle(ConstantsAndEnums.HYPERBASIC_BRANCHE_STYLE.ForeBrush, null, ConstantsAndEnums.HYPERBASIC_BRANCHE_STYLE.FontStyle);
+            hyperbasicCodeStyle = new TextStyle(ConstantsAndEnums.HYPERBASIC_CODE_STYLE.ForeBrush, null, ConstantsAndEnums.HYPERBASIC_CODE_STYLE.FontStyle);
+            hyperbasicCommentStyle = new TextStyle(ConstantsAndEnums.HYPERBASIC_COMMENT_STYLE.ForeBrush, null, ConstantsAndEnums.HYPERBASIC_COMMENT_STYLE.FontStyle);
 
             teleassAddressStyle = new TextStyle(ConstantsAndEnums.TELEASS_ADDRESS_STYLE.ForeBrush, null, ConstantsAndEnums.TELEASS_ADDRESS_STYLE.FontStyle);
-            teleassCodeStyle = new TextStyle(ConstantsAndEnums.TELEASS_CODE_STYLE.ForeBrush, null, ConstantsAndEnums.TELEASS_CODE_STYLE.FontStyle);
+            teleassLabelStyle = new TextStyle(ConstantsAndEnums.TELEASS_LABEL_STYLE.ForeBrush, null, ConstantsAndEnums.TELEASS_LABEL_STYLE.FontStyle);
+            teleassMnemonicStyle = new TextStyle(ConstantsAndEnums.TELEASS_MNEMONIC_STYLE.ForeBrush, null, ConstantsAndEnums.TELEASS_MNEMONIC_STYLE.FontStyle);
+            teleassOperandStyle = new TextStyle(ConstantsAndEnums.TELEASS_OPERAND_STYLE.ForeBrush, null, ConstantsAndEnums.TELEASS_OPERAND_STYLE.FontStyle);
             teleassCommentStyle = new TextStyle(ConstantsAndEnums.TELEASS_COMMENT_STYLE.ForeBrush, null, ConstantsAndEnums.TELEASS_COMMENT_STYLE.FontStyle);
         }
 
@@ -598,17 +748,21 @@
 
         private void fcSample_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (optBasicListing.Checked)
+            if (optHexDumpListing.Checked)
             {
-                DisplayBasicListing(e);
+                DisplayHexDumpListing(e);
             }
             else if (optAssemblerListing.Checked)
             {
                 DisplayAssemblerListing(e);
             }
-            else if (optHexDumpListing.Checked)
+            else if (optBasicListing.Checked)
             {
-                DisplayDumpListing(e);
+                DisplayBasicListing(e);
+            }
+            else if (optHyperbasicListing.Checked)
+            {
+                DisplayHyperbasicListing(e);
             }
             else if (optTeleassListing.Checked)
             {

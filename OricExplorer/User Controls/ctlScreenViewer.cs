@@ -60,7 +60,7 @@ namespace OricExplorer
         {
             oricScreenImage.m_ui16StartAddress = ProgramData.StartAddress;
             oricScreenImage.m_ui16DataLength = ProgramData.ProgramLength;
-            oricScreenImage.bScrnData = ProgramData.m_programData;
+            oricScreenImage.bScrnData = ProgramData.ProgramData;
 
             if (ProgramData.Format == OricProgram.ProgramFormat.HiresScreen)
             {
@@ -81,7 +81,7 @@ namespace OricExplorer
 
             for (int index = 0; index < ProgramData.ProgramLength; index++)
             {
-                tmpScreenData[index] = ProgramData.m_programData[index];
+                tmpScreenData[index] = ProgramData.ProgramData[index];
             }
 
             if (screenImageFormat == ScreenImage.ScreenImageFormat.IMAGE_FORMAT_TEXT)
