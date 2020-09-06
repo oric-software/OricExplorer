@@ -9,9 +9,9 @@ namespace OricExplorer
 
     class Preview
     {
-        public byte[] bScrnData;
+        public byte[] ScreenData { get; set; }
 
-        public OricProgram.ProgramFormat m_scrnFormat;
+        public OricProgram.ProgramFormat ScreenFormat { get; set; }
 
         private ushort m_ui16DisplayBytes;
         private ushort m_ui16ScreenHeight;
@@ -38,7 +38,7 @@ namespace OricExplorer
         public bool Flash { get; set; }
 
         // Contains the image data
-        public Image screenImage { get; set; }
+        public Image ScreenImage { get; set; }
 
         public Preview(bool bPreview)
         {
@@ -46,10 +46,10 @@ namespace OricExplorer
             StartAddress = 0;
 
             // Set initial format to HIRES
-            m_scrnFormat = OricProgram.ProgramFormat.HiresScreen;
+            ScreenFormat = OricProgram.ProgramFormat.HiresScreen;
 
             // Initialise the screen buffer
-            bScrnData = new byte[8000];
+            ScreenData = new byte[8000];
 
             // Load the standard character set
             BuildCharSet();
@@ -67,7 +67,7 @@ namespace OricExplorer
 
             if(bPreview)
             {
-                screenImage = new Bitmap(480, 448);
+                ScreenImage = new Bitmap(480, 448);
             }
         }
 
@@ -75,15 +75,15 @@ namespace OricExplorer
         {
             printEventArgs = e;
 
-            if (m_scrnFormat == OricProgram.ProgramFormat.HiresScreen)
+            if (ScreenFormat == OricProgram.ProgramFormat.HiresScreen)
             {
                 PrintHiresScreen();
             }
-            else if (m_scrnFormat == OricProgram.ProgramFormat.TextScreen)
+            else if (ScreenFormat == OricProgram.ProgramFormat.TextScreen)
             {
                 PrintTextScreen();
             }
-            else if (m_scrnFormat == OricProgram.ProgramFormat.CharacterSet)
+            else if (ScreenFormat == OricProgram.ProgramFormat.CharacterSet)
             {
                 PrintCharSet();
             }
@@ -126,7 +126,7 @@ namespace OricExplorer
 
             while (ui16Loop < ui16DataLength)
             {
-                cByte = bScrnData[ui16Loop];
+                cByte = ScreenData[ui16Loop];
 
                 if (ui16ByteCount == 0 && (cByte < 16 || cByte > 23))
                 {
@@ -310,7 +310,7 @@ namespace OricExplorer
 
             while (ui16Loop < ui16DataLength)
             {
-                cByte = bScrnData[ui16Loop];
+                cByte = ScreenData[ui16Loop];
 
                 if (ui16ByteCount == 0 && (cByte < 16 || cByte > 23))
                 {
@@ -449,7 +449,7 @@ namespace OricExplorer
             {
                 for (short siLoop2 = 0; siLoop2 < 8; siLoop2++)
                 {
-                    cByte = bScrnData[ui16Loop + siLoop2];
+                    cByte = ScreenData[ui16Loop + siLoop2];
                     short siPattern = cByte;
 
                     for (short siLoop3 = 2; siLoop3 < 8; siLoop3++)
@@ -535,7 +535,7 @@ namespace OricExplorer
 
             m_ui16ScreenHeight = (ushort)(ui16Rows * 2);
 
-            if(m_scrnFormat != OricProgram.ProgramFormat.HiresScreen)
+            if(ScreenFormat != OricProgram.ProgramFormat.HiresScreen)
             {
                 m_ui16ScreenHeight = (ushort)(m_ui16ScreenHeight * 16);
             }
@@ -545,9 +545,9 @@ namespace OricExplorer
             //    m_ui16ScreenHeight = 448;
             //}
 
-            screenImage = new Bitmap(WidthBytes * 12, m_ui16ScreenHeight);
+            ScreenImage = new Bitmap(WidthBytes * 12, m_ui16ScreenHeight);
 
-            switch(m_scrnFormat)
+            switch(ScreenFormat)
             {
                 case OricProgram.ProgramFormat.HiresScreen:
                     DrawHiresPreview();
@@ -577,7 +577,7 @@ namespace OricExplorer
             m_ui16ScreenHeight = 224;
             Offset = 0;
 
-            switch(m_scrnFormat)
+            switch(ScreenFormat)
             {
                 case OricProgram.ProgramFormat.HiresScreen:
                     if(DataLength > 8000)
@@ -616,7 +616,7 @@ namespace OricExplorer
         private void NoPreview()
         {
             // Create graphics object for alteration.
-            Graphics newGraphics = Graphics.FromImage(screenImage);
+            Graphics newGraphics = Graphics.FromImage(ScreenImage);
             newGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
 
             // Fill entire image with black background.
@@ -633,8 +633,8 @@ namespace OricExplorer
             stringSize = newGraphics.MeasureString(strMessage, drawFont);
 
             // Calc position of text so that it is centred
-            float x = (screenImage.Width / 2) - (stringSize.Width / 2);
-            float y = (screenImage.Height / 2) - (stringSize.Height / 2);
+            float x = (ScreenImage.Width / 2) - (stringSize.Width / 2);
+            float y = (ScreenImage.Height / 2) - (stringSize.Height / 2);
 
             // Draw string to screen.
             newGraphics.DrawString(strMessage, drawFont, drawBrush, x, y);
@@ -648,13 +648,13 @@ namespace OricExplorer
             byte cByte = 0;
 
             short siXPos = 0;
-            short siYPos = 0;
+            short siYPos = 2;
 
             ushort ui16Loop = 0;
             ushort ui16ByteCount = 0;
 
             // Create graphics object for alteration.
-            Graphics newGraphics = Graphics.FromImage(screenImage);
+            Graphics newGraphics = Graphics.FromImage(ScreenImage);
             newGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
 
             // Fill entire image with black background.
@@ -664,7 +664,7 @@ namespace OricExplorer
 
             while(ui16Loop < m_ui16DisplayBytes)
             {
-                cByte = bScrnData[ui16Loop];
+                cByte = ScreenData[ui16Loop];
 
                 cResult = Convert.ToByte(0x40 & cByte);
 
@@ -758,7 +758,7 @@ namespace OricExplorer
             bool bBlink = false;
 
             // Create graphics object for alteration.
-            Graphics newGraphics = Graphics.FromImage(screenImage);
+            Graphics newGraphics = Graphics.FromImage(ScreenImage);
             newGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
 
             cScrnPaper = 0;
@@ -780,7 +780,7 @@ namespace OricExplorer
 
             while(ui16Loop < m_ui16DisplayBytes)
             {
-                cByte = bScrnData[ui16Loop];
+                cByte = ScreenData[ui16Loop];
 
                 if(WidthBytes == 40)
                 {
@@ -828,16 +828,16 @@ namespace OricExplorer
                     {
                         if (!DisableAttributes)
                         {
-                            if (cByte == 0x08 || cByte == 0x09 || cByte == 0x0C || cByte == 0x0D)
+                            if (cByte.In((byte)0x08, (byte)0x09, (byte)0x0C, (byte)0x0D))
                                 bDoubleHeight = false;
 
-                            if (cByte == 0x0A || cByte == 0x0B || cByte == 0x0E || cByte == 0x0F)
+                            if (cByte.In((byte)0x0A, (byte)0x0B, (byte)0x0E, (byte)0x0F))
                                 bDoubleHeight = true;
 
-                            if (cByte == 0x08 || cByte == 0x09 || cByte == 0x0A || cByte == 0x0B)
+                            if (cByte.In((byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B))
                                 bBlink = false;
 
-                            if (cByte == 0x0C || cByte == 0x0D || cByte == 0x0E || cByte == 0x0F)
+                            if (cByte.In((byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F))
                                 bBlink = true;
                         }
                         else
@@ -974,7 +974,7 @@ namespace OricExplorer
             ushort ui16ByteCount = 0;
 
             // Create graphics object for alteration.
-            Graphics newGraphics = Graphics.FromImage(screenImage);
+            Graphics newGraphics = Graphics.FromImage(ScreenImage);
             newGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
 
             // Fill entire image with white background.
@@ -1005,11 +1005,11 @@ namespace OricExplorer
             // Draw each character in grid layout
             while(ui16Loop < m_ui16DisplayBytes)
             {
-                if (ui16Loop + 8 < bScrnData.Length)
+                if (ui16Loop + 8 < ScreenData.Length)
                 {
                     for (short siLoop2 = 0; siLoop2 < 8; siLoop2++)
                     {
-                        cByte = bScrnData[ui16Loop + siLoop2];
+                        cByte = ScreenData[ui16Loop + siLoop2];
                         short siPattern = cByte;
 
                         for (short siLoop3 = 2; siLoop3 < 8; siLoop3++)
@@ -1061,15 +1061,41 @@ namespace OricExplorer
 
             switch(cIndex)
             {
-                case 0: crColour = Color.Black; break;
-                case 1: crColour = Color.FromArgb(255, 0, 0); break;
-                case 2: crColour = Color.FromArgb(0, 255, 0); break;
-                case 3: crColour = Color.Yellow; break;
-                case 4: crColour = Color.FromArgb(0, 0, 255); break;
-                case 5: crColour = Color.Magenta; break;
-                case 6: crColour = Color.Cyan; break;
-                case 7: crColour = Color.White; break;
-                default: crColour = Color.Black; break;
+                case 0:
+                    crColour = Color.Black;
+                    break;
+
+                case 1:
+                    crColour = Color.FromArgb(255, 0, 0);
+                    break;
+
+                case 2:
+                    crColour = Color.FromArgb(0, 255, 0);
+                    break;
+
+                case 3: 
+                    crColour = Color.Yellow;
+                    break;
+
+                case 4: 
+                    crColour = Color.FromArgb(0, 0, 255);
+                    break;
+
+                case 5:
+                    crColour = Color.Magenta;
+                    break;
+
+                case 6:
+                    crColour = Color.Cyan;
+                    break;
+
+                case 7: 
+                    crColour = Color.White; 
+                    break;
+
+                default: 
+                    crColour = Color.Black; 
+                    break;
             }
 
             return crColour;
@@ -1104,19 +1130,19 @@ namespace OricExplorer
                     string strImgName = dlgSave.FileName;
 
                     if (strImgName.EndsWith("jpg") || strImgName.EndsWith("jpeg"))
-                        screenImage.Save(strImgName, ImageFormat.Jpeg);
+                        ScreenImage.Save(strImgName, ImageFormat.Jpeg);
 
                     if (strImgName.EndsWith("gif"))
-                        screenImage.Save(strImgName, ImageFormat.Gif);
+                        ScreenImage.Save(strImgName, ImageFormat.Gif);
 
                     if (strImgName.EndsWith("bmp"))
-                        screenImage.Save(strImgName, ImageFormat.Bmp);
+                        ScreenImage.Save(strImgName, ImageFormat.Bmp);
 
                     if (strImgName.EndsWith("png"))
-                        screenImage.Save(strImgName, ImageFormat.Png);
+                        ScreenImage.Save(strImgName, ImageFormat.Png);
 
                     if (strImgName.EndsWith("tif") || strImgName.EndsWith("tiff"))
-                        screenImage.Save(strImgName, ImageFormat.Tiff);
+                        ScreenImage.Save(strImgName, ImageFormat.Tiff);
                 }
             }
             catch (Exception e)

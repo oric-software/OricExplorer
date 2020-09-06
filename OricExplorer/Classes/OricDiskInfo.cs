@@ -198,6 +198,11 @@
 
             return files;
         }
+
+        public void UpdateFullName(string fullName)
+        {
+            this.FullName = fullName;
+        }
         #endregion
 
         public ushort GetSectorInfo(byte track, byte sector)
@@ -206,7 +211,7 @@
 
             if (diskSectorMap != null)
             {
-                ushort index = getSectorIndex(track, sector);
+                ushort index = GetSectorIndex(track, sector);
                 sectorInfo = diskSectorMap[index];
             }
 
@@ -225,7 +230,7 @@
             return sectorInfo;
         }
 
-        private ushort getSectorIndex(byte track, byte sector)
+        private ushort GetSectorIndex(byte track, byte sector)
         {
             ushort index;
 
@@ -303,19 +308,13 @@
             return versionString;
         }
 
+        public string FullName { get; private set; } = "";
+
         public OricDisk.DOSFormats DOSFormat { get; private set; } = OricDisk.DOSFormats.Unknown;
 
         public OricDisk.DOSVersions DOSVersion { get; private set; } = OricDisk.DOSVersions.Unknown;
 
         public OricDisk.DiskTypes DiskType { get; private set; } = OricDisk.DiskTypes.Unknown;
-
-        public DateTime CreationTime { get; private set; } = DateTime.Now;
-
-        public DateTime LastAccessTime { get; private set; } = DateTime.Now;
-
-        public DateTime LastWriteTime { get; private set; } = DateTime.Now;
-
-        public string FullName { get; private set; } = "";
 
         public string DiskName { get; private set; } = "";
 
@@ -336,6 +335,12 @@
         public ushort SectorsFree { get; private set; } = 0;
 
         public ushort SectorsUsed { get; private set; } = 0;
+
+        public DateTime CreationTime { get; private set; } = DateTime.Now;
+
+        public DateTime LastAccessTime { get; private set; } = DateTime.Now;
+
+        public DateTime LastWriteTime { get; private set; } = DateTime.Now;
 
         #endregion
     }

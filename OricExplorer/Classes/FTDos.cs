@@ -184,9 +184,9 @@
                             {
                                 diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
                             }
-                            else if (strExtension.Equals("CMD") || strExtension.Equals("BIN") || strExtension.Equals("SYS"))
+                            else if (strExtension.In("CMD", "BIN", "SYS"))
                             {
-                                diskFile.Format = OricProgram.ProgramFormat.CodeFile;
+                                diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
                             }
                             else
                             {
@@ -369,7 +369,7 @@
 
                     int programLength = (loadedProgram.EndAddress - loadedProgram.StartAddress) + 1;
 
-                    loadedProgram.m_programData = new byte[programLength];
+                    loadedProgram.ProgramData = new byte[programLength];
 
                     while (dataSector != 0xFF && descriptorIndex < totalDescriptors)
                     {
@@ -398,7 +398,7 @@
 
                             if (index < programLength)
                             {
-                                loadedProgram.m_programData[index] = tmpByte;
+                                loadedProgram.ProgramData[index] = tmpByte;
                             }
 
                             index++;
@@ -468,22 +468,39 @@
             else if ((formatFlag & 0x20) == 0x20)
                 programFormat = OricProgram.ProgramFormat.WindowFile;
             else if ((formatFlag & 0x40) == 0x40)
-                programFormat = OricProgram.ProgramFormat.CodeFile;
+                programFormat = OricProgram.ProgramFormat.BinaryFile;
             else if ((formatFlag & 0x80) == 0x80)
                 programFormat = OricProgram.ProgramFormat.BasicProgram;
             else
                 programFormat = OricProgram.ProgramFormat.UnknownFile;
 
-            if (programFormat == OricProgram.ProgramFormat.CodeFile)
+            if (programFormat == OricProgram.ProgramFormat.BinaryFile)
             {
                 switch (tmpStartAddr)
                 {
-                    case 0xBB80: programFormat = OricProgram.ProgramFormat.TextScreen; break;
-                    case 0xBBA8: programFormat = OricProgram.ProgramFormat.TextScreen; break;
-                    case 0xA000: programFormat = OricProgram.ProgramFormat.HiresScreen; break;
-                    case 0xB400: programFormat = OricProgram.ProgramFormat.CharacterSet; break;
-                    case 0xB500: programFormat = OricProgram.ProgramFormat.CharacterSet; break;
-                    default: programFormat = OricProgram.ProgramFormat.CodeFile; break;
+                    case 0xBB80: 
+                        programFormat = OricProgram.ProgramFormat.TextScreen;
+                        break;
+
+                    case 0xBBA8: 
+                        programFormat = OricProgram.ProgramFormat.TextScreen;
+                        break;
+
+                    case 0xA000:
+                        programFormat = OricProgram.ProgramFormat.HiresScreen;
+                        break;
+
+                    case 0xB400: 
+                        programFormat = OricProgram.ProgramFormat.CharacterSet;
+                        break;
+
+                    case 0xB500: 
+                        programFormat = OricProgram.ProgramFormat.CharacterSet;
+                        break;
+
+                    default:
+                        programFormat = OricProgram.ProgramFormat.BinaryFile;
+                        break;
                 }
             }
 

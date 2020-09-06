@@ -55,8 +55,7 @@
 
             byte[] bByteArray = rdr.ReadBytes(21);
 
-            diskName = enc.GetString(bByteArray);
-            diskName.Trim();
+            diskName = enc.GetString(bByteArray).Trim().Trim(new char[] { '\0' });
 
             diskType = OricDisk.DiskTypes.Master;
 
@@ -156,7 +155,7 @@
         private void WriteProgramData(OricProgram program)
         {
             // How many sectors are needed
-            int programLength = program.m_programData.Length;
+            int programLength = program.ProgramData.Length;
             int noOfSectors;
 
             if(programLength < 245)
@@ -237,7 +236,7 @@
             // Write program data to first program sector
             while (dataPos < programLength && sectorPos < 0xFF)
             {
-                sectorData[sectorPos] = program.m_programData[dataPos];
+                sectorData[sectorPos] = program.ProgramData[dataPos];
 
                 sectorPos++;
                 dataPos++;
@@ -277,7 +276,7 @@
                 // Write program data to the next program sector
                 while (dataPos < programLength && sectorPos < 0xFF)
                 {
-                    sectorData[sectorPos] = program.m_programData[dataPos];
+                    sectorData[sectorPos] = program.ProgramData[dataPos];
 
                     sectorPos++;
                     dataPos++;
@@ -433,7 +432,7 @@
                                 if (ui16ExeAddress == 0x0000)
                                 {
                                     diskFile.ExeAddress = diskFile.StartAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.CodeFile;
+                                    diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
                                     diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
                                 }
                                 else if (ui16ExeAddress == 0x0001)
@@ -451,11 +450,11 @@
                                 else
                                 {
                                     diskFile.ExeAddress = ui16ExeAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.CodeFile;
+                                    diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
                                     diskFile.AutoRun = OricProgram.AutoRunFlag.Enabled;
                                 }
 
-                                if (diskFile.Format == OricProgram.ProgramFormat.CodeFile)
+                                if (diskFile.Format == OricProgram.ProgramFormat.BinaryFile)
                                 {
                                     switch (diskFile.StartAddress)
                                     {
@@ -472,7 +471,7 @@
                                             diskFile.Format = OricProgram.ProgramFormat.CharacterSet; 
                                             break;
                                         default:
-                                            diskFile.Format = OricProgram.ProgramFormat.CodeFile;
+                                            diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
                                             break;
                                     }
 
@@ -559,7 +558,7 @@
                     bNoOfBytes = rdr.ReadByte();
                 }
 
-                loadProgram.m_programData = new byte[programInfo.LengthBytes];
+                loadProgram.ProgramData = new byte[programInfo.LengthBytes];
 
                 byte bByte = 0;
                 int iIndex = 0;
@@ -567,7 +566,7 @@
                 for (int iLoop = 0; iLoop < bNoOfBytes; iLoop++)
                 {
                     bByte = rdr.ReadByte();
-                    loadProgram.m_programData[iIndex] = bByte;
+                    loadProgram.ProgramData[iIndex] = bByte;
                     iIndex++;
                 }
 
@@ -590,7 +589,7 @@
                         try
                         {
                             bByte = rdr2.ReadByte();
-                            loadProgram.m_programData[iIndex] = bByte;
+                            loadProgram.ProgramData[iIndex] = bByte;
                             iIndex++;
                         }
                         catch(IndexOutOfRangeException)

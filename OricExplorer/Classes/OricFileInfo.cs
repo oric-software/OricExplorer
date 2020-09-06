@@ -1,7 +1,6 @@
 namespace OricExplorer
 {
     using System;
-    using System.Collections;
     using System.IO;
 
     public class OricFileInfo
@@ -108,11 +107,19 @@ namespace OricExplorer
                     strFormat = "BASIC program";
                     break;
 
+                case OricProgram.ProgramFormat.HyperbasicProgram:
+                    strFormat = "HYPERBASIC source";
+                    break;
+
+                case OricProgram.ProgramFormat.TeleassSource:
+                    strFormat = "TELEASS source";
+                    break;
+                
                 case OricProgram.ProgramFormat.CharacterSet:
                     strFormat = "Character set";
                     break;
 
-                case OricProgram.ProgramFormat.CodeFile:
+                case OricProgram.ProgramFormat.BinaryFile:
                     strFormat = "Code/Data file";
                     break;
 
