@@ -15,7 +15,7 @@ namespace OricExplorer
         {
             // Add a link to the LinkLabel.
             LinkLabel.Link link = new LinkLabel.Link();
-            link.LinkData = "http://oric.mrandmrsdavies.com/";
+            link.LinkData = "http://web.archive.org/web/20190609120811/http://oric.mrandmrsdavies.com/";
             lklWebsite.Links.Add(link);
 
             // Add a link to the LinkLabel.
@@ -34,6 +34,16 @@ namespace OricExplorer
         {
             // Send the URL to the operating system.
             Process.Start(e.Link.LinkData as string);
+        }
+
+        private void rtbContributors_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            Process.Start(e.LinkText);
+        }
+
+        private void rtbContributors_Enter(object sender, EventArgs e)
+        {
+            btnOK.Focus();
         }
     }
 }

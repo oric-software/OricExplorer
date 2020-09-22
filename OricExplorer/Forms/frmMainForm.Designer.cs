@@ -161,8 +161,8 @@ namespace OricExplorer
             // 
             this.mnu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuFile,
-            this.mnuEdit,
             this.mnuView,
+            this.mnuEdit,
             this.mnuTools,
             this.mnuHelp});
             this.mnu.Location = new System.Drawing.Point(0, 0);
@@ -182,7 +182,8 @@ namespace OricExplorer
             // mnuFileExit
             // 
             this.mnuFileExit.Name = "mnuFileExit";
-            this.mnuFileExit.Size = new System.Drawing.Size(93, 22);
+            this.mnuFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.mnuFileExit.Size = new System.Drawing.Size(180, 22);
             this.mnuFileExit.Text = "Exit";
             this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
             // 
@@ -212,35 +213,36 @@ namespace OricExplorer
             // mnuViewClose
             // 
             this.mnuViewClose.Name = "mnuViewClose";
-            this.mnuViewClose.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewClose.Size = new System.Drawing.Size(180, 22);
             this.mnuViewClose.Text = "Close";
             this.mnuViewClose.Click += new System.EventHandler(this.mnuViewClose_Click);
             // 
             // mnuViewCloseAll
             // 
             this.mnuViewCloseAll.Name = "mnuViewCloseAll";
-            this.mnuViewCloseAll.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewCloseAll.Size = new System.Drawing.Size(180, 22);
             this.mnuViewCloseAll.Text = "Close All";
             this.mnuViewCloseAll.Click += new System.EventHandler(this.mnuViewCloseAll_Click);
             // 
             // mnuViewCloseAllButThisOne
             // 
             this.mnuViewCloseAllButThisOne.Name = "mnuViewCloseAllButThisOne";
-            this.mnuViewCloseAllButThisOne.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewCloseAllButThisOne.Size = new System.Drawing.Size(180, 22);
             this.mnuViewCloseAllButThisOne.Text = "Close All But This";
             this.mnuViewCloseAllButThisOne.Click += new System.EventHandler(this.mnuViewCloseAllButThisOne_Click);
             // 
             // mnuViewSep1
             // 
             this.mnuViewSep1.Name = "mnuViewSep1";
-            this.mnuViewSep1.Size = new System.Drawing.Size(162, 6);
+            this.mnuViewSep1.Size = new System.Drawing.Size(177, 6);
             // 
             // mnuViewRefresh
             // 
             this.mnuViewRefresh.Image = ((System.Drawing.Image)(resources.GetObject("mnuViewRefresh.Image")));
             this.mnuViewRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuViewRefresh.Name = "mnuViewRefresh";
-            this.mnuViewRefresh.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.mnuViewRefresh.Size = new System.Drawing.Size(180, 22);
             this.mnuViewRefresh.Text = "Refresh";
             this.mnuViewRefresh.Click += new System.EventHandler(this.mnuViewRefresh_Click);
             // 
@@ -260,33 +262,34 @@ namespace OricExplorer
             // mnuToolsImportAtmosBasicFile
             // 
             this.mnuToolsImportAtmosBasicFile.Name = "mnuToolsImportAtmosBasicFile";
-            this.mnuToolsImportAtmosBasicFile.Size = new System.Drawing.Size(213, 22);
-            this.mnuToolsImportAtmosBasicFile.Text = "Import Atmos BASIC File...";
+            this.mnuToolsImportAtmosBasicFile.Size = new System.Drawing.Size(251, 22);
+            this.mnuToolsImportAtmosBasicFile.Text = "Import Oric-1/Atmos BASIC File...";
             this.mnuToolsImportAtmosBasicFile.Click += new System.EventHandler(this.mnuToolsImportAtmosBasicFile_Click);
             // 
             // mnuToolsSep1
             // 
             this.mnuToolsSep1.Name = "mnuToolsSep1";
-            this.mnuToolsSep1.Size = new System.Drawing.Size(210, 6);
+            this.mnuToolsSep1.Size = new System.Drawing.Size(248, 6);
             // 
             // mnuToolsSyntaxHighlighting
             // 
             this.mnuToolsSyntaxHighlighting.Name = "mnuToolsSyntaxHighlighting";
-            this.mnuToolsSyntaxHighlighting.Size = new System.Drawing.Size(213, 22);
+            this.mnuToolsSyntaxHighlighting.Size = new System.Drawing.Size(251, 22);
             this.mnuToolsSyntaxHighlighting.Text = "Syntax Highlighting...";
             this.mnuToolsSyntaxHighlighting.Click += new System.EventHandler(this.mnuToolsSyntaxHighlighting_Click);
             // 
             // mnuToolsSep2
             // 
             this.mnuToolsSep2.Name = "mnuToolsSep2";
-            this.mnuToolsSep2.Size = new System.Drawing.Size(210, 6);
+            this.mnuToolsSep2.Size = new System.Drawing.Size(248, 6);
             // 
             // mnuToolsSettings
             // 
             this.mnuToolsSettings.Image = ((System.Drawing.Image)(resources.GetObject("mnuToolsSettings.Image")));
             this.mnuToolsSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuToolsSettings.Name = "mnuToolsSettings";
-            this.mnuToolsSettings.Size = new System.Drawing.Size(213, 22);
+            this.mnuToolsSettings.ShortcutKeys = System.Windows.Forms.Keys.F9;
+            this.mnuToolsSettings.Size = new System.Drawing.Size(251, 22);
             this.mnuToolsSettings.Text = "Settings...";
             this.mnuToolsSettings.Click += new System.EventHandler(this.mnuToolsSettings_Click);
             // 
@@ -304,21 +307,22 @@ namespace OricExplorer
             // mnuHelpCheckForUpdates
             // 
             this.mnuHelpCheckForUpdates.Name = "mnuHelpCheckForUpdates";
-            this.mnuHelpCheckForUpdates.Size = new System.Drawing.Size(179, 22);
+            this.mnuHelpCheckForUpdates.Size = new System.Drawing.Size(197, 22);
             this.mnuHelpCheckForUpdates.Text = "Check for updates...";
             this.mnuHelpCheckForUpdates.Click += new System.EventHandler(this.mnuHelpCheckForUpdates_Click);
             // 
             // mnuHelpSep1
             // 
             this.mnuHelpSep1.Name = "mnuHelpSep1";
-            this.mnuHelpSep1.Size = new System.Drawing.Size(176, 6);
+            this.mnuHelpSep1.Size = new System.Drawing.Size(194, 6);
             // 
             // mnuHelpAbout
             // 
             this.mnuHelpAbout.Image = ((System.Drawing.Image)(resources.GetObject("mnuHelpAbout.Image")));
             this.mnuHelpAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuHelpAbout.Name = "mnuHelpAbout";
-            this.mnuHelpAbout.Size = new System.Drawing.Size(179, 22);
+            this.mnuHelpAbout.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.mnuHelpAbout.Size = new System.Drawing.Size(197, 22);
             this.mnuHelpAbout.Text = "About Oric Explorer";
             this.mnuHelpAbout.Click += new System.EventHandler(this.mnuHelpAbout_Click);
             // 
@@ -382,7 +386,7 @@ namespace OricExplorer
             this.cmnuProgramSep3,
             this.cmnuProgramExtractTo});
             this.cmnuProgram.Name = "contextMenuStrip2";
-            this.cmnuProgram.Size = new System.Drawing.Size(181, 220);
+            this.cmnuProgram.Size = new System.Drawing.Size(178, 198);
             this.cmnuProgram.Text = "Program Menu";
             this.cmnuProgram.Opening += new System.ComponentModel.CancelEventHandler(this.cmnuProgram_Opening);
             // 
@@ -392,7 +396,7 @@ namespace OricExplorer
             this.cmnuProgramViewFile.Image = global::OricExplorer.Properties.Resources.view;
             this.cmnuProgramViewFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmnuProgramViewFile.Name = "cmnuProgramViewFile";
-            this.cmnuProgramViewFile.Size = new System.Drawing.Size(180, 22);
+            this.cmnuProgramViewFile.Size = new System.Drawing.Size(177, 22);
             this.cmnuProgramViewFile.Text = "View file";
             this.cmnuProgramViewFile.Click += new System.EventHandler(this.cmnuProgramViewFile_Click);
             // 
@@ -1087,14 +1091,14 @@ namespace OricExplorer
             this.cmnuOtherFilesViewFile.Image = global::OricExplorer.Properties.Resources.view;
             this.cmnuOtherFilesViewFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmnuOtherFilesViewFile.Name = "cmnuOtherFilesViewFile";
-            this.cmnuOtherFilesViewFile.Size = new System.Drawing.Size(180, 22);
+            this.cmnuOtherFilesViewFile.Size = new System.Drawing.Size(118, 22);
             this.cmnuOtherFilesViewFile.Text = "View file";
             this.cmnuOtherFilesViewFile.Click += new System.EventHandler(this.cmnuOtherFilesViewFile_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(115, 6);
             this.toolStripSeparator1.Visible = false;
             // 
             // toolStripMenuItem2
@@ -1103,7 +1107,7 @@ namespace OricExplorer
             this.toolStripMenuItem2.Image = global::OricExplorer.Properties.Resources.copy;
             this.toolStripMenuItem2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(118, 22);
             this.toolStripMenuItem2.Text = "Copy";
             this.toolStripMenuItem2.Visible = false;
             // 
@@ -1113,7 +1117,7 @@ namespace OricExplorer
             this.toolStripMenuItem3.Image = global::OricExplorer.Properties.Resources.delete;
             this.toolStripMenuItem3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(118, 22);
             this.toolStripMenuItem3.Text = "Delete";
             this.toolStripMenuItem3.Visible = false;
             // 
@@ -1123,14 +1127,14 @@ namespace OricExplorer
             this.toolStripMenuItem4.Image = global::OricExplorer.Properties.Resources.rename;
             this.toolStripMenuItem4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(118, 22);
             this.toolStripMenuItem4.Text = "Rename";
             this.toolStripMenuItem4.Visible = false;
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(115, 6);
             this.toolStripSeparator2.Visible = false;
             // 
             // toolStripMenuItem6
@@ -1139,7 +1143,7 @@ namespace OricExplorer
             this.toolStripMenuItem6.Image = global::OricExplorer.Properties.Resources.refresh;
             this.toolStripMenuItem6.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(118, 22);
             this.toolStripMenuItem6.Text = "Refresh";
             this.toolStripMenuItem6.Visible = false;
             // 
