@@ -289,6 +289,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmSettings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\ctlTextBoxPlus.resx">
+      <DependentUpon>ctlTextBoxPlus.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="User Controls\ctlScreenViewer.resx">
       <DependentUpon>ctlScreenViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -310,6 +313,12 @@
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\TapeInfo.cs" />
+    <Compile Include="User Controls\ctlTextBoxPlus.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User Controls\ctlTextBoxPlus.designer.cs">
+      <DependentUpon>ctlTextBoxPlus.cs</DependentUpon>
+    </Compile>
     <Compile Include="User Controls\ctlScreenViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>

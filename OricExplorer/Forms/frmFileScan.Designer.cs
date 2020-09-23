@@ -139,6 +139,7 @@ namespace OricExplorer.Forms
             this.Controls.Add(this.panHeader);
             this.Controls.Add(this.pbProgress);
             this.Controls.Add(this.lblFile);
+            this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

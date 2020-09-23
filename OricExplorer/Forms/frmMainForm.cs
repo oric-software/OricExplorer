@@ -231,6 +231,9 @@ namespace OricExplorer
 
         private void RebuildTree()
         {
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Position = Cursor.Position;
+
             // Setup messages for the status labels
             tsslStatusMain.Text = "Refreshing the file list...";
 
@@ -242,8 +245,12 @@ namespace OricExplorer
 
             Application.DoEvents();
 
+            fileListForm.txtFilter.Clear();
+
             // Rebuild the file tree
             BuildFileTree();
+        
+            Cursor.Current = Cursors.Default;
         }
         #endregion
 
@@ -362,6 +369,12 @@ namespace OricExplorer
                     fileListForm.tvwFileList.SelectedNode = selectedNode;
                     fileListForm.tvwFileList.SelectedNode.EnsureVisible();
 
+                    // Remember entire tree for filter
+                    fileListForm.tvwFileList.Tag = rootNode.Clone();
+
+                    // Display warning if operation is made on filtered list
+                    fileListForm.FilteredListWarning();
+
                     tmrAfterLabelEdit.Tag = Tuple.Create(selectedNode, newName);
                     tmrAfterLabelEdit.Start();
                 }
@@ -390,7 +403,7 @@ namespace OricExplorer
         #region Disk Context Menu
         private void cmnuDisk_Opening(object sender, CancelEventArgs e)
         {
-            //TreeNode selectedNode = fileListForm.treeFileList.SelectedNode;
+            
         }
 
         private void cmnuDiskCreateNewDisk_Click(object sender, EventArgs e)
@@ -428,6 +441,12 @@ namespace OricExplorer
                 
                 fileListForm.tvwFileList.SelectedNode = newNode;
                 fileListForm.tvwFileList.SelectedNode.EnsureVisible();
+
+                // Remember entire tree for filter
+                fileListForm.tvwFileList.Tag = rootNode.Clone();
+
+                // Display warning if operation is made on filtered list
+                fileListForm.FilteredListWarning();
             }
             catch (Exception ex)
             {
@@ -450,6 +469,12 @@ namespace OricExplorer
 
                     // Remove item from the tree
                     selectedNode.Remove();
+
+                    // Remember entire tree for filter
+                    fileListForm.tvwFileList.Tag = rootNode.Clone();
+
+                    // Display warning if operation is made on filtered list
+                    fileListForm.FilteredListWarning();
                 }
                 catch (Exception ex)
                 {
@@ -667,6 +692,12 @@ namespace OricExplorer
                     NewNode.Expand();
                     NewNode.EnsureVisible();
                     fileListForm.tvwFileList.SelectedNode = NewNode;
+
+                    // Remember entire tree for filter
+                    fileListForm.tvwFileList.Tag = rootNode.Clone();
+
+                    // Display warning if operation is made on filtered list
+                    fileListForm.FilteredListWarning();
                 }
             }
         }
@@ -718,6 +749,12 @@ namespace OricExplorer
 
                 fileListForm.tvwFileList.SelectedNode = newNode;
                 fileListForm.tvwFileList.SelectedNode.EnsureVisible();
+                
+                // Remember entire tree for filter
+                fileListForm.tvwFileList.Tag = rootNode.Clone();
+
+                // Display warning if operation is made on filtered list
+                fileListForm.FilteredListWarning();
             }
             catch (Exception ex)
             {
@@ -740,6 +777,12 @@ namespace OricExplorer
 
                     // Remove item from the tree
                     selectedNode.Remove();
+
+                    // Remember entire tree for filter
+                    fileListForm.tvwFileList.Tag = rootNode.Clone();
+
+                    // Display warning if operation is made on filtered list
+                    fileListForm.FilteredListWarning();
                 }
                 catch (Exception ex)
                 {
@@ -1324,7 +1367,6 @@ namespace OricExplorer
                 }
             }
 
-
             // Expand all of the TreeView nodes.
             rootNode.Expand();
 
@@ -1345,6 +1387,9 @@ namespace OricExplorer
             {
                 oTimeSpan = string.Format("Media scanned in {0} mins {1,2}.{2,2} seconds", timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds);
             }
+
+            // Remember entire tree for filter
+            fileListForm.tvwFileList.Tag = rootNode.Clone();
 
             tsslStatusMain.Text = oTimeSpan;
         }

@@ -358,5 +358,87 @@
             if (mboolIsDoubleClick && e.Action == TreeViewAction.Collapse)
                 e.Cancel = true;
         }
+
+        private void tvwFileList_Leave(object sender, EventArgs e)
+        {
+            mboolIsDoubleClick = false;
+        }
+
+        private void btnGo_Click(object sender, EventArgs e)
+        {
+            mboolIsDoubleClick = false;
+
+            Cursor.Current = Cursors.WaitCursor;
+
+            TreeNode rootnode = (TreeNode)((TreeNode)tvwFileList.Tag).Clone();
+
+            if (txtFilter.TextLength > 0)
+            {
+                for (int i = rootnode.Nodes.Count - 1; i > -1; i--)
+                {
+                    AnalyzeNodeRecursively(rootnode.Nodes[i]);
+                }
+
+                rootnode.ExpandAll();
+            }
+            else
+            {
+                rootnode.Expand();
+            }
+
+            // Disable tree updates
+            tvwFileList.BeginUpdate();
+
+            tvwFileList.Nodes.Clear();
+            tvwFileList.Nodes.Add(rootnode);
+            tvwFileList.Sort();
+
+            // Resume tree updates
+            tvwFileList.EndUpdate();
+
+            Cursor.Current = Cursors.Default;
+        }
+
+        private void AnalyzeNodeRecursively(TreeNode node)
+        {
+            for (int i = node.Nodes.Count - 1; i > -1; i--)
+            {
+                if (node.Nodes[i].Nodes.Count > 0)
+                {
+                    AnalyzeNodeRecursively(node.Nodes[i]);
+                }
+                else
+                {
+                    if (node.Nodes[i].Text.IndexOf(txtFilter.Text, StringComparison.InvariantCultureIgnoreCase) == -1)
+                    {
+                        node.Nodes[i].Remove();
+                    }
+                }
+            }
+
+            if (node.Text.IndexOf(txtFilter.Text, StringComparison.InvariantCultureIgnoreCase) == -1 && node.Nodes.Count == 0)
+            {
+                node.Remove();
+            }
+        }
+        
+        private void frmFileList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Control | Keys.F))
+            {
+                txtFilter.Focus();
+             
+                e.SuppressKeyPress = true;
+                e.Handled = true;
+            }
+        }
+
+        internal void FilteredListWarning()
+        {
+            if (txtFilter.TextLength != 0)
+            {
+                MessageBox.Show("Press F5 to refresh list after operations made on filtered list.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }

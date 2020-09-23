@@ -121,6 +121,7 @@
             this.optExistingDisk.TabStop = true;
             this.optExistingDisk.Text = "Existing Disk";
             this.optExistingDisk.UseVisualStyleBackColor = true;
+            this.optExistingDisk.Visible = false;
             this.optExistingDisk.CheckedChanged += new System.EventHandler(this.optExistingDisk_CheckedChanged);
             // 
             // optNewDisk
@@ -134,6 +135,7 @@
             this.optNewDisk.TabStop = true;
             this.optNewDisk.Text = "New Disk";
             this.optNewDisk.UseVisualStyleBackColor = true;
+            this.optNewDisk.Visible = false;
             this.optNewDisk.CheckedChanged += new System.EventHandler(this.optNewDisk_CheckedChanged);
             // 
             // optExistingTape
