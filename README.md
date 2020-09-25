@@ -1,9 +1,12 @@
 # Oric Explorer
 
-This is Oric Explorer version 2.0.0-WIP-20180324, by Scott Davies (http://oric.mrandmrsdavies.com/).
+This is the new official *Oric Explorer* GitHub repository at https://github.com/oric-software/OricExplorer, imported from the original version that was initially published and maintained at https://github.com/laurentd75/OricExplorer.
+
+This software was originally written by Scott Davies (http://oric.mrandmrsdavies.com/ -- archived in the Wayback Machine Internet Archive at https://web.archive.org/web/20190609120811/http://oric.mrandmrsdavies.com/).
 
 *Documented and published to GitHub by Laurent D. (laurentd75 on defence-force.org and github.com) in September 2018.*
-
+*Moved to the oric_software GitHub organization by retroric on 25 September 2020.*
+*Primarily maintained by Damien P. *dipisoft*.*
 
 
 ## Presentation and History
