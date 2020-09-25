@@ -2,7 +2,7 @@
 
 This is the new official *Oric Explorer* GitHub repository at https://github.com/oric-software/OricExplorer, imported from the original version that was initially published and maintained at https://github.com/laurentd75/OricExplorer.
 
-This software was originally written by Scott Davies (http://oric.mrandmrsdavies.com/ -- archived in the Wayback Machine Internet Archive at https://web.archive.org/web/20190609120811/http://oric.mrandmrsdavies.com/).
+This software was originally written by **Scott Davies** (http://oric.mrandmrsdavies.com/ -- archived in the Wayback Machine Internet Archive at https://web.archive.org/web/20190609120811/http://oric.mrandmrsdavies.com/).
 
 *Documented and published to GitHub by Laurent D. (laurentd75 on defence-force.org and github.com) in September 2018.*
 
@@ -39,12 +39,12 @@ The original description for this application is reproduced below:
 
 ## Development status
 
-Oric Explorer is currently maintained by **Damien P. (dipisoft on GitHub)**. If you are interested in further developing and maintaining this software, you are encouraged to participate bu getting in touch with the **oric_software** GitHub organization members or on the CEO forums (http://forums.oric.org/) or on the Defence Force forum (http://forum.defence-force.org/).
+Oric Explorer is currently maintained by **Damien P. (dipisoft on GitHub)**. If you are interested in further developing and maintaining this software, you are encouraged to participate by getting in touch with the **oric-software** GitHub organization members (https://github.com/oric-software) or using the CEO forums (http://forums.oric.org/) or the Defence Force forum (http://forum.defence-force.org/).
 
-See the thread that was initially started on the Defence Force forum when this softare was published on GitHub:
+See the thread that was initially started on the Defence Force forum when this softare was first published on GitHub:
 http://forum.defence-force.org/viewtopic.php?t=1829
 
-Please also read ***AuthorsNotes.md*** which is a copy of an email sent to me (Laurent D.) by Scott on 23 April 2018 that explains in detail  the current status of the software and the reasons why Scott had to stop development.
+Please also read ***AuthorsNotes.md*** which is a copy of an email sent to Laurent D. by Scott on 23 April 2018 that explains in detail the  status of the software when it was first open-sourced and the reasons why Scott had to stop development.
 
 Please acknowledge the original author's name and wishes in all further development and abide by the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) licence this project was placed under (see **OricExplorer-LICENCE-CC-BY-NC-SA-4.0**.md or .txt file).
 
@@ -58,7 +58,7 @@ As such, it requires version 2015 of Microsoft Visual Studio as a minimum (altho
 
 The recommended development environment is Microsoft Visual Studio 2017. Any edition of Visual Studio can be used, including the free "Community" edition, since Oric Explorer is a free, non-commercial application.
 
-The recommended steps for setting up your development environment is as follows:
+The recommended steps for setting up your development environment are as follows:
 
 - Download and install **.NET Framework 4.5.2** : 
 
@@ -72,7 +72,7 @@ The recommended steps for setting up your development environment is as follows:
 
 ## Building
 
-Building the application is currently a manual task that must be carried from within the Visual Studio IDE.
+Building the application is currently a manual task that must be carried out from within the Visual Studio IDE.
 
 The steps involved are as follows :
 
@@ -86,7 +86,7 @@ https://msdn.microsoft.com/en-US/library/5tdasz7h.aspx.
 
 ## Packaging
 
-The "Installer" subdirectory of the Oric Explorer source contains installation scripts meant to be used with NSIS (The Nullsoft Scriptable Install System, an open-source system to create WIndows installation programs available from http://nsis.sourceforge.net).
+The "Installer" subdirectory of the Oric Explorer source contains installation scripts meant to be used with NSIS (The Nullsoft Scriptable Install System, an open-source system to create Windows installation programs available from http://nsis.sourceforge.net).
 
 However, these scripts are currently unfinished and will NOT work as expected. Specifically, in the main installation script (OricExplorerInstaller.nsi):
 
@@ -95,7 +95,7 @@ However, these scripts are currently unfinished and will NOT work as expected. S
 * there are disabled (commented) lines with hard-coded paths (see lines 24, 121, 124, 138, 142,157, 200) 
 
 
-Therefore, until the installation scripts are fully tested and ironed out, the the recommended packaging method so far is to build the project under Visual Studio and then ZIP the full contents of the **OricExplorer\bin\Release** directory. The resulting ZIP should be copied to the "**dist**" directory and its name should include details about the version and build date.
+Therefore, until the installation scripts are fully tested and ironed out, the recommended packaging method so far is to build the project under Visual Studio and then ZIP the full contents of the **OricExplorer\bin\Release** directory. The resulting ZIP should be copied to the "**dist**" directory and its name should include details about the version and build date.
 
 The generated ZIP file can then be used as a distributable file: for installing Oric Explorer, users will simply need to extract the contents of the ZIP to a suitable location.
 
@@ -127,13 +127,13 @@ Side notes:
 
 ## Cross-platform compatibility
 
-Although this application was primarily and solely targeted at the Microsoft Windows platform, it should normally be compatible with Linux and macOS platforms, thanks to the Mono project (https://www.mono-project.com/)  that brings Microsoft .Net compatibility to Linux and macOS environments.
+Although this application was primarily and solely targeted at the Microsoft Windows platform, it should normally be compatible with Linux and macOS platforms, thanks to the Mono project (https://www.mono-project.com/) that brings Microsoft .Net compatibility to Linux and macOS environments.
 
 Likewise, the MonoDevelop IDE (https://www.monodevelop.com/) can normally be used in lieu of the Visual Studio IDE to edit, build and run the project on either the Windows, macOS or Linux platforms.
 
 
 
-##Copyright and Licensing
+## Copyright and Licensing
 
 Oric Explorer is (c) Scott Davies, original creator and author of this application. 
 
@@ -149,7 +149,6 @@ See also https://en.wikipedia.org/wiki/Creative_Commons_license for a more gener
 
 By downloading and using this software, you hereby declare that you agree to be bound by the terms of this licence. If you do not agree to these terms, do not download, install or use the software.
 
-## 
 
 ## Features Overview
 
@@ -161,9 +160,9 @@ The following are some of the features currently available in Oric Explorer.
 - Display Character Sets and HIRES/TEXT screens.
 - Show a file as a Hexdump.
 - Show the source of BASIC programs with syntax highlighting.
-- Show Machine code programs in 6502 assembly.
-- View embedded data in TEXT or HIRES format or as a Character set (by means of a built-in Data viewer that currently supports the viewing of theses 3 kinds of data)
-- Save HIRES or TEXT screens as an image file (format currently supported include .bmp, .gif, .jpg, .png and .tif)
+- Show Machine code programs in 6502 assembly source form.
+- View embedded data in TEXT or HIRES format or as a Character set (by means of a built-in Data viewer that currently supports the viewing of these 3 kinds of data)
+- Save HIRES or TEXT screens as an image file (formats currently supported include .bmp, .gif, .jpg, .png and .tif)
 - Print HIRES or TEXT screens to an attached printer.
 - View Disk contents using a graphical representation of the sectors.
 - View TEXT or HIRES images stored on a floppy disk image through a built-in specific Image Viewer
@@ -179,7 +178,7 @@ The following are some of the features currently available in Oric Explorer.
 - The project includes an installation script that uses the NullSoft installation application (not fully tested).
 - The code is far from complete and therefore will certainly contain bugs as well as incomplete features.
 - The main thing that is missing is code to write to .dsk files.
-- The 'FormsControlLibrary.dll' is a one that I have written (*source code available on request*), all the other dll's are third-party ones.
+- The 'FormsControlLibrary.dll' is one that I have written (*source code available on request*), all the other dll's are third-party ones.
 - There is currently no readme file or help text but installation can be done simply by copying the bin/Release directory to wherever you want it.
 
 
@@ -210,19 +209,24 @@ The following are some of the features currently available in Oric Explorer.
 
 ## Missing / Wanted Features
 
-* Search:
+* Search:  ***NOW IMPLEMENTED AS OF v2.3.1 AS A "FILTER" TEXT FIELD***
 
   It would be nice to add a "search" feature to search for a particular software by name in the tapes and/or disks library.
 
   It would also be nice to be able to search for a particular file on a disk, in the entire disk library.
 
-* Test Suite
+
+
+* Test Suite:
 
   There are currently no unit or integration tests for this application.
 
   Unit tests would be particularly appropriate for testing the tape/disk format functions (such as read/write tape, read/write sector, etc.) and ensuring there is no regression.
 
-  Integration tests would be useful to test the UI and ensure there are no bugs such as the one mentioned for the "Settings dialogue" in the "Tape and DIsk Folders" tab, when on the "Update" button if there is no selected line in the listbox below.
+  Integration tests would be useful to test the UI and ensure there are no bugs such as the one mentioned for the "Settings dialogue" in the "Tape and Disk Folders" tab, when clicking on the "Update" button if there is no selected line in the listbox below.
 
 * Help > Check for Updates: should now check for newer versions on the Github repo (by checking version number on dist/ on master, and/or by checking git version number tags that should need to be standardized, i.e. to use [SemVer](https://semver.org/) versioning rules).
+***==> NOW IMPLEMENTED AS OF v2.3.0***
+
+
 
