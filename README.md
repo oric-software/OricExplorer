@@ -5,15 +5,17 @@ This is the new official *Oric Explorer* GitHub repository at https://github.com
 This software was originally written by Scott Davies (http://oric.mrandmrsdavies.com/ -- archived in the Wayback Machine Internet Archive at https://web.archive.org/web/20190609120811/http://oric.mrandmrsdavies.com/).
 
 *Documented and published to GitHub by Laurent D. (laurentd75 on defence-force.org and github.com) in September 2018.*
-*Moved to the oric_software GitHub organization by retroric on 25 September 2020.*
-*Primarily maintained by Damien P. *dipisoft*.*
+
+*Moved to the oric_software GitHub organization by __retroric__ on 25 September 2020.*
+
+*Primarily maintained by Damien P. __dipisoft__.*
 
 
 ## Presentation and History
 
 Oric Explorer is a GUI application for exploring collections of Oric media, primarily tape images and floppy disk images of various formats. This includes all data pertaining to the different models of Oric computers: Oric 1, Oric Atmos, and Oric Telestrat.
 
-This application was originally created and developed by Scott Davies and published on his web site at http://oric.mrandmrsdavies.com/.
+This application was originally created and developed by Scott Davies and published on his web site at http://oric.mrandmrsdavies.com/ (now archived at https://web.archive.org/web/20190609120811/http://oric.mrandmrsdavies.com/).
 
 The first version of Oric Explorer (referred to as "v0.70" in the application and on the author's website, although the executable file bore the "0.69.0" internal version number)  was released circa November 2008.
 
@@ -37,13 +39,12 @@ The original description for this application is reproduced below:
 
 ## Development status
 
-Oric Explorer is currently up for adoption. If you are interested in further developing and maintaining this software, you are encouraged to fork this repository and get in touch with the Oric community on the Defence Force forums.
+Oric Explorer is currently maintained by **Damien P. (dipisoft on GitHub)**. If you are interested in further developing and maintaining this software, you are encouraged to participate bu getting in touch with the **oric_software** GitHub organization members or on the CEO forums (http://forums.oric.org/) or on the Defence Force forum (http://forum.defence-force.org/).
 
-A topic was created especially for this purpose on the Defence Force Forums and can be found here:
-
+See the thread that was initially started on the Defence Force forum when this softare was published on GitHub:
 http://forum.defence-force.org/viewtopic.php?t=1829
 
-Please also read ***AuthorsNotes.md*** which is a copy of an email sent to me by Scott on 23 April 2018 that explains in detail  the current status of the software and the reasons why Scott had to stop development.
+Please also read ***AuthorsNotes.md*** which is a copy of an email sent to me (Laurent D.) by Scott on 23 April 2018 that explains in detail  the current status of the software and the reasons why Scott had to stop development.
 
 Please acknowledge the original author's name and wishes in all further development and abide by the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) licence this project was placed under (see **OricExplorer-LICENCE-CC-BY-NC-SA-4.0**.md or .txt file).
 
