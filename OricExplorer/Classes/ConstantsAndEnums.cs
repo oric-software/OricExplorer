@@ -5,8 +5,7 @@
 
     public static class ConstantsAndEnums
     {
-        //public const string APP_VERSION_URL = "http://oric.mrandmrsdavies.com/app_version.xml";
-        public const string APP_VERSION_URL = "https://raw.githubusercontent.com/laurentd75/OricExplorer/master/dist/app_version.xml";
+        public const string APP_VERSION_URL = "https://github.com/oric-software/OricExplorer/raw/master/dist/app_version.xml";
 
         public static readonly Color BACKGROUND = Color.FromArgb(30, 30, 30);
 
