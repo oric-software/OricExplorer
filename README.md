@@ -13,7 +13,7 @@ This software was originally written by **Scott Davies** (http://oric.mrandmrsda
 
 ## Presentation and History
 
-Oric Explorer is a GUI application for exploring collections of Oric media, primarily tape images and floppy disk images of various formats. This includes all data pertaining to the different models of Oric computers: Oric 1, Oric Atmos, and Oric Telestrat.
+Oric Explorer is a .Net GUI  application (running primarily on Windows but also compatible with macOS & Linux) for exploring collections of Oric media, primarily tape and floppy disk images of various formats. Features include viewing text and binary data, pictures, and code with syntax highlighting pertaining to software designed for the different models of Oric 8-bit computers: Oric 1, Oric Atmos, and Oric Telestrat.
 
 This application was originally created and developed by Scott Davies and published on his web site at http://oric.mrandmrsdavies.com/ (now archived at https://web.archive.org/web/20190609120811/http://oric.mrandmrsdavies.com/).
 
