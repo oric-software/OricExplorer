@@ -32,7 +32,7 @@ namespace OricExplorer
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblCopyright = new System.Windows.Forms.Label();
             this.lklWebsite = new System.Windows.Forms.LinkLabel();
-            this.lklContact = new System.Windows.Forms.LinkLabel();
+            this.lklRepository = new System.Windows.Forms.LinkLabel();
             this.grpContributors = new GroupFrame.GroupFrame();
             this.rtbContributors = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
@@ -81,27 +81,29 @@ namespace OricExplorer
             this.lklWebsite.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lklWebsite.AutoSize = true;
             this.lklWebsite.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lklWebsite.Location = new System.Drawing.Point(130, 204);
+            this.lklWebsite.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(102)))), ((int)(((byte)(204)))));
+            this.lklWebsite.Location = new System.Drawing.Point(100, 204);
             this.lklWebsite.Name = "lklWebsite";
-            this.lklWebsite.Size = new System.Drawing.Size(135, 17);
+            this.lklWebsite.Size = new System.Drawing.Size(194, 17);
             this.lklWebsite.TabIndex = 2;
             this.lklWebsite.TabStop = true;
-            this.lklWebsite.Text = "Oric Explorer Website";
+            this.lklWebsite.Text = "Oric Explorer website (archived)";
             this.lklWebsite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lklWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lklWebsiteAndContact_LinkClicked);
+            this.lklWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lklWebsiteAndRepository_LinkClicked);
             // 
-            // lklContact
+            // lklRepository
             // 
-            this.lklContact.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.lklContact.AutoSize = true;
-            this.lklContact.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lklContact.Location = new System.Drawing.Point(113, 225);
-            this.lklContact.Name = "lklContact";
-            this.lklContact.Size = new System.Drawing.Size(168, 17);
-            this.lklContact.TabIndex = 3;
-            this.lklContact.TabStop = true;
-            this.lklContact.Text = "Oric Explorer Email Contact";
-            this.lklContact.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lklWebsiteAndContact_LinkClicked);
+            this.lklRepository.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lklRepository.AutoSize = true;
+            this.lklRepository.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lklRepository.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(102)))), ((int)(((byte)(204)))));
+            this.lklRepository.Location = new System.Drawing.Point(123, 225);
+            this.lklRepository.Name = "lklRepository";
+            this.lklRepository.Size = new System.Drawing.Size(149, 17);
+            this.lklRepository.TabIndex = 3;
+            this.lklRepository.TabStop = true;
+            this.lklRepository.Text = "Oric Explorer repository";
+            this.lklRepository.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lklWebsiteAndRepository_LinkClicked);
             // 
             // grpContributors
             // 
@@ -144,7 +146,7 @@ namespace OricExplorer
             this.CancelButton = this.btnOK;
             this.ClientSize = new System.Drawing.Size(395, 387);
             this.Controls.Add(this.grpContributors);
-            this.Controls.Add(this.lklContact);
+            this.Controls.Add(this.lklRepository);
             this.Controls.Add(this.lklWebsite);
             this.Controls.Add(this.lblCopyright);
             this.Controls.Add(this.picLogo);
@@ -171,7 +173,7 @@ namespace OricExplorer
         private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Label lblCopyright;
         private System.Windows.Forms.LinkLabel lklWebsite;
-        private System.Windows.Forms.LinkLabel lklContact;
+        private System.Windows.Forms.LinkLabel lklRepository;
         private GroupFrame.GroupFrame grpContributors;
         private System.Windows.Forms.RichTextBox rtbContributors;
     }
