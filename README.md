@@ -150,6 +150,7 @@ See also https://en.wikipedia.org/wiki/Creative_Commons_license for a more gener
 By downloading and using this software, you hereby declare that you agree to be bound by the terms of this licence. If you do not agree to these terms, do not download, install or use the software.
 
 
+
 ## Features Overview
 
 The following are some of the features currently available in Oric Explorer.
@@ -160,12 +161,15 @@ The following are some of the features currently available in Oric Explorer.
 - Display Character Sets and HIRES/TEXT screens.
 - Show a file as a Hexdump.
 - Show the source of BASIC programs with syntax highlighting.
+- Show the source of HYPERBASIC programs with syntax highlighting. ***==> IMPLEMENTED AS OF v2.3.0***
+- Show the source of TELEASS programs with syntax highlighting. ***==> IMPLEMENTED AS OF v2.3.0***
 - Show Machine code programs in 6502 assembly source form.
 - View embedded data in TEXT or HIRES format or as a Character set (by means of a built-in Data viewer that currently supports the viewing of these 3 kinds of data)
 - Save HIRES or TEXT screens as an image file (formats currently supported include .bmp, .gif, .jpg, .png and .tif)
 - Print HIRES or TEXT screens to an attached printer.
 - View Disk contents using a graphical representation of the sectors.
 - View TEXT or HIRES images stored on a floppy disk image through a built-in specific Image Viewer
+- Launch .dsk and .tap medias in Oricutron emulator
 
 
 
@@ -185,11 +189,11 @@ The following are some of the features currently available in Oric Explorer.
 
 ## Known Bugs
 
-* DSK create / write feature: the DSK creation feature is currently broken and needs to be fixed
+* DSK create/write feature: the DSK creation feature is currently broken and needs to be fixed
 
-* Oric Explorer Settings Dialogue: in the "Tape and DIsk Folders" tab, clicking on the "Update" button raises an untrapped exception if there is no active selection in the listbox below (Media type/Folder listbox). 
+~~* Oric Explorer Settings Dialogue: in the "Tape and DIsk Folders" tab, clicking on the "Update" button raises an untrapped exception if there is no active selection in the listbox below (Media type/Folder listbox).~~  ***==> CORRECTED AS OF v2.1.0***
 
-  Note: this feature provides an easy means to update the selected location in the listbox with the contents of the text entered in the text field in the "Folder details" section to the left of the "Update" button.
+  ~~Note: this feature provides an easy means to update the selected location in the listbox with the contents of the text entered in the text field in the "Folder details" section to the left of the "Update" button.~~
 
 
 
@@ -197,17 +201,17 @@ The following are some of the features currently available in Oric Explorer.
 
 ### Usability
 
-* Selection of Tapes / Disks / ROMs directories
+* Selection of Tapes/Disks/ROMs directories
 
-  The File selection dialogue chosen is currently quite cumbersome to use as it employs the "new style"  Windows "Search Folder" folder selection dialogue instead of the "old style" "Open" file/folder selector that allows you to type the name of directories or create new directories.
+  The File selection dialogue chosen is currently quite cumbersome to use as it employs the "new style" Windows "Search Folder" folder selection dialogue instead of the "old style" "Open" file/folder selector that allows you to type the name of directories or create new directories.
 
   If possible this should be changed, or, at the very least, there should be a text field to input the desired location instead of having to browse all the way from the desktop root to the desired location.
 
-  Note: there actually is a means of entering a path in a text field and use it, via the Update button (see "bugs" section above...). But it actually is quite tedious, as you first have to add an entry using the "Search Folder" Windows dialogue, then change the added entry using the update button.
+  ~~Note: there actually is a means of entering a path in a text field and use it, via the Update button (see "bugs" section above...). But it actually is quite tedious, as you first have to add an entry using the "Search Folder" Windows dialogue, then change the added entry using the update button.~~  ***==> CORRECTED AS OF v2.1.0***
 
 
 
-## Missing / Wanted Features
+## Missing/Wanted Features
 
 * Search:  ***NOW IMPLEMENTED AS OF v2.3.1 AS A "FILTER" TEXT FIELD***
 
