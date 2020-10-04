@@ -29,7 +29,7 @@ namespace OricExplorer.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCheckForUpdate));
-            this.btnYes = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.ibxDetails = new InfoBox.InfoBox();
@@ -42,15 +42,16 @@ namespace OricExplorer.Forms
             this.grpVersions.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnYes
+            // btnUpdate
             // 
-            this.btnYes.Location = new System.Drawing.Point(181, 216);
-            this.btnYes.Name = "btnYes";
-            this.btnYes.Size = new System.Drawing.Size(85, 23);
-            this.btnYes.TabIndex = 0;
-            this.btnYes.Text = "Yes";
-            this.btnYes.UseVisualStyleBackColor = true;
-            this.btnYes.Click += new System.EventHandler(this.btnYes_Click);
+            this.btnUpdate.Location = new System.Drawing.Point(181, 216);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(85, 23);
+            this.btnUpdate.TabIndex = 0;
+            this.btnUpdate.Text = "Update";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Visible = false;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnClose
             // 
@@ -149,7 +150,7 @@ namespace OricExplorer.Forms
             this.Controls.Add(this.ibxDetails);
             this.Controls.Add(this.picLogo);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.btnYes);
+            this.Controls.Add(this.btnUpdate);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -166,7 +167,7 @@ namespace OricExplorer.Forms
         }
 
         #endregion
-        private System.Windows.Forms.Button btnYes;
+        private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.PictureBox picLogo;
         private InfoBox.InfoBox ibxDetails;

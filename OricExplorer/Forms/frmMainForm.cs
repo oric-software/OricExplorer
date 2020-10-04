@@ -127,29 +127,37 @@ namespace OricExplorer
 
         private void frmMainForm_Shown(object sender, EventArgs e)
         {
-            if (Configuration.Persistent.TapeFolders.Count + Configuration.Persistent.DiskFolders.Count + Configuration.Persistent.RomFolders.Count + Configuration.Persistent.OtherFilesFolders.Count == 0)
-            {
-                // Open the settings dialog
-                using (frmSettings settingsForm = new frmSettings())
-                {
-                    settingsForm.ShowDialog();
-                }
-            }
+            bool boolCloseApp = false;
 
-            // Check for updates first
+            // check for updates first if option is enabled
             if (Configuration.Persistent.CheckForUpdatesOnStartup)
             {
-                if (getVersionFromWebsite())
+                using (frmCheckForUpdate checkForUpdateForm = new frmCheckForUpdate(true))
                 {
-                    using (frmCheckForUpdate checkForUpdateForm = new frmCheckForUpdate())
-                    {
-                        checkForUpdateForm.ShowDialog();
-                    }
+                    boolCloseApp = (checkForUpdateForm.ShowDialog() == DialogResult.OK);
                 }
             }
 
-            // Build the file tree
-            BuildFileTree();
+            // restart and close the application if the update was successful
+            if (boolCloseApp)
+            {
+                Process.Start(Assembly.GetExecutingAssembly().Location);
+                Application.Exit();
+            }
+            else
+            {
+                // open the settings dialog if configuration contains no media folder
+                if (Configuration.Persistent.TapeFolders.Count + Configuration.Persistent.DiskFolders.Count + Configuration.Persistent.RomFolders.Count + Configuration.Persistent.OtherFilesFolders.Count == 0)
+                {
+                    using (frmSettings settingsForm = new frmSettings())
+                    {
+                        settingsForm.ShowDialog();
+                    }
+                }
+
+                // Build the file tree
+                BuildFileTree();
+            }
         }
 
         private void frmMainForm_Closing(object sender, CancelEventArgs e)
@@ -2333,93 +2341,6 @@ namespace OricExplorer
         private void printPreviewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             prtPreviewDialog.ShowDialog();
-        }
-        #endregion
-
-        #region Initial version check
-        private bool getVersionFromWebsite()
-        {
-            Version newVersion = null;
-
-            try
-            {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                                                     | SecurityProtocolType.Tls11
-                                                     | SecurityProtocolType.Tls12
-                                                     | SecurityProtocolType.Ssl3;
-
-                // Provide the XmlTextReader with the URL of our xml document
-                XmlTextReader reader = new XmlTextReader(ConstantsAndEnums.APP_VERSION_URL);
-
-                // Simply (and easily) skip the junk at the beginning
-                reader.MoveToContent();
-
-                // internal - as the XmlTextReader moves only forward, we save current xml element name
-                // in elementName variable. When we parse a text node, we refer to elementName to check
-                // what was the node name
-                string elementName = "";
-
-                // We check if the xml starts with a proper "ourfancyapp" element node
-                if ((reader.NodeType == XmlNodeType.Element)) // && (reader.Name == "oricexplorer"))
-                {
-                    while (reader.Read())
-                    {
-                        // When we find an element node, we remember its name
-                        if (reader.NodeType == XmlNodeType.Element)
-                            elementName = reader.Name;
-                        else
-                        {
-                            // for text nodes...
-                            if ((reader.NodeType == XmlNodeType.Text) && (reader.HasValue))
-                            {
-                                // We check what the name of the node was
-                                switch (elementName)
-                                {
-                                    case "version":
-                                        // Thats why we keep the version info in xxx.xxx.xxx.xxx format
-                                        // the Version class does the parsing for us
-                                        newVersion = new Version(reader.Value);
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                reader.Close();
-
-                compareVersions(newVersion);
-            }
-            catch (FileNotFoundException)
-            {
-                return false;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool compareVersions(Version newVersion)
-        {
-            // Example : 2.1.3.4567
-            // Major.Minor.Build.Revision
-
-            bool newVersionAvailable;
-            Version curVersion = Assembly.GetExecutingAssembly().GetName().Version;
-
-            if (curVersion.CompareTo(newVersion) < 0)
-            {
-                newVersionAvailable = true;
-            }
-            else
-            {
-                newVersionAvailable = false;
-            }
-
-            return newVersionAvailable;
         }
         #endregion
 

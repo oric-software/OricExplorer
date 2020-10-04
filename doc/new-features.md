@@ -1,19 +1,22 @@
 Here is a history of OricExplorer evolutions, presenting the non-exhaustive list of corrections/additions of each recent version:
 
+# Oric Explorer 2.3.3
+* check for update on startup: the update search window is only displayed if an update is available
+* update module: instead of just opening the repo page in the browser, the application can now update its main binary
+
+
 # Oric Explorer 2.3.2
 * updating repo url (for update search)
 * in "About" window: replacing contact link (which allowed to send an email to Scott) with repo link
 
 
 # Oric Explorer 2.3.1
-
 * adding filter feature (CTRL-F) on main list
 * updating original/official website (http://oric.mrandmrsdavies.com/) with the archived version of waybackmachine (http://web.archive.org/web/201906091208 ... avies.com/)
 and some other minor changes
 
 
 # Oric Explorer 2.3
-
 * added the possibility to display the source of Hyperbasic files (thanks to Assinie for his help)
 * added support for a new "other files" section (under the Disks, Tapes and ROM's items), whose path or paths are to be configured in the configuration window. This new section can be used to make non-executable files appear in the emulator (orix binaries or others) in order to be able to display the content (request formulated by Jede).
 * the "media type" items (Disks, Tapes, ROM's and Other Files) and those of sub-categories (FT-Dos, Sedoric, Stratsed, etc ... as well as the entries in the tapes index) are not now displayed only if they contain items
@@ -65,7 +68,6 @@ and some other minor changes
 
 
 # Oric Explorer 2.1
-
 * use of aliases of variable types (bool instead of Boolean, string instead of String, short instead of Int16, etc.)
 * unassignment of unnecessarily assigned variables
 * deactivation of variables and unused code
@@ -79,7 +81,6 @@ and some other minor changes
 
 
 # Oric Explorer 2.0 new features
-
 Here is a quick list of the welcome changes/additions I noted so far in Oric Explorer (compared to the interim 2.0 version released circa 2014/2015):
 
 - new dark theme
