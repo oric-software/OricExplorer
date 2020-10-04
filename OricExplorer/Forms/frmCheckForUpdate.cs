@@ -1,47 +1,72 @@
 namespace OricExplorer.Forms
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Net;
+    using System.Reflection;
+    using System.Threading;
     using System.Windows.Forms;
     using System.Xml;
 
     public partial class frmCheckForUpdate : Form
     {
-        private string websiteURL = "";
-        //private string updateDetails = "";
-        private Version newVersion = null;
+        private string mstrBinaryUpdateURL = "";
+        private Version mNewVersion = null;
+        private bool mboolCloseOnShown = false;
 
-        public frmCheckForUpdate()
+        public frmCheckForUpdate(bool autoCheck = false)
         {
             InitializeComponent();
-        }
-
-        private void frmCheckForUpdate_Shown(object sender, EventArgs e)
-        {
-            Version curVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            
+            Version curVersion = Assembly.GetExecutingAssembly().GetName().Version;
             ibxCurrentVersion.Text = string.Format("{0}.{1}.{2}.{3}", curVersion.Major, curVersion.Minor, curVersion.Build, curVersion.Revision);
 
-            btnYes.Enabled = false;
-            btnYes.Hide();
-
-            Application.DoEvents();
+            bool boolUpdateAvailable = false;
 
             if (getVersionFromWebsite())
             {
                 if (compareVersions())
                 {
-                    btnClose.Text = "No";
+                    ibxDetails.Text = "An update for Oric Explorer is available.\n\nWould you like to update the binary?";
+
+                    btnUpdate.Visible = true;
+                    boolUpdateAvailable = true;
                 }
+                else
+                {
+                    ibxDetails.Text = "No updates available.\n\nCurrent version is up to date.";
+                }
+            }
+
+            if (autoCheck && !boolUpdateAvailable)
+            {
+                mboolCloseOnShown = true;
             }
         }
 
-        private void btnYes_Click(object sender, EventArgs e)
+        private void frmCheckForUpdate_Shown(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(websiteURL);
+            if (mboolCloseOnShown)
+            {
+                this.Close();
+            }
+        }
 
-            btnYes.Hide();
-            btnClose.Text = "Close";
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            btnUpdate.Enabled = false;
+            btnClose.Enabled = false;
+
+            if (updateFromWebsite())
+            {
+                this.DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                btnUpdate.Visible = false;
+                btnClose.Enabled = true;
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -88,15 +113,14 @@ namespace OricExplorer.Forms
                                     case "version":
                                         // Thats why we keep the version info in xxx.xxx.xxx.xxx format
                                         // the Version class does the parsing for us
-                                        newVersion = new Version(reader.Value);
+                                        mNewVersion = new Version(reader.Value);
                                         break;
 
                                     case "url":
-                                        websiteURL = reader.Value;
+                                        mstrBinaryUpdateURL = $"{reader.Value}/{Path.GetFileName(Assembly.GetExecutingAssembly().Location)}";
                                         break;
 
                                     case "details":
-                                        //updateDetails = reader.Value;
                                         break;
                                 }
                             }
@@ -129,21 +153,106 @@ namespace OricExplorer.Forms
 
             Version curVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
-            ibxAvailableVersion.Text = string.Format("{0}.{1}.{2}.{3}", newVersion.Major, newVersion.Minor, newVersion.Build, newVersion.Revision);
+            ibxAvailableVersion.Text = string.Format("{0}.{1}.{2}.{3}", mNewVersion.Major, mNewVersion.Minor, mNewVersion.Build, mNewVersion.Revision);
 
-            if (curVersion.CompareTo(newVersion) < 0)
-            {
-                btnYes.Enabled = true;
-                btnYes.Show();
+            return (curVersion.CompareTo(mNewVersion) < 0);
+        }
 
-                ibxDetails.Text = "An update for Oric Explorer is available.\n\nCheck the update web page for more details and to download the update.\n\nWould you like to go to the update web page?";
-                return true;
-            }
-            else
+        private bool updateFromWebsite()
+        {
+            string strBinary = Assembly.GetExecutingAssembly().Location;
+            string strOldBinary = strBinary + ".old";
+            string strNewBinary = strBinary + ".new";
+
+            try
             {
-                ibxDetails.Text = "No updates available.\n\nCurrent version is up to date.";
-                return false;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                                                     | SecurityProtocolType.Tls11
+                                                     | SecurityProtocolType.Tls12
+                                                     | SecurityProtocolType.Ssl3;
+
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(mstrBinaryUpdateURL);
+                req.Proxy = null;
+                req.Timeout = 10000;
+
+                // connection to url
+                HttpWebResponse rep = (HttpWebResponse)req.GetResponse();
+
+                // status OK?
+                if (rep.StatusCode == HttpStatusCode.OK)
+                {
+                    if (File.Exists(strNewBinary))
+                    {
+                        File.Delete(strNewBinary);
+                    }
+                    
+                    long lngTotal = rep.ContentLength;
+                    long lngDownloaded = 0;
+                    int intBufferSize = 2048;
+                    byte[] bytBuffer = new byte[intBufferSize];
+                    int intSize;
+
+                    Stream sr = rep.GetResponseStream();
+                    Stream stm = new FileStream(strNewBinary, FileMode.Create, FileAccess.Write, FileShare.None);
+
+                    Stopwatch sw = new Stopwatch();
+                    sw.Start();
+
+                    while ((intSize = sr.Read(bytBuffer, 0, bytBuffer.Length)) > 0)
+                    {
+                        stm.Write(bytBuffer, 0, intSize);
+
+                        lngDownloaded += intSize;
+
+                        double dblDownloaded = (double)lngDownloaded;
+                        double dblTotal = (double)lngTotal;
+                        double dblPercentage = (dblDownloaded / dblTotal);
+                        int intPercentage = (int)(dblPercentage * 100);
+
+                        double dblTemps = sw.ElapsedMilliseconds;
+                        double dblReste = Math.Round(dblTemps / dblDownloaded * (dblTotal - dblDownloaded) / 1000, 1);
+
+                        ibxDetails.Text = $"Downloaded: {intPercentage}%, ETA: {dblReste}s";
+                        ibxDetails.Refresh();
+
+                        Application.DoEvents();
+                    }
+
+                    sw.Stop();
+                    stm.Close();
+                    sr.Close();
+
+                    ibxDetails.Text = "Download finished.";
+                    ibxDetails.Refresh();
+                    Application.DoEvents();
+                    Thread.Sleep(1000);
+
+                    if (File.Exists(strOldBinary))
+                    {
+                        File.Delete(strOldBinary);
+                    }
+                    File.Move(strBinary, strOldBinary);
+                    File.Move(strNewBinary, strBinary);
+
+                    ibxDetails.Text += "\n\nBinary updated.";
+                    ibxDetails.Refresh();
+                    Application.DoEvents();
+                    Thread.Sleep(1000);
+
+                    ibxDetails.Text += "\n\nRestarting application.";
+                    ibxDetails.Refresh();
+                    Application.DoEvents();
+                    Thread.Sleep(1000);
+
+                    return true;
+                }
             }
+            catch (Exception ex)
+            {
+                ibxDetails.Text = $"Update has failed: {ex.Message}";
+            }
+
+            return false;
         }
     }
 }
