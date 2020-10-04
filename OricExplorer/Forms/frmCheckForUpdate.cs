@@ -175,11 +175,19 @@ namespace OricExplorer.Forms
                 req.Proxy = null;
                 req.Timeout = 10000;
 
+<<<<<<< HEAD
                 // connection to url
                 HttpWebResponse rep = (HttpWebResponse)req.GetResponse();
 
                 // status OK?
                 if (rep.StatusCode == HttpStatusCode.OK)
+=======
+                // tentative de connexion à l'url spécifiée
+                HttpWebResponse rep = (HttpWebResponse)req.GetResponse();
+
+                // le statut est-il OK ?
+                if (rep.StatusCode == HttpStatusCode.OK) // peut être égal à -1 (contenu dynamique)
+>>>>>>> 663b4fb90f05a13fabe3953696dd508c064da146
                 {
                     if (File.Exists(strNewBinary))
                     {
@@ -187,10 +195,17 @@ namespace OricExplorer.Forms
                     }
                     
                     long lngTotal = rep.ContentLength;
+<<<<<<< HEAD
                     long lngDownloaded = 0;
                     int intBufferSize = 2048;
                     byte[] bytBuffer = new byte[intBufferSize];
                     int intSize;
+=======
+                    long lngTéléchargé = 0;
+                    int intTailleBuffer = 2048;// 4096;
+                    byte[] bytBuffer = new byte[intTailleBuffer];
+                    int intRécup;
+>>>>>>> 663b4fb90f05a13fabe3953696dd508c064da146
 
                     Stream sr = rep.GetResponseStream();
                     Stream stm = new FileStream(strNewBinary, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -198,6 +213,7 @@ namespace OricExplorer.Forms
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
 
+<<<<<<< HEAD
                     while ((intSize = sr.Read(bytBuffer, 0, bytBuffer.Length)) > 0)
                     {
                         stm.Write(bytBuffer, 0, intSize);
@@ -213,6 +229,23 @@ namespace OricExplorer.Forms
                         double dblReste = Math.Round(dblTemps / dblDownloaded * (dblTotal - dblDownloaded) / 1000, 1);
 
                         ibxDetails.Text = $"Downloaded: {intPercentage}%, ETA: {dblReste}s";
+=======
+                    while ((intRécup = sr.Read(bytBuffer, 0, bytBuffer.Length)) > 0)
+                    {
+                        stm.Write(bytBuffer, 0, intRécup);
+
+                        lngTéléchargé += intRécup;
+
+                        double dblTéléchargé = (double)lngTéléchargé;
+                        double dblTotal = (double)lngTotal;
+                        double dblPourcentage = (dblTéléchargé / dblTotal);
+                        int intPourcentage = (int)(dblPourcentage * 100);
+
+                        double dblTemps = sw.ElapsedMilliseconds;
+                        double dblReste = Math.Round(dblTemps / dblTéléchargé * (dblTotal - dblTéléchargé) / 1000, 1);
+
+                        ibxDetails.Text = $"Downloaded: {intPourcentage}%, ETA: {dblReste}s";
+>>>>>>> 663b4fb90f05a13fabe3953696dd508c064da146
                         ibxDetails.Refresh();
 
                         Application.DoEvents();
