@@ -117,7 +117,7 @@ namespace OricExplorer.Forms
                                         break;
 
                                     case "url":
-                                        mstrBinaryUpdateURL = $"{reader.Value}/{Path.GetFileName(Assembly.GetExecutingAssembly().Location)}";
+                                        mstrBinaryUpdateURL = $"{reader.Value.Replace("/blob/", "/raw/")}/{Assembly.GetExecutingAssembly().GetName().Name}.bin";
                                         break;
 
                                     case "details":
@@ -161,8 +161,8 @@ namespace OricExplorer.Forms
         private bool updateFromWebsite()
         {
             string strBinary = Assembly.GetExecutingAssembly().Location;
-            string strOldBinary = strBinary + ".old";
-            string strNewBinary = strBinary + ".new";
+            string strNewBinary = $"{Path.GetFileNameWithoutExtension(strBinary)}.bin";
+            string strOldBinary = $"{Path.GetFileNameWithoutExtension(strBinary)}.old";
 
             try
             {
