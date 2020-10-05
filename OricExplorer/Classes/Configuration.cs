@@ -39,7 +39,7 @@
             public List<string> OtherFilesFolders { get; set; } = new List<string>();
             public string EmulatorExecutable { get; set; }
             public Machine DefaultMachineForTape { get; set; } = Machine.Atmos;
-            public bool CheckForUpdatesOnStartup { get; set; } = false;
+            public bool CheckForUpdatesOnStartup { get; set; } = true;
             public Color PageBackground { get; set; } = ConstantsAndEnums.BACKGROUND;
             public Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> SyntaxHighlightingStyles { get; set; } = new Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle>();
             public bool TapeIndex { get; set; } = true;

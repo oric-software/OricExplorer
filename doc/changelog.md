@@ -1,5 +1,8 @@
 Here is a history of OricExplorer evolutions, presenting the non-exhaustive list of corrections/additions of each recent version:
 
+# Oric Explorer 2.3.4
+* fix a bug in the update module: the binary fetch link was wrong
+
 # Oric Explorer 2.3.3
 * check for update on startup: the update search window is only displayed if an update is available
 * update module: instead of just opening the repo page in the browser, the application can now update its main binary
