@@ -111,6 +111,11 @@
                     break;
             }
 
+            if (this.GetFiles() == null)
+            {
+                DOSFormat = OricDisk.DOSFormats.Unknown;
+            }
+
             CreationTime = File.GetCreationTime(diskPathName);
             LastAccessTime = File.GetLastAccessTime(diskPathName);
             LastWriteTime = File.GetLastWriteTime(diskPathName);

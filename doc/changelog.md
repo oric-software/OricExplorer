@@ -1,7 +1,13 @@
 Here is a history of OricExplorer evolutions, presenting the non-exhaustive list of corrections/additions of each recent version:
 
+# Oric Explorer 2.3.5
+* consolidation of the analysis of .tap and .dsk files performed during the scan.
+* added post-build processing to automatically create the archive when the release is successfully generated (via a powershell script which extracts the version number of the app_version.xml file and integrates it into the name of the .zip file)
+
+
 # Oric Explorer 2.3.4
 * fix a bug in the update module: the binary fetch link was wrong
+
 
 # Oric Explorer 2.3.3
 * check for update on startup: the update search window is only displayed if an update is available

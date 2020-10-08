@@ -247,6 +247,7 @@
             // txtProgramName
             // 
             this.txtProgramName.Location = new System.Drawing.Point(106, 24);
+            this.txtProgramName.MaxLength = 16;
             this.txtProgramName.Name = "txtProgramName";
             this.txtProgramName.Size = new System.Drawing.Size(155, 20);
             this.txtProgramName.TabIndex = 1;
