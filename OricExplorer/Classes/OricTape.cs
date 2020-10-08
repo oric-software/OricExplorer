@@ -3,7 +3,6 @@ namespace OricExplorer
     using System;
     using System.Collections;
     using System.IO;
-    using System.Linq;
 
     internal class OricTape
     {
@@ -226,67 +225,76 @@ namespace OricExplorer
 
             ProgramHeader programHeader = new ProgramHeader();
 
-            // Skip passed the unused bytes
-            m_ui32BufferIdx += 1;
-
-            if (WriteToLogFile)
+            if (m_bTapeBuffer.Length > 14)
             {
-                swLogfile.WriteLine("> Reading program header. (Offset 0x{0:X4})", m_ui32BufferIdx);
+                try
+                {
+                    // Skip passed the unused bytes
+                    m_ui32BufferIdx += 1;
+
+                    if (WriteToLogFile)
+                    {
+                        swLogfile.WriteLine("> Reading program header. (Offset 0x{0:X4})", m_ui32BufferIdx);
+                    }
+
+                    // Get the program type
+                    byte bProgramFormat = m_bTapeBuffer[m_ui32BufferIdx];
+
+                    programHeader.bProgramFormat = m_bTapeBuffer[m_ui32BufferIdx];
+
+                    m_ui32BufferIdx++;
+
+                    // Get the AutoRun flag
+                    if (m_bTapeBuffer[m_ui32BufferIdx] == 0x00)
+                        programHeader.bAutoRun = OricProgram.AutoRunFlag.Disabled;
+                    else
+                        programHeader.bAutoRun = OricProgram.AutoRunFlag.Enabled;
+
+                    m_ui32BufferIdx++;
+
+                    // Get the programs end address
+                    highByte = m_bTapeBuffer[m_ui32BufferIdx];
+                    lowByte = m_bTapeBuffer[m_ui32BufferIdx + 1];
+
+                    programHeader.ui16EndAddress = Convert.ToUInt16(lowByte + (highByte * 256));
+
+                    m_ui32BufferIdx += 2;
+
+                    // Get the programs start address
+                    highByte = m_bTapeBuffer[m_ui32BufferIdx];
+                    lowByte = m_bTapeBuffer[m_ui32BufferIdx + 1];
+
+                    programHeader.ui16StartAddress = Convert.ToUInt16(lowByte + (highByte * 256));
+
+                    if (bProgramFormat == 0x00)
+                        programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.BasicProgram;
+                    else
+                    {
+                        if (programHeader.ui16StartAddress == 0xA000)
+                            programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.HiresScreen;
+                        else if (programHeader.ui16StartAddress == 0xB500)
+                            programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.CharacterSet;
+                        else if (programHeader.ui16StartAddress.In((ushort)0xBB80, (ushort)0xBBA8))
+                            programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.TextScreen;
+                        else
+                            programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.BinaryFile;
+                    }
+
+                    m_ui32BufferIdx += 3;
+
+                    while (m_bTapeBuffer[m_ui32BufferIdx] != 0)
+                    {
+                        programHeader.strProgramName += Convert.ToChar(m_bTapeBuffer[m_ui32BufferIdx]);
+                        m_ui32BufferIdx++;
+                    }
+
+                    // Skip passed the null terminator
+                    m_ui32BufferIdx++;
+                }
+                catch (Exception)
+                {
+                }
             }
-
-            // Get the program type
-            byte bProgramFormat = m_bTapeBuffer[m_ui32BufferIdx];
-
-            programHeader.bProgramFormat = m_bTapeBuffer[m_ui32BufferIdx];
-
-            m_ui32BufferIdx++;
-
-            // Get the AutoRun flag
-            if(m_bTapeBuffer[m_ui32BufferIdx] == 0x00)
-                programHeader.bAutoRun = OricProgram.AutoRunFlag.Disabled;
-            else
-                programHeader.bAutoRun = OricProgram.AutoRunFlag.Enabled;
-
-            m_ui32BufferIdx++;
-
-            // Get the programs end address
-            highByte = m_bTapeBuffer[m_ui32BufferIdx];
-            lowByte = m_bTapeBuffer[m_ui32BufferIdx + 1];
-
-            programHeader.ui16EndAddress = Convert.ToUInt16(lowByte + (highByte * 256));
-
-            m_ui32BufferIdx += 2;
-
-            // Get the programs start address
-            highByte = m_bTapeBuffer[m_ui32BufferIdx];
-            lowByte = m_bTapeBuffer[m_ui32BufferIdx + 1];
-
-            programHeader.ui16StartAddress = Convert.ToUInt16(lowByte + (highByte * 256));
-
-            if(bProgramFormat == 0x00)
-                programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.BasicProgram;
-            else
-            {
-                if(programHeader.ui16StartAddress == 0xA000)
-                    programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.HiresScreen;
-                else if(programHeader.ui16StartAddress == 0xB500)
-                    programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.CharacterSet;
-                else if(programHeader.ui16StartAddress.In((ushort)0xBB80, (ushort)0xBBA8))
-                    programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.TextScreen;
-                else
-                    programHeader.bProgramFormat = (byte)OricProgram.ProgramFormat.BinaryFile;
-            }
-
-            m_ui32BufferIdx += 3;
-
-            while(m_bTapeBuffer[m_ui32BufferIdx] != 0)
-            {
-                programHeader.strProgramName += Convert.ToChar(m_bTapeBuffer[m_ui32BufferIdx]);
-                m_ui32BufferIdx++;
-            }
-
-            // Skip passed the null terminator
-            m_ui32BufferIdx++;
 
             return programHeader;
         }

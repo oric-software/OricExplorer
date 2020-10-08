@@ -395,7 +395,9 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
+	del /q "$(SolutionDir)\dist\*.zip"
 	copy /y "$(TargetPath)" "$(SolutionDir)\dist\*.bin"
+	powershell.exe -ExecutionPolicy RemoteSigned -File "$(ProjectDir)\packager\create_archive.ps1" -SolutionDir "$(SolutionDir)"" -TargetDir "$(TargetDir)""
 )
 </PostBuildEvent>
   </PropertyGroup>

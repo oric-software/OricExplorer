@@ -335,183 +335,189 @@
         {
             OricFileInfo[] diskDirectory = null;
 
-            int noOfFiles = 0;
-
-            System.Text.Encoding enc = System.Text.Encoding.ASCII;
-
-            ArrayList diskCatalog = new ArrayList();
-
-            byte bNextTrack = Convert.ToByte(0);
-            byte bNextSector = Convert.ToByte(4);
-
-            byte bCurrTrack = bNextTrack;
-            byte bCurrSector = bNextSector;
-
-            bool bMoreDirectories = true;
-
-            while (bMoreDirectories)
+            try
             {
-                byte[] sectorData = base.ReadSector(bNextTrack, bNextSector);
+                int noOfFiles = 0;
 
-                MemoryStream stm = new MemoryStream(sectorData, 0, sectorData.Length);
-                BinaryReader rdr = new BinaryReader(stm);
+                System.Text.Encoding enc = System.Text.Encoding.ASCII;
 
-                byte[] bByteArray = new byte[32];
+                ArrayList diskCatalog = new ArrayList();
 
-                bNextTrack = rdr.ReadByte();
-                bNextSector = rdr.ReadByte();
+                byte bNextTrack = Convert.ToByte(0);
+                byte bNextSector = Convert.ToByte(4);
 
-                int iFilesInDir = Convert.ToInt16(rdr.ReadByte());
+                byte bCurrTrack = bNextTrack;
+                byte bCurrSector = bNextSector;
 
-                noOfFiles += iFilesInDir;
+                bool bMoreDirectories = true;
 
-                for (int iLoop = 0; iLoop < 15; iLoop++)
+                while (bMoreDirectories)
                 {
-                    OricFileInfo diskFile = new OricFileInfo();
-                    diskFile.MediaType = ConstantsAndEnums.MediaType.DiskFile;
+                    byte[] sectorData = base.ReadSector(bNextTrack, bNextSector);
 
-                    bByteArray = rdr.ReadBytes(6);
+                    MemoryStream stm = new MemoryStream(sectorData, 0, sectorData.Length);
+                    BinaryReader rdr = new BinaryReader(stm);
 
-                    if (bByteArray[0] != '\0')
+                    byte[] bByteArray = new byte[32];
+
+                    bNextTrack = rdr.ReadByte();
+                    bNextSector = rdr.ReadByte();
+
+                    int iFilesInDir = Convert.ToInt16(rdr.ReadByte());
+
+                    noOfFiles += iFilesInDir;
+
+                    for (int iLoop = 0; iLoop < 15; iLoop++)
                     {
-                        string strFilename = enc.GetString(bByteArray).Trim();
+                        OricFileInfo diskFile = new OricFileInfo();
+                        diskFile.MediaType = ConstantsAndEnums.MediaType.DiskFile;
 
-                        if (strFilename.Length > 0)
+                        bByteArray = rdr.ReadBytes(6);
+
+                        if (bByteArray[0] != '\0')
                         {
-                            bByteArray = rdr.ReadBytes(3);
-                            string strExtension = enc.GetString(bByteArray).Trim();
+                            string strFilename = enc.GetString(bByteArray).Trim();
 
-                            diskFile.Name = strFilename;
-                            diskFile.Extension = strExtension;
-
-                            if (strExtension.Length > 0)
+                            if (strFilename.Length > 0)
                             {
-                                diskFile.ProgramName = string.Format("{0}.{1}", diskFile.Name, diskFile.Extension);
-                            }
-                            else
-                            {
-                                diskFile.ProgramName = diskFile.Name;
-                            }
+                                bByteArray = rdr.ReadBytes(3);
+                                string strExtension = enc.GetString(bByteArray).Trim();
 
-                            diskFile.LengthSectors = rdr.ReadUInt16();
+                                diskFile.Name = strFilename;
+                                diskFile.Extension = strExtension;
 
-                            diskFile.FirstSector = rdr.ReadByte();
-                            diskFile.FirstTrack = rdr.ReadByte();
-
-                            diskFile.LastSector = rdr.ReadByte();
-                            diskFile.LastTrack = rdr.ReadByte();
-
-                            byte bProtection = rdr.ReadByte();
-
-                            if (bProtection == 0x80)
-                                diskFile.Protection = OricProgram.ProtectionStatus.Protected;
-                            else if (bProtection == 0xC0)
-                                diskFile.Protection = OricProgram.ProtectionStatus.Invisible;
-                            else
-                                diskFile.Protection = OricProgram.ProtectionStatus.Unprotected;
-
-                            byte[] programData = base.ReadSector(diskFile.FirstTrack, diskFile.FirstSector);
-
-                            MemoryStream stm2 = new MemoryStream(programData, 0, programData.Length);
-                            BinaryReader rdr2 = new BinaryReader(stm2);
-
-                            bByteArray = rdr2.ReadBytes(2);
-
-                            byte bLoadable = rdr2.ReadByte();
-
-                            bByteArray = rdr2.ReadBytes(1);
-
-                            if (bLoadable == 0xFF)
-                            {
-                                diskFile.StartAddress = rdr2.ReadUInt16();
-                                diskFile.EndAddress = rdr2.ReadUInt16();
-
-                                // 0000 = code no T, 0001 = basic, 0002 = basic AUTO, ABCD = code T address
-                                ushort ui16ExeAddress = rdr2.ReadUInt16();
-
-                                if (ui16ExeAddress == 0x0000)
+                                if (strExtension.Length > 0)
                                 {
-                                    diskFile.ExeAddress = diskFile.StartAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
-                                    diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
-                                }
-                                else if (ui16ExeAddress == 0x0001)
-                                {
-                                    diskFile.ExeAddress = diskFile.StartAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
-                                    diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
-                                }
-                                else if (ui16ExeAddress == 0x0002)
-                                {
-                                    diskFile.ExeAddress = diskFile.StartAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
-                                    diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
+                                    diskFile.ProgramName = string.Format("{0}.{1}", diskFile.Name, diskFile.Extension);
                                 }
                                 else
                                 {
-                                    diskFile.ExeAddress = ui16ExeAddress;
-                                    diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
-                                    diskFile.AutoRun = OricProgram.AutoRunFlag.Enabled;
+                                    diskFile.ProgramName = diskFile.Name;
                                 }
 
-                                if (diskFile.Format == OricProgram.ProgramFormat.BinaryFile)
+                                diskFile.LengthSectors = rdr.ReadUInt16();
+
+                                diskFile.FirstSector = rdr.ReadByte();
+                                diskFile.FirstTrack = rdr.ReadByte();
+
+                                diskFile.LastSector = rdr.ReadByte();
+                                diskFile.LastTrack = rdr.ReadByte();
+
+                                byte bProtection = rdr.ReadByte();
+
+                                if (bProtection == 0x80)
+                                    diskFile.Protection = OricProgram.ProtectionStatus.Protected;
+                                else if (bProtection == 0xC0)
+                                    diskFile.Protection = OricProgram.ProtectionStatus.Invisible;
+                                else
+                                    diskFile.Protection = OricProgram.ProtectionStatus.Unprotected;
+
+                                byte[] programData = base.ReadSector(diskFile.FirstTrack, diskFile.FirstSector);
+
+                                MemoryStream stm2 = new MemoryStream(programData, 0, programData.Length);
+                                BinaryReader rdr2 = new BinaryReader(stm2);
+
+                                bByteArray = rdr2.ReadBytes(2);
+
+                                byte bLoadable = rdr2.ReadByte();
+
+                                bByteArray = rdr2.ReadBytes(1);
+
+                                if (bLoadable == 0xFF)
                                 {
-                                    switch (diskFile.StartAddress)
+                                    diskFile.StartAddress = rdr2.ReadUInt16();
+                                    diskFile.EndAddress = rdr2.ReadUInt16();
+
+                                    // 0000 = code no T, 0001 = basic, 0002 = basic AUTO, ABCD = code T address
+                                    ushort ui16ExeAddress = rdr2.ReadUInt16();
+
+                                    if (ui16ExeAddress == 0x0000)
                                     {
-                                        case 0xBB80: 
-                                            diskFile.Format = OricProgram.ProgramFormat.TextScreen;
-                                            break;
-                                        case 0xBBA8: 
-                                            diskFile.Format = OricProgram.ProgramFormat.TextScreen;
-                                            break;
-                                        case 0xA000: 
-                                            diskFile.Format = OricProgram.ProgramFormat.HiresScreen;
-                                            break;
-                                        case 0xB500: 
-                                            diskFile.Format = OricProgram.ProgramFormat.CharacterSet; 
-                                            break;
-                                        default:
-                                            diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
-                                            break;
+                                        diskFile.ExeAddress = diskFile.StartAddress;
+                                        diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
+                                        diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
+                                    }
+                                    else if (ui16ExeAddress == 0x0001)
+                                    {
+                                        diskFile.ExeAddress = diskFile.StartAddress;
+                                        diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
+                                        diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
+                                    }
+                                    else if (ui16ExeAddress == 0x0002)
+                                    {
+                                        diskFile.ExeAddress = diskFile.StartAddress;
+                                        diskFile.Format = OricProgram.ProgramFormat.BasicProgram;
+                                        diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
+                                    }
+                                    else
+                                    {
+                                        diskFile.ExeAddress = ui16ExeAddress;
+                                        diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
+                                        diskFile.AutoRun = OricProgram.AutoRunFlag.Enabled;
                                     }
 
-                                    if (diskFile.StartAddress >= 0xBB80 && diskFile.StartAddress <= 0xBFB8)
-                                        diskFile.Format = OricProgram.ProgramFormat.TextScreen;
+                                    if (diskFile.Format == OricProgram.ProgramFormat.BinaryFile)
+                                    {
+                                        switch (diskFile.StartAddress)
+                                        {
+                                            case 0xBB80: 
+                                                diskFile.Format = OricProgram.ProgramFormat.TextScreen;
+                                                break;
+                                            case 0xBBA8: 
+                                                diskFile.Format = OricProgram.ProgramFormat.TextScreen;
+                                                break;
+                                            case 0xA000: 
+                                                diskFile.Format = OricProgram.ProgramFormat.HiresScreen;
+                                                break;
+                                            case 0xB500: 
+                                                diskFile.Format = OricProgram.ProgramFormat.CharacterSet; 
+                                                break;
+                                            default:
+                                                diskFile.Format = OricProgram.ProgramFormat.BinaryFile;
+                                                break;
+                                        }
+
+                                        if (diskFile.StartAddress >= 0xBB80 && diskFile.StartAddress <= 0xBFB8)
+                                            diskFile.Format = OricProgram.ProgramFormat.TextScreen;
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                // Possibly a datafile? (!OPEN/!PUT)
-                                diskFile.StartAddress = 0x0000;
-                                diskFile.EndAddress = Convert.ToUInt16(253 * diskFile.LengthSectors);
-                                diskFile.ExeAddress = 0x0000;
-                                diskFile.Format = OricProgram.ProgramFormat.UnknownFile;
-                                diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
-                            }
+                                else
+                                {
+                                    // Possibly a datafile? (!OPEN/!PUT)
+                                    diskFile.StartAddress = 0x0000;
+                                    diskFile.EndAddress = Convert.ToUInt16(253 * diskFile.LengthSectors);
+                                    diskFile.ExeAddress = 0x0000;
+                                    diskFile.Format = OricProgram.ProgramFormat.UnknownFile;
+                                    diskFile.AutoRun = OricProgram.AutoRunFlag.Disabled;
+                                }
 
-                            diskFile.Folder = base.diskFolder;
-                            diskFile.ParentName = base.diskPathname;
+                                diskFile.Folder = base.diskFolder;
+                                diskFile.ParentName = base.diskPathname;
 
-                            diskCatalog.Add(diskFile);
+                                diskCatalog.Add(diskFile);
+                            }
+                        }
+                        else
+                        {
+                            bByteArray = rdr.ReadBytes(10);
                         }
                     }
+
+                    if (bNextTrack == 0 && bNextSector == 0)
+                        bMoreDirectories = false;
                     else
                     {
-                        bByteArray = rdr.ReadBytes(10);
+                        bCurrTrack = bNextTrack;
+                        bCurrSector = bNextSector;
                     }
                 }
 
-                if (bNextTrack == 0 && bNextSector == 0)
-                    bMoreDirectories = false;
-                else
-                {
-                    bCurrTrack = bNextTrack;
-                    bCurrSector = bNextSector;
-                }
+                diskDirectory = new OricFileInfo[diskCatalog.Count];
+                diskCatalog.CopyTo(diskDirectory);
             }
-
-            diskDirectory = new OricFileInfo[diskCatalog.Count];
-            diskCatalog.CopyTo(diskDirectory);
+            catch (Exception)
+            {
+            }
 
             return diskDirectory;
         }
