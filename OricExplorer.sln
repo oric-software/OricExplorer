@@ -6,6 +6,16 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OricExplorer", "OricExplorer\OricExplorer.csproj", "{252A5A36-BFC7-4033-98BC-10B16BA7C246}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1811F99D-A379-4F60-A779-9CDDD886540A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{EE53230C-FB7B-4CC7-9B02-ADD210C1B016}"
+	ProjectSection(SolutionItems) = preProject
+		doc\application-settings.md = doc\application-settings.md
+		doc\bugs.md = doc\bugs.md
+		doc\changelog.md = doc\changelog.md
+		doc\user-guide.md = doc\user-guide.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dist", "dist", "{E93EE838-E227-4E1A-BD86-A13985CD4E6A}"
 	ProjectSection(SolutionItems) = preProject
 		dist\app_version.xml = dist\app_version.xml
 	EndProjectSection
@@ -23,6 +33,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EE53230C-FB7B-4CC7-9B02-ADD210C1B016} = {1811F99D-A379-4F60-A779-9CDDD886540A}
+		{E93EE838-E227-4E1A-BD86-A13985CD4E6A} = {1811F99D-A379-4F60-A779-9CDDD886540A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F22A4F2-D440-45C7-9E96-2509EDD152A2}

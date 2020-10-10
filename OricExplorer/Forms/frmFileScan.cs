@@ -20,8 +20,6 @@ namespace OricExplorer.Forms
         private ushort romsFound;
         private ushort romsSkipped;
 
-        //private Configuration configuration;
-
         public frmFileScan(frmMainForm mainForm)
         {
             InitializeComponent();
@@ -81,7 +79,7 @@ namespace OricExplorer.Forms
                 // Get list of Tape files
                 if (tapeDirectoryInfo.Exists)
                 {
-                    FileInfo[] tapeFileInfo = tapeDirectoryInfo.GetFiles("*.ta*", SearchOption.AllDirectories);
+                    FileInfo[] tapeFileInfo = tapeDirectoryInfo.GetFiles("*.ta?", SearchOption.AllDirectories);
 
                     if (tapeFileInfo != null)
                     {
