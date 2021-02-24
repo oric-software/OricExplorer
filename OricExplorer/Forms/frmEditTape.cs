@@ -136,7 +136,7 @@
             if (!init)
             {
                 UpdateUpdateButtonStatus();
-                nudEndAddress.Value = nudStartAddress.Value + int.Parse(lblProgramLength.Text);
+                nudEndAddress.Value = nudStartAddress.Value + int.Parse(lblProgramLength.Text) - 1;
             }
         }
 

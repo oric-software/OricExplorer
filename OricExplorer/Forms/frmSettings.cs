@@ -9,8 +9,8 @@ namespace OricExplorer
 
     public partial class frmSettings : Form
     {
-        private List<string> mlstTapeFolders;
         private List<string> mlstDiskFolders;
+        private List<string> mlstTapeFolders;
         private List<string> mlstRomFolders;
         private List<string> mlstOtherFilesFolders;
 
@@ -25,14 +25,14 @@ namespace OricExplorer
             btnUpdateFolder.Enabled = false;
             btnRemoveFolder.Enabled = false;
 
-            mlstTapeFolders = Configuration.Persistent.TapeFolders.ToList();
             mlstDiskFolders = Configuration.Persistent.DiskFolders.ToList();
+            mlstTapeFolders = Configuration.Persistent.TapeFolders.ToList();
             mlstRomFolders = Configuration.Persistent.RomFolders.ToList();
             mlstOtherFilesFolders = Configuration.Persistent.OtherFilesFolders.ToList();
 
             BuildFoldersList();
 
-            optTape.Checked = true;
+            optDisk.Checked = true;
 
             txtEmulatorExecutable.Text = Configuration.Persistent.EmulatorExecutable;
             (Configuration.Persistent.DefaultMachineForTape == Machine.Oric1 ? optDefaultMachineOric1 : (Configuration.Persistent.DefaultMachineForTape == Machine.Atmos ? optDefaultMachineAtmos : optDefaultMachinePravetz)).Checked = true;
@@ -40,38 +40,38 @@ namespace OricExplorer
             txtDirListingFolder.Text = Configuration.Persistent.DirectoryListingsFolder;
 
             chkCheckForUpdatesOnStartup.Checked = Configuration.Persistent.CheckForUpdatesOnStartup;
-            chkTapeIndex.Checked = Configuration.Persistent.TapeIndex;
+            chkDisksTree.Checked = Configuration.Persistent.DisksTree;
+            chkTapesIndex.Checked = Configuration.Persistent.TapesIndex;
+            chkTapesTree.Checked = Configuration.Persistent.TapesTree;
+            chkROMsTree.Checked = Configuration.Persistent.ROMsTree;
+            chkOtherFilesTree.Checked = Configuration.Persistent.OtherFilesTree;
 
             Configuration.ListOfFoldersModified = false;
         }
 
         private void btnAddFolder_Click(object sender, EventArgs e)
         {
-            // Add new folder to list
-            if (txtSelectedFolder.Text.Length > 0)
+            if (optTape.Checked)
             {
-                if (optTape.Checked)
-                {
-                    mlstTapeFolders.Add(txtSelectedFolder.Text);
-                }
-                else if(optDisk.Checked)
-                {
-                    mlstDiskFolders.Add(txtSelectedFolder.Text);
-                }
-                else if (optRom.Checked)
-                {
-                    mlstRomFolders.Add(txtSelectedFolder.Text);
-                }
-                else
-                {
-                    mlstOtherFilesFolders.Add(txtSelectedFolder.Text);
-                }
-
-                // Rebuild folder list
-                BuildFoldersList();
-
-                Configuration.ListOfFoldersModified = true;
+                mlstTapeFolders.Add(txtSelectedFolder.Text);
             }
+            else if(optDisk.Checked)
+            {
+                mlstDiskFolders.Add(txtSelectedFolder.Text);
+            }
+            else if (optRom.Checked)
+            {
+                mlstRomFolders.Add(txtSelectedFolder.Text);
+            }
+            else
+            {
+                mlstOtherFilesFolders.Add(txtSelectedFolder.Text);
+            }
+
+            // Rebuild folder list
+            BuildFoldersList();
+
+            Configuration.ListOfFoldersModified = true;
         }
 
         private void btnUpdateFolder_Click(object sender, EventArgs e)
@@ -84,13 +84,13 @@ namespace OricExplorer
                 // Remove selected item for tape/disk list
                 string folder = lvItem[0].SubItems[1].Text;
 
-                if (lvItem[0].Text.Equals("Tape"))
-                {
-                    mlstTapeFolders.Remove(folder);
-                }
-                else if(lvItem[0].Text.Equals("Disk"))
+                if(lvItem[0].Text.Equals("Disk"))
                 {
                     mlstDiskFolders.Remove(folder);
+                }
+                else if (lvItem[0].Text.Equals("Tape"))
+                {
+                    mlstTapeFolders.Remove(folder);
                 }
                 else if (lvItem[0].Text.Equals("ROM"))
                 {
@@ -113,13 +113,13 @@ namespace OricExplorer
                 {
                     string folder = selectedItem.SubItems[1].Text;
 
-                    if(selectedItem.Text.Equals("Tape"))
-                    {
-                        mlstTapeFolders.Remove(folder);
-                    }
-                    else if(selectedItem.Text.Equals("Disk"))
+                    if(selectedItem.Text.Equals("Disk"))
                     {
                         mlstDiskFolders.Remove(folder);
+                    }
+                    else if(selectedItem.Text.Equals("Tape"))
+                    {
+                        mlstTapeFolders.Remove(folder);
                     }
                     else if (selectedItem.Text.Equals("ROM"))
                     {
@@ -183,26 +183,37 @@ namespace OricExplorer
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            Text = "Oric Explorer Settings - Saving settings...";
+            if (!lvwFolderList.Items.Cast<ListViewItem>().GroupBy(g => g.SubItems[colFolderName.Index].Text.ToLower()).Any(w => w.Count() > 1))
+            {
+                Text = "Oric Explorer Settings - Saving settings...";
 
-            Configuration.Persistent.TapeFolders = mlstTapeFolders;
-            Configuration.Persistent.DiskFolders = mlstDiskFolders;
-            Configuration.Persistent.RomFolders = mlstRomFolders;
-            Configuration.Persistent.OtherFilesFolders = mlstOtherFilesFolders;
+                Configuration.Persistent.DiskFolders = mlstDiskFolders;
+                Configuration.Persistent.TapeFolders = mlstTapeFolders;
+                Configuration.Persistent.RomFolders = mlstRomFolders;
+                Configuration.Persistent.OtherFilesFolders = mlstOtherFilesFolders;
 
-            Configuration.Persistent.EmulatorExecutable = txtEmulatorExecutable.Text;
-            Configuration.Persistent.DefaultMachineForTape = (optDefaultMachineOric1.Checked ? Machine.Oric1 : (optDefaultMachineAtmos.Checked ? Machine.Atmos : Machine.Pravetz));
+                Configuration.Persistent.EmulatorExecutable = txtEmulatorExecutable.Text;
+                Configuration.Persistent.DefaultMachineForTape = (optDefaultMachineOric1.Checked ? Machine.Oric1 : (optDefaultMachineAtmos.Checked ? Machine.Atmos : Machine.Pravetz));
 
-            Configuration.Persistent.DirectoryListingsFolder = txtDirListingFolder.Text;
+                Configuration.Persistent.DirectoryListingsFolder = txtDirListingFolder.Text;
 
-            Configuration.Persistent.CheckForUpdatesOnStartup = chkCheckForUpdatesOnStartup.Checked;
-            Configuration.Persistent.TapeIndex = chkTapeIndex.Checked;
+                Configuration.Persistent.CheckForUpdatesOnStartup = chkCheckForUpdatesOnStartup.Checked;
+                Configuration.Persistent.DisksTree = chkDisksTree.Checked;
+                Configuration.Persistent.TapesIndex = chkTapesIndex.Checked;
+                Configuration.Persistent.TapesTree = chkTapesTree.Checked;
+                Configuration.Persistent.ROMsTree = chkROMsTree.Checked;
+                Configuration.Persistent.OtherFilesTree = chkOtherFilesTree.Checked;
 
-            Configuration.Persistent.Save();
+                Configuration.Persistent.Save();
 
-            this.DialogResult = DialogResult.OK;
+                this.DialogResult = DialogResult.OK;
 
-            Text = "Oric Explorer Settings - Settings saved";
+                Text = "Oric Explorer Settings - Settings saved";
+            }
+            else
+            {
+                MessageBox.Show("The same folder is specified more than once.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -250,17 +261,17 @@ namespace OricExplorer
             // Clear any items
             lvwFolderList.Items.Clear();
 
-            // Add tape folders to list
-            AddTapeFoldersToList();
-
             // Add disk folders to list
-            AddDiskFoldersToList();
+            AddFoldersToList(mlstDiskFolders, "Disk");
+
+            // Add tape folders to list
+            AddFoldersToList(mlstTapeFolders, "Tape");
 
             // Add rom folders to list
-            AddRomFoldersToList();
+            AddFoldersToList(mlstRomFolders, "ROM");
 
             // Add other files folders to list
-            AddOtherFilesFoldersToList();
+            AddFoldersToList(mlstOtherFilesFolders, "Other files");
 
             // Enable updates
             lvwFolderList.EndUpdate();
@@ -268,49 +279,13 @@ namespace OricExplorer
             UpdateButtonsStatus();
         }
 
-        private void AddTapeFoldersToList()
+        private void AddFoldersToList(List<string> folders, string type)
         {
-            foreach (string tapeFolder in mlstTapeFolders)
+            foreach (string folder in folders)
             {
-                ListViewItem listViewItem = new ListViewItem();
-                listViewItem.Text = "Tape";
-                listViewItem.SubItems.Add(tapeFolder);
-
-                lvwFolderList.Items.Add(listViewItem);
-            }
-        }
-
-        private void AddDiskFoldersToList()
-        {
-            foreach (string diskFolder in mlstDiskFolders)
-            {
-                ListViewItem listViewItem = new ListViewItem();
-                listViewItem.Text = "Disk";
-                listViewItem.SubItems.Add(diskFolder);
-
-                lvwFolderList.Items.Add(listViewItem);
-            }
-        }
-
-        private void AddRomFoldersToList()
-        {
-            foreach (string romFolder in mlstRomFolders)
-            {
-                ListViewItem listViewItem = new ListViewItem();
-                listViewItem.Text = "ROM";
-                listViewItem.SubItems.Add(romFolder);
-
-                lvwFolderList.Items.Add(listViewItem);
-            }
-        }
-
-        private void AddOtherFilesFoldersToList()
-        {
-            foreach (string otherFilesFolder in mlstOtherFilesFolders)
-            {
-                ListViewItem listViewItem = new ListViewItem();
-                listViewItem.Text = "Other Files";
-                listViewItem.SubItems.Add(otherFilesFolder);
+                ListViewItem listViewItem = new ListViewItem(new string[lvwFolderList.Columns.Count]);
+                listViewItem.Text = type;
+                listViewItem.SubItems[colFolderName.Index].Text = folder;
 
                 lvwFolderList.Items.Add(listViewItem);
             }
@@ -366,6 +341,26 @@ namespace OricExplorer
             btnAddFolder.Enabled = (txtSelectedFolder.Text.Length > 0);
             btnUpdateFolder.Enabled = (txtSelectedFolder.Text.Length > 0 && lvwFolderList.SelectedItems.Count > 0);
             btnRemoveFolder.Enabled = (lvwFolderList.SelectedItems.Count > 0);
+        }
+
+        private void chkTapesIndex_CheckedChanged(object sender, EventArgs e)
+        {
+            chkTapesTree.Enabled = !chkTapesIndex.Checked;
+
+            if (chkTapesIndex.Checked)
+            {
+                chkTapesTree.Checked = false;
+            }
+        }
+
+        private void chkTapesTree_CheckedChanged(object sender, EventArgs e)
+        {
+            chkTapesIndex.Enabled = !chkTapesTree.Checked;
+
+            if (chkTapesTree.Checked)
+            {
+                chkTapesIndex.Checked = false;
+            }
         }
     }
 }

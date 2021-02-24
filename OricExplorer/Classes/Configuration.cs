@@ -42,7 +42,11 @@
             public bool CheckForUpdatesOnStartup { get; set; } = true;
             public Color PageBackground { get; set; } = ConstantsAndEnums.BACKGROUND;
             public Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle> SyntaxHighlightingStyles { get; set; } = new Dictionary<ConstantsAndEnums.SyntaxHighlightingItems, TextStyle>();
-            public bool TapeIndex { get; set; } = true;
+            public bool TapesIndex { get; set; } = true;
+            public bool TapesTree { get; set; } = false;
+            public bool DisksTree { get; set; } = false;
+            public bool ROMsTree { get; set; } = false;
+            public bool OtherFilesTree { get; set; } = false;
 
             public Point MainWindowLocation { get; set; }
             public Size MainWindowSize { get; set; }

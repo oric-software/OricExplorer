@@ -148,7 +148,7 @@
             TapeInfo destinationTapeInfo = (TapeInfo)destinationTreeNode.Tag;
 
             OricTape destinationTape = new OricTape();
-            destinationTape.TapeName = destinationTapeInfo.FullName;// Path.Combine(destinationTapeInfo.Folder, destinationTapeInfo.Name);
+            destinationTape.TapeName = destinationTapeInfo.FullName;
 
             // Copy a file from a Tape
             if (sourceTreeNode.Tag.GetType() == typeof(OricFileInfo))
@@ -170,7 +170,7 @@
                 TapeInfo sourceTapeInfo = (TapeInfo)sourceTreeNode.Tag;
 
                 OricTape sourceTape = new OricTape();
-                sourceTape.TapeName = sourceTapeInfo.FullName;// Path.Combine(sourceTapeInfo.Folder, sourceTapeInfo.Name);
+                sourceTape.TapeName = sourceTapeInfo.FullName;
 
                 FileInfo fiTapeFile = new FileInfo(sourceTape.TapeName);
 
@@ -191,12 +191,16 @@
             // Get full pathname of the updated destination Tape
             FileInfo fiTape = new FileInfo(Path.Combine(Path.GetDirectoryName(destinationTapeInfo.FullName), destinationTreeNode.Text));
 
-            // Remove destination Tape from Tree list
-            destinationTreeNode.Remove();
-
             // Add the updated Tape to the Tree list and display the files in the Tape
-            TreeNode newTreeNode = mMainForm.AddTapeToTree(fiTape);
-            newTreeNode.Expand();
+            TreeNode newNode = mMainForm.AddTapeToTree(fiTape, null, destinationTreeNode.Parent);
+
+            // open and select the updated node
+            newNode.TreeView.SelectedNode = newNode;
+            newNode.TreeView.SelectedNode.Expand();
+            newNode.TreeView.SelectedNode.EnsureVisible();
+
+            // remove old Tape node from Tree list
+            destinationTreeNode.Remove();
         }
 
         /*private void treeFileList_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)

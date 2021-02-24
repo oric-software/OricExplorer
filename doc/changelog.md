@@ -1,5 +1,12 @@
 Here is a history of OricExplorer evolutions, presenting the non-exhaustive list of corrections/additions of each recent version:
 
+# Oric Explorer 2.4
+* fix a bug in the tape edit form: app crash on validation when the start address has been changed
+* added possibility to represent disks as in the initial tree structure instead of the organization by disk format
+* added possibility to represent tapes, roms and other files as in the initial tree structure instead of the flat view
+* added control of duplicate folders in the list of folders (in settings form)
+
+
 # Oric Explorer 2.3.5
 * consolidation of the analysis of .tap and .dsk files performed during the scan.
 * added post-build processing to automatically create the archive when the release is successfully generated (via a powershell script which extracts the version number of the app_version.xml file and integrates it into the name of the .zip file)
