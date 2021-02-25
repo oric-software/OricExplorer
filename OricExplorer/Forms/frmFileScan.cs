@@ -48,8 +48,8 @@ namespace OricExplorer.Forms
             romsFound = 0;
             romsSkipped = 0;
 
-            GetListOfTapes();
             GetListOfDisks();
+            GetListOfTapes();
             GetListOfRoms();
             GetListOfOtherFiles();
 
@@ -66,50 +66,6 @@ namespace OricExplorer.Forms
             // Add a pause before closing the form
             System.Threading.Thread.Sleep(1500);
             Close();
-        }
-
-        public void GetListOfTapes()
-        {
-            filesScanned = 0;
-
-            foreach (string directory in Configuration.Persistent.TapeFolders)
-            {
-                DirectoryInfo tapeDirectoryInfo = new DirectoryInfo(directory);
-
-                // Get list of Tape files
-                if (tapeDirectoryInfo.Exists)
-                {
-                    FileInfo[] tapeFileInfo = tapeDirectoryInfo.GetFiles("*.ta?", SearchOption.AllDirectories);
-
-                    if (tapeFileInfo != null)
-                    {
-                        foreach (FileInfo fileInfo in tapeFileInfo)
-                        {
-                            lblInfo.Text = "Scanning folders for Tape files...";
-                            lblFile.Text = fileInfo.FullName;
-
-                            // Add the tape to the tree
-                            if (parent.AddTapeToTree(fileInfo) != null)
-                            {
-                                tapesFound++;
-                            }
-                            else
-                            {
-                                filesSkipped++;
-                                tapesSkipped++;
-                            }
-
-                            filesScanned++;
-
-                            float percentage = (100 / (float)tapeFileInfo.Length) * filesScanned;
-                            pbProgress.PercentageValue = (int)percentage;
-                            pbProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, tapeFileInfo.Length);
-
-                            Application.DoEvents();
-                        }
-                    }
-                }
-            }
         }
 
         public void GetListOfDisks()
@@ -133,7 +89,7 @@ namespace OricExplorer.Forms
                             lblFile.Text = fileInfo.FullName;
 
                             // Add the disk to the tree
-                            if (parent.AddDiskToTree(fileInfo) != null)
+                            if (parent.AddDiskToTree(fileInfo, diskDirectoryInfo.FullName) != null)
                             {
                                 disksFound++;
                             }
@@ -148,6 +104,50 @@ namespace OricExplorer.Forms
                             float percentage = (100 / (float)diskFileInfo.Length) * filesScanned;
                             pbProgress.PercentageValue = (int)percentage;
                             pbProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, diskFileInfo.Length);
+
+                            Application.DoEvents();
+                        }
+                    }
+                }
+            }
+        }
+
+        public void GetListOfTapes()
+        {
+            filesScanned = 0;
+
+            foreach (string directory in Configuration.Persistent.TapeFolders)
+            {
+                DirectoryInfo tapeDirectoryInfo = new DirectoryInfo(directory);
+
+                // Get list of Tape files
+                if (tapeDirectoryInfo.Exists)
+                {
+                    FileInfo[] tapeFileInfo = tapeDirectoryInfo.GetFiles("*.ta?", SearchOption.AllDirectories);
+
+                    if (tapeFileInfo != null)
+                    {
+                        foreach (FileInfo fileInfo in tapeFileInfo)
+                        {
+                            lblInfo.Text = "Scanning folders for Tape files...";
+                            lblFile.Text = fileInfo.FullName;
+
+                            // Add the tape to the tree
+                            if (parent.AddTapeToTree(fileInfo, tapeDirectoryInfo.FullName) != null)
+                            {
+                                tapesFound++;
+                            }
+                            else
+                            {
+                                filesSkipped++;
+                                tapesSkipped++;
+                            }
+
+                            filesScanned++;
+
+                            float percentage = (100 / (float)tapeFileInfo.Length) * filesScanned;
+                            pbProgress.PercentageValue = (int)percentage;
+                            pbProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, tapeFileInfo.Length);
 
                             Application.DoEvents();
                         }
@@ -177,7 +177,7 @@ namespace OricExplorer.Forms
                             lblFile.Text = fileInfo.FullName;
 
                             // Add the disk to the tree
-                            if (parent.AddRomToTree(fileInfo) != null)
+                            if (parent.AddRomToTree(fileInfo, romDirectoryInfo.FullName) != null)
                             {
                                 romsFound++;
                             }
@@ -221,7 +221,7 @@ namespace OricExplorer.Forms
                             lblFile.Text = fileInfo.FullName;
 
                             // Add the disk to the tree
-                            if (parent.AddOtherFileToTree(fileInfo) != null)
+                            if (parent.AddOtherFileToTree(fileInfo, otherFilesDirectoryInfo.FullName) != null)
                             {
                                 romsFound++;
                             }

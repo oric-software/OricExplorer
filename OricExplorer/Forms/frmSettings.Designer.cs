@@ -47,6 +47,7 @@ namespace OricExplorer
             this.grpTapeAndDiskFolders = new GroupFrame.GroupFrame();
             this.grpOptions = new GroupFrame.GroupFrame();
             this.grpFolderDetails = new System.Windows.Forms.GroupBox();
+            this.optOtherFiles = new System.Windows.Forms.RadioButton();
             this.optRom = new System.Windows.Forms.RadioButton();
             this.btnBrowseForFolder = new System.Windows.Forms.Button();
             this.txtSelectedFolder = new System.Windows.Forms.TextBox();
@@ -73,10 +74,13 @@ namespace OricExplorer
             this.colFieldNameAvailable = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabpOther = new System.Windows.Forms.TabPage();
             this.grpTapeRepresentation = new GroupFrame.GroupFrame();
-            this.chkTapeIndex = new System.Windows.Forms.CheckBox();
+            this.chkOtherFilesTree = new System.Windows.Forms.CheckBox();
+            this.chkROMsTree = new System.Windows.Forms.CheckBox();
+            this.chkTapesTree = new System.Windows.Forms.CheckBox();
+            this.chkDisksTree = new System.Windows.Forms.CheckBox();
+            this.chkTapesIndex = new System.Windows.Forms.CheckBox();
             this.grpUpdates = new GroupFrame.GroupFrame();
             this.chkCheckForUpdatesOnStartup = new System.Windows.Forms.CheckBox();
-            this.optOtherFiles = new System.Windows.Forms.RadioButton();
             this.grpTapeAndDiskFolders.SuspendLayout();
             this.grpOptions.SuspendLayout();
             this.grpFolderDetails.SuspendLayout();
@@ -139,10 +143,10 @@ namespace OricExplorer
             // 
             this.optTape.AutoSize = true;
             this.optTape.ForeColor = System.Drawing.Color.Black;
-            this.optTape.Location = new System.Drawing.Point(9, 19);
+            this.optTape.Location = new System.Drawing.Point(119, 19);
             this.optTape.Name = "optTape";
             this.optTape.Size = new System.Drawing.Size(98, 17);
-            this.optTape.TabIndex = 0;
+            this.optTape.TabIndex = 1;
             this.optTape.TabStop = true;
             this.optTape.Text = "Tape files (.tap)";
             this.optTape.UseVisualStyleBackColor = true;
@@ -151,10 +155,10 @@ namespace OricExplorer
             // 
             this.optDisk.AutoSize = true;
             this.optDisk.ForeColor = System.Drawing.Color.Black;
-            this.optDisk.Location = new System.Drawing.Point(121, 19);
+            this.optDisk.Location = new System.Drawing.Point(9, 20);
             this.optDisk.Name = "optDisk";
             this.optDisk.Size = new System.Drawing.Size(96, 17);
-            this.optDisk.TabIndex = 1;
+            this.optDisk.TabIndex = 0;
             this.optDisk.TabStop = true;
             this.optDisk.Text = "Disk files (.dsk)";
             this.optDisk.UseVisualStyleBackColor = true;
@@ -185,7 +189,7 @@ namespace OricExplorer
             // colFolderName
             // 
             this.colFolderName.Text = "Folder";
-            this.colFolderName.Width = 450;
+            this.colFolderName.Width = 524;
             // 
             // btnBrowseForEmulatorExecutable
             // 
@@ -288,6 +292,18 @@ namespace OricExplorer
             this.grpFolderDetails.TabIndex = 0;
             this.grpFolderDetails.TabStop = false;
             this.grpFolderDetails.Text = "Folder Details";
+            // 
+            // optOtherFiles
+            // 
+            this.optOtherFiles.AutoSize = true;
+            this.optOtherFiles.ForeColor = System.Drawing.Color.Black;
+            this.optOtherFiles.Location = new System.Drawing.Point(345, 19);
+            this.optOtherFiles.Name = "optOtherFiles";
+            this.optOtherFiles.Size = new System.Drawing.Size(72, 17);
+            this.optOtherFiles.TabIndex = 3;
+            this.optOtherFiles.TabStop = true;
+            this.optOtherFiles.Text = "Other files";
+            this.optOtherFiles.UseVisualStyleBackColor = true;
             // 
             // optRom
             // 
@@ -574,31 +590,82 @@ namespace OricExplorer
             // 
             // grpTapeRepresentation
             // 
-            this.grpTapeRepresentation.Controls.Add(this.chkTapeIndex);
+            this.grpTapeRepresentation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpTapeRepresentation.Controls.Add(this.chkOtherFilesTree);
+            this.grpTapeRepresentation.Controls.Add(this.chkROMsTree);
+            this.grpTapeRepresentation.Controls.Add(this.chkTapesTree);
+            this.grpTapeRepresentation.Controls.Add(this.chkDisksTree);
+            this.grpTapeRepresentation.Controls.Add(this.chkTapesIndex);
             this.grpTapeRepresentation.Location = new System.Drawing.Point(7, 59);
             this.grpTapeRepresentation.Name = "grpTapeRepresentation";
-            this.grpTapeRepresentation.Size = new System.Drawing.Size(200, 47);
-            this.grpTapeRepresentation.TabIndex = 2;
+            this.grpTapeRepresentation.Size = new System.Drawing.Size(648, 168);
+            this.grpTapeRepresentation.TabIndex = 1;
             this.grpTapeRepresentation.TabStop = false;
-            this.grpTapeRepresentation.Text = "Tapes representation";
+            this.grpTapeRepresentation.Text = "Files list representation (changes require rescan to take effect)";
             this.grpTapeRepresentation.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
-            // chkTapeIndex
+            // chkOtherFilesTree
             // 
-            this.chkTapeIndex.AutoSize = true;
-            this.chkTapeIndex.Location = new System.Drawing.Point(16, 19);
-            this.chkTapeIndex.Name = "chkTapeIndex";
-            this.chkTapeIndex.Size = new System.Drawing.Size(158, 17);
-            this.chkTapeIndex.TabIndex = 3;
-            this.chkTapeIndex.Text = "Represent tapes in an index";
-            this.chkTapeIndex.UseVisualStyleBackColor = true;
+            this.chkOtherFilesTree.AutoSize = true;
+            this.chkOtherFilesTree.Location = new System.Drawing.Point(16, 141);
+            this.chkOtherFilesTree.Name = "chkOtherFilesTree";
+            this.chkOtherFilesTree.Size = new System.Drawing.Size(340, 17);
+            this.chkOtherFilesTree.TabIndex = 4;
+            this.chkOtherFilesTree.Text = "View other files as in the initial tree structure instead of the flat view";
+            this.chkOtherFilesTree.UseVisualStyleBackColor = true;
+            // 
+            // chkROMsTree
+            // 
+            this.chkROMsTree.AutoSize = true;
+            this.chkROMsTree.Location = new System.Drawing.Point(16, 110);
+            this.chkROMsTree.Name = "chkROMsTree";
+            this.chkROMsTree.Size = new System.Drawing.Size(325, 17);
+            this.chkROMsTree.TabIndex = 3;
+            this.chkROMsTree.Text = "View ROMs as in the initial tree structure instead of the flat view";
+            this.chkROMsTree.UseVisualStyleBackColor = true;
+            // 
+            // chkTapesTree
+            // 
+            this.chkTapesTree.AutoSize = true;
+            this.chkTapesTree.Location = new System.Drawing.Point(16, 77);
+            this.chkTapesTree.Name = "chkTapesTree";
+            this.chkTapesTree.Size = new System.Drawing.Size(321, 17);
+            this.chkTapesTree.TabIndex = 2;
+            this.chkTapesTree.Text = "View tapes as in the initial tree structure instead of the flat view";
+            this.chkTapesTree.UseVisualStyleBackColor = true;
+            this.chkTapesTree.CheckedChanged += new System.EventHandler(this.chkTapesTree_CheckedChanged);
+            // 
+            // chkDisksTree
+            // 
+            this.chkDisksTree.AutoSize = true;
+            this.chkDisksTree.Location = new System.Drawing.Point(16, 25);
+            this.chkDisksTree.Name = "chkDisksTree";
+            this.chkDisksTree.Size = new System.Drawing.Size(405, 17);
+            this.chkDisksTree.TabIndex = 0;
+            this.chkDisksTree.Text = "View disks as in the initial tree structure instead of the organization by disk f" +
+    "ormat";
+            this.chkDisksTree.UseVisualStyleBackColor = true;
+            // 
+            // chkTapesIndex
+            // 
+            this.chkTapesIndex.AutoSize = true;
+            this.chkTapesIndex.Location = new System.Drawing.Point(16, 54);
+            this.chkTapesIndex.Name = "chkTapesIndex";
+            this.chkTapesIndex.Size = new System.Drawing.Size(132, 17);
+            this.chkTapesIndex.TabIndex = 1;
+            this.chkTapesIndex.Text = "View tapes in an index";
+            this.chkTapesIndex.UseVisualStyleBackColor = true;
+            this.chkTapesIndex.CheckedChanged += new System.EventHandler(this.chkTapesIndex_CheckedChanged);
             // 
             // grpUpdates
             // 
+            this.grpUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpUpdates.Controls.Add(this.chkCheckForUpdatesOnStartup);
             this.grpUpdates.Location = new System.Drawing.Point(7, 6);
             this.grpUpdates.Name = "grpUpdates";
-            this.grpUpdates.Size = new System.Drawing.Size(200, 47);
+            this.grpUpdates.Size = new System.Drawing.Size(648, 47);
             this.grpUpdates.TabIndex = 0;
             this.grpUpdates.TabStop = false;
             this.grpUpdates.Text = "Updates";
@@ -610,21 +677,9 @@ namespace OricExplorer
             this.chkCheckForUpdatesOnStartup.Location = new System.Drawing.Point(16, 19);
             this.chkCheckForUpdatesOnStartup.Name = "chkCheckForUpdatesOnStartup";
             this.chkCheckForUpdatesOnStartup.Size = new System.Drawing.Size(163, 17);
-            this.chkCheckForUpdatesOnStartup.TabIndex = 1;
+            this.chkCheckForUpdatesOnStartup.TabIndex = 0;
             this.chkCheckForUpdatesOnStartup.Text = "Check for updates on startup";
             this.chkCheckForUpdatesOnStartup.UseVisualStyleBackColor = true;
-            // 
-            // optOtherFiles
-            // 
-            this.optOtherFiles.AutoSize = true;
-            this.optOtherFiles.ForeColor = System.Drawing.Color.Black;
-            this.optOtherFiles.Location = new System.Drawing.Point(345, 19);
-            this.optOtherFiles.Name = "optOtherFiles";
-            this.optOtherFiles.Size = new System.Drawing.Size(72, 17);
-            this.optOtherFiles.TabIndex = 3;
-            this.optOtherFiles.TabStop = true;
-            this.optOtherFiles.Text = "Other files";
-            this.optOtherFiles.UseVisualStyleBackColor = true;
             // 
             // frmSettings
             // 
@@ -713,8 +768,12 @@ namespace OricExplorer
         private System.Windows.Forms.RadioButton optDefaultMachineOric1;
         private System.Windows.Forms.Label lblDefaultMachine;
         private GroupFrame.GroupFrame grpTapeRepresentation;
-        private System.Windows.Forms.CheckBox chkTapeIndex;
+        private System.Windows.Forms.CheckBox chkTapesIndex;
         private System.Windows.Forms.RadioButton optDefaultMachinePravetz;
         private System.Windows.Forms.RadioButton optOtherFiles;
+        private System.Windows.Forms.CheckBox chkDisksTree;
+        private System.Windows.Forms.CheckBox chkOtherFilesTree;
+        private System.Windows.Forms.CheckBox chkROMsTree;
+        private System.Windows.Forms.CheckBox chkTapesTree;
     }
 }

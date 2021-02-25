@@ -34,13 +34,13 @@ namespace OricExplorer
             this.mnu = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewClose = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewCloseAllButThisOne = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuViewRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuToolsImportAtmosBasicFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuToolsSep1 = new System.Windows.Forms.ToolStripSeparator();
@@ -147,6 +147,8 @@ namespace OricExplorer
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnuFolder = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmnuFolderOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu.SuspendLayout();
             this.ssStatusBar.SuspendLayout();
             this.cmnuProgram.SuspendLayout();
@@ -155,6 +157,7 @@ namespace OricExplorer
             this.cmnuUnknownDisk.SuspendLayout();
             this.cmnuRom.SuspendLayout();
             this.cmnuOtherFiles.SuspendLayout();
+            this.cmnuFolder.SuspendLayout();
             this.SuspendLayout();
             // 
             // mnu
@@ -183,18 +186,9 @@ namespace OricExplorer
             // 
             this.mnuFileExit.Name = "mnuFileExit";
             this.mnuFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.mnuFileExit.Size = new System.Drawing.Size(180, 22);
+            this.mnuFileExit.Size = new System.Drawing.Size(136, 22);
             this.mnuFileExit.Text = "Exit";
             this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
-            // 
-            // mnuEdit
-            // 
-            this.mnuEdit.Enabled = false;
-            this.mnuEdit.Name = "mnuEdit";
-            this.mnuEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
-            this.mnuEdit.Size = new System.Drawing.Size(39, 20);
-            this.mnuEdit.Text = "&Edit";
-            this.mnuEdit.Visible = false;
             // 
             // mnuView
             // 
@@ -213,28 +207,28 @@ namespace OricExplorer
             // mnuViewClose
             // 
             this.mnuViewClose.Name = "mnuViewClose";
-            this.mnuViewClose.Size = new System.Drawing.Size(180, 22);
+            this.mnuViewClose.Size = new System.Drawing.Size(165, 22);
             this.mnuViewClose.Text = "Close";
             this.mnuViewClose.Click += new System.EventHandler(this.mnuViewClose_Click);
             // 
             // mnuViewCloseAll
             // 
             this.mnuViewCloseAll.Name = "mnuViewCloseAll";
-            this.mnuViewCloseAll.Size = new System.Drawing.Size(180, 22);
+            this.mnuViewCloseAll.Size = new System.Drawing.Size(165, 22);
             this.mnuViewCloseAll.Text = "Close All";
             this.mnuViewCloseAll.Click += new System.EventHandler(this.mnuViewCloseAll_Click);
             // 
             // mnuViewCloseAllButThisOne
             // 
             this.mnuViewCloseAllButThisOne.Name = "mnuViewCloseAllButThisOne";
-            this.mnuViewCloseAllButThisOne.Size = new System.Drawing.Size(180, 22);
+            this.mnuViewCloseAllButThisOne.Size = new System.Drawing.Size(165, 22);
             this.mnuViewCloseAllButThisOne.Text = "Close All But This";
             this.mnuViewCloseAllButThisOne.Click += new System.EventHandler(this.mnuViewCloseAllButThisOne_Click);
             // 
             // mnuViewSep1
             // 
             this.mnuViewSep1.Name = "mnuViewSep1";
-            this.mnuViewSep1.Size = new System.Drawing.Size(177, 6);
+            this.mnuViewSep1.Size = new System.Drawing.Size(162, 6);
             // 
             // mnuViewRefresh
             // 
@@ -242,9 +236,18 @@ namespace OricExplorer
             this.mnuViewRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuViewRefresh.Name = "mnuViewRefresh";
             this.mnuViewRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.mnuViewRefresh.Size = new System.Drawing.Size(180, 22);
+            this.mnuViewRefresh.Size = new System.Drawing.Size(165, 22);
             this.mnuViewRefresh.Text = "Refresh";
             this.mnuViewRefresh.Click += new System.EventHandler(this.mnuViewRefresh_Click);
+            // 
+            // mnuEdit
+            // 
+            this.mnuEdit.Enabled = false;
+            this.mnuEdit.Name = "mnuEdit";
+            this.mnuEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
+            this.mnuEdit.Size = new System.Drawing.Size(39, 20);
+            this.mnuEdit.Text = "&Edit";
+            this.mnuEdit.Visible = false;
             // 
             // mnuTools
             // 
@@ -1147,6 +1150,20 @@ namespace OricExplorer
             this.toolStripMenuItem6.Text = "Refresh";
             this.toolStripMenuItem6.Visible = false;
             // 
+            // cmnuFolder
+            // 
+            this.cmnuFolder.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmnuFolderOpenInExplorer});
+            this.cmnuFolder.Name = "cmnuFolder";
+            this.cmnuFolder.Size = new System.Drawing.Size(181, 48);
+            // 
+            // cmnuFolderOpenInExplorer
+            // 
+            this.cmnuFolderOpenInExplorer.Name = "cmnuFolderOpenInExplorer";
+            this.cmnuFolderOpenInExplorer.Size = new System.Drawing.Size(180, 22);
+            this.cmnuFolderOpenInExplorer.Text = "Open in explorer";
+            this.cmnuFolderOpenInExplorer.Click += new System.EventHandler(this.cmnuFolderOpenInExplorer_Click);
+            // 
             // frmMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1174,6 +1191,7 @@ namespace OricExplorer
             this.cmnuUnknownDisk.ResumeLayout(false);
             this.cmnuRom.ResumeLayout(false);
             this.cmnuOtherFiles.ResumeLayout(false);
+            this.cmnuFolder.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1297,6 +1315,8 @@ namespace OricExplorer
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem toolStripMenuItem6;
+        private ContextMenuStrip cmnuFolder;
+        private ToolStripMenuItem cmnuFolderOpenInExplorer;
     }
 }
 

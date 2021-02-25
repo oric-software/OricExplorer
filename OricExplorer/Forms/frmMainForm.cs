@@ -443,8 +443,9 @@ namespace OricExplorer
 
                 // Add copied file to the tree
                 FileInfo fiNewFile = new FileInfo(target);
-                TreeNode newNode = AddDiskToTree(fiNewFile);
-                
+                TreeNode newNode = AddDiskToTree(fiNewFile, null, fileListForm.tvwFileList.SelectedNode.Parent);
+
+                // open and select the updated node
                 fileListForm.tvwFileList.SelectedNode = newNode;
                 fileListForm.tvwFileList.SelectedNode.EnsureVisible();
 
@@ -690,14 +691,16 @@ namespace OricExplorer
                     // write tape
                     newTape.WriteFiles(programList, FileMode.Create);
 
+                    // add the updated tape to the tree list and expand it to display content
+                    TreeNode newNode = AddTapeToTree(tapeFileInfo, null, fileListForm.tvwFileList.SelectedNode.Parent);
+
                     // remove tape from tree list
                     fileListForm.tvwFileList.SelectedNode.Remove();
 
-                    // add the updated tape to the tree list and expand it to display content
-                    TreeNode NewNode = AddTapeToTree(tapeFileInfo);
-                    NewNode.Expand();
-                    NewNode.EnsureVisible();
-                    fileListForm.tvwFileList.SelectedNode = NewNode;
+                    // open and select the updated node
+                    fileListForm.tvwFileList.SelectedNode = newNode;
+                    fileListForm.tvwFileList.SelectedNode.Expand();
+                    fileListForm.tvwFileList.SelectedNode.EnsureVisible();
 
                     // Remember entire tree for filter
                     fileListForm.tvwFileList.Tag = rootNode.Clone();
@@ -751,8 +754,9 @@ namespace OricExplorer
 
                 // add copied file to the tree
                 FileInfo fiNewFile = new FileInfo(target);
-                TreeNode newNode = AddTapeToTree(fiNewFile);
+                TreeNode newNode = AddTapeToTree(fiNewFile, null, fileListForm.tvwFileList.SelectedNode.Parent);
 
+                // open and select the updated node
                 fileListForm.tvwFileList.SelectedNode = newNode;
                 fileListForm.tvwFileList.SelectedNode.EnsureVisible();
                 
@@ -1211,6 +1215,7 @@ namespace OricExplorer
         }
         #endregion
 
+        #region Other Files Context Menu
         private void cmnuOtherFilesViewFile_Click(object sender, EventArgs e)
         {
             TreeNode selectedNode = fileListForm.tvwFileList.SelectedNode;
@@ -1220,6 +1225,15 @@ namespace OricExplorer
 
             DisplayOtherFileContents((OtherFileInfo)selectedNode.Tag);
         }
+        #endregion
+
+        #region Folder Context Menu
+        private void cmnuFolderOpenInExplorer_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = fileListForm.tvwFileList.SelectedNode;
+            Process.Start(Environment.ExpandEnvironmentVariables(@"%windir%\explorer.exe"), $"\"{selectedNode.ToolTipText}\"");
+        }
+        #endregion
 
         #region File Tree Functions
         // Create a node sorter that implements the IComparer interface.
@@ -1326,14 +1340,17 @@ namespace OricExplorer
             romTreeNode = AddNodeToTree("ROM's", rootNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("rom"), "ROM Files");
             otherFileTreeNode = AddNodeToTree("Other files", rootNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("other_file"), "Other Files");
 
-            ftDosGroupNode = AddNodeToTree("FT-Dos", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "FT-Dos Disks");
-            oricDosGroupNode = AddNodeToTree("OricDOS", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "OricDOS Disks");
-            sedOricGroupNode = AddNodeToTree("SedOric", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "SedOric Disks");
-            stratSedGroupNode = AddNodeToTree("Stratsed", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "Stratsed Disks");
-            xlDosGroupNode = AddNodeToTree("XL-Dos", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "XL-Dos Disks");
-            unknownGroupNode = AddNodeToTree("Unknown", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "Unknown disk formats", Color.FromArgb(246, 174, 1));
+            if (!Configuration.Persistent.DisksTree)
+            {
+                ftDosGroupNode = AddNodeToTree("FT-Dos", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "FT-Dos Disks");
+                oricDosGroupNode = AddNodeToTree("OricDOS", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "OricDOS Disks");
+                sedOricGroupNode = AddNodeToTree("SedOric", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "SedOric Disks");
+                stratSedGroupNode = AddNodeToTree("Stratsed", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "Stratsed Disks");
+                xlDosGroupNode = AddNodeToTree("XL-Dos", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "XL-Dos Disks");
+                unknownGroupNode = AddNodeToTree("Unknown", diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "Unknown disk formats", Color.FromArgb(246, 174, 1));
+            }
 
-            if (Configuration.Persistent.TapeIndex)
+            if (Configuration.Persistent.TapesIndex)
             {
                 // Add tape grouping nodes to the tree
                 AddNodeToTree("0-9", tapeTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), "");
@@ -1360,14 +1377,14 @@ namespace OricExplorer
 
             // remove empty nodes
             List<TreeNode> nodContainers = new List<TreeNode>() { ftDosGroupNode, xlDosGroupNode, sedOricGroupNode, stratSedGroupNode, oricDosGroupNode, unknownGroupNode, diskTreeNode, romTreeNode, otherFileTreeNode };
-            if (Configuration.Persistent.TapeIndex)
+            if (Configuration.Persistent.TapesIndex)
             {
                 nodContainers.AddRange(tapeTreeNode.Nodes.Cast<TreeNode>());
             }
             nodContainers.Add(tapeTreeNode);
             foreach (TreeNode node in nodContainers)
             {
-                if (node.Nodes.Count == 0)
+                if (node != null && node.Nodes.Count == 0)
                 {
                     node.Remove();
                 }
@@ -1400,39 +1417,88 @@ namespace OricExplorer
             tsslStatusMain.Text = oTimeSpan;
         }
 
-        public TreeNode AddDiskToTree(FileInfo fileInfo)
+        public TreeNode AddDiskToTree(FileInfo fileInfo, string baseFolder = null, TreeNode sourceNode = null)
         {
-            TreeNode groupTreeNode;
+            TreeNode parentNode;
             int nodeImageIndex;
 
             OricDiskInfo diskInfo = new OricDiskInfo(fileInfo.FullName);
 
-            switch (diskInfo.DOSFormat)
+            if (sourceNode != null)
             {
-                case OricDisk.DOSFormats.TDOS:
-                    groupTreeNode = ftDosGroupNode;
-                    break;
-
-                case OricDisk.DOSFormats.OricDOS:
-                    groupTreeNode = oricDosGroupNode;
-                    break;
-
-                case OricDisk.DOSFormats.SedOric:
-                    groupTreeNode = sedOricGroupNode;
-                    break;
-
-                case OricDisk.DOSFormats.StratSed:
-                    groupTreeNode = stratSedGroupNode;
-                    break;
-
-                case OricDisk.DOSFormats.XLDos:
-                    groupTreeNode = xlDosGroupNode;
-                    break;
-
-                default:
-                    groupTreeNode = unknownGroupNode;
-                    break;
+                parentNode = sourceNode;
             }
+            else if (Configuration.Persistent.DisksTree)
+            {
+                if (Configuration.Persistent.DiskFolders.Count > 1)
+                {
+                    if (diskTreeNode.Nodes.ContainsKey(baseFolder))
+                    {
+                        parentNode = diskTreeNode.Nodes[baseFolder];
+                    }
+                    else
+                    {
+                        parentNode = AddNodeToTree(baseFolder, diskTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), baseFolder);
+                        parentNode.ContextMenuStrip = cmnuFolder;
+                    }
+                }
+                else
+                {
+                    parentNode = diskTreeNode;
+                }
+
+                string strPath = fileInfo.DirectoryName.Substring(baseFolder.Length);
+
+                if (strPath.Length > 0)
+                {
+                    string strFullpath = baseFolder;
+                    string[] folders = strPath.TrimStart(new char[] { '\\' }).Split(new char[] { '\\' });
+                    foreach (string folder in folders)
+                    {
+                        strFullpath = Path.Combine(strFullpath, folder);
+
+                        if (parentNode.Nodes.ContainsKey(folder))
+                        {
+                            parentNode = parentNode.Nodes[folder];
+                        }
+                        else
+                        {
+                            parentNode = AddNodeToTree(folder, parentNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), strFullpath);
+                            parentNode.ContextMenuStrip = cmnuFolder;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                switch (diskInfo.DOSFormat)
+                {
+                    case OricDisk.DOSFormats.TDOS:
+                        parentNode = ftDosGroupNode;
+                        break;
+
+                    case OricDisk.DOSFormats.OricDOS:
+                        parentNode = oricDosGroupNode;
+                        break;
+
+                    case OricDisk.DOSFormats.SedOric:
+                        parentNode = sedOricGroupNode;
+                        break;
+
+                    case OricDisk.DOSFormats.StratSed:
+                        parentNode = stratSedGroupNode;
+                        break;
+
+                    case OricDisk.DOSFormats.XLDos:
+                        parentNode = xlDosGroupNode;
+                        break;
+
+                    default:
+                        parentNode = unknownGroupNode;
+                        break;
+                }
+            }
+            
 
             if (diskInfo.DOSFormat == OricDisk.DOSFormats.Unknown)
             {
@@ -1460,7 +1526,7 @@ namespace OricExplorer
                 }
             }
 
-            TreeNode newDiskTreeNode = AddNodeToTree(fileInfo.Name, groupTreeNode, nodeImageIndex, "");
+            TreeNode newDiskTreeNode = AddNodeToTree(fileInfo.Name, parentNode, nodeImageIndex, "");
 
             if (newDiskTreeNode != null)
             {
@@ -1633,43 +1699,87 @@ namespace OricExplorer
             return imageIndex;
         }
 
-        public TreeNode AddTapeToTree(FileInfo fiFileInfo)
+        public TreeNode AddTapeToTree(FileInfo fileInfo, string baseFolder = null, TreeNode sourceNode = null)
         {
             TreeNode tapeNode = null;
 
             OricTape oricTape = new OricTape();
-            OricFileInfo[] tapeCatalog = oricTape.Catalog(fiFileInfo);
+            OricFileInfo[] tapeCatalog = oricTape.Catalog(fileInfo);
 
             if (tapeCatalog.Length > 0)
             {
-                TreeNode[] tmpNode;
+                TreeNode parentNode;
 
-                if (Configuration.Persistent.TapeIndex)
+                if (sourceNode != null)
                 {
-                    char firstCharacter = Convert.ToChar(fiFileInfo.Name.Substring(0, 1));
-
-                    if (Char.IsLetter(firstCharacter))
+                    parentNode = sourceNode;
+                }
+                else if (Configuration.Persistent.TapesTree)
+                {
+                    if (Configuration.Persistent.TapeFolders.Count > 1)
                     {
-                        tmpNode = tapeTreeNode.Nodes.Find(fiFileInfo.Name.Substring(0, 1), false);
-                    }
-                    else if (Char.IsDigit(firstCharacter))
-                    {
-                        tmpNode = tapeTreeNode.Nodes.Find("0-9", false);
+                        if (tapeTreeNode.Nodes.ContainsKey(baseFolder))
+                        {
+                            parentNode = tapeTreeNode.Nodes[baseFolder];
+                        }
+                        else
+                        {
+                            parentNode = AddNodeToTree(baseFolder, tapeTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), baseFolder);
+                            parentNode.ContextMenuStrip = cmnuFolder;
+                        }
                     }
                     else
                     {
-                        tmpNode = tapeTreeNode.Nodes.Find("Other", false);
+                        parentNode = tapeTreeNode;
+                    }
+
+                    string strPath = fileInfo.DirectoryName.Substring(baseFolder.Length);
+
+                    if (strPath.Length > 0)
+                    {
+                        string strFullpath = baseFolder;
+                        string[] folders = strPath.TrimStart(new char[] { '\\' }).Split(new char[] { '\\' });
+                        foreach (string folder in folders)
+                        {
+                            strFullpath = Path.Combine(strFullpath, folder);
+                            
+                            if (parentNode.Nodes.ContainsKey(folder))
+                            {
+                                parentNode = parentNode.Nodes[folder];
+                            }
+                            else
+                            {
+                                parentNode = AddNodeToTree(folder, parentNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), strFullpath);
+                                parentNode.ContextMenuStrip = cmnuFolder;
+                            }
+                        }
+                    }
+                }
+                else if (Configuration.Persistent.TapesIndex)
+                {
+                    char firstCharacter = Convert.ToChar(fileInfo.Name.Substring(0, 1));
+
+                    if (Char.IsLetter(firstCharacter))
+                    {
+                        parentNode = tapeTreeNode.Nodes[firstCharacter.ToString()];
+                    }
+                    else if (Char.IsDigit(firstCharacter))
+                    {
+                        parentNode = tapeTreeNode.Nodes["0-9"];
+                    }
+                    else
+                    {
+                        parentNode = tapeTreeNode.Nodes["Other"];
                     }
                 }
                 else
                 {
-                    tmpNode = new TreeNode[] { tapeTreeNode };
+                    parentNode = tapeTreeNode;
                 }
 
-                if (tmpNode.Length > 0)
+                if (parentNode != null)
                 {
-                    tapeNode = AddNodeToTree(fiFileInfo.Name, tmpNode[0], fileListForm.tvwFileList.ImageList.Images.IndexOfKey("tape"), "");
-                    tmpNode[0].ToolTipText = string.Format("Contains {0} tapes.", tmpNode[0].Nodes.Count);
+                    tapeNode = AddNodeToTree(fileInfo.Name, parentNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("tape"), "");
                 }
 
                 if (tapeNode != null)
@@ -1677,26 +1787,26 @@ namespace OricExplorer
                     tapeNode.ContextMenuStrip = cmnuTape;
 
                     StringBuilder stbToolTip = new StringBuilder();
-                    stbToolTip.AppendFormat("Name\t\t: {0}\r\n", fiFileInfo.Name);
-                    stbToolTip.AppendFormat("Folder\t\t: {0}\r\n\r\n", fiFileInfo.DirectoryName);
+                    stbToolTip.AppendFormat("Name\t\t: {0}\r\n", fileInfo.Name);
+                    stbToolTip.AppendFormat("Folder\t\t: {0}\r\n\r\n", fileInfo.DirectoryName);
                     stbToolTip.AppendFormat("No. of files\t: {0}\r\n", tapeCatalog.Length);
 
-                    if (fiFileInfo.Length >= 1024)
+                    if (fileInfo.Length >= 1024)
                     {
-                        stbToolTip.AppendFormat("Length\t\t: {0:N0} bytes ({1:N1} KB)\r\n", fiFileInfo.Length, (float)fiFileInfo.Length / 1024);
+                        stbToolTip.AppendFormat("Length\t\t: {0:N0} bytes ({1:N1} KB)\r\n", fileInfo.Length, (float)fileInfo.Length / 1024);
                     }
                     else
                     {
-                        stbToolTip.AppendFormat("Length\t\t: {0:N0} bytes\r\n", fiFileInfo.Length);
+                        stbToolTip.AppendFormat("Length\t\t: {0:N0} bytes\r\n", fileInfo.Length);
                     }
 
                     stbToolTip.AppendFormat("\r\nLast modified\t: {0}, {1}",
-                                                 fiFileInfo.LastWriteTime.ToLongDateString(),
-                                                 fiFileInfo.LastWriteTime.ToLongTimeString());
+                                                 fileInfo.LastWriteTime.ToLongDateString(),
+                                                 fileInfo.LastWriteTime.ToLongTimeString());
 
                     tapeNode.ToolTipText = stbToolTip.ToString();
 
-                    TapeInfo tapeInfo = new TapeInfo(fiFileInfo.FullName)
+                    TapeInfo tapeInfo = new TapeInfo(fileInfo.FullName)
                     {
                         FileCount = (ushort)tapeCatalog.Length,
                     };
@@ -1737,34 +1847,82 @@ namespace OricExplorer
             return tapeNode;
         }
 
-        public TreeNode AddRomToTree(FileInfo fiFileInfo)
+        public TreeNode AddRomToTree(FileInfo fileInfo, string baseFolder)
         {
-            TreeNode romNode = AddNodeToTree(fiFileInfo.Name, romTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("rom"), "");
+            TreeNode parentNode;
+
+            if (Configuration.Persistent.ROMsTree)
+            {
+                if (Configuration.Persistent.RomFolders.Count > 1)
+                {
+                    if (romTreeNode.Nodes.ContainsKey(baseFolder))
+                    {
+                        parentNode = romTreeNode.Nodes[baseFolder];
+                    }
+                    else
+                    {
+                        parentNode = AddNodeToTree(baseFolder, romTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), baseFolder);
+                        parentNode.ContextMenuStrip = cmnuFolder;
+                    }
+                }
+                else
+                {
+                    parentNode = romTreeNode;
+                }
+
+                string strPath = fileInfo.DirectoryName.Substring(baseFolder.Length);
+
+                if (strPath.Length > 0)
+                {
+                    string strFullpath = baseFolder;
+                    string[] folders = strPath.TrimStart(new char[] { '\\' }).Split(new char[] { '\\' });
+                    foreach (string folder in folders)
+                    {
+                        strFullpath = Path.Combine(strFullpath, folder);
+
+                        if (parentNode.Nodes.ContainsKey(folder))
+                        {
+                            parentNode = parentNode.Nodes[folder];
+                        }
+                        else
+                        {
+                            parentNode = AddNodeToTree(folder, parentNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), strFullpath);
+                            parentNode.ContextMenuStrip = cmnuFolder;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                parentNode = romTreeNode;
+            }
+
+            TreeNode romNode = AddNodeToTree(fileInfo.Name, parentNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("rom"), "");
 
             if (romNode != null)
             {
                 romNode.ContextMenuStrip = cmnuRom;
 
                 StringBuilder romToolTipText = new StringBuilder();
-                romToolTipText.AppendFormat("Name\t\t: {0}\r\n", fiFileInfo.Name);
-                romToolTipText.AppendFormat("Folder\t\t: {0}\r\n\r\n", fiFileInfo.DirectoryName);
+                romToolTipText.AppendFormat("Name\t\t: {0}\r\n", fileInfo.Name);
+                romToolTipText.AppendFormat("Folder\t\t: {0}\r\n\r\n", fileInfo.DirectoryName);
 
-                if (fiFileInfo.Length >= 1024)
+                if (fileInfo.Length >= 1024)
                 {
-                    romToolTipText.AppendFormat("Length\t\t: {0:N0} bytes ({1:N1} KB)\r\n", fiFileInfo.Length, (float)fiFileInfo.Length / 1024);
+                    romToolTipText.AppendFormat("Length\t\t: {0:N0} bytes ({1:N1} KB)\r\n", fileInfo.Length, (float)fileInfo.Length / 1024);
                 }
                 else
                 {
-                    romToolTipText.AppendFormat("Length\t\t: {0:N0} bytes\r\n", fiFileInfo.Length);
+                    romToolTipText.AppendFormat("Length\t\t: {0:N0} bytes\r\n", fileInfo.Length);
                 }
 
                 romToolTipText.AppendFormat("\r\nLast modified\t: {0}, {1}",
-                                                fiFileInfo.LastWriteTime.ToLongDateString(),
-                                                fiFileInfo.LastWriteTime.ToLongTimeString());
+                                                fileInfo.LastWriteTime.ToLongDateString(),
+                                                fileInfo.LastWriteTime.ToLongTimeString());
 
                 romNode.ToolTipText = romToolTipText.ToString();
 
-                RomInfo romInfo = new RomInfo(fiFileInfo.FullName);
+                RomInfo romInfo = new RomInfo(fileInfo.FullName);
 
                 romNode.Tag = romInfo;
             }
@@ -1772,9 +1930,57 @@ namespace OricExplorer
             return romNode;
         }
 
-        public TreeNode AddOtherFileToTree(FileInfo fileInfo)
+        public TreeNode AddOtherFileToTree(FileInfo fileInfo, string baseFolder)
         {
-            TreeNode otherFileNode = AddNodeToTree(fileInfo.Name, otherFileTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("other_file"), "");
+            TreeNode parentNode;
+
+            if (Configuration.Persistent.OtherFilesTree)
+            {
+                if (Configuration.Persistent.OtherFilesFolders.Count > 1)
+                {
+                    if (otherFileTreeNode.Nodes.ContainsKey(baseFolder))
+                    {
+                        parentNode = otherFileTreeNode.Nodes[baseFolder];
+                    }
+                    else
+                    {
+                        parentNode = AddNodeToTree(baseFolder, otherFileTreeNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), baseFolder);
+                        parentNode.ContextMenuStrip = cmnuFolder;
+                    }
+                }
+                else
+                {
+                    parentNode = otherFileTreeNode;
+                }
+
+                string strPath = fileInfo.DirectoryName.Substring(baseFolder.Length);
+
+                if (strPath.Length > 0)
+                {
+                    string strFullpath = baseFolder;
+                    string[] folders = strPath.TrimStart(new char[] { '\\' }).Split(new char[] { '\\' });
+                    foreach (string folder in folders)
+                    {
+                        strFullpath = Path.Combine(strFullpath, folder);
+
+                        if (parentNode.Nodes.ContainsKey(folder))
+                        {
+                            parentNode = parentNode.Nodes[folder];
+                        }
+                        else
+                        {
+                            parentNode = AddNodeToTree(folder, parentNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("folder"), strFullpath);
+                            parentNode.ContextMenuStrip = cmnuFolder;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                parentNode = otherFileTreeNode;
+            }
+            
+            TreeNode otherFileNode = AddNodeToTree(fileInfo.Name, parentNode, fileListForm.tvwFileList.ImageList.Images.IndexOfKey("other_file"), "");
 
             if (otherFileNode != null)
             {
