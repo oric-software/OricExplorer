@@ -1,7 +1,11 @@
 Here is a history of OricExplorer evolutions, presenting the non-exhaustive list of corrections/additions of each recent version:
 
+# Oric Explorer 2.4.0.1
+* fixed a bug in the construction of the list of media (disks / tapes / roms / other files) when the path is expressed in a relative rather than absolute way.
+
+
 # Oric Explorer 2.4
-* fix a bug in the tape edit form: app crash on validation when the start address has been changed
+* fixed a bug in the tape edit form: app crash on validation when the start address has been changed
 * added possibility to represent disks as in the initial tree structure instead of the organization by disk format
 * added possibility to represent tapes, roms and other files as in the initial tree structure instead of the flat view
 * added control of duplicate folders in the list of folders (in settings form)
@@ -13,7 +17,7 @@ Here is a history of OricExplorer evolutions, presenting the non-exhaustive list
 
 
 # Oric Explorer 2.3.4
-* fix a bug in the update module: the binary fetch link was wrong
+* fixed a bug in the update module: the binary fetch link was wrong
 
 
 # Oric Explorer 2.3.3

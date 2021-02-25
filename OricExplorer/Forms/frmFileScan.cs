@@ -89,7 +89,7 @@ namespace OricExplorer.Forms
                             lblFile.Text = fileInfo.FullName;
 
                             // Add the disk to the tree
-                            if (parent.AddDiskToTree(fileInfo, directory) != null)
+                            if (parent.AddDiskToTree(fileInfo, diskDirectoryInfo.FullName) != null)
                             {
                                 disksFound++;
                             }
@@ -133,7 +133,7 @@ namespace OricExplorer.Forms
                             lblFile.Text = fileInfo.FullName;
 
                             // Add the tape to the tree
-                            if (parent.AddTapeToTree(fileInfo, directory) != null)
+                            if (parent.AddTapeToTree(fileInfo, tapeDirectoryInfo.FullName) != null)
                             {
                                 tapesFound++;
                             }
@@ -177,7 +177,7 @@ namespace OricExplorer.Forms
                             lblFile.Text = fileInfo.FullName;
 
                             // Add the disk to the tree
-                            if (parent.AddRomToTree(fileInfo, directory) != null)
+                            if (parent.AddRomToTree(fileInfo, romDirectoryInfo.FullName) != null)
                             {
                                 romsFound++;
                             }
@@ -221,7 +221,7 @@ namespace OricExplorer.Forms
                             lblFile.Text = fileInfo.FullName;
 
                             // Add the disk to the tree
-                            if (parent.AddOtherFileToTree(fileInfo, directory) != null)
+                            if (parent.AddOtherFileToTree(fileInfo, otherFilesDirectoryInfo.FullName) != null)
                             {
                                 romsFound++;
                             }
