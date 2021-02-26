@@ -8,7 +8,7 @@ using System.Resources;
 [assembly: AssemblyTitle("OricExplorer")]
 [assembly: AssemblyDescription("Oric Disk & Tape Management")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Scott Davies")]
+[assembly: AssemblyCompany("Scott Davies feat. damien")]
 [assembly: AssemblyProduct("Oric Explorer")]
 [assembly: AssemblyCopyright("Copyright © 2021 Scott Davies")]
 [assembly: AssemblyTrademark("")]
@@ -29,5 +29,5 @@ using System.Resources;
 //      Build Number
 //      Revision
 //
-[assembly: NeutralResourcesLanguageAttribute("en-GB")]
-[assembly: AssemblyVersionAttribute("2.4.0.1")]
+[assembly: NeutralResourcesLanguage("en-GB")]
+[assembly: AssemblyVersion("2.4.1.0")]

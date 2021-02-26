@@ -45,8 +45,6 @@ namespace OricExplorer
             chkTapesTree.Checked = Configuration.Persistent.TapesTree;
             chkROMsTree.Checked = Configuration.Persistent.ROMsTree;
             chkOtherFilesTree.Checked = Configuration.Persistent.OtherFilesTree;
-
-            Configuration.ListOfFoldersModified = false;
         }
 
         private void btnAddFolder_Click(object sender, EventArgs e)
@@ -70,8 +68,6 @@ namespace OricExplorer
 
             // Rebuild folder list
             BuildFoldersList();
-
-            Configuration.ListOfFoldersModified = true;
         }
 
         private void btnUpdateFolder_Click(object sender, EventArgs e)
@@ -132,8 +128,6 @@ namespace OricExplorer
                 }
 
                 BuildFoldersList();
-
-                Configuration.ListOfFoldersModified = true;
             }
         }
 
@@ -183,42 +177,53 @@ namespace OricExplorer
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (!lvwFolderList.Items.Cast<ListViewItem>().GroupBy(g => g.SubItems[colFolderName.Index].Text.ToLower()).Any(w => w.Count() > 1))
+            if (txtEmulatorExecutable.TextLength == 0 && MessageBox.Show("The path of the emulator has not yet been defined.\r\n\r\nDo you want to configure it now?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             {
-                Text = "Oric Explorer Settings - Saving settings...";
-
-                Configuration.Persistent.DiskFolders = mlstDiskFolders;
-                Configuration.Persistent.TapeFolders = mlstTapeFolders;
-                Configuration.Persistent.RomFolders = mlstRomFolders;
-                Configuration.Persistent.OtherFilesFolders = mlstOtherFilesFolders;
-
-                Configuration.Persistent.EmulatorExecutable = txtEmulatorExecutable.Text;
-                Configuration.Persistent.DefaultMachineForTape = (optDefaultMachineOric1.Checked ? Machine.Oric1 : (optDefaultMachineAtmos.Checked ? Machine.Atmos : Machine.Pravetz));
-
-                Configuration.Persistent.DirectoryListingsFolder = txtDirListingFolder.Text;
-
-                Configuration.Persistent.CheckForUpdatesOnStartup = chkCheckForUpdatesOnStartup.Checked;
-                Configuration.Persistent.DisksTree = chkDisksTree.Checked;
-                Configuration.Persistent.TapesIndex = chkTapesIndex.Checked;
-                Configuration.Persistent.TapesTree = chkTapesTree.Checked;
-                Configuration.Persistent.ROMsTree = chkROMsTree.Checked;
-                Configuration.Persistent.OtherFilesTree = chkOtherFilesTree.Checked;
-
-                Configuration.Persistent.Save();
-
-                this.DialogResult = DialogResult.OK;
-
-                Text = "Oric Explorer Settings - Settings saved";
+                tabSettings.SelectedTab = tabpEmulator;
+                txtEmulatorExecutable.Focus();
+                return;
             }
-            else
-            {
-                MessageBox.Show("The same folder is specified more than once.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+
+            Text = "Oric Explorer Settings - Saving settings...";
+
+            Configuration.ListOfFoldersModified = (
+                !Configuration.Persistent.DiskFolders.SequenceEqual(mlstDiskFolders) ||
+                !Configuration.Persistent.TapeFolders.SequenceEqual(mlstTapeFolders) ||
+                !Configuration.Persistent.RomFolders.SequenceEqual(mlstRomFolders) ||
+                !Configuration.Persistent.OtherFilesFolders.SequenceEqual(mlstOtherFilesFolders) ||
+                Configuration.Persistent.DisksTree != chkDisksTree.Checked ||
+                Configuration.Persistent.TapesIndex != chkTapesIndex.Checked ||
+                Configuration.Persistent.TapesTree != chkTapesTree.Checked ||
+                Configuration.Persistent.ROMsTree != chkROMsTree.Checked ||
+                Configuration.Persistent.OtherFilesTree != chkOtherFilesTree.Checked
+            );
+
+            Configuration.Persistent.DiskFolders = mlstDiskFolders;
+            Configuration.Persistent.TapeFolders = mlstTapeFolders;
+            Configuration.Persistent.RomFolders = mlstRomFolders;
+            Configuration.Persistent.OtherFilesFolders = mlstOtherFilesFolders;
+
+            Configuration.Persistent.EmulatorExecutable = txtEmulatorExecutable.Text;
+            Configuration.Persistent.DefaultMachineForTape = (optDefaultMachineOric1.Checked ? Machine.Oric1 : (optDefaultMachineAtmos.Checked ? Machine.Atmos : Machine.Pravetz));
+
+            Configuration.Persistent.DirectoryListingsFolder = txtDirListingFolder.Text;
+
+            Configuration.Persistent.CheckForUpdatesOnStartup = chkCheckForUpdatesOnStartup.Checked;
+            Configuration.Persistent.DisksTree = chkDisksTree.Checked;
+            Configuration.Persistent.TapesIndex = chkTapesIndex.Checked;
+            Configuration.Persistent.TapesTree = chkTapesTree.Checked;
+            Configuration.Persistent.ROMsTree = chkROMsTree.Checked;
+            Configuration.Persistent.OtherFilesTree = chkOtherFilesTree.Checked;
+
+            Configuration.Persistent.Save();
+
+            this.DialogResult = DialogResult.OK;
+
+            Text = "Oric Explorer Settings - Settings saved";
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Configuration.ListOfFoldersModified = false;
             this.DialogResult = DialogResult.Cancel;
         }
 

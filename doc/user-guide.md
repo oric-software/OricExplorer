@@ -26,7 +26,7 @@ It provides facilities to view the files contained in tape and disk images, and 
 
 After first launching the programme, you will need to edit the settings to configure locations of your tape/disk image collections.
 
-New in Oric Explorer 2.0, you can define as many folder locations as you want for tape and disk collections ~~(note however there is currently no "remove folder" option)~~.
+New in Oric Explorer 2.0, you can define as many folder locations as you want for tape and disk collections.
 
 You can also define the location of the Oric emulator you want to use (Euphoric or Oricutron).
 
@@ -35,5 +35,4 @@ After modifying the folder locations and validating the modifications, a scan of
 
 
 ***Note**: all the settings are saved in the **OricExplorer.json** file located in the application directory. See the application-application-settings.md file for more information.*
-
 

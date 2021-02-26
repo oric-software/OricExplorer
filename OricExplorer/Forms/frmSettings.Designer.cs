@@ -32,7 +32,6 @@ namespace OricExplorer
             this.btnAddFolder = new System.Windows.Forms.Button();
             this.btnRemoveFolder = new System.Windows.Forms.Button();
             this.btnUpdateFolder = new System.Windows.Forms.Button();
-            this.chkScanSubfolders = new System.Windows.Forms.CheckBox();
             this.optTape = new System.Windows.Forms.RadioButton();
             this.optDisk = new System.Windows.Forms.RadioButton();
             this.lvwFolderList = new System.Windows.Forms.ListView();
@@ -60,7 +59,7 @@ namespace OricExplorer
             this.grpDirListings = new GroupFrame.GroupFrame();
             this.lblDirListingFolder = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabControl();
-            this.tabpTapeAndDiskFolders = new System.Windows.Forms.TabPage();
+            this.tabpDiskAndTapeFolders = new System.Windows.Forms.TabPage();
             this.tabpEmulator = new System.Windows.Forms.TabPage();
             this.tabpDirListings = new System.Windows.Forms.TabPage();
             this.txtSample = new System.Windows.Forms.TextBox();
@@ -87,7 +86,7 @@ namespace OricExplorer
             this.grpEmulator.SuspendLayout();
             this.grpDirListings.SuspendLayout();
             this.tabSettings.SuspendLayout();
-            this.tabpTapeAndDiskFolders.SuspendLayout();
+            this.tabpDiskAndTapeFolders.SuspendLayout();
             this.tabpEmulator.SuspendLayout();
             this.tabpDirListings.SuspendLayout();
             this.tabpOther.SuspendLayout();
@@ -124,20 +123,6 @@ namespace OricExplorer
             this.btnUpdateFolder.Text = "Update";
             this.btnUpdateFolder.UseVisualStyleBackColor = true;
             this.btnUpdateFolder.Click += new System.EventHandler(this.btnUpdateFolder_Click);
-            // 
-            // chkScanSubfolders
-            // 
-            this.chkScanSubfolders.AutoSize = true;
-            this.chkScanSubfolders.Checked = true;
-            this.chkScanSubfolders.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkScanSubfolders.ForeColor = System.Drawing.Color.Black;
-            this.chkScanSubfolders.Location = new System.Drawing.Point(9, 77);
-            this.chkScanSubfolders.Name = "chkScanSubfolders";
-            this.chkScanSubfolders.Size = new System.Drawing.Size(108, 17);
-            this.chkScanSubfolders.TabIndex = 6;
-            this.chkScanSubfolders.Text = "Scan subfolders?";
-            this.chkScanSubfolders.UseVisualStyleBackColor = true;
-            this.chkScanSubfolders.Visible = false;
             // 
             // optTape
             // 
@@ -183,7 +168,7 @@ namespace OricExplorer
             // 
             // colFolderType
             // 
-            this.colFolderType.Text = "Media Type";
+            this.colFolderType.Text = "Content Type";
             this.colFolderType.Width = 82;
             // 
             // colFolderName
@@ -261,7 +246,7 @@ namespace OricExplorer
             this.grpTapeAndDiskFolders.Size = new System.Drawing.Size(647, 328);
             this.grpTapeAndDiskFolders.TabIndex = 0;
             this.grpTapeAndDiskFolders.TabStop = false;
-            this.grpTapeAndDiskFolders.Text = "Disk and Tape Folders";
+            this.grpTapeAndDiskFolders.Text = "Disk and Tape Folders (changes require rescan to take effect)";
             this.grpTapeAndDiskFolders.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
             // grpOptions
@@ -284,7 +269,6 @@ namespace OricExplorer
             this.grpFolderDetails.Controls.Add(this.btnBrowseForFolder);
             this.grpFolderDetails.Controls.Add(this.txtSelectedFolder);
             this.grpFolderDetails.Controls.Add(this.optTape);
-            this.grpFolderDetails.Controls.Add(this.chkScanSubfolders);
             this.grpFolderDetails.Controls.Add(this.optDisk);
             this.grpFolderDetails.Location = new System.Drawing.Point(8, 19);
             this.grpFolderDetails.Name = "grpFolderDetails";
@@ -435,7 +419,7 @@ namespace OricExplorer
             // 
             // tabSettings
             // 
-            this.tabSettings.Controls.Add(this.tabpTapeAndDiskFolders);
+            this.tabSettings.Controls.Add(this.tabpDiskAndTapeFolders);
             this.tabSettings.Controls.Add(this.tabpEmulator);
             this.tabSettings.Controls.Add(this.tabpDirListings);
             this.tabSettings.Controls.Add(this.tabpOther);
@@ -445,16 +429,16 @@ namespace OricExplorer
             this.tabSettings.Size = new System.Drawing.Size(669, 366);
             this.tabSettings.TabIndex = 0;
             // 
-            // tabpTapeAndDiskFolders
+            // tabpDiskAndTapeFolders
             // 
-            this.tabpTapeAndDiskFolders.Controls.Add(this.grpTapeAndDiskFolders);
-            this.tabpTapeAndDiskFolders.Location = new System.Drawing.Point(4, 22);
-            this.tabpTapeAndDiskFolders.Name = "tabpTapeAndDiskFolders";
-            this.tabpTapeAndDiskFolders.Padding = new System.Windows.Forms.Padding(3);
-            this.tabpTapeAndDiskFolders.Size = new System.Drawing.Size(661, 340);
-            this.tabpTapeAndDiskFolders.TabIndex = 0;
-            this.tabpTapeAndDiskFolders.Text = "Tape and Disk Folders";
-            this.tabpTapeAndDiskFolders.UseVisualStyleBackColor = true;
+            this.tabpDiskAndTapeFolders.Controls.Add(this.grpTapeAndDiskFolders);
+            this.tabpDiskAndTapeFolders.Location = new System.Drawing.Point(4, 22);
+            this.tabpDiskAndTapeFolders.Name = "tabpDiskAndTapeFolders";
+            this.tabpDiskAndTapeFolders.Padding = new System.Windows.Forms.Padding(3);
+            this.tabpDiskAndTapeFolders.Size = new System.Drawing.Size(661, 340);
+            this.tabpDiskAndTapeFolders.TabIndex = 0;
+            this.tabpDiskAndTapeFolders.Text = "Disk and Tape Folders";
+            this.tabpDiskAndTapeFolders.UseVisualStyleBackColor = true;
             // 
             // tabpEmulator
             // 
@@ -602,7 +586,7 @@ namespace OricExplorer
             this.grpTapeRepresentation.Size = new System.Drawing.Size(648, 168);
             this.grpTapeRepresentation.TabIndex = 1;
             this.grpTapeRepresentation.TabStop = false;
-            this.grpTapeRepresentation.Text = "Files list representation (changes require rescan to take effect)";
+            this.grpTapeRepresentation.Text = "Folder List Representation (changes require rescan to take effect)";
             this.grpTapeRepresentation.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
             // chkOtherFilesTree
@@ -709,7 +693,7 @@ namespace OricExplorer
             this.grpDirListings.ResumeLayout(false);
             this.grpDirListings.PerformLayout();
             this.tabSettings.ResumeLayout(false);
-            this.tabpTapeAndDiskFolders.ResumeLayout(false);
+            this.tabpDiskAndTapeFolders.ResumeLayout(false);
             this.tabpEmulator.ResumeLayout(false);
             this.tabpDirListings.ResumeLayout(false);
             this.tabpDirListings.PerformLayout();
@@ -735,7 +719,6 @@ namespace OricExplorer
         private System.Windows.Forms.Button btnRemoveFolder;
         private System.Windows.Forms.Button btnAddFolder;
         private System.Windows.Forms.Button btnUpdateFolder;
-        private System.Windows.Forms.CheckBox chkScanSubfolders;
         private System.Windows.Forms.Button btnBrowserForDirListingsFolder;
         private System.Windows.Forms.TextBox txtDirListingFolder;
         private GroupFrame.GroupFrame grpTapeAndDiskFolders;
@@ -748,7 +731,7 @@ namespace OricExplorer
         private GroupFrame.GroupFrame grpDirListings;
         private System.Windows.Forms.Label lblDirListingFolder;
         private System.Windows.Forms.TabControl tabSettings;
-        private System.Windows.Forms.TabPage tabpTapeAndDiskFolders;
+        private System.Windows.Forms.TabPage tabpDiskAndTapeFolders;
         private System.Windows.Forms.TabPage tabpEmulator;
         private System.Windows.Forms.TabPage tabpDirListings;
         private System.Windows.Forms.TabPage tabpOther;
