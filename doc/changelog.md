@@ -1,5 +1,12 @@
 Here is a history of OricExplorer evolutions, presenting the non-exhaustive list of corrections/additions of each recent version:
 
+
+# Oric Explorer 2.4.1
+* removed control of duplicate folders in the list of folders (in settings form) introcued in v2.4
+* added automatic rescan when folder list representation options changed
+* introduced a new installer package using InnoSetup
+
+
 # Oric Explorer 2.4.0.1
 * fixed a bug in the construction of the list of media (disks / tapes / roms / other files) when the path is expressed in a relative rather than absolute way.
 

@@ -396,8 +396,11 @@
   <PropertyGroup>
     <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
 	del /q "$(SolutionDir)\dist\*.zip"
+	del /q "$(SolutionDir)\dist\*.exe"
 	copy /y "$(TargetPath)" "$(SolutionDir)\dist\*.bin"
+	powershell.exe -ExecutionPolicy RemoteSigned -File "$(ProjectDir)\packager\update_app_version.ps1" -SolutionDir "$(SolutionDir)"" -TargetDir "$(TargetDir)""
 	powershell.exe -ExecutionPolicy RemoteSigned -File "$(ProjectDir)\packager\create_archive.ps1" -SolutionDir "$(SolutionDir)"" -TargetDir "$(TargetDir)""
+	echo "### Portable package (.zip) successfully generated, don't forget to generate the installer package with InnoSetup ###"
 )
 </PostBuildEvent>
   </PropertyGroup>
