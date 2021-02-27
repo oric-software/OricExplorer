@@ -8,4 +8,4 @@ $xml = @"
 </OricExplorer>
 "@
 
-$xml | Out-File -FilePath "$PSScriptRoot\..\..\dist\app_version.xml"
+$xml.Replace("`r`n","`n") | Out-File -Encoding utf8 -FilePath "$PSScriptRoot\..\..\dist\app_version.xml"
