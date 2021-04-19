@@ -1,4 +1,6 @@
 
+using OricExplorer.User_Controls;
+
 namespace OricExplorer.Forms
 {
     partial class frmFileScan
@@ -30,117 +32,124 @@ namespace OricExplorer.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmFileScan));
-            this.picLogo = new System.Windows.Forms.PictureBox();
-            this.pbProgress = new PercentageBar.PercentageBar();
             this.lblInfo = new System.Windows.Forms.Label();
-            this.lblPleaseWait = new System.Windows.Forms.Label();
             this.lblFile = new System.Windows.Forms.Label();
-            this.panHeader = new System.Windows.Forms.Panel();
-            this.hdv1 = new HorizontalDivider.HorizontalDivider();
-            this.hdv2 = new HorizontalDivider.HorizontalDivider();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
-            this.panHeader.SuspendLayout();
+            this.lblProgress = new System.Windows.Forms.Label();
+            this.pnlBackground = new System.Windows.Forms.Panel();
+            this.lblCancel = new System.Windows.Forms.Label();
+            this.lblProgramName = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.ctlProgressBar = new OricExplorer.User_Controls.ctlProgressBar();
+            this.pnlBackground.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // picLogo
-            // 
-            this.picLogo.Image = ((System.Drawing.Image)(resources.GetObject("picLogo.Image")));
-            this.picLogo.Location = new System.Drawing.Point(3, 4);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(123, 68);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picLogo.TabIndex = 33;
-            this.picLogo.TabStop = false;
-            // 
-            // pbProgress
-            // 
-            this.pbProgress.Location = new System.Drawing.Point(10, 86);
-            this.pbProgress.Name = "pbProgress";
-            this.pbProgress.PercentageBarColour = System.Drawing.Color.Lime;
-            this.pbProgress.Size = new System.Drawing.Size(485, 28);
-            this.pbProgress.TabIndex = 36;
             // 
             // lblInfo
             // 
             this.lblInfo.AutoEllipsis = true;
             this.lblInfo.AutoSize = true;
             this.lblInfo.BackColor = System.Drawing.Color.Transparent;
-            this.lblInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInfo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblInfo.ForeColor = System.Drawing.Color.White;
-            this.lblInfo.Location = new System.Drawing.Point(137, 46);
+            this.lblInfo.Location = new System.Drawing.Point(7, 51);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(162, 20);
+            this.lblInfo.Size = new System.Drawing.Size(55, 13);
             this.lblInfo.TabIndex = 33;
-            this.lblInfo.Text = "Scanning tape folders...";
+            this.lblInfo.Text = "Scanning";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblPleaseWait
-            // 
-            this.lblPleaseWait.AutoSize = true;
-            this.lblPleaseWait.BackColor = System.Drawing.Color.Transparent;
-            this.lblPleaseWait.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPleaseWait.ForeColor = System.Drawing.Color.White;
-            this.lblPleaseWait.Location = new System.Drawing.Point(135, 8);
-            this.lblPleaseWait.Name = "lblPleaseWait";
-            this.lblPleaseWait.Size = new System.Drawing.Size(163, 32);
-            this.lblPleaseWait.TabIndex = 0;
-            this.lblPleaseWait.Text = "Please wait...";
-            this.lblPleaseWait.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblFile
             // 
             this.lblFile.AutoEllipsis = true;
             this.lblFile.BackColor = System.Drawing.Color.Transparent;
-            this.lblFile.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFile.ForeColor = System.Drawing.Color.Black;
-            this.lblFile.Location = new System.Drawing.Point(6, 128);
+            this.lblFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblFile.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFile.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblFile.Location = new System.Drawing.Point(7, 89);
             this.lblFile.Name = "lblFile";
-            this.lblFile.Size = new System.Drawing.Size(493, 20);
+            this.lblFile.Size = new System.Drawing.Size(412, 13);
             this.lblFile.TabIndex = 37;
             this.lblFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // panHeader
+            // lblProgress
             // 
-            this.panHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.panHeader.Controls.Add(this.picLogo);
-            this.panHeader.Controls.Add(this.lblPleaseWait);
-            this.panHeader.Controls.Add(this.lblInfo);
-            this.panHeader.Location = new System.Drawing.Point(0, 0);
-            this.panHeader.Name = "panHeader";
-            this.panHeader.Size = new System.Drawing.Size(506, 75);
-            this.panHeader.TabIndex = 38;
+            this.lblProgress.AutoEllipsis = true;
+            this.lblProgress.BackColor = System.Drawing.Color.Transparent;
+            this.lblProgress.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgress.ForeColor = System.Drawing.Color.White;
+            this.lblProgress.Location = new System.Drawing.Point(261, 51);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(158, 13);
+            this.lblProgress.TabIndex = 39;
+            this.lblProgress.Text = "0 of 0 (0.0%)";
+            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // hdv1
+            // panel1
             // 
-            this.hdv1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.hdv1.Location = new System.Drawing.Point(0, 75);
-            this.hdv1.Name = "hdv1";
-            this.hdv1.Size = new System.Drawing.Size(505, 2);
-            this.hdv1.TabIndex = 39;
+            this.pnlBackground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlBackground.Controls.Add(this.lblVersion);
+            this.pnlBackground.Controls.Add(this.lblCancel);
+            this.pnlBackground.Controls.Add(this.lblProgramName);
+            this.pnlBackground.Controls.Add(this.lblInfo);
+            this.pnlBackground.Controls.Add(this.lblProgress);
+            this.pnlBackground.Controls.Add(this.lblFile);
+            this.pnlBackground.Controls.Add(this.ctlProgressBar);
+            this.pnlBackground.Location = new System.Drawing.Point(0, 0);
+            this.pnlBackground.Name = "panel1";
+            this.pnlBackground.Size = new System.Drawing.Size(429, 110);
+            this.pnlBackground.TabIndex = 40;
             // 
-            // hdv2
+            // lblCancel
             // 
-            this.hdv2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.hdv2.Location = new System.Drawing.Point(0, 124);
-            this.hdv2.Name = "hdv2";
-            this.hdv2.Size = new System.Drawing.Size(505, 2);
-            this.hdv2.TabIndex = 40;
+            this.lblCancel.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.lblCancel.Image = ((System.Drawing.Image)(resources.GetObject("lblCancel.Image")));
+            this.lblCancel.Location = new System.Drawing.Point(408, 74);
+            this.lblCancel.Name = "lblCancel";
+            this.lblCancel.Size = new System.Drawing.Size(11, 11);
+            this.lblCancel.TabIndex = 41;
+            this.lblCancel.Click += new System.EventHandler(this.lblCancel_Click);
+            // 
+            // darkLabel1
+            // 
+            this.lblProgramName.AutoSize = true;
+            this.lblProgramName.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgramName.ForeColor = System.Drawing.Color.White;
+            this.lblProgramName.Location = new System.Drawing.Point(4, 4);
+            this.lblProgramName.Name = "darkLabel1";
+            this.lblProgramName.Size = new System.Drawing.Size(95, 20);
+            this.lblProgramName.TabIndex = 41;
+            this.lblProgramName.Text = "Oric Explorer";
+            // 
+            // darkLabelVersion
+            // 
+            this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersion.ForeColor = System.Drawing.Color.White;
+            this.lblVersion.Location = new System.Drawing.Point(375, 7);
+            this.lblVersion.Name = "darkLabelVersion";
+            this.lblVersion.Size = new System.Drawing.Size(0, 15);
+            this.lblVersion.TabIndex = 42;
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // ctlProgressBar
+            // 
+            this.ctlProgressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(29)))));
+            this.ctlProgressBar.Location = new System.Drawing.Point(9, 77);
+            this.ctlProgressBar.Name = "ctlProgressBar";
+            this.ctlProgressBar.PercentageBarColour = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(185)))), ((int)(((byte)(0)))));
+            this.ctlProgressBar.Size = new System.Drawing.Size(391, 4);
+            this.ctlProgressBar.TabIndex = 36;
             // 
             // frmFileScan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(505, 151);
-            this.Controls.Add(this.hdv2);
-            this.Controls.Add(this.hdv1);
-            this.Controls.Add(this.panHeader);
-            this.Controls.Add(this.pbProgress);
-            this.Controls.Add(this.lblFile);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(39)))));
+            this.ClientSize = new System.Drawing.Size(429, 110);
+            this.Controls.Add(this.pnlBackground);
             this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -148,21 +157,20 @@ namespace OricExplorer.Forms
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Shown += new System.EventHandler(this.frmFileScan_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
-            this.panHeader.ResumeLayout(false);
-            this.panHeader.PerformLayout();
+            this.pnlBackground.ResumeLayout(false);
+            this.pnlBackground.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Label lblInfo;
-        private PercentageBar.PercentageBar pbProgress;
-        private System.Windows.Forms.Label lblPleaseWait;
+        private ctlProgressBar ctlProgressBar;
         private System.Windows.Forms.Label lblFile;
-        private System.Windows.Forms.Panel panHeader;
-        private HorizontalDivider.HorizontalDivider hdv1;
-        private HorizontalDivider.HorizontalDivider hdv2;
+        private System.Windows.Forms.Label lblProgress;
+        private System.Windows.Forms.Panel pnlBackground;
+        private System.Windows.Forms.Label lblCancel;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblProgramName;
     }
 }

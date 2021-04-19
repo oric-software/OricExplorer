@@ -289,6 +289,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmSettings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\ctlProgressBar.resx">
+      <DependentUpon>ctlProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="User Controls\ctlTextBoxPlus.resx">
       <DependentUpon>ctlTextBoxPlus.cs</DependentUpon>
     </EmbeddedResource>
@@ -313,6 +316,12 @@
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\TapeInfo.cs" />
+    <Compile Include="User Controls\ctlProgressBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\ctlProgressBar.designer.cs">
+      <DependentUpon>ctlProgressBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="User Controls\ctlTextBoxPlus.cs">
       <SubType>Component</SubType>
     </Compile>
