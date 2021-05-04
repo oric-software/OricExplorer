@@ -38,7 +38,6 @@ namespace OricExplorer.Forms
             this.pnlBackground = new System.Windows.Forms.Panel();
             this.lblCancel = new System.Windows.Forms.Label();
             this.lblProgramName = new System.Windows.Forms.Label();
-            this.lblVersion = new System.Windows.Forms.Label();
             this.ctlProgressBar = new OricExplorer.User_Controls.ctlProgressBar();
             this.pnlBackground.SuspendLayout();
             this.SuspendLayout();
@@ -86,7 +85,6 @@ namespace OricExplorer.Forms
             // panel1
             // 
             this.pnlBackground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlBackground.Controls.Add(this.lblVersion);
             this.pnlBackground.Controls.Add(this.lblCancel);
             this.pnlBackground.Controls.Add(this.lblProgramName);
             this.pnlBackground.Controls.Add(this.lblInfo);
@@ -118,18 +116,6 @@ namespace OricExplorer.Forms
             this.lblProgramName.Size = new System.Drawing.Size(95, 20);
             this.lblProgramName.TabIndex = 41;
             this.lblProgramName.Text = "Oric Explorer";
-            // 
-            // darkLabelVersion
-            // 
-            this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.ForeColor = System.Drawing.Color.White;
-            this.lblVersion.Location = new System.Drawing.Point(375, 7);
-            this.lblVersion.Name = "darkLabelVersion";
-            this.lblVersion.Size = new System.Drawing.Size(0, 15);
-            this.lblVersion.TabIndex = 42;
-            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // ctlProgressBar
             // 
@@ -170,7 +156,6 @@ namespace OricExplorer.Forms
         private System.Windows.Forms.Label lblProgress;
         private System.Windows.Forms.Panel pnlBackground;
         private System.Windows.Forms.Label lblCancel;
-        private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Label lblProgramName;
     }
 }

@@ -25,9 +25,6 @@ namespace OricExplorer.Forms
         private void frmFileScan_Shown(object sender, EventArgs e)
         {
             Application.DoEvents();
-
-            Version version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
-            lblVersion.Text = "V" + version.ToString();
             
             // Display Wait cursor in case it takes a while
             Cursor.Current = Cursors.WaitCursor;
@@ -60,7 +57,7 @@ namespace OricExplorer.Forms
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to cancel the file scan?", "Cancel Scan", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Are you sure you want to cancel the file scan?", "Cancel Scan", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 cancelScan = true;
                 Close();
