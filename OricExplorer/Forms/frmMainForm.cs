@@ -61,7 +61,6 @@ namespace OricExplorer
             this.Text = string.Format(this.Text, $"{version.Major}.{version.Minor}{(version.Build + version.Revision > 0 ? $".{version.Build}{(version.Revision > 0 ? $".{version.Revision}" : string.Empty)}" : string.Empty)}", copyrightYear);
 
             fileListForm = new frmFileList(this);
-            fileListForm.tvwFileList.TreeViewNodeSorter = new NodeSortedByType();
 
             programInfoForm = new frmProgramInfo();
 
@@ -230,6 +229,31 @@ namespace OricExplorer
             }
         }
 
+        private void mnuViewSortDiskDirectory_DropDownOpening(object sender, EventArgs e)
+        {
+            mnuViewSortDiskDirectoryByName.Checked = (fileListForm.tvwFileList.TreeViewNodeSorter is NodeSortedByName);
+            mnuViewSortDiskDirectoryByExtension.Checked = (fileListForm.tvwFileList.TreeViewNodeSorter is NodeSortedByExtension);
+            mnuViewSortDiskDirectoryByType.Checked = (fileListForm.tvwFileList.TreeViewNodeSorter is NodeSortedByType);
+        }
+
+        private void mnuViewSortDiskDirectoryByName_Click(object sender, EventArgs e)
+        {
+            fileListForm.tvwFileList.TreeViewNodeSorter = new NodeSortedByName();
+            fileListForm.tvwFileList.Sort();
+        }
+
+        private void mnuViewSortDiskDirectoryByExtension_Click(object sender, EventArgs e)
+        {
+            fileListForm.tvwFileList.TreeViewNodeSorter = new NodeSortedByExtension();
+            fileListForm.tvwFileList.Sort();
+        }
+
+        private void mnuViewSortDiskDirectoryByType_Click(object sender, EventArgs e)
+        {
+            fileListForm.tvwFileList.TreeViewNodeSorter = new NodeSortedByType();
+            fileListForm.tvwFileList.Sort();
+        }
+
         private void mnuViewRefresh_Click(object sender, EventArgs e)
         {
             RebuildTree();
@@ -294,9 +318,18 @@ namespace OricExplorer
         #region Help Menu
         private void mnuHelpCheckForUpdates_Click(object sender, EventArgs e)
         {
-            using (frmCheckForUpdate checkForUpdateForm = new frmCheckForUpdate())
+            bool boolCloseApp = false;
+
+            using (frmCheckForUpdate checkForUpdateForm = new frmCheckForUpdate(false))
             {
-                checkForUpdateForm.ShowDialog();
+                boolCloseApp = (checkForUpdateForm.ShowDialog() == DialogResult.OK);
+            }
+
+            // restart and close the application if the update was successful
+            if (boolCloseApp)
+            {
+                Process.Start(Assembly.GetExecutingAssembly().Location);
+                Application.Exit();
             }
         }
 
@@ -614,18 +647,6 @@ namespace OricExplorer
             }
 
             tsslStatusMain.Text = "Ready.";
-        }
-
-        private void cmnuDiskSortDirectoryByName_Click(object sender, EventArgs e)
-        {
-            fileListForm.tvwFileList.TreeViewNodeSorter = new NodeSortedByName();
-            fileListForm.tvwFileList.Sort();
-        }
-
-        private void cmnuDiskSortDirectoryByType_Click(object sender, EventArgs e)
-        {
-            fileListForm.tvwFileList.TreeViewNodeSorter = new NodeSortedByType();
-            fileListForm.tvwFileList.Sort();
         }
 
         private void cmnuDiskRawDataViewer_Click(object sender, EventArgs e)
@@ -1256,6 +1277,39 @@ namespace OricExplorer
                         }
 
                         return -string.Compare(ty.Text, tx.Text);
+                    }
+
+                    return -string.Compare(ty.Text, tx.Text);
+                }
+
+                return 0;
+            }
+        }
+
+        public class NodeSortedByExtension : IComparer
+        {
+            public int Compare(object x, object y)
+            {
+                TreeNode tx = x as TreeNode;
+                TreeNode ty = y as TreeNode;
+
+                if (tx.Tag != null && ty.Tag != null)
+                {
+                    if (tx.Tag.GetType() == typeof(OricFileInfo))
+                    {
+                        OricFileInfo catalogX = (OricFileInfo)tx.Tag;
+
+                        if (catalogX.MediaType == MediaType.TapeFile)
+                        {
+                            return 0;
+                        }
+
+                        OricFileInfo catalogY = (OricFileInfo)ty.Tag;
+
+                        string textX = catalogX.Extension + catalogX.ProgramName;
+                        string textY = catalogY.Extension + catalogY.ProgramName;
+
+                        return -string.Compare(textY, textX);
                     }
 
                     return -string.Compare(ty.Text, tx.Text);

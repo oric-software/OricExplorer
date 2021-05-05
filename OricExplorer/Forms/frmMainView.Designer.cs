@@ -33,13 +33,20 @@ namespace OricExplorer.User_Controls
             this.fctSourceCode = new FastColoredTextBoxNS.FastColoredTextBox();
             this.tabMainView = new FarsiLibrary.Win.FATabStrip();
             this.tabpHexDump = new FarsiLibrary.Win.FATabStripItem();
+            this.ssp = new System.Windows.Forms.StatusStrip();
+            this.tsslIndex = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslIndexValue = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslAddress = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslAddressValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.hxbDump = new Be.Windows.Forms.HexBox();
             this.tabpSourceCode = new FarsiLibrary.Win.FATabStripItem();
             this.tabpDataViewer = new FarsiLibrary.Win.FATabStripItem();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.fctSourceCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabMainView)).BeginInit();
             this.tabMainView.SuspendLayout();
             this.tabpHexDump.SuspendLayout();
+            this.ssp.SuspendLayout();
             this.tabpSourceCode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -92,27 +99,69 @@ namespace OricExplorer.User_Controls
             this.tabMainView.Location = new System.Drawing.Point(0, 0);
             this.tabMainView.Name = "tabMainView";
             this.tabMainView.SelectedItem = this.tabpHexDump;
-            this.tabMainView.Size = new System.Drawing.Size(837, 525);
+            this.tabMainView.Size = new System.Drawing.Size(841, 525);
             this.tabMainView.TabIndex = 0;
             // 
             // tabpHexDump
             // 
             this.tabpHexDump.CanClose = false;
+            this.tabpHexDump.Controls.Add(this.ssp);
             this.tabpHexDump.Controls.Add(this.hxbDump);
             this.tabpHexDump.Image = ((System.Drawing.Image)(resources.GetObject("tabpHexDump.Image")));
             this.tabpHexDump.IsDrawn = true;
             this.tabpHexDump.Name = "tabpHexDump";
             this.tabpHexDump.Selected = true;
-            this.tabpHexDump.Size = new System.Drawing.Size(835, 504);
+            this.tabpHexDump.Size = new System.Drawing.Size(839, 504);
             this.tabpHexDump.TabIndex = 0;
             this.tabpHexDump.Title = "Hex Dump";
             // 
+            // ssp
+            // 
+            this.ssp.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.tsslIndex,
+            this.tsslIndexValue,
+            this.tsslAddress,
+            this.tsslAddressValue});
+            this.ssp.Location = new System.Drawing.Point(0, 480);
+            this.ssp.Name = "ssp";
+            this.ssp.Size = new System.Drawing.Size(839, 24);
+            this.ssp.TabIndex = 1;
+            this.ssp.Text = "statusStrip1";
+            // 
+            // tsslIndex
+            // 
+            this.tsslIndex.Name = "tsslIndex";
+            this.tsslIndex.Size = new System.Drawing.Size(39, 19);
+            this.tsslIndex.Text = "Index:";
+            // 
+            // tsslIndexValue
+            // 
+            this.tsslIndexValue.Name = "tsslIndexValue";
+            this.tsslIndexValue.Size = new System.Drawing.Size(13, 19);
+            this.tsslIndexValue.Text = "0";
+            // 
+            // tsslAddress
+            // 
+            this.tsslAddress.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsslAddress.Name = "tsslAddress";
+            this.tsslAddress.Size = new System.Drawing.Size(56, 19);
+            this.tsslAddress.Text = "Address:";
+            // 
+            // tsslAddressValue
+            // 
+            this.tsslAddressValue.Name = "tsslAddressValue";
+            this.tsslAddressValue.Size = new System.Drawing.Size(13, 19);
+            this.tsslAddressValue.Text = "0";
+            // 
             // hxbDump
             // 
+            this.hxbDump.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.hxbDump.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.hxbDump.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hxbDump.ColumnInfoVisible = true;
-            this.hxbDump.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hxbDump.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hxbDump.ForeColor = System.Drawing.Color.White;
             this.hxbDump.GroupSize = 2;
@@ -126,12 +175,13 @@ namespace OricExplorer.User_Controls
             this.hxbDump.SelectionBackColor = System.Drawing.Color.Red;
             this.hxbDump.SelectionForeColor = System.Drawing.Color.Yellow;
             this.hxbDump.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.hxbDump.Size = new System.Drawing.Size(835, 504);
+            this.hxbDump.Size = new System.Drawing.Size(836, 480);
             this.hxbDump.StringViewColour = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
             this.hxbDump.StringViewVisible = true;
             this.hxbDump.TabIndex = 0;
             this.hxbDump.UseFixedBytesPerLine = true;
             this.hxbDump.VScrollBarVisible = true;
+            this.hxbDump.SelectionStartChanged += new System.EventHandler(this.hxbDump_SelectionStartChanged);
             // 
             // tabpSourceCode
             // 
@@ -154,6 +204,12 @@ namespace OricExplorer.User_Controls
             this.tabpDataViewer.TabIndex = 2;
             this.tabpDataViewer.Title = "Data Viewer";
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(699, 19);
+            this.toolStripStatusLabel1.Spring = true;
+            // 
             // frmMainView
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -169,6 +225,9 @@ namespace OricExplorer.User_Controls
             ((System.ComponentModel.ISupportInitialize)(this.tabMainView)).EndInit();
             this.tabMainView.ResumeLayout(false);
             this.tabpHexDump.ResumeLayout(false);
+            this.tabpHexDump.PerformLayout();
+            this.ssp.ResumeLayout(false);
+            this.ssp.PerformLayout();
             this.tabpSourceCode.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -183,5 +242,11 @@ namespace OricExplorer.User_Controls
         private FarsiLibrary.Win.FATabStripItem tabpDataViewer;
         //private System.Windows.Forms.Label label6;
         private Be.Windows.Forms.HexBox hxbDump;
+        private System.Windows.Forms.StatusStrip ssp;
+        private System.Windows.Forms.ToolStripStatusLabel tsslIndex;
+        private System.Windows.Forms.ToolStripStatusLabel tsslIndexValue;
+        private System.Windows.Forms.ToolStripStatusLabel tsslAddress;
+        private System.Windows.Forms.ToolStripStatusLabel tsslAddressValue;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

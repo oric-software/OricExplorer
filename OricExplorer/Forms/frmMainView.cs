@@ -2,6 +2,7 @@ namespace OricExplorer.User_Controls
 {
     using Be.Windows.Forms;
     using FastColoredTextBoxNS;
+    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Text.RegularExpressions;
@@ -337,6 +338,8 @@ namespace OricExplorer.User_Controls
                 default:
                     break;
             }
+
+            DisplayIndexAndAddress();
         }
 
         private void DisplayAssemblerListing(TextChangedEventArgs e)
@@ -429,6 +432,22 @@ namespace OricExplorer.User_Controls
                         break;
                 }
             }
+        }
+
+        private void hxbDump_SelectionStartChanged(object sender, System.EventArgs e)
+        {
+            if (hxbDump.SelectionStart == ProgramInfo.LengthBytes)
+            {
+                hxbDump.SelectionStart = ProgramInfo.LengthBytes - 1;
+            }
+
+            DisplayIndexAndAddress();
+        }
+
+        private void DisplayIndexAndAddress()
+        {
+            tsslIndexValue.Text = hxbDump.SelectionStart.ToString();
+            tsslAddressValue.Text = $"${hxbDump.LineInfoOffset + hxbDump.SelectionStart:X4}";
         }
     }
 }
