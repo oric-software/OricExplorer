@@ -1,30 +1,22 @@
 namespace OricExplorer.Forms
 {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Windows.Forms;
 
     public partial class frmFileScan : Form
     {
-        private frmMainForm parent;
+        enum ScanType { Tape, Disk, ROM, Other };
 
-        private ushort filesScanned;
-        private ushort filesSkipped;
+        readonly frmMainForm parent;
 
-        private ushort tapesFound;
-        private ushort tapesSkipped;
-
-        private ushort disksFound;
-        private ushort disksSkipped;
-
-        private ushort romsFound;
-        private ushort romsSkipped;
+        Boolean cancelScan = false;
 
         public frmFileScan(frmMainForm mainForm)
         {
             InitializeComponent();
-
-            this.Text = mainForm.Text;
 
             // Link back to the parent form
             parent = mainForm;
@@ -32,34 +24,29 @@ namespace OricExplorer.Forms
 
         private void frmFileScan_Shown(object sender, EventArgs e)
         {
+            Application.DoEvents();
+            
             // Display Wait cursor in case it takes a while
             Cursor.Current = Cursors.WaitCursor;
 
-            // Initialise the counters
-            filesScanned = 0;
-            filesSkipped = 0;
+            // Scan folders for each file type
+            GetListOfFiles(ScanType.Disk);
 
-            tapesFound = 0;
-            tapesSkipped = 0;
+            if(!cancelScan)
+                GetListOfFiles(ScanType.Tape);
 
-            disksFound = 0;
-            disksSkipped = 0;
+            if(!cancelScan)
+                GetListOfFiles(ScanType.ROM);
 
-            romsFound = 0;
-            romsSkipped = 0;
-
-            GetListOfDisks();
-            GetListOfTapes();
-            GetListOfRoms();
-            GetListOfOtherFiles();
+            if(!cancelScan)
+                GetListOfFiles(ScanType.Other);
 
             // Switch back to default cursor
             Cursor.Current = Cursors.Default;
 
-            pbProgress.Text = "Finished";
-            lblPleaseWait.Text = "Scan Completed";
-            lblInfo.Text = "";
+            lblInfo.Text = (cancelScan) ? "Scan cancelled by user" : "Scan completed";
             lblFile.Text = "";
+            lblProgress.Text = "";
 
             Application.DoEvents();
 
@@ -68,180 +55,115 @@ namespace OricExplorer.Forms
             Close();
         }
 
-        public void GetListOfDisks()
+        private void lblCancel_Click(object sender, EventArgs e)
         {
-            filesScanned = 0;
-
-            foreach (string directory in Configuration.Persistent.DiskFolders)
+            if (MessageBox.Show("Are you sure you want to cancel the file scan?", "Cancel Scan", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                DirectoryInfo diskDirectoryInfo = new DirectoryInfo(directory);
+                cancelScan = true;
+                Close();
+            }
+        }
 
-                // Get list of Disk files
-                if (diskDirectoryInfo.Exists)
+        private void GetListOfFiles(ScanType scanType)
+        {
+            String searchPattern = "";
+            int filesScanned = 0;
+
+            List<String> folderList = null;
+
+            switch(scanType)
+            {
+                case ScanType.Tape:
+                    folderList = Configuration.Persistent.TapeFolders;
+                    searchPattern = "*.ta?";
+                    break;
+
+                case ScanType.Disk:
+                    folderList = Configuration.Persistent.DiskFolders;
+                    searchPattern = "*.dsk";
+                    break;
+
+                case ScanType.ROM:
+                    folderList = Configuration.Persistent.RomFolders;
+                    searchPattern = "*.rom";
+                    break;
+
+                case ScanType.Other:
+                    folderList = Configuration.Persistent.OtherFilesFolders;
+                    searchPattern = "*.*";
+                    break;
+            }
+
+            lblInfo.Text = String.Format("Searching folders for {0} files...", scanType.ToString());
+            lblFile.Text = "";
+            lblProgress.Text = "";
+
+            ctlProgressBar.PercentageValue = 0;
+
+            Application.DoEvents();
+
+            foreach (string directory in folderList)
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+
+                if (directoryInfo.Exists)
                 {
-                    FileInfo[] diskFileInfo = diskDirectoryInfo.GetFiles("*.dsk", SearchOption.AllDirectories);
+                    FileInfo[] fileInfoList = directoryInfo.GetFiles(searchPattern, SearchOption.AllDirectories);
 
-                    if (diskFileInfo != null)
+                    if (fileInfoList != null)
                     {
-                        foreach (FileInfo fileInfo in diskFileInfo)
-                        {
-                            lblInfo.Text = "Scanning folders for Disk files...";
-                            lblFile.Text = fileInfo.FullName;
+                        lblInfo.Text = String.Format("Loading {0} files...", scanType.ToString());
+                        Application.DoEvents();
 
-                            // Add the disk to the tree
-                            if (parent.AddDiskToTree(fileInfo, diskDirectoryInfo.FullName) != null)
-                            {
-                                disksFound++;
-                            }
-                            else
-                            {
-                                filesSkipped++;
-                                disksSkipped++;
-                            }
+                        foreach (FileInfo fileInfo in fileInfoList)
+                        {
+                            lblFile.Text = Path.GetFileNameWithoutExtension(fileInfo.FullName);
+
+                            AddFileToTree(scanType, fileInfo, directoryInfo.FullName);
 
                             filesScanned++;
 
-                            float percentage = (100 / (float)diskFileInfo.Length) * filesScanned;
-                            pbProgress.PercentageValue = (int)percentage;
-                            pbProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, diskFileInfo.Length);
+                            float percentage = (100 / (float)fileInfoList.Length) * filesScanned;
+                            ctlProgressBar.PercentageValue = (int)percentage;
+
+                            lblProgress.Text = String.Format("{0:N0} of {1:N0} ({2:N1}%)", filesScanned, fileInfoList.Length, percentage);
 
                             Application.DoEvents();
+
+                            if (cancelScan)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
 
-        public void GetListOfTapes()
+        private TreeNode AddFileToTree(ScanType scanType, FileInfo fileInfo, string fullname)
         {
-            filesScanned = 0;
+            TreeNode newNode;
 
-            foreach (string directory in Configuration.Persistent.TapeFolders)
+            switch (scanType)
             {
-                DirectoryInfo tapeDirectoryInfo = new DirectoryInfo(directory);
+                case ScanType.Disk:
+                    newNode = parent.AddDiskToTree(fileInfo, fullname);
+                    break;
 
-                // Get list of Tape files
-                if (tapeDirectoryInfo.Exists)
-                {
-                    FileInfo[] tapeFileInfo = tapeDirectoryInfo.GetFiles("*.ta?", SearchOption.AllDirectories);
+                case ScanType.Tape:
+                    newNode = parent.AddTapeToTree(fileInfo, fullname);
+                    break;
 
-                    if (tapeFileInfo != null)
-                    {
-                        foreach (FileInfo fileInfo in tapeFileInfo)
-                        {
-                            lblInfo.Text = "Scanning folders for Tape files...";
-                            lblFile.Text = fileInfo.FullName;
+                case ScanType.ROM:
+                    newNode = parent.AddRomToTree(fileInfo, fullname);
+                    break;
 
-                            // Add the tape to the tree
-                            if (parent.AddTapeToTree(fileInfo, tapeDirectoryInfo.FullName) != null)
-                            {
-                                tapesFound++;
-                            }
-                            else
-                            {
-                                filesSkipped++;
-                                tapesSkipped++;
-                            }
-
-                            filesScanned++;
-
-                            float percentage = (100 / (float)tapeFileInfo.Length) * filesScanned;
-                            pbProgress.PercentageValue = (int)percentage;
-                            pbProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, tapeFileInfo.Length);
-
-                            Application.DoEvents();
-                        }
-                    }
-                }
+                default:
+                    newNode = parent.AddOtherFileToTree(fileInfo, fullname);
+                    break;
             }
-        }
 
-        public void GetListOfRoms()
-        {
-            filesScanned = 0;
-
-            foreach (string directory in Configuration.Persistent.RomFolders)
-            {
-                DirectoryInfo romDirectoryInfo = new DirectoryInfo(directory);
-
-                // Get list of Disk files
-                if (romDirectoryInfo.Exists)
-                {
-                    FileInfo[] romFileInfo = romDirectoryInfo.GetFiles("*.rom", SearchOption.AllDirectories);
-
-                    if (romFileInfo != null)
-                    {
-                        foreach (FileInfo fileInfo in romFileInfo)
-                        {
-                            lblInfo.Text = "Scanning folders for ROM files...";
-                            lblFile.Text = fileInfo.FullName;
-
-                            // Add the disk to the tree
-                            if (parent.AddRomToTree(fileInfo, romDirectoryInfo.FullName) != null)
-                            {
-                                romsFound++;
-                            }
-                            else
-                            {
-                                filesSkipped++;
-                                romsSkipped++;
-                            }
-
-                            filesScanned++;
-
-                            float percentage = (100 / (float)romFileInfo.Length) * filesScanned;
-                            pbProgress.PercentageValue = (int)percentage;
-                            pbProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, romFileInfo.Length);
-
-                            Application.DoEvents();
-                        }
-                    }
-                }
-            }
-        }
-
-        public void GetListOfOtherFiles()
-        {
-            filesScanned = 0;
-
-            foreach (string directory in Configuration.Persistent.OtherFilesFolders)
-            {
-                DirectoryInfo otherFilesDirectoryInfo = new DirectoryInfo(directory);
-
-                // Get list of Disk files
-                if (otherFilesDirectoryInfo.Exists)
-                {
-                    FileInfo[] otherFilesFileInfo = otherFilesDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories);
-
-                    if (otherFilesFileInfo != null)
-                    {
-                        foreach (FileInfo fileInfo in otherFilesFileInfo)
-                        {
-                            lblInfo.Text = "Scanning folders for other files...";
-                            lblFile.Text = fileInfo.FullName;
-
-                            // Add the disk to the tree
-                            if (parent.AddOtherFileToTree(fileInfo, otherFilesDirectoryInfo.FullName) != null)
-                            {
-                                romsFound++;
-                            }
-                            else
-                            {
-                                filesSkipped++;
-                                romsSkipped++;
-                            }
-
-                            filesScanned++;
-
-                            float percentage = (100 / (float)otherFilesFileInfo.Length) * filesScanned;
-                            pbProgress.PercentageValue = (int)percentage;
-                            pbProgress.Text = string.Format("Processing {0:N0} of {1:N0}", filesScanned, otherFilesFileInfo.Length);
-
-                            Application.DoEvents();
-                        }
-                    }
-                }
-            }
+            return newNode;
         }
     }
 }
