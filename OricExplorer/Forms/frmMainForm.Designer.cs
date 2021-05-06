@@ -39,6 +39,11 @@ namespace OricExplorer
             this.mnuViewCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewCloseAllButThisOne = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuViewSortDiskDirectory = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewSortDiskDirectoryByName = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewSortDiskDirectoryByExtension = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewSortDiskDirectoryByType = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuViewRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,9 +122,6 @@ namespace OricExplorer
             this.cmnuDiskCreateNewDisk = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuDiskFormatDisk = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuDiskConvertToTape = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmnuDiskSortDirectory = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmnuDiskSortDirectoryByName = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmnuDiskSortDirectoryByType = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuDiskSep5 = new System.Windows.Forms.ToolStripSeparator();
             this.cmnuDiskRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuUnknownDisk = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -197,6 +199,8 @@ namespace OricExplorer
             this.mnuViewCloseAll,
             this.mnuViewCloseAllButThisOne,
             this.mnuViewSep1,
+            this.mnuViewSortDiskDirectory,
+            this.mnuViewSep2,
             this.mnuViewRefresh});
             this.mnuView.Name = "mnuView";
             this.mnuView.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.V)));
@@ -207,28 +211,65 @@ namespace OricExplorer
             // mnuViewClose
             // 
             this.mnuViewClose.Name = "mnuViewClose";
-            this.mnuViewClose.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewClose.Size = new System.Drawing.Size(226, 22);
             this.mnuViewClose.Text = "Close";
             this.mnuViewClose.Click += new System.EventHandler(this.mnuViewClose_Click);
             // 
             // mnuViewCloseAll
             // 
             this.mnuViewCloseAll.Name = "mnuViewCloseAll";
-            this.mnuViewCloseAll.Size = new System.Drawing.Size(165, 22);
-            this.mnuViewCloseAll.Text = "Close All";
+            this.mnuViewCloseAll.Size = new System.Drawing.Size(226, 22);
+            this.mnuViewCloseAll.Text = "Close all";
             this.mnuViewCloseAll.Click += new System.EventHandler(this.mnuViewCloseAll_Click);
             // 
             // mnuViewCloseAllButThisOne
             // 
             this.mnuViewCloseAllButThisOne.Name = "mnuViewCloseAllButThisOne";
-            this.mnuViewCloseAllButThisOne.Size = new System.Drawing.Size(165, 22);
-            this.mnuViewCloseAllButThisOne.Text = "Close All But This";
+            this.mnuViewCloseAllButThisOne.Size = new System.Drawing.Size(226, 22);
+            this.mnuViewCloseAllButThisOne.Text = "Close all but this";
             this.mnuViewCloseAllButThisOne.Click += new System.EventHandler(this.mnuViewCloseAllButThisOne_Click);
             // 
             // mnuViewSep1
             // 
             this.mnuViewSep1.Name = "mnuViewSep1";
-            this.mnuViewSep1.Size = new System.Drawing.Size(162, 6);
+            this.mnuViewSep1.Size = new System.Drawing.Size(223, 6);
+            // 
+            // mnuViewSortDiskDirectory
+            // 
+            this.mnuViewSortDiskDirectory.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuViewSortDiskDirectoryByName,
+            this.mnuViewSortDiskDirectoryByExtension,
+            this.mnuViewSortDiskDirectoryByType});
+            this.mnuViewSortDiskDirectory.Name = "mnuViewSortDiskDirectory";
+            this.mnuViewSortDiskDirectory.Size = new System.Drawing.Size(226, 22);
+            this.mnuViewSortDiskDirectory.Text = "Sort the floppy disk directory";
+            this.mnuViewSortDiskDirectory.DropDownOpening += new System.EventHandler(this.mnuViewSortDiskDirectory_DropDownOpening);
+            // 
+            // mnuViewSortDiskDirectoryByName
+            // 
+            this.mnuViewSortDiskDirectoryByName.Name = "mnuViewSortDiskDirectoryByName";
+            this.mnuViewSortDiskDirectoryByName.Size = new System.Drawing.Size(141, 22);
+            this.mnuViewSortDiskDirectoryByName.Text = "by name";
+            this.mnuViewSortDiskDirectoryByName.Click += new System.EventHandler(this.mnuViewSortDiskDirectoryByName_Click);
+            // 
+            // mnuViewSortDiskDirectoryByExtension
+            // 
+            this.mnuViewSortDiskDirectoryByExtension.Name = "mnuViewSortDiskDirectoryByExtension";
+            this.mnuViewSortDiskDirectoryByExtension.Size = new System.Drawing.Size(141, 22);
+            this.mnuViewSortDiskDirectoryByExtension.Text = "by extension";
+            this.mnuViewSortDiskDirectoryByExtension.Click += new System.EventHandler(this.mnuViewSortDiskDirectoryByExtension_Click);
+            // 
+            // mnuViewSortDiskDirectoryByType
+            // 
+            this.mnuViewSortDiskDirectoryByType.Name = "mnuViewSortDiskDirectoryByType";
+            this.mnuViewSortDiskDirectoryByType.Size = new System.Drawing.Size(141, 22);
+            this.mnuViewSortDiskDirectoryByType.Text = "by type";
+            this.mnuViewSortDiskDirectoryByType.Click += new System.EventHandler(this.mnuViewSortDiskDirectoryByType_Click);
+            // 
+            // mnuViewSep2
+            // 
+            this.mnuViewSep2.Name = "mnuViewSep2";
+            this.mnuViewSep2.Size = new System.Drawing.Size(223, 6);
             // 
             // mnuViewRefresh
             // 
@@ -236,7 +277,7 @@ namespace OricExplorer
             this.mnuViewRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuViewRefresh.Name = "mnuViewRefresh";
             this.mnuViewRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.mnuViewRefresh.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewRefresh.Size = new System.Drawing.Size(226, 22);
             this.mnuViewRefresh.Text = "Refresh";
             this.mnuViewRefresh.Click += new System.EventHandler(this.mnuViewRefresh_Click);
             // 
@@ -265,26 +306,26 @@ namespace OricExplorer
             // mnuToolsImportAtmosBasicFile
             // 
             this.mnuToolsImportAtmosBasicFile.Name = "mnuToolsImportAtmosBasicFile";
-            this.mnuToolsImportAtmosBasicFile.Size = new System.Drawing.Size(251, 22);
-            this.mnuToolsImportAtmosBasicFile.Text = "Import Oric-1/Atmos BASIC File...";
+            this.mnuToolsImportAtmosBasicFile.Size = new System.Drawing.Size(213, 22);
+            this.mnuToolsImportAtmosBasicFile.Text = "Import Atmos BASIC File...";
             this.mnuToolsImportAtmosBasicFile.Click += new System.EventHandler(this.mnuToolsImportAtmosBasicFile_Click);
             // 
             // mnuToolsSep1
             // 
             this.mnuToolsSep1.Name = "mnuToolsSep1";
-            this.mnuToolsSep1.Size = new System.Drawing.Size(248, 6);
+            this.mnuToolsSep1.Size = new System.Drawing.Size(210, 6);
             // 
             // mnuToolsSyntaxHighlighting
             // 
             this.mnuToolsSyntaxHighlighting.Name = "mnuToolsSyntaxHighlighting";
-            this.mnuToolsSyntaxHighlighting.Size = new System.Drawing.Size(251, 22);
-            this.mnuToolsSyntaxHighlighting.Text = "Syntax Highlighting...";
+            this.mnuToolsSyntaxHighlighting.Size = new System.Drawing.Size(213, 22);
+            this.mnuToolsSyntaxHighlighting.Text = "Syntax highlighting...";
             this.mnuToolsSyntaxHighlighting.Click += new System.EventHandler(this.mnuToolsSyntaxHighlighting_Click);
             // 
             // mnuToolsSep2
             // 
             this.mnuToolsSep2.Name = "mnuToolsSep2";
-            this.mnuToolsSep2.Size = new System.Drawing.Size(248, 6);
+            this.mnuToolsSep2.Size = new System.Drawing.Size(210, 6);
             // 
             // mnuToolsSettings
             // 
@@ -292,7 +333,7 @@ namespace OricExplorer
             this.mnuToolsSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuToolsSettings.Name = "mnuToolsSettings";
             this.mnuToolsSettings.ShortcutKeys = System.Windows.Forms.Keys.F9;
-            this.mnuToolsSettings.Size = new System.Drawing.Size(251, 22);
+            this.mnuToolsSettings.Size = new System.Drawing.Size(213, 22);
             this.mnuToolsSettings.Text = "Settings...";
             this.mnuToolsSettings.Click += new System.EventHandler(this.mnuToolsSettings_Click);
             // 
@@ -741,11 +782,10 @@ namespace OricExplorer
             this.cmnuDiskCreateNewDisk,
             this.cmnuDiskFormatDisk,
             this.cmnuDiskConvertToTape,
-            this.cmnuDiskSortDirectory,
             this.cmnuDiskSep5,
             this.cmnuDiskRefresh});
             this.cmnuDisk.Name = "diskContextMenuStrip";
-            this.cmnuDisk.Size = new System.Drawing.Size(179, 320);
+            this.cmnuDisk.Size = new System.Drawing.Size(179, 298);
             this.cmnuDisk.Text = "Disk Options";
             this.cmnuDisk.Opening += new System.ComponentModel.CancelEventHandler(this.cmnuDisk_Opening);
             // 
@@ -886,29 +926,6 @@ namespace OricExplorer
             this.cmnuDiskConvertToTape.Text = "Convert to tape...";
             this.cmnuDiskConvertToTape.Visible = false;
             this.cmnuDiskConvertToTape.Click += new System.EventHandler(this.cmnuDiskConvertToTape_Click);
-            // 
-            // cmnuDiskSortDirectory
-            // 
-            this.cmnuDiskSortDirectory.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmnuDiskSortDirectoryByName,
-            this.cmnuDiskSortDirectoryByType});
-            this.cmnuDiskSortDirectory.Name = "cmnuDiskSortDirectory";
-            this.cmnuDiskSortDirectory.Size = new System.Drawing.Size(178, 22);
-            this.cmnuDiskSortDirectory.Text = "Sort Directory";
-            // 
-            // cmnuDiskSortDirectoryByName
-            // 
-            this.cmnuDiskSortDirectoryByName.Name = "cmnuDiskSortDirectoryByName";
-            this.cmnuDiskSortDirectoryByName.Size = new System.Drawing.Size(122, 22);
-            this.cmnuDiskSortDirectoryByName.Text = "by Name";
-            this.cmnuDiskSortDirectoryByName.Click += new System.EventHandler(this.cmnuDiskSortDirectoryByName_Click);
-            // 
-            // cmnuDiskSortDirectoryByType
-            // 
-            this.cmnuDiskSortDirectoryByType.Name = "cmnuDiskSortDirectoryByType";
-            this.cmnuDiskSortDirectoryByType.Size = new System.Drawing.Size(122, 22);
-            this.cmnuDiskSortDirectoryByType.Text = "by Type";
-            this.cmnuDiskSortDirectoryByType.Click += new System.EventHandler(this.cmnuDiskSortDirectoryByType_Click);
             // 
             // cmnuDiskSep5
             // 
@@ -1155,12 +1172,12 @@ namespace OricExplorer
             this.cmnuFolder.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmnuFolderOpenInExplorer});
             this.cmnuFolder.Name = "cmnuFolder";
-            this.cmnuFolder.Size = new System.Drawing.Size(181, 48);
+            this.cmnuFolder.Size = new System.Drawing.Size(163, 26);
             // 
             // cmnuFolderOpenInExplorer
             // 
             this.cmnuFolderOpenInExplorer.Name = "cmnuFolderOpenInExplorer";
-            this.cmnuFolderOpenInExplorer.Size = new System.Drawing.Size(180, 22);
+            this.cmnuFolderOpenInExplorer.Size = new System.Drawing.Size(162, 22);
             this.cmnuFolderOpenInExplorer.Text = "Open in explorer";
             this.cmnuFolderOpenInExplorer.Click += new System.EventHandler(this.cmnuFolderOpenInExplorer_Click);
             // 
@@ -1273,9 +1290,6 @@ namespace OricExplorer
         private ToolStripMenuItem cmnuDiskLoadIntoEmulator;
         private ToolStripMenuItem cmnuDiskRefresh;
         private ToolStripMenuItem cmnuProgramOpenDataViewer;
-        private ToolStripMenuItem cmnuDiskSortDirectory;
-        private ToolStripMenuItem cmnuDiskSortDirectoryByName;
-        private ToolStripMenuItem cmnuDiskSortDirectoryByType;
         private ToolStripMenuItem mnuToolsImportAtmosBasicFile;
         private ToolStripSeparator mnuToolsSep1;
         private ContextMenuStrip cmnuUnknownDisk;
@@ -1317,6 +1331,11 @@ namespace OricExplorer
         private ToolStripMenuItem toolStripMenuItem6;
         private ContextMenuStrip cmnuFolder;
         private ToolStripMenuItem cmnuFolderOpenInExplorer;
+        private ToolStripMenuItem mnuViewSortDiskDirectory;
+        private ToolStripMenuItem mnuViewSortDiskDirectoryByName;
+        private ToolStripMenuItem mnuViewSortDiskDirectoryByExtension;
+        private ToolStripMenuItem mnuViewSortDiskDirectoryByType;
+        private ToolStripSeparator mnuViewSep2;
     }
 }
 

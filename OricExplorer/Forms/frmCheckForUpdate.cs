@@ -1,10 +1,13 @@
 namespace OricExplorer.Forms
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.IO.Compression;
     using System.Net;
     using System.Reflection;
+    using System.Text;
     using System.Threading;
     using System.Windows.Forms;
     using System.Xml;
@@ -117,7 +120,8 @@ namespace OricExplorer.Forms
                                         break;
 
                                     case "url":
-                                        mstrBinaryUpdateURL = $"{reader.Value.Replace("/blob/", "/raw/")}/{Assembly.GetExecutingAssembly().GetName().Name}.bin";
+                                        //mstrBinaryUpdateURL = $"{reader.Value.Replace("/blob/", "/raw/")}/{Assembly.GetExecutingAssembly().GetName().Name}.bin";
+                                        mstrBinaryUpdateURL = reader.Value;
                                         break;
 
                                     case "details":
@@ -151,7 +155,7 @@ namespace OricExplorer.Forms
             // Example : 2.1.3.4567
             // Major.Minor.Build.Revision
 
-            Version curVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Version curVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
             ibxAvailableVersion.Text = string.Format("{0}.{1}.{2}.{3}", mNewVersion.Major, mNewVersion.Minor, mNewVersion.Build, mNewVersion.Revision);
 
@@ -160,9 +164,10 @@ namespace OricExplorer.Forms
 
         private bool updateFromWebsite()
         {
+            string strSourceURL = $"{mstrBinaryUpdateURL.Replace("/blob/", "/raw/")}/{Assembly.GetExecutingAssembly().GetName().Name}_v{mNewVersion}.zip";
             string strBinary = Assembly.GetExecutingAssembly().Location;
-            string strNewBinary = $"{Path.GetFileNameWithoutExtension(strBinary)}.bin";
             string strOldBinary = $"{Path.GetFileNameWithoutExtension(strBinary)}.old";
+            string strDownloadedZIP = $"{Path.GetFileNameWithoutExtension(strBinary)}_v{mNewVersion}.zip";
 
             try
             {
@@ -171,7 +176,7 @@ namespace OricExplorer.Forms
                                                      | SecurityProtocolType.Tls12
                                                      | SecurityProtocolType.Ssl3;
 
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(mstrBinaryUpdateURL);
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(strSourceURL);
                 req.Proxy = null;
                 req.Timeout = 10000;
 
@@ -181,9 +186,9 @@ namespace OricExplorer.Forms
                 // status OK?
                 if (rep.StatusCode == HttpStatusCode.OK)
                 {
-                    if (File.Exists(strNewBinary))
+                    if (File.Exists(strDownloadedZIP))
                     {
-                        File.Delete(strNewBinary);
+                        File.Delete(strDownloadedZIP);
                     }
                     
                     long lngTotal = rep.ContentLength;
@@ -193,7 +198,7 @@ namespace OricExplorer.Forms
                     int intSize;
 
                     Stream sr = rep.GetResponseStream();
-                    Stream stm = new FileStream(strNewBinary, FileMode.Create, FileAccess.Write, FileShare.None);
+                    Stream stm = new FileStream(strDownloadedZIP, FileMode.Create, FileAccess.Write, FileShare.None);
 
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
@@ -209,10 +214,10 @@ namespace OricExplorer.Forms
                         double dblPercentage = (dblDownloaded / dblTotal);
                         int intPercentage = (int)(dblPercentage * 100);
 
-                        double dblTemps = sw.ElapsedMilliseconds;
-                        double dblReste = Math.Round(dblTemps / dblDownloaded * (dblTotal - dblDownloaded) / 1000, 1);
+                        double dblElapsed = sw.ElapsedMilliseconds;
+                        double dblRemaining = Math.Round(dblElapsed / dblDownloaded * (dblTotal - dblDownloaded) / 1000, 1);
 
-                        ibxDetails.Text = $"Downloaded: {intPercentage}%, ETA: {dblReste}s";
+                        ibxDetails.Text = $"Downloaded: {intPercentage}%, ETA: {dblRemaining}s";
                         ibxDetails.Refresh();
 
                         Application.DoEvents();
@@ -227,17 +232,102 @@ namespace OricExplorer.Forms
                     Application.DoEvents();
                     Thread.Sleep(1000);
 
+
+                    bool boolExtractionError = false;
+                    ibxDetails.Text += "\n\nUpdate in progress.";
+                    Application.DoEvents();
+                    
+                    // if .old main executable exists, delete it
                     if (File.Exists(strOldBinary))
                     {
                         File.Delete(strOldBinary);
                     }
+                    // rename main executable (.exe to .old)
                     File.Move(strBinary, strOldBinary);
-                    File.Move(strNewBinary, strBinary);
 
-                    ibxDetails.Text += "\n\nBinary updated.";
+                    // unzip each file of the downloaded archive
+                    using (ZipStorer zip = ZipStorer.Open(strDownloadedZIP, FileAccess.Read))
+                    {
+                        List<ZipStorer.ZipFileEntry> lstFiles = zip.ReadCentralDir();
+                        foreach (ZipStorer.ZipFileEntry zfe in lstFiles)
+                        {
+                            string strSource = zfe.FilenameInZip;
+                            string strTarget = Path.Combine(Application.StartupPath, strSource);
+
+                            // is it a file?
+                            if (!strSource.EndsWith("/"))
+                            {
+                                // yes...
+
+                                string strLockedTarget = null;
+
+                                // does a file already exist with this name and in this location?
+                                if (File.Exists(strTarget))
+                                {
+                                    // yes...
+
+                                    try
+                                    {
+                                        // we try to delete it
+                                        File.Delete(strTarget);
+                                    }
+                                    catch (UnauthorizedAccessException) // the file appears to be locked
+                                    {
+                                        // modification of the name under which the file will be extracted. The file will then be renamed
+                                        // the next time the application is started (before the file is locked)
+                                        strLockedTarget = strTarget;
+                                        strTarget += ConstantsAndEnums.UPDATE_EXTENSION;
+                                    }
+                                }
+
+                                // attempting to extract the file
+                                if (!zip.ExtractFile(zfe, strTarget))
+                                {
+                                    // extraction failed
+                                    boolExtractionError = true;
+                                }
+                                // extraction performed successfully but not under the original file name (indicating that the target file is locked)
+                                else if (!string.IsNullOrEmpty(strLockedTarget))
+                                {
+                                    // we need to compare the two files
+                                    FileVersionInfo fiOld = FileVersionInfo.GetVersionInfo(strLockedTarget);
+                                    FileVersionInfo fiNew = FileVersionInfo.GetVersionInfo(strTarget);
+
+                                    // if the file which has just been extracted is identical to the one which was already present, delete it
+                                    if (fiNew.FileVersion == fiOld.FileVersion)
+                                    {
+                                        try
+                                        {
+                                            File.Delete(strTarget);
+                                        } catch { }
+                                    }
+                                }
+                            }
+                        }
+
+                        zip.Close();
+                    }
+
+                    // successful decompression?
+                    if (boolExtractionError)
+                    {
+                        MessageBox.Show($"One or more files could not be decompressed. The downloaded archive may be corrupted or the application directory may be read-only.\r\n\r\nClose the application and try to update manually by unzipping the archive left for this purpose in the application folder.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                    else
+                    {
+                        // attempt to delete the archive which has become useless
+                        try
+                        {
+                            File.Delete(strDownloadedZIP);
+                        } catch { }
+                    }
+
+
+                    ibxDetails.Text += "\n\nUpdate done.";
                     ibxDetails.Refresh();
                     Application.DoEvents();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(3000);
 
                     ibxDetails.Text += "\n\nRestarting application.";
                     ibxDetails.Refresh();

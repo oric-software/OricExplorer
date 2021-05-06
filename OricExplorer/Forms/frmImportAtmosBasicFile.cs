@@ -327,6 +327,8 @@
                 program.ProgramData[iProgramIdx] = 0x00;
                 iProgramIdx++;
                 program.ProgramData[iProgramIdx] = 0x00;
+iProgramIdx++;
+program.ProgramData[iProgramIdx] = 0x55;
                 program.EndAddress = (ushort)(program.StartAddress + iProgramIdx);
                 
                 return true;

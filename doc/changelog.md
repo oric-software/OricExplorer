@@ -1,8 +1,22 @@
 Here is a history of OricExplorer evolutions, presenting the non-exhaustive list of corrections/additions of each recent version:
 
 
+# Oric Explorer 2.4.3
+* fixed a bug in "Tools\Import Atmos BASIC File" functionality (issue #6)
+* fixed a bug in the update module when calling from the "Help" menu: the application was not restarted after the update
+* rewrited the update module (now uses .zip archive instead of .bin file)
+* moved "sort disk directory" submenu from disk context menu to "View" menu because it concerns all disks, not only the selected one
+* added a new sort disk directory option: by extension
+* added a status bar to inform the user of the cursor position (index and address) in the hexadecimal file viewer
+
+
+# Oric Explorer 2.4.2
+* redesigned the File Scanner form and refactor associated code
+* added a new ProgressBar user control
+
+
 # Oric Explorer 2.4.1
-* removed control of duplicate folders in the list of folders (in settings form) introcued in v2.4
+* removed control of duplicate folders in the list of folders (in settings form) introduced in v2.4
 * added automatic rescan when folder list representation options changed
 * introduced a new installer package using InnoSetup
 

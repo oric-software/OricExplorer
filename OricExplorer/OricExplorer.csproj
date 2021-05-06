@@ -82,6 +82,9 @@
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
       <HintPath>..\packages\DockPanelSuite.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
+    <Reference Include="ZipStorer, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZipStorer.3.6.0\lib\net452\ZipStorer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Extensions.cs" />
@@ -404,12 +407,16 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
-	del /q "$(SolutionDir)\dist\*.zip"
+	del /q "$(SolutionDir)\dist\*.bin"
 	del /q "$(SolutionDir)\dist\*.exe"
-	copy /y "$(TargetPath)" "$(SolutionDir)\dist\*.bin"
+	del /q "$(SolutionDir)\dist\*.zip"
 	powershell.exe -ExecutionPolicy RemoteSigned -File "$(ProjectDir)\packager\update_app_version.ps1" -SolutionDir "$(SolutionDir)"" -TargetDir "$(TargetDir)""
 	powershell.exe -ExecutionPolicy RemoteSigned -File "$(ProjectDir)\packager\create_archive.ps1" -SolutionDir "$(SolutionDir)"" -TargetDir "$(TargetDir)""
-	echo "### Portable package (.zip) successfully generated, don't forget to generate the installer package with InnoSetup ###"
+	echo. 
+	echo "#################################################################################################################" 
+	echo "# Portable package (.zip) successfully generated, don't forget to generate the installer package with InnoSetup #"
+	echo "#################################################################################################################" 
+	echo. 
 )
 </PostBuildEvent>
   </PropertyGroup>

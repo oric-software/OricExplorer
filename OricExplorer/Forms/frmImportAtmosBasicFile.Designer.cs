@@ -329,7 +329,7 @@
             this.Name = "frmImportAtmosBasicFile";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Import Oric-1/Atmos BASIC File";
+            this.Text = "Import Atmos BASIC File";
             this.Shown += new System.EventHandler(this.frmImportTextFile_Shown);
             this.grpTextFile.ResumeLayout(false);
             this.grpTextFile.PerformLayout();
