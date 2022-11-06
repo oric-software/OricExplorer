@@ -10,7 +10,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Scott Davies feat. damien")]
 [assembly: AssemblyProduct("Oric Explorer")]
-[assembly: AssemblyCopyright("Copyright © 2021 Scott Davies")]
+[assembly: AssemblyCopyright("Copyright © 2022 Scott Davies")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,4 +30,4 @@ using System.Resources;
 //      Revision
 //
 [assembly: NeutralResourcesLanguage("en-GB")]
-[assembly: AssemblyVersion("2.4.3.0")]
+[assembly: AssemblyVersion("2.5.0.0")]

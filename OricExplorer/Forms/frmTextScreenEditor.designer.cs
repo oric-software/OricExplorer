@@ -387,7 +387,7 @@ namespace OricExplorer
             // mnuFileExit
             // 
             this.mnuFileExit.Name = "mnuFileExit";
-            this.mnuFileExit.Size = new System.Drawing.Size(180, 22);
+            this.mnuFileExit.Size = new System.Drawing.Size(103, 22);
             this.mnuFileExit.Text = "Close";
             // 
             // tsToolsBar
@@ -574,7 +574,7 @@ namespace OricExplorer
             this.hdiv1.ForeColor = System.Drawing.Color.Navy;
             this.hdiv1.Location = new System.Drawing.Point(0, 134);
             this.hdiv1.Name = "hdiv1";
-            this.hdiv1.Size = new System.Drawing.Size(80, 15);
+            this.hdiv1.Size = new System.Drawing.Size(200, 15);
             this.hdiv1.TabIndex = 23;
             this.hdiv1.Text = "Attributes";
             this.hdiv1.TextShadow = true;
@@ -598,7 +598,7 @@ namespace OricExplorer
             this.hdiv2.ForeColor = System.Drawing.Color.Navy;
             this.hdiv2.Location = new System.Drawing.Point(0, 241);
             this.hdiv2.Name = "hdiv2";
-            this.hdiv2.Size = new System.Drawing.Size(80, 15);
+            this.hdiv2.Size = new System.Drawing.Size(200, 15);
             this.hdiv2.TabIndex = 9;
             this.hdiv2.Text = "Colours";
             this.hdiv2.TextShadow = true;

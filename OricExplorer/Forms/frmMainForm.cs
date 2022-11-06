@@ -41,6 +41,8 @@ namespace OricExplorer
         private frmFileList fileListForm;
         public frmProgramInfo programInfoForm;
 
+        private frmScreenshoterOricutron screenshoterOricutron;
+
         public frmMainForm()
         {
             InitializeComponent();
@@ -65,6 +67,8 @@ namespace OricExplorer
             programInfoForm = new frmProgramInfo();
 
             loadedProgram = new OricProgram();
+
+            mnuToolsScreenshoterForOricutron.Enabled = Environment.OSVersion.Platform.Equals(PlatformID.Win32NT);
         }
 
         private void frmMainForm_Load(object sender, System.EventArgs e)
@@ -301,6 +305,17 @@ namespace OricExplorer
             }
         }
 
+        private void mnuToolsScreenshoterForOricutron_Click(object sender, EventArgs e)
+        {
+            if (screenshoterOricutron == null)
+            {
+                screenshoterOricutron = new frmScreenshoterOricutron(this);
+                screenshoterOricutron.Icon = this.Icon;
+            }
+
+            screenshoterOricutron.Show();
+        }
+
         private void mnuToolsSettings_Click(object sender, EventArgs e)
         {
             // Show settings dialog
@@ -312,7 +327,6 @@ namespace OricExplorer
                 }
             }
         }
-
         #endregion
 
         #region Help Menu
@@ -2626,6 +2640,7 @@ namespace OricExplorer
                 programInfoForm.ClearInfo();
             }
         }
+
 
         /*private void saveAsTAPFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
