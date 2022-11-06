@@ -20,6 +20,7 @@ It provides facilities to view the files contained in tape and disk images, and 
 10. Display sequential access file data
 11. Display character font data (graphical representation, byte data and addresses)
 12. Launch .dsk and .tap medias in Oricutron emulator
+13. Help to make screenshots of Oricutron (Windows only)
 
 
 ## Initial configuration

@@ -71,6 +71,7 @@
       <HintPath>bin\Debug\FormsControlLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
@@ -89,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Classes\Extensions.cs" />
     <Compile Include="Classes\HyperbasicTokens.cs" />
+    <Compile Include="Classes\NativeMethods.cs" />
     <Compile Include="Classes\OtherFileInfo.cs" />
     <Compile Include="Classes\TeleassTokens.cs" />
     <Compile Include="Classes\ConstantsAndEnums.cs" />
@@ -151,6 +153,12 @@
     <Compile Include="Forms\frmFileList.Designer.cs">
       <DependentUpon>frmFileList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmScreenshoterOricutron.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmScreenshoterOricutron.designer.cs">
+      <DependentUpon>frmScreenshoterOricutron.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmScreenViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,6 +187,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="User Controls\ctlCaptureViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\ctlCaptureViewer.designer.cs">
+      <DependentUpon>ctlCaptureViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="User Controls\ctlCharacterSetViewer.cs">
       <SubType>UserControl</SubType>
@@ -247,6 +261,9 @@
     <EmbeddedResource Include="Forms\frmFileList.resx">
       <DependentUpon>frmFileList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmScreenshoterOricutron.resx">
+      <DependentUpon>frmScreenshoterOricutron.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmScreenViewer.resx">
       <DependentUpon>frmScreenViewer.cs</DependentUpon>
     </EmbeddedResource>
@@ -258,6 +275,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmTextScreenEditor.resx">
       <DependentUpon>frmTextScreenEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\ctlCaptureViewer.resx">
+      <DependentUpon>ctlCaptureViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User Controls\ctlCharacterSetViewer.resx">
       <DependentUpon>ctlCharacterSetViewer.cs</DependentUpon>

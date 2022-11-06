@@ -80,6 +80,10 @@ namespace OricExplorer
             this.chkTapesIndex = new System.Windows.Forms.CheckBox();
             this.grpUpdates = new GroupFrame.GroupFrame();
             this.chkCheckForUpdatesOnStartup = new System.Windows.Forms.CheckBox();
+            this.grpScreenshoterForOricutron = new GroupFrame.GroupFrame();
+            this.lblFolder = new System.Windows.Forms.Label();
+            this.txtScreenshoterForOricutronFolder = new System.Windows.Forms.TextBox();
+            this.btnScreenshoterForOricutronBrowse = new System.Windows.Forms.Button();
             this.grpTapeAndDiskFolders.SuspendLayout();
             this.grpOptions.SuspendLayout();
             this.grpFolderDetails.SuspendLayout();
@@ -92,6 +96,7 @@ namespace OricExplorer
             this.tabpOther.SuspendLayout();
             this.grpTapeRepresentation.SuspendLayout();
             this.grpUpdates.SuspendLayout();
+            this.grpScreenshoterForOricutron.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnAddFolder
@@ -564,6 +569,7 @@ namespace OricExplorer
             // tabpOther
             // 
             this.tabpOther.Controls.Add(this.grpTapeRepresentation);
+            this.tabpOther.Controls.Add(this.grpScreenshoterForOricutron);
             this.tabpOther.Controls.Add(this.grpUpdates);
             this.tabpOther.Location = new System.Drawing.Point(4, 22);
             this.tabpOther.Name = "tabpOther";
@@ -665,6 +671,50 @@ namespace OricExplorer
             this.chkCheckForUpdatesOnStartup.Text = "Check for updates on startup";
             this.chkCheckForUpdatesOnStartup.UseVisualStyleBackColor = true;
             // 
+            // grpScreenshoterForOricutron
+            // 
+            this.grpScreenshoterForOricutron.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpScreenshoterForOricutron.Controls.Add(this.lblFolder);
+            this.grpScreenshoterForOricutron.Controls.Add(this.txtScreenshoterForOricutronFolder);
+            this.grpScreenshoterForOricutron.Controls.Add(this.btnScreenshoterForOricutronBrowse);
+            this.grpScreenshoterForOricutron.Location = new System.Drawing.Point(7, 233);
+            this.grpScreenshoterForOricutron.Name = "grpScreenshoterForOricutron";
+            this.grpScreenshoterForOricutron.Size = new System.Drawing.Size(648, 68);
+            this.grpScreenshoterForOricutron.TabIndex = 2;
+            this.grpScreenshoterForOricutron.TabStop = false;
+            this.grpScreenshoterForOricutron.Text = "Screenshoter for Oricutron";
+            this.grpScreenshoterForOricutron.TextAlignment = System.Drawing.StringAlignment.Center;
+            // 
+            // lblFolder
+            // 
+            this.lblFolder.AutoSize = true;
+            this.lblFolder.ForeColor = System.Drawing.Color.Black;
+            this.lblFolder.Location = new System.Drawing.Point(12, 17);
+            this.lblFolder.Name = "lblFolder";
+            this.lblFolder.Size = new System.Drawing.Size(36, 13);
+            this.lblFolder.TabIndex = 0;
+            this.lblFolder.Text = "Folder";
+            // 
+            // txtScreenshoterForOricutronFolder
+            // 
+            this.txtScreenshoterForOricutronFolder.ForeColor = System.Drawing.Color.Black;
+            this.txtScreenshoterForOricutronFolder.Location = new System.Drawing.Point(15, 34);
+            this.txtScreenshoterForOricutronFolder.Name = "txtScreenshoterForOricutronFolder";
+            this.txtScreenshoterForOricutronFolder.Size = new System.Drawing.Size(538, 20);
+            this.txtScreenshoterForOricutronFolder.TabIndex = 1;
+            // 
+            // btnScreenshoterForOricutronBrowse
+            // 
+            this.btnScreenshoterForOricutronBrowse.ForeColor = System.Drawing.Color.Black;
+            this.btnScreenshoterForOricutronBrowse.Location = new System.Drawing.Point(559, 33);
+            this.btnScreenshoterForOricutronBrowse.Name = "btnScreenshoterForOricutronBrowse";
+            this.btnScreenshoterForOricutronBrowse.Size = new System.Drawing.Size(77, 22);
+            this.btnScreenshoterForOricutronBrowse.TabIndex = 2;
+            this.btnScreenshoterForOricutronBrowse.Text = "Browse...";
+            this.btnScreenshoterForOricutronBrowse.UseVisualStyleBackColor = true;
+            this.btnScreenshoterForOricutronBrowse.Click += new System.EventHandler(this.btnScreenshoterForOricutronBrowse_Click);
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -702,6 +752,8 @@ namespace OricExplorer
             this.grpTapeRepresentation.PerformLayout();
             this.grpUpdates.ResumeLayout(false);
             this.grpUpdates.PerformLayout();
+            this.grpScreenshoterForOricutron.ResumeLayout(false);
+            this.grpScreenshoterForOricutron.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -758,5 +810,9 @@ namespace OricExplorer
         private System.Windows.Forms.CheckBox chkOtherFilesTree;
         private System.Windows.Forms.CheckBox chkROMsTree;
         private System.Windows.Forms.CheckBox chkTapesTree;
+        private GroupFrame.GroupFrame grpScreenshoterForOricutron;
+        private System.Windows.Forms.Label lblFolder;
+        private System.Windows.Forms.TextBox txtScreenshoterForOricutronFolder;
+        private System.Windows.Forms.Button btnScreenshoterForOricutronBrowse;
     }
 }

@@ -170,7 +170,7 @@ The following are some of the features currently available in Oric Explorer.
 - View Disk contents using a graphical representation of the sectors.
 - View TEXT or HIRES images stored on a floppy disk image through a built-in specific Image Viewer
 - Launch .dsk and .tap medias in Oricutron emulator
-
+- Take screenshots (manually or automatically) and save them in several formats (animated gif, bmp, gif, jpeg, png and tiff) ***==> IMPLEMENTED AS OF v2.5.0***
 
 
 ## Author's Notes and Caveats

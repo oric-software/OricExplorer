@@ -1,5 +1,8 @@
 Here is a history of OricExplorer evolutions, presenting the non-exhaustive list of corrections/additions of each recent version:
 
+# Oric Explorer 2.5
+* added "Screenshoter for Oricutron" functionality in the "Tools" menu, offering the possibility to take screenshots (manually or automatically) and save them in several formats (animated gif, bmp, gif, jpeg, png and tiff)
+
 
 # Oric Explorer 2.4.3
 * fixed a bug in "Tools\Import Atmos BASIC File" functionality (issue #6)

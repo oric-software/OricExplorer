@@ -51,6 +51,8 @@ namespace OricExplorer
             this.mnuToolsSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuToolsSyntaxHighlighting = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuToolsSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuToolsScreenshoterForOricutron = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuToolsSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuToolsSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelpCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
@@ -297,6 +299,8 @@ namespace OricExplorer
             this.mnuToolsSep1,
             this.mnuToolsSyntaxHighlighting,
             this.mnuToolsSep2,
+            this.mnuToolsScreenshoterForOricutron,
+            this.mnuToolsSep3,
             this.mnuToolsSettings});
             this.mnuTools.Name = "mnuTools";
             this.mnuTools.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
@@ -306,26 +310,38 @@ namespace OricExplorer
             // mnuToolsImportAtmosBasicFile
             // 
             this.mnuToolsImportAtmosBasicFile.Name = "mnuToolsImportAtmosBasicFile";
-            this.mnuToolsImportAtmosBasicFile.Size = new System.Drawing.Size(213, 22);
+            this.mnuToolsImportAtmosBasicFile.Size = new System.Drawing.Size(223, 22);
             this.mnuToolsImportAtmosBasicFile.Text = "Import Atmos BASIC File...";
             this.mnuToolsImportAtmosBasicFile.Click += new System.EventHandler(this.mnuToolsImportAtmosBasicFile_Click);
             // 
             // mnuToolsSep1
             // 
             this.mnuToolsSep1.Name = "mnuToolsSep1";
-            this.mnuToolsSep1.Size = new System.Drawing.Size(210, 6);
+            this.mnuToolsSep1.Size = new System.Drawing.Size(220, 6);
             // 
             // mnuToolsSyntaxHighlighting
             // 
             this.mnuToolsSyntaxHighlighting.Name = "mnuToolsSyntaxHighlighting";
-            this.mnuToolsSyntaxHighlighting.Size = new System.Drawing.Size(213, 22);
+            this.mnuToolsSyntaxHighlighting.Size = new System.Drawing.Size(223, 22);
             this.mnuToolsSyntaxHighlighting.Text = "Syntax highlighting...";
             this.mnuToolsSyntaxHighlighting.Click += new System.EventHandler(this.mnuToolsSyntaxHighlighting_Click);
             // 
             // mnuToolsSep2
             // 
             this.mnuToolsSep2.Name = "mnuToolsSep2";
-            this.mnuToolsSep2.Size = new System.Drawing.Size(210, 6);
+            this.mnuToolsSep2.Size = new System.Drawing.Size(220, 6);
+            // 
+            // mnuToolsScreenshoterForOricutron
+            // 
+            this.mnuToolsScreenshoterForOricutron.Name = "mnuToolsScreenshoterForOricutron";
+            this.mnuToolsScreenshoterForOricutron.Size = new System.Drawing.Size(223, 22);
+            this.mnuToolsScreenshoterForOricutron.Text = "Screenshoter for Oricutron...";
+            this.mnuToolsScreenshoterForOricutron.Click += new System.EventHandler(this.mnuToolsScreenshoterForOricutron_Click);
+            // 
+            // mnuToolsSep3
+            // 
+            this.mnuToolsSep3.Name = "mnuToolsSep3";
+            this.mnuToolsSep3.Size = new System.Drawing.Size(220, 6);
             // 
             // mnuToolsSettings
             // 
@@ -333,7 +349,7 @@ namespace OricExplorer
             this.mnuToolsSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuToolsSettings.Name = "mnuToolsSettings";
             this.mnuToolsSettings.ShortcutKeys = System.Windows.Forms.Keys.F9;
-            this.mnuToolsSettings.Size = new System.Drawing.Size(213, 22);
+            this.mnuToolsSettings.Size = new System.Drawing.Size(223, 22);
             this.mnuToolsSettings.Text = "Settings...";
             this.mnuToolsSettings.Click += new System.EventHandler(this.mnuToolsSettings_Click);
             // 
@@ -1336,6 +1352,8 @@ namespace OricExplorer
         private ToolStripMenuItem mnuViewSortDiskDirectoryByExtension;
         private ToolStripMenuItem mnuViewSortDiskDirectoryByType;
         private ToolStripSeparator mnuViewSep2;
+        private ToolStripMenuItem mnuToolsScreenshoterForOricutron;
+        private ToolStripSeparator mnuToolsSep3;
     }
 }
 

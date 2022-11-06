@@ -58,5 +58,7 @@
         public enum MediaType { OricTape, TapeFile, OricDisk, DiskFile, ROMFile, UnknownMedia };
         public enum UserControls { MainView, DataViewer, SectorViewer, ScreenViewer, CharacterSetViewer, DataFileViewer, SequentialFileViewer, None };
         public enum ExportTo { Tape, Text, Raw };
+
+        public enum CaptureFormat { AnimatedGif, Bmp, Gif, Jpeg, Png, Tiff };
     }
 }
