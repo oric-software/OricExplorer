@@ -48,10 +48,23 @@
             public bool ROMsTree { get; set; } = false;
             public bool OtherFilesTree { get; set; } = false;
 
+            public ScreenshoterForOricutron ScreenshoterForOricutron { get; set; } = new ScreenshoterForOricutron();
+
             public Point MainWindowLocation { get; set; }
             public Size MainWindowSize { get; set; }
             public bool MainWindowMaximized { get; set; }
             public string DockPanelLayout { get; set; }
+        }
+
+        public class ScreenshoterForOricutron
+        {
+            public int CaptureInterval { get; set; } = 1000;
+            public bool IgnoreIfSameAsPrevious { get; set; } = true;
+            public string Folder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Screenshots");
+            public CaptureFormat Format { get; set; } = CaptureFormat.Png;
+            public string NamePrefix { get; set; }
+            public int AnimatedGifFrameDelay { get; set; } = 1000;
+            public int AnimatedGifRepeat { get; set; } = -1;
         }
 
         public class AppSettings<T> where T : new()

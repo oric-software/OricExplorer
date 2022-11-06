@@ -39,6 +39,8 @@ namespace OricExplorer
 
             txtDirListingFolder.Text = Configuration.Persistent.DirectoryListingsFolder;
 
+            txtScreenshoterForOricutronFolder.Text = Configuration.Persistent.ScreenshoterForOricutron.Folder;
+
             chkCheckForUpdatesOnStartup.Checked = Configuration.Persistent.CheckForUpdatesOnStartup;
             chkDisksTree.Checked = Configuration.Persistent.DisksTree;
             chkTapesIndex.Checked = Configuration.Persistent.TapesIndex;
@@ -182,6 +184,12 @@ namespace OricExplorer
                 tabSettings.SelectedTab = tabpEmulator;
                 txtEmulatorExecutable.Focus();
                 return;
+            } 
+            else if (txtScreenshoterForOricutronFolder.TextLength == 0 && MessageBox.Show("The path of the emulator has not yet been defined.\r\n\r\nDo you want to configure it now?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+            {
+                tabSettings.SelectedTab = tabpOther;
+                txtScreenshoterForOricutronFolder.Focus();
+                return;
             }
 
             Text = "Oric Explorer Settings - Saving settings...";
@@ -214,6 +222,8 @@ namespace OricExplorer
             Configuration.Persistent.TapesTree = chkTapesTree.Checked;
             Configuration.Persistent.ROMsTree = chkROMsTree.Checked;
             Configuration.Persistent.OtherFilesTree = chkOtherFilesTree.Checked;
+
+            Configuration.Persistent.ScreenshoterForOricutron.Folder = txtScreenshoterForOricutronFolder.Text;
 
             Configuration.Persistent.Save();
 
@@ -365,6 +375,25 @@ namespace OricExplorer
             if (chkTapesTree.Checked)
             {
                 chkTapesIndex.Checked = false;
+            }
+        }
+
+        private void btnScreenshoterForOricutronBrowse_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                folderDialog.Description = "Select the output folder for screenshoter";
+                folderDialog.RootFolder = Environment.SpecialFolder.MyComputer;
+
+                if (txtScreenshoterForOricutronFolder.TextLength > 0 && Directory.Exists(txtScreenshoterForOricutronFolder.Text))
+                {
+                    folderDialog.SelectedPath = txtScreenshoterForOricutronFolder.Text;
+                }
+
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    txtScreenshoterForOricutronFolder.Text = folderDialog.SelectedPath;
+                }
             }
         }
     }
